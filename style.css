@@ -133,6 +133,8 @@ h2.section-title {
   position: relative;
 }
 
+.hero h1 .accent { color: var(--accent); }
+
 
 .lead {
   max-width: 46ch;
