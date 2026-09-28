@@ -79,7 +79,7 @@ img { max-width: 100%; display: block; }
 main > section {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 96px 24px;
+  padding: 96px 18px;
 }
 
 .overline {
