@@ -23,8 +23,8 @@
    * 1. Config
    * ------------------------------------------------------------------- */
   const CONFIG = {
-    particleCountDesktop: 3200,
-    particleCountMobile: 1400,
+    particleCountDesktop: 2600,
+    particleCountMobile: 1200,
     mobileBreakpoint: 720,
     interactionRadius: 90, // px, cursor influence radius
     maxPush: 22, // px, max displacement a particle gets from the cursor
@@ -36,6 +36,14 @@
       { t: 0.5, rgb: [42, 176, 189] }, // cyan / teal
       { t: 1.0, rgb: [106, 79, 160] }, // deep plum lilac
     ],
+    // "Transformation" zone: raw points resolving into a light structure.
+    linkZone: [0.3, 0.7],
+    linkMaxDistance: 26, // px, only connect close neighbors
+    linkMaxCount: 130,
+    linkOpacity: 0.4,
+    // "Insight" zone: a clean analytical trend line drawn over the cloud.
+    trendZone: [0.68, 0.97],
+    trendRevealMs: 900,
   };
 
   /* ---------------------------------------------------------------------
@@ -169,6 +177,77 @@
   }
 
   /* ---------------------------------------------------------------------
+   * 3b. Structural overlays — sparse neighbor links in the transformation
+   *     zone, and a single clean trend line through the insight zone.
+   *     Both make the "raw -> structured -> insight" concept explicit
+   *     instead of leaving it to the particle density alone.
+   * ------------------------------------------------------------------- */
+
+  // Sparse neighbor links: a light spatial hash keeps this to a single
+  // pass, and a hard cap keeps the result subtle rather than a web.
+  function buildLinks(particles, width) {
+    const [zoneMin, zoneMax] = CONFIG.linkZone;
+    const cellSize = CONFIG.linkMaxDistance * 1.6;
+    const grid = new Map();
+    const zoneParticles = [];
+
+    for (const p of particles) {
+      if (p.homeX / width >= zoneMin && p.homeX / width <= zoneMax) {
+        zoneParticles.push(p);
+      }
+    }
+    for (const p of zoneParticles) {
+      const key = `${Math.floor(p.homeX / cellSize)}_${Math.floor(p.homeY / cellSize)}`;
+      if (!grid.has(key)) grid.set(key, []);
+      grid.get(key).push(p);
+    }
+
+    const links = [];
+    const step = Math.max(1, Math.floor(zoneParticles.length / (CONFIG.linkMaxCount * 2.5)));
+    for (let i = 0; i < zoneParticles.length && links.length < CONFIG.linkMaxCount; i += step) {
+      const p = zoneParticles[i];
+      const cx = Math.floor(p.homeX / cellSize);
+      const cy = Math.floor(p.homeY / cellSize);
+      let best = null;
+      let bestDist = CONFIG.linkMaxDistance;
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          const bucket = grid.get(`${cx + dx}_${cy + dy}`);
+          if (!bucket) continue;
+          for (const q of bucket) {
+            if (q === p) continue;
+            const ddx = q.homeX - p.homeX;
+            const ddy = q.homeY - p.homeY;
+            const d = Math.sqrt(ddx * ddx + ddy * ddy);
+            if (d > 3 && d < bestDist) {
+              bestDist = d;
+              best = q;
+            }
+          }
+        }
+      }
+      if (best) links.push({ a: p, b: best });
+    }
+    return links;
+  }
+
+  // A single smooth path sampled from the same trend curve the particle
+  // field follows, confined to the insight zone on the right.
+  function buildTrendPath(width, height) {
+    const [zoneMin, zoneMax] = CONFIG.trendZone;
+    const steps = 40;
+    const points = [];
+    for (let i = 0; i <= steps; i++) {
+      const xNorm = zoneMin + ((zoneMax - zoneMin) * i) / steps;
+      points.push({
+        x: xNorm * width,
+        y: height * (1 - trendFraction(xNorm)),
+      });
+    }
+    return points;
+  }
+
+  /* ---------------------------------------------------------------------
    * Main controller class
    * ------------------------------------------------------------------- */
   class DataFlowViz {
@@ -205,6 +284,8 @@
         : CONFIG.particleCountDesktop;
 
       this.particles = generateParticles(this.width, this.height, count);
+      this.links = buildLinks(this.particles, this.width);
+      this.trendPath = buildTrendPath(this.width, this.height);
       this.startTime = performance.now(); // replay entrance on resize
     }
 
@@ -243,7 +324,7 @@
     _tick(now) {
       const elapsed = now - this.startTime;
       this._update(now, elapsed);
-      this._render();
+      this._render(elapsed);
       requestAnimationFrame(this._tick.bind(this));
     }
 
@@ -289,9 +370,24 @@
     }
 
     /* -------------------- 7. Rendering -------------------- */
-    _render() {
+    _render(elapsed) {
       const { ctx, width, height } = this;
       ctx.clearRect(0, 0, width, height);
+
+      // Transformation zone: faint links show points resolving into
+      // structure, drawn beneath the particles themselves.
+      ctx.lineWidth = 1;
+      for (const link of this.links) {
+        const { a, b } = link;
+        const op = Math.min(a.curOpacity, b.curOpacity);
+        if (op <= 0.02) continue;
+        const [r, g, bC] = colorAt((a.colorT + b.colorT) / 2);
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${bC}, ${(op * CONFIG.linkOpacity).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.moveTo(a.curX, a.curY);
+        ctx.lineTo(b.curX, b.curY);
+        ctx.stroke();
+      }
 
       for (const p of this.particles) {
         if (p.curOpacity <= 0.005) continue;
@@ -301,6 +397,35 @@
         ctx.arc(p.curX, p.curY, p.radius, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      this._renderTrendLine(elapsed);
+    }
+
+    // Insight zone: one clean, deliberately-drawn line through the field's
+    // own upward trend — the "so what" that sits on top of the data cloud.
+    _renderTrendLine(elapsed) {
+      const path = this.trendPath;
+      if (!path || path.length < 2) return;
+
+      const revealDelay = CONFIG.entranceStaggerMs + CONFIG.entranceDurationMs * 0.5;
+      const progress = clamp((elapsed - revealDelay) / CONFIG.trendRevealMs, 0, 1);
+      if (progress <= 0) return;
+
+      const eased = easeOutCubic(progress);
+      const count = Math.max(2, Math.round(path.length * eased));
+      const [r, g, b] = colorAt(0.95);
+      const { ctx } = this;
+
+      ctx.save();
+      ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${(0.42 * eased).toFixed(3)})`;
+      ctx.lineWidth = 1.4;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for (let i = 1; i < count; i++) ctx.lineTo(path[i].x, path[i].y);
+      ctx.stroke();
+      ctx.restore();
     }
   }
 

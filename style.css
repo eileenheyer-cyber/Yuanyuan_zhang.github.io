@@ -126,19 +126,20 @@ h2.section-title {
 .hero .overline { position: relative; }
 
 .hero h1 {
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  letter-spacing: -0.015em;
-  max-width: 22ch;
+  font-size: clamp(2.3rem, 4.4vw, 3.6rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
   position: relative;
 }
 
 
 .lead {
   max-width: 46ch;
-  margin: 28px 0 36px;
-  font-size: 1.28rem;
-  line-height: 1.55;
-  color: var(--ink);
+  margin: 26px 0 36px;
+  font-size: 1.18rem;
+  line-height: 1.6;
+  color: var(--muted);
   font-family: "Inter", system-ui, sans-serif;
   font-weight: 400;
 }
@@ -195,8 +196,8 @@ h2.section-title {
   width: 1px;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(22, 22, 24, 0.14) 0,
-    rgba(22, 22, 24, 0.14) 4px,
+    rgba(106, 79, 160, 0.22) 0,
+    rgba(106, 79, 160, 0.22) 4px,
     transparent 4px,
     transparent 9px
   );
@@ -204,10 +205,12 @@ h2.section-title {
 
 .milestone-label {
   font-family: "Inter", system-ui, sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .stat-band {
@@ -487,6 +490,13 @@ section#skills { background: var(--surface-alt); }
 }
 
 /* Mobile */
+/* Tablet: two-column hero still fits, but the milestone labels get too
+   tight against the particle field's own width — drop them here and
+   let the visual pattern (and the desktop-only labels) carry the point. */
+@media (max-width: 900px) and (min-width: 721px) {
+  .milestone-label { display: none; }
+}
+
 @media (max-width: 720px) {
   .site-header nav { gap: 16px; }
   .site-header nav a { font-size: 0.72rem; }
