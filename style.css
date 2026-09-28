@@ -169,6 +169,15 @@ h2 { font-size: 2rem; margin-bottom: 32px; }
 
 .project.featured h3 { font-size: 1.6rem; }
 
+.project-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
 .project-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
