@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Datenvisualisierung &amp; EDA – Yuanyuan Zhang</title>
-  <meta name="description" content="Case Study: explorative Datenanalysen mit klarer redaktioneller Aussage.">
+  <title data-en="Data Visualization &amp; EDA – Yuanyuan Zhang">Datenvisualisierung &amp; EDA – Yuanyuan Zhang</title>
+  <meta name="description" content="Case Study: explorative Datenanalysen mit klarer redaktioneller Aussage." data-en-content="Case study: exploratory data analyses with a clear editorial point.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,21 +14,24 @@
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
-  <nav aria-label="Hauptnavigation">
-    <a href="index.html#projekte">Projekte</a>
-    <a href="index.html#skills">Skills</a>
-    <a href="index.html#ueber-mich">Über mich</a>
-    <a href="index.html#kontakt">Kontakt</a>
-  </nav>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects">Projekte</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me">Über mich</a>
+      <a href="index.html#kontakt" data-en="Contact">Kontakt</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch to English">EN</button>
+  </div>
 </header>
 
 <main>
 
   <div class="cs-hero">
-    <a class="cs-back" href="index.html#projekte">← Alle Projekte</a>
-    <span class="cs-status done">Abgeschlossen</span>
-    <h1>Datenvisualisierung &amp; EDA</h1>
-    <p class="lead">Explorative Analysen mit klarer redaktioneller Aussage, darunter Ausreißer-Erkennung im Kundenumsatz, Top-Produkte nach Umsatz und Geschlechterunterschiede in der IT.</p>
+    <a class="cs-back" href="index.html#projekte" data-en="← All projects">← Alle Projekte</a>
+    <span class="cs-status done" data-en="Completed">Abgeschlossen</span>
+    <h1 data-en="Data Visualization &amp; EDA">Datenvisualisierung &amp; EDA</h1>
+    <p class="lead" data-en="Exploratory analyses with a clear editorial point, including outlier detection in customer revenue, top products by revenue, and gender differences in IT.">Explorative Analysen mit klarer redaktioneller Aussage, darunter Ausreißer-Erkennung im Kundenumsatz, Top-Produkte nach Umsatz und Geschlechterunterschiede in der IT.</p>
   </div>
 
   <div class="cs-hero">
@@ -40,32 +43,32 @@
 
   <div class="cs-section" style="padding-top: 0;">
     <div class="cs-meta-grid">
-      <div><h4>Rolle</h4><p>Analyse, Visualisierung, Storytelling</p></div>
-      <div><h4>Methode</h4><p>IQR-Ausreißererkennung, Kategorievergleich</p></div>
-      <div><h4>Technik</h4><p>Python, Pandas, Matplotlib</p></div>
-      <div><h4>Status</h4><p>Abgeschlossen</p></div>
+      <div><h4 data-en="Role">Rolle</h4><p data-en="Analysis, visualization, storytelling">Analyse, Visualisierung, Storytelling</p></div>
+      <div><h4 data-en="Method">Methode</h4><p data-en="IQR outlier detection, category comparison">IQR-Ausreißererkennung, Kategorievergleich</p></div>
+      <div><h4 data-en="Technology">Technik</h4><p>Python, Pandas, Matplotlib</p></div>
+      <div><h4 data-en="Status">Status</h4><p data-en="Completed">Abgeschlossen</p></div>
     </div>
 
     <div class="cs-cols">
       <div>
-        <h2>Ansatz</h2>
-        <p>Statt reiner Explorationsgrafiken steht bei jeder Analyse zuerst die redaktionelle Aussage fest, bevor die passende Visualisierung gewählt wird — Klarheit vor Technik.</p>
-        <h2 style="margin-top: 40px;">Beispiel: Ausreißer-Analyse</h2>
+        <h2 data-en="Approach">Ansatz</h2>
+        <p data-en="Rather than pure exploration charts, every analysis starts with the editorial point fixed before the right visualization is chosen — clarity before technique.">Statt reiner Explorationsgrafiken steht bei jeder Analyse zuerst die redaktionelle Aussage fest, bevor die passende Visualisierung gewählt wird — Klarheit vor Technik.</p>
+        <h2 style="margin-top: 40px;" data-en="Example: outlier analysis">Beispiel: Ausreißer-Analyse</h2>
         <ul>
-          <li>IQR-Methode (Q3 + 1,5 × IQR) zur Identifikation von Kunden mit ungewöhnlich hohen Ausgaben</li>
-          <li>151 Kunden (1,9 % der Kundenbasis) oberhalb der Obergrenze von 6.790 €</li>
-          <li>Visuelle Hervorhebung der Ausreißer direkt im Histogramm statt in einer separaten Tabelle</li>
+          <li data-en="IQR method (Q3 + 1.5 × IQR) to identify customers with unusually high spend">IQR-Methode (Q3 + 1,5 × IQR) zur Identifikation von Kunden mit ungewöhnlich hohen Ausgaben</li>
+          <li data-en="151 customers (1.9% of the customer base) above the upper bound of €6,790">151 Kunden (1,9 % der Kundenbasis) oberhalb der Obergrenze von 6.790 €</li>
+          <li data-en="Outliers highlighted visually right in the histogram instead of in a separate table">Visuelle Hervorhebung der Ausreißer direkt im Histogramm statt in einer separaten Tabelle</li>
         </ul>
       </div>
       <div>
-        <h2>Weitere Analysen</h2>
-        <p>Top-10-Produkte nach Umsatz mit Kategorie-Highlighting (6 der 10 Bestseller stammen aus der Kategorie Gifts), Kundenalter nach Altersgruppen und Geschlechterunterschiede in der IT-Branche — jeweils mit Fokus auf eine klare, eigenständige Kernaussage pro Chart.</p>
-        <h2 style="margin-top: 40px;">Technik</h2>
+        <h2 data-en="Further analyses">Weitere Analysen</h2>
+        <p data-en="Top 10 products by revenue with category highlighting (6 of the 10 bestsellers come from the Gifts category), customer age by age group, and gender differences in IT — each focused on one clear, self-contained core message per chart.">Top-10-Produkte nach Umsatz mit Kategorie-Highlighting (6 der 10 Bestseller stammen aus der Kategorie Gifts), Kundenalter nach Altersgruppen und Geschlechterunterschiede in der IT-Branche — jeweils mit Fokus auf eine klare, eigenständige Kernaussage pro Chart.</p>
+        <h2 style="margin-top: 40px;" data-en="Technology">Technik</h2>
         <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px;">
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Python</span>
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Pandas</span>
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Matplotlib</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Statistik</span>
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);" data-en="Statistics">Statistik</span>
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Storytelling</span>
         </div>
       </div>
@@ -76,9 +79,10 @@
 
 <footer class="site-footer">
   <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
-  <p><a href="index.html#projekte">← Alle Projekte</a></p>
+  <p><a href="index.html#projekte" data-en="← All projects">← Alle Projekte</a></p>
 </footer>
 
 <script src="script.js"></script>
+<script src="i18n.js"></script>
 </body>
 </html>
