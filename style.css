@@ -99,12 +99,12 @@ h2.section-title {
 }
 
 /* Hero — editorial */
-.hero { padding-top: 40px; padding-bottom: 64px; position: relative; overflow: hidden; }
+.hero { padding-top: 16px; padding-bottom: 36px; position: relative; overflow: hidden; }
 
 .hero-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
-  gap: 48px;
+  gap: 40px;
   align-items: center;
 }
 
