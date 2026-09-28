@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yuanyuan Zhang – Data Analyst Portfolio</title>
+  <meta name="description" content="Portfolio von Yuanyuan Zhang: Data Warehousing, SQL, Python und Power BI. Projekte, Skills und Kontakt.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="#top">Yuanyuan Zhang</a>
+  <nav aria-label="Hauptnavigation">
+    <a href="#projekte">Projekte</a>
+    <a href="#skills">Skills</a>
+    <a href="#ueber-mich">Über mich</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="overline">Data Analyst in Ausbildung</p>
+    <h1>Ich baue Datenmodelle, die Geschäftsfragen <em>beantworten</em>.</h1>
+    <p class="lead">
+      Ich studiere Digital Business Administration in Deutschland und entwickle mich gezielt zur Data Analystin.
+      Mein Schwerpunkt: vom Rohdatensatz über ein sauberes Data Warehouse bis zum Dashboard, das Entscheidungen möglich macht.
+    </p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#projekte">Projekte ansehen</a>
+      <a class="btn" href="#kontakt">Kontakt</a>
+    </div>
+    <ul class="facts">
+      <li><strong>166.000+</strong><span>Zeilen im Flagship-Projekt</span></li>
+      <li><strong>4</strong><span>Faktentabellen im Star Schema</span></li>
+      <li><strong>5</strong><span>Dashboard-Seiten geplant</span></li>
+    </ul>
+  </section>
+
+  <!-- PROJEKTE -->
+  <section id="projekte">
+    <p class="overline">Ausgewählte Arbeiten</p>
+    <h2>Projekte</h2>
+
+    <article class="project featured">
+      <div class="project-head">
+        <h3>NordHome Retail Analytics</h3>
+        <span class="status wip">In Arbeit</span>
+      </div>
+      <p class="tagline">End-to-End-Projekt: Data Warehouse nach Kimball, ETL in PostgreSQL und ein Power-BI-Report für den Halbjahresrückblick 2024.</p>
+      <div class="project-body">
+        <div>
+          <h4>Ausgangslage</h4>
+          <p>Ein fiktiver E-Commerce-Händler mit Märkten in DACH, Nordics und Benelux. Ich habe den Datensatz selbst erzeugt: sieben CSV-Quellen mit über 166.000 Zeilen und bewusst eingebauten Datenqualitätsproblemen in sechs Kategorien.</p>
+          <h4>Was ich gebaut habe</h4>
+          <ul>
+            <li>Schichtenarchitektur <code>raw → stg → mart</code> in reinem SQL</li>
+            <li>Star Schema mit konformen Dimensionen (<code>dim_customer</code>, <code>dim_date</code>) und vier Faktentabellen</li>
+            <li>Umgang mit Waisen-Datensätzen über <code>-1</code>-Platzhalter (Unknown Member) und ein schlankes Audit-Log</li>
+            <li>SCD Typ 2, Surrogate Keys, Window Functions</li>
+            <li>Behebung eines Umsatz-Doppelzählungsfehlers durch korrekte Grain-Definition</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Power BI Report</h4>
+          <p>Executive Overview mit KPI-Karten (Net Revenue, Net AOV, Bruttomarge, Completed Orders, Return Rate), Umsatzverlauf mit H2-Schätzung und dem Panel „Revenue at risk“: 18,0 % des Nettoumsatzes gehen durch Stornos, Retouren und Erstattungen verloren.</p>
+          <h4>Technik</h4>
+          <div class="tags">
+            <span>PostgreSQL</span><span>SQL</span><span>Python</span><span>Power BI</span><span>DAX</span><span>Deneb</span>
+          </div>
+          <p class="links">
+            <a href="#" data-todo="GitHub-Link zum Repository eintragen">Repository auf GitHub →</a>
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <div class="grid">
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Kassenbon-Analyse</h3>
+          <span class="status done">Abgeschlossen</span>
+        </div>
+        <p class="tagline">Praxisprojekt aus dem BI-Kurs: Auswertung von Kassenbelegen von der Datenaufbereitung bis zum Bericht.</p>
+        <div class="tags"><span>Python</span><span>Power Query</span><span>Power BI</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Star Schema vs. Data Vault 2.0</h3>
+          <span class="status done">Abgeschlossen</span>
+        </div>
+        <p class="tagline">Wissenschaftlicher Kursbericht zum Vergleich zweier Modellierungsansätze im Data Warehousing (Kimball, Inmon, Linstedt).</p>
+        <div class="tags"><span>Data Warehousing</span><span>ETL</span><span>Datenmodellierung</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Datenvisualisierung &amp; EDA</h3>
+          <span class="status done">Abgeschlossen</span>
+        </div>
+        <p class="tagline">Explorative Analysen mit klarer redaktioneller Aussage, darunter Kundenalter nach Altersgruppen und Geschlechterunterschiede in der IT.</p>
+        <div class="tags"><span>Python</span><span>Visualisierung</span><span>Storytelling</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Chart Gallery nach „Big Book of Dashboards“</h3>
+          <span class="status wip">In Arbeit</span>
+        </div>
+        <p class="tagline">Eine wachsende Referenzsammlung: pro Diagrammtyp eine Karte mit Einsatzzweck, Leseverhalten, Stärken und Alternativen.</p>
+        <div class="tags"><span>Dashboard-Design</span><span>Visual Analytics</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Cloud-Datenplattform mit Azure</h3>
+          <span class="status wip">In Arbeit</span>
+        </div>
+        <p class="tagline">Konzept einer Batch-Pipeline: Daten aus WooCommerce-Shop und Google Analytics 4 per API in die Cloud, Transformation in Azure SQL Database (serverless), Power BI als Endpunkt, mit festem Kostenrahmen.</p>
+        <div class="tags"><span>Azure</span><span>APIs</span><span>Power BI</span><span>Architektur</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>The Data Thinking Project</h3>
+          <span class="status wip">In Arbeit</span>
+        </div>
+        <p class="tagline">Mein persönliches Wissenssystem in Notion für fünf Jahre Lernen: Lernzyklus aus Anwenden, Reflektieren, Verbinden und Lehren, verknüpft mit meinen Skills und Projekten.</p>
+        <div class="tags"><span>Notion</span><span>Wissensmanagement</span></div>
+      </article>
+
+      <article class="project">
+        <div class="project-head">
+          <h3>Eigene Werkzeuge mit Claude Code</h3>
+          <span class="status wip">Laufend</span>
+        </div>
+        <p class="tagline">Wiederverwendbare Skills für Dashboard-Planung, Diagrammauswahl und Farbeinsatz sowie ein Toolkit mit Python-Hilfsfunktionen für EDA, Bereinigung und Statistik.</p>
+        <div class="tags"><span>Claude Code</span><span>Python</span><span>Jupyter</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="overline">Werkzeugkasten</p>
+    <h2>Skills</h2>
+    <div class="skills">
+      <div>
+        <h3>Daten &amp; Modellierung</h3>
+        <ul>
+          <li>SQL (PostgreSQL), Window Functions</li>
+          <li>Kimball Star Schema, SCD Typ 2</li>
+          <li>Data Vault 2.0 (theoretisch)</li>
+          <li>ETL und Datenqualität</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Analyse &amp; BI</h3>
+        <ul>
+          <li>Power BI, DAX, Power Query</li>
+          <li>Python (Pandas, Jupyter)</li>
+          <li>Explorative Datenanalyse</li>
+          <li>R und Excel (Grundlagen)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Kommunikation</h3>
+        <ul>
+          <li>Data Storytelling</li>
+          <li>Dashboard-Design</li>
+          <li>Strukturiertes Berichten nach dem Pyramidenprinzip</li>
+          <li>Deutsch und Englisch</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Im Aufbau</h3>
+        <ul>
+          <li>Statistik-Grundlagen</li>
+          <li>Deep Learning (Uni-Kurs)</li>
+          <li>Cloud (Azure)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÜBER MICH -->
+  <section id="ueber-mich" class="about">
+    <p class="overline">Hintergrund</p>
+    <h2>Über mich</h2>
+    <div class="about-grid">
+      <p>
+        Ich lebe seit rund sieben Jahren in Deutschland und studiere Digital Business Administration.
+        Bevor ich zur Datenanalyse kam, habe ich gemeinsam mit einer Mitgründerin das Unternehmen Luandla aufgebaut und einen Online-Shop selbst umgesetzt.
+        Dort habe ich gemerkt, wie viel in Bestell-, Kunden- und Produktdaten steckt.
+      </p>
+      <p>
+        Seit Februar 2026 lerne ich Datenanalyse systematisch: von Excel über SQL, Python und Power BI bis R, über Online-Kurse und meine Hochschulkurse.
+        Mir ist wichtig, dass ich meine Ergebnisse selbstständig erarbeite und verstehe. KI-Werkzeuge nutze ich als Unterstützung, das erste Denken bleibt bei mir.
+      </p>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt" class="contact">
+    <p class="overline">Lass uns sprechen</p>
+    <h2>Kontakt</h2>
+    <p>Ich suche eine Einstiegsstelle oder ein Praktikum im Bereich Data Analytics. Ich freue mich über eine Nachricht.</p>
+    <ul class="contact-list">
+      <li><a href="mailto:eileen.heyer@icloud.com">E-Mail</a></li>
+      <li><a href="https://www.linkedin.com/in/DEIN-PROFIL" data-todo="LinkedIn-Link eintragen">LinkedIn</a></li>
+      <li><a href="https://github.com/DEIN-NAME" data-todo="GitHub-Link eintragen">GitHub</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Nach oben ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
