@@ -161,6 +161,53 @@ h2.section-title {
 .btn.primary { background: var(--ink); color: #fff; }
 .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
 
+/* Hero data visualization — generative particle field, RAW DATA -> INSIGHT */
+.viz-wrap {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  margin-top: 56px;
+  cursor: crosshair;
+}
+
+#dataflow-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.milestone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.milestone::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 26px;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(22, 22, 24, 0.14) 0,
+    rgba(22, 22, 24, 0.14) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+}
+
+.milestone-label {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .stat-band {
   background: var(--ink);
   padding: 56px 24px;
@@ -471,6 +518,8 @@ section#skills { background: var(--surface-alt); }
   .facts { flex-direction: column; gap: 20px; }
   .facts li { border-left: none; padding: 20px 0 0; border-top: 1px solid rgba(255,255,255,0.18); }
   .facts li:first-child { padding-top: 0; border-top: none; }
+  .viz-wrap { height: 280px; margin-top: 40px; }
+  .milestone-label { display: none; }
 }
 
 @media (max-width: 480px) {
