@@ -173,9 +173,19 @@ h2 { font-size: 2rem; margin-bottom: 32px; }
   display: block;
   width: 100%;
   height: auto;
-  margin-top: 16px;
   border-radius: 10px;
   border: 1px solid var(--line);
+}
+
+.project-cover-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .project-cover-row { grid-template-columns: 1fr; }
 }
 
 .project-body {
