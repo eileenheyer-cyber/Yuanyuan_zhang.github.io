@@ -7,7 +7,7 @@
   <meta name="description" content="Portfolio von Yuanyuan Zhang: Data Warehousing, SQL, Python und Power BI. Projekte, Skills und Kontakt.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,149 +26,112 @@
 
   <!-- HERO -->
   <section class="hero">
-    <p class="overline">Data Analyst &amp; Business Analyst</p>
-    <h1>Ich baue Datenmodelle, die Geschäftsfragen <em>beantworten</em>.</h1>
-    <p class="lead">
-      Ich studiere Digital Business Administration in Deutschland und habe mich gezielt zur Data Analystin und Business Analystin weitergebildet.
-      Mein Schwerpunkt: vom Rohdatensatz über ein sauberes Data Warehouse bis zum Dashboard, das Entscheidungen möglich macht.
-    </p>
-    <div class="hero-actions">
-      <a class="btn primary" href="#projekte">Projekte ansehen</a>
-      <a class="btn" href="#kontakt">Kontakt</a>
+    <div class="hero-grid">
+      <div>
+        <p class="overline">Data Analyst &amp; Business Analyst</p>
+        <h1>Ich baue Datenmodelle, die Geschäftsfragen <span class="accent">beantworten</span>.</h1>
+        <p class="lead">
+          Im Dunkeln kann man sich bewegen, aber man weiß nicht, wohin man geht. Gute Daten schaffen Orientierung – sie zeigen, was passiert, wo Probleme entstehen und wo Chancen liegen. Ich helfe Unternehmen, diese Orientierung aus ihren Daten zu gewinnen.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projekte">Projekte ansehen</a>
+          <a class="btn" href="#kontakt">Kontakt</a>
+        </div>
+        <ul class="facts">
+          <li><strong>166.000+</strong><span>Zeilen im Flagship-Projekt</span></li>
+          <li><strong>4</strong><span>Faktentabellen im Star Schema</span></li>
+          <li><strong>7</strong><span>Projekte im Portfolio</span></li>
+        </ul>
+      </div>
+      <div class="hero-photo-wrap">
+        <img class="hero-photo" src="images/eileen-portrait.jpg" alt="Porträt von Yuanyuan Zhang">
+      </div>
     </div>
-    <ul class="facts">
-      <li><strong>166.000+</strong><span>Zeilen im Flagship-Projekt</span></li>
-      <li><strong>4</strong><span>Faktentabellen im Star Schema</span></li>
-      <li><strong>5</strong><span>Dashboard-Seiten geplant</span></li>
-    </ul>
   </section>
 
   <!-- PROJEKTE -->
   <section id="projekte">
     <p class="overline">Ausgewählte Arbeiten</p>
-    <h2>Projekte</h2>
+    <h2 class="section-title">Projekte</h2>
 
-    <article class="project featured">
-      <div class="project-head">
-        <h3>NordHome Retail Analytics</h3>
-        <span class="status wip">In Arbeit</span>
+    <div class="index-list">
+
+      <a class="index-row" href="nordhome-retail.html">
+        <span class="index-num">01</span>
+        <span class="index-thumb"><img src="images/nordhome-executive-overview.png" alt=""></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">NordHome Retail Analytics</span>
+          <p>Data Warehouse nach Kimball, ETL in PostgreSQL und ein Power-BI-Report für den Halbjahresrückblick 2024.</p>
+        </span>
+        <span class="index-status wip">In Arbeit</span>
+        <span class="index-arrow">→</span>
+      </a>
+
+      <a class="index-row" href="datenviz-eda.html">
+        <span class="index-num">02</span>
+        <span class="index-thumb"><img src="images/eda-outlier-analysis.png" alt=""></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">Datenvisualisierung &amp; EDA</span>
+          <p>Explorative Analysen mit klarer redaktioneller Aussage — Ausreißer, Bestseller, Kundenstruktur.</p>
+        </span>
+        <span class="index-status done">Abgeschlossen</span>
+        <span class="index-arrow">→</span>
+      </a>
+
+      <div class="index-row">
+        <span class="index-num">03</span>
+        <span class="index-thumb empty"></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">Kassenbon-Analyse</span>
+          <p>Praxisprojekt aus dem BI-Kurs: Auswertung von Kassenbelegen von der Datenaufbereitung bis zum Bericht.</p>
+        </span>
+        <span class="index-status done">Abgeschlossen</span>
+        <span class="index-arrow"></span>
       </div>
-      <p class="tagline">End-to-End-Projekt: Data Warehouse nach Kimball, ETL in PostgreSQL und ein Power-BI-Report für den Halbjahresrückblick 2024.</p>
-      <img class="project-cover" src="images/nordhome-executive-overview.png" alt="Power BI Executive Overview Dashboard des NordHome Retail Projekts mit KPI-Karten, Umsatztrend und Kategorie-Tabelle" loading="lazy">
-      <div class="project-body">
-        <div>
-          <h4>Ausgangslage</h4>
-          <p>Ein fiktiver E-Commerce-Händler mit Märkten in DACH, Nordics und Benelux. Ich habe den Datensatz selbst erzeugt: sieben CSV-Quellen mit über 166.000 Zeilen und bewusst eingebauten Datenqualitätsproblemen in sechs Kategorien.</p>
-          <h4>Was ich gebaut habe</h4>
-          <ul>
-            <li>Schichtenarchitektur <code>raw → stg → mart</code> in reinem SQL</li>
-            <li>Star Schema mit konformen Dimensionen (<code>dim_customer</code>, <code>dim_date</code>) und vier Faktentabellen</li>
-            <li>Umgang mit Waisen-Datensätzen über <code>-1</code>-Platzhalter (Unknown Member) und ein schlankes Audit-Log</li>
-            <li>SCD Typ 2, Surrogate Keys, Window Functions</li>
-            <li>Behebung eines Umsatz-Doppelzählungsfehlers durch korrekte Grain-Definition</li>
-          </ul>
-        </div>
-        <div>
-          <h4>Power BI Report</h4>
-          <p>Executive Overview mit KPI-Karten (Net Revenue, Net AOV, Bruttomarge, Completed Orders, Return Rate), Umsatzverlauf mit H2-Schätzung und dem Panel „Revenue at risk“: 18,0 % des Nettoumsatzes gehen durch Stornos, Retouren und Erstattungen verloren.</p>
-          <h4>Technik</h4>
-          <div class="tags">
-            <span>PostgreSQL</span><span>SQL</span><span>Python</span><span>Power BI</span><span>DAX</span><span>Deneb</span>
-          </div>
-          <p class="links">
-            <a href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics">Repository auf GitHub →</a>
-          </p>
-        </div>
+
+      <div class="index-row">
+        <span class="index-num">04</span>
+        <span class="index-thumb empty"></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">Star Schema vs. Data Vault 2.0</span>
+          <p>Wissenschaftlicher Kursbericht zum Vergleich zweier Modellierungsansätze im Data Warehousing.</p>
+        </span>
+        <span class="index-status done">Abgeschlossen</span>
+        <span class="index-arrow"></span>
       </div>
-    </article>
 
-    <article class="project featured">
-      <div class="project-head">
-        <h3>Datenvisualisierung &amp; EDA</h3>
-        <span class="status done">Abgeschlossen</span>
+      <div class="index-row">
+        <span class="index-num">05</span>
+        <span class="index-thumb empty"></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">Chart Gallery nach „Big Book of Dashboards“</span>
+          <p>Eine wachsende Referenzsammlung: pro Diagrammtyp eine Karte mit Einsatzzweck und Alternativen.</p>
+        </span>
+        <span class="index-status wip">In Arbeit</span>
+        <span class="index-arrow"></span>
       </div>
-      <p class="tagline">Explorative Analysen mit klarer redaktioneller Aussage, darunter Kundenalter nach Altersgruppen, Geschlechterunterschiede in der IT und Ausreißer-Analysen im Kundenumsatz.</p>
-      <div class="project-cover-row">
-        <img class="project-cover" src="images/eda-outlier-analysis.png" alt="Highlighted-Findings-Chart: Histogramm der Kundenausgaben mit 151 Ausreißer-Kunden (1,9 %) oberhalb der IQR-Obergrenze von 6.790 €" loading="lazy">
-        <img class="project-cover" src="images/eda-top10-products.png" alt="Balkendiagramm Top 10 Produkte nach Umsatz, sechs der zehn Bestseller sind Gifts-Produkte" loading="lazy">
+
+      <div class="index-row">
+        <span class="index-num">06</span>
+        <span class="index-thumb empty"></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">Cloud-Datenplattform mit Azure</span>
+          <p>Batch-Pipeline: WooCommerce &amp; GA4 per API in die Cloud, Transformation in Azure SQL, Power BI als Endpunkt.</p>
+        </span>
+        <span class="index-status wip">In Arbeit</span>
+        <span class="index-arrow"></span>
       </div>
-      <div class="project-body">
-        <div>
-          <h4>Ansatz</h4>
-          <p>Statt reiner Explorationsgrafiken steht bei jeder Analyse zuerst die redaktionelle Aussage fest, bevor die passende Visualisierung gewählt wird — Klarheit vor Technik.</p>
-          <h4>Beispiel: Ausreißer-Analyse</h4>
-          <ul>
-            <li>IQR-Methode (Q3 + 1,5 × IQR) zur Identifikation von Kunden mit ungewöhnlich hohen Ausgaben</li>
-            <li>151 Kunden (1,9 % der Kundenbasis) oberhalb der Obergrenze von 6.790 €</li>
-            <li>Visuelle Hervorhebung der Ausreißer direkt im Histogramm statt in einer separaten Tabelle</li>
-          </ul>
-        </div>
-        <div>
-          <h4>Weitere Analysen</h4>
-          <p>Top-10-Produkte nach Umsatz mit Kategorie-Highlighting (6 der 10 Bestseller stammen aus der Kategorie Gifts), Kundenalter nach Altersgruppen und Geschlechterunterschiede in der IT-Branche — jeweils mit Fokus auf eine klare, eigenständige Kernaussage pro Chart.</p>
-          <h4>Technik</h4>
-          <div class="tags">
-            <span>Python</span><span>Pandas</span><span>Matplotlib</span><span>Statistik</span><span>Storytelling</span>
-          </div>
-        </div>
+
+      <div class="index-row">
+        <span class="index-num">07</span>
+        <span class="index-thumb empty"></span>
+        <span class="index-body">
+          <span class="index-title" style="display:block; font-family:'Fraunces',Georgia,serif; font-weight:600; color:var(--ink);">The Data Thinking Project</span>
+          <p>Persönliches Wissenssystem in Notion für fünf Jahre Lernen: Anwenden, Reflektieren, Verbinden, Lehren.</p>
+        </span>
+        <span class="index-status wip">In Arbeit</span>
+        <span class="index-arrow"></span>
       </div>
-    </article>
-
-    <div class="grid">
-
-      <article class="project">
-        <div class="project-head">
-          <h3>Kassenbon-Analyse</h3>
-          <span class="status done">Abgeschlossen</span>
-        </div>
-        <p class="tagline">Praxisprojekt aus dem BI-Kurs: Auswertung von Kassenbelegen von der Datenaufbereitung bis zum Bericht.</p>
-        <div class="tags"><span>Python</span><span>Power Query</span><span>Power BI</span></div>
-      </article>
-
-      <article class="project">
-        <div class="project-head">
-          <h3>Star Schema vs. Data Vault 2.0</h3>
-          <span class="status done">Abgeschlossen</span>
-        </div>
-        <p class="tagline">Wissenschaftlicher Kursbericht zum Vergleich zweier Modellierungsansätze im Data Warehousing (Kimball, Inmon, Linstedt).</p>
-        <div class="tags"><span>Data Warehousing</span><span>ETL</span><span>Datenmodellierung</span></div>
-      </article>
-
-      <article class="project">
-        <div class="project-head">
-          <h3>Chart Gallery nach „Big Book of Dashboards“</h3>
-          <span class="status wip">In Arbeit</span>
-        </div>
-        <p class="tagline">Eine wachsende Referenzsammlung: pro Diagrammtyp eine Karte mit Einsatzzweck, Leseverhalten, Stärken und Alternativen.</p>
-        <div class="tags"><span>Dashboard-Design</span><span>Visual Analytics</span></div>
-      </article>
-
-      <article class="project">
-        <div class="project-head">
-          <h3>Cloud-Datenplattform mit Azure</h3>
-          <span class="status wip">In Arbeit</span>
-        </div>
-        <p class="tagline">Konzept einer Batch-Pipeline: Daten aus WooCommerce-Shop und Google Analytics 4 per API in die Cloud, Transformation in Azure SQL Database (serverless), Power BI als Endpunkt, mit festem Kostenrahmen.</p>
-        <div class="tags"><span>Azure</span><span>APIs</span><span>Power BI</span><span>Architektur</span></div>
-      </article>
-
-      <article class="project">
-        <div class="project-head">
-          <h3>The Data Thinking Project</h3>
-          <span class="status wip">In Arbeit</span>
-        </div>
-        <p class="tagline">Mein persönliches Wissenssystem in Notion für fünf Jahre Lernen: Lernzyklus aus Anwenden, Reflektieren, Verbinden und Lehren, verknüpft mit meinen Skills und Projekten.</p>
-        <div class="tags"><span>Notion</span><span>Wissensmanagement</span></div>
-      </article>
-
-      <article class="project">
-        <div class="project-head">
-          <h3>Eigene Werkzeuge mit Claude Code</h3>
-          <span class="status wip">Laufend</span>
-        </div>
-        <p class="tagline">Wiederverwendbare Skills für Dashboard-Planung, Diagrammauswahl und Farbeinsatz sowie ein Toolkit mit Python-Hilfsfunktionen für EDA, Bereinigung und Statistik.</p>
-        <div class="tags"><span>Claude Code</span><span>Python</span><span>Jupyter</span></div>
-      </article>
 
     </div>
   </section>
@@ -176,7 +139,7 @@
   <!-- SKILLS -->
   <section id="skills">
     <p class="overline">Werkzeugkasten</p>
-    <h2>Skills</h2>
+    <h2 class="section-title">Skills</h2>
     <div class="skills">
       <div>
         <h3>Daten &amp; Modellierung</h3>
@@ -219,29 +182,32 @@
   <!-- ÜBER MICH -->
   <section id="ueber-mich" class="about">
     <p class="overline">Hintergrund</p>
-    <h2>Über mich</h2>
+    <h2 class="section-title">Über mich</h2>
     <div class="about-grid">
-      <p>
-        Ich lebe seit rund sieben Jahren in Deutschland und studiere Digital Business Administration.
-        Bevor ich zur Datenanalyse kam, habe ich gemeinsam mit einer Mitgründerin das Unternehmen Luandla aufgebaut und einen Online-Shop selbst umgesetzt.
-        Dort habe ich gemerkt, wie viel in Bestell-, Kunden- und Produktdaten steckt.
-      </p>
-      <p>
-        Seit Februar 2026 lerne ich Datenanalyse systematisch: von Excel über SQL, Python und Power BI bis R, über Online-Kurse und meine Hochschulkurse.
-        Mir ist wichtig, dass ich meine Ergebnisse selbstständig erarbeite und verstehe. KI-Werkzeuge nutze ich als Unterstützung, das erste Denken bleibt bei mir.
-      </p>
+      <div></div>
+      <div>
+        <p>
+          Ich lebe seit rund sieben Jahren in Deutschland und studiere Digital Business Administration.
+          Bevor ich zur Datenanalyse kam, habe ich gemeinsam mit einer Mitgründerin das Unternehmen Luandla aufgebaut und einen Online-Shop selbst umgesetzt.
+          Dort habe ich gemerkt, wie viel in Bestell-, Kunden- und Produktdaten steckt.
+        </p>
+        <p>
+          Seit Februar 2026 lerne ich Datenanalyse systematisch: von Excel über SQL, Python und Power BI bis R, über Online-Kurse und meine Hochschulkurse.
+          Mir ist wichtig, dass ich meine Ergebnisse selbstständig erarbeite und verstehe. KI-Werkzeuge nutze ich als Unterstützung, das erste Denken bleibt bei mir.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- KONTAKT -->
   <section id="kontakt" class="contact">
     <p class="overline">Lass uns sprechen</p>
-    <h2>Kontakt</h2>
+    <h2 class="section-title">Kontakt</h2>
     <p>Ich suche eine Stelle als Data Analyst oder Business Analyst. Ich freue mich über eine Nachricht.</p>
     <ul class="contact-list">
       <li><a href="mailto:eileen.heyer@icloud.com">E-Mail</a></li>
       <li><a href="https://www.linkedin.com/in/DEIN-PROFIL" data-todo="LinkedIn-Link eintragen">LinkedIn</a></li>
-      <li><a href="https://github.com/DEIN-NAME" data-todo="GitHub-Link eintragen">GitHub</a></li>
+      <li><a href="https://github.com/eileenheyer-cyber">GitHub</a></li>
     </ul>
   </section>
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Datenvisualisierung &amp; EDA – Yuanyuan Zhang</title>
+  <meta name="description" content="Case Study: explorative Datenanalysen mit klarer redaktioneller Aussage.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <nav aria-label="Hauptnavigation">
+    <a href="index.html#projekte">Projekte</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#ueber-mich">Über mich</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="cs-hero">
+    <a class="cs-back" href="index.html#projekte">← Alle Projekte</a>
+    <span class="cs-status done">Abgeschlossen</span>
+    <h1>Datenvisualisierung &amp; EDA</h1>
+    <p class="lead">Explorative Analysen mit klarer redaktioneller Aussage, darunter Ausreißer-Erkennung im Kundenumsatz, Top-Produkte nach Umsatz und Geschlechterunterschiede in der IT.</p>
+  </div>
+
+  <div class="cs-hero">
+    <div class="cs-cover-row">
+      <img src="images/eda-outlier-analysis.png" alt="Highlighted-Findings-Chart: Histogramm der Kundenausgaben mit 151 Ausreißer-Kunden (1,9 %) oberhalb der IQR-Obergrenze von 6.790 €">
+      <img src="images/eda-top10-products.png" alt="Balkendiagramm Top 10 Produkte nach Umsatz, sechs der zehn Bestseller sind Gifts-Produkte">
+    </div>
+  </div>
+
+  <div class="cs-section" style="padding-top: 0;">
+    <div class="cs-meta-grid">
+      <div><h4>Rolle</h4><p>Analyse, Visualisierung, Storytelling</p></div>
+      <div><h4>Methode</h4><p>IQR-Ausreißererkennung, Kategorievergleich</p></div>
+      <div><h4>Technik</h4><p>Python, Pandas, Matplotlib</p></div>
+      <div><h4>Status</h4><p>Abgeschlossen</p></div>
+    </div>
+
+    <div class="cs-cols">
+      <div>
+        <h2>Ansatz</h2>
+        <p>Statt reiner Explorationsgrafiken steht bei jeder Analyse zuerst die redaktionelle Aussage fest, bevor die passende Visualisierung gewählt wird — Klarheit vor Technik.</p>
+        <h2 style="margin-top: 40px;">Beispiel: Ausreißer-Analyse</h2>
+        <ul>
+          <li>IQR-Methode (Q3 + 1,5 × IQR) zur Identifikation von Kunden mit ungewöhnlich hohen Ausgaben</li>
+          <li>151 Kunden (1,9 % der Kundenbasis) oberhalb der Obergrenze von 6.790 €</li>
+          <li>Visuelle Hervorhebung der Ausreißer direkt im Histogramm statt in einer separaten Tabelle</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Weitere Analysen</h2>
+        <p>Top-10-Produkte nach Umsatz mit Kategorie-Highlighting (6 der 10 Bestseller stammen aus der Kategorie Gifts), Kundenalter nach Altersgruppen und Geschlechterunterschiede in der IT-Branche — jeweils mit Fokus auf eine klare, eigenständige Kernaussage pro Chart.</p>
+        <h2 style="margin-top: 40px;">Technik</h2>
+        <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Python</span>
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Pandas</span>
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Matplotlib</span>
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Statistik</span>
+          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Storytelling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="index.html#projekte">← Alle Projekte</a></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
