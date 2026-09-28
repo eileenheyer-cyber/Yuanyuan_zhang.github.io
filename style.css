@@ -108,7 +108,7 @@ h2.section-title {
   align-items: center;
 }
 
-.hero-text { position: relative; max-width: 560px; }
+.hero-text { position: relative; max-width: 620px; }
 
 .hero-quotemark {
   position: absolute;
@@ -126,9 +126,9 @@ h2.section-title {
 .hero .overline { position: relative; }
 
 .hero h1 {
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
-  letter-spacing: -0.015em;
-  max-width: 14ch;
+  font-size: clamp(2.8rem, 5.2vw, 4.4rem);
+  letter-spacing: -0.02em;
+  max-width: 13ch;
   position: relative;
 }
 
