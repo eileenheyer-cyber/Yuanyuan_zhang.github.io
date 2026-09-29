@@ -416,7 +416,7 @@ section#skills { background: var(--surface-alt); }
   grid-template-columns: minmax(0, 420px) minmax(0, 470px);
   gap: 64px;
   align-items: stretch;
-  justify-content: start;
+  justify-content: center;
   grid-template-areas: "kicker kicker" "photo text";
   row-gap: 20px;
 }
