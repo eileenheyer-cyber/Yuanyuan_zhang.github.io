@@ -424,6 +424,15 @@ section#skills { background: var(--surface-alt); }
   max-width: 62ch;
 }
 .about-grid p:last-child { margin-bottom: 0; }
+.about-photo { max-width: 420px; }
+.about-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 6px;
+}
 
 /* Contact */
 .contact { border-top: 1px solid var(--ink); }
