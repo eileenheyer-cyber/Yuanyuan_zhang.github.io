@@ -762,3 +762,7 @@ body.eda-lb-open { overflow: hidden; }
   .eda-arrow::before { font-size: 1.2rem; }
   .eda-methods { margin-top: 88px; }
 }
+
+/* Projects heading centered */
+#projekte .overline,
+#projekte .section-title { text-align: center; }
