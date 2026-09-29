@@ -56,6 +56,13 @@
       el.innerHTML = lang === "en" ? el.dataset.en : el.dataset.de;
     });
 
+    // Language-specific links (e.g. CV download)
+    document.querySelectorAll("[data-en-href]").forEach((el) => {
+      const href = lang === "en" ? el.dataset.enHref : el.dataset.deHref;
+      el.setAttribute("href", href);
+      el.setAttribute("download", href.split("/").pop());
+    });
+
     const toggle = document.getElementById("lang-toggle");
     if (toggle) {
       // Show both languages; the active (current) one is highlighted.
