@@ -413,17 +413,21 @@ section#skills { background: var(--surface-alt); }
 /* About */
 .about-grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.4fr;
-  gap: 48px;
+  grid-template-columns: minmax(0, 420px) minmax(0, 470px);
+  gap: 64px;
+  align-items: stretch;
+  justify-content: start;
 }
-.about-grid p {
+.about-text { display: flex; flex-direction: column; justify-content: center; }
+.about-text .section-title { margin-bottom: 28px; }
+.about-grid p:not(.overline) {
   margin: 0 0 20px;
   font-size: 1.05rem;
   font-family: "Inter", system-ui, sans-serif;
   font-weight: 400;
   max-width: 62ch;
 }
-.about-grid p:last-child { margin-bottom: 0; }
+.about-grid p:not(.overline):last-child { margin-bottom: 0; }
 .about-photo { max-width: 420px; }
 .about-photo img {
   display: block;
