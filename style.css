@@ -765,4 +765,4 @@ body.eda-lb-open { overflow: hidden; }
 
 /* Projects heading centered */
 #projekte .overline,
-#projekte .section-title { text-align: center; }
+#projekte .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
