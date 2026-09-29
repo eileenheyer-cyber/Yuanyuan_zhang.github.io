@@ -300,7 +300,7 @@ div.project-card { cursor: default; }
 
 .project-card-img {
   display: block;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--surface-alt);
   border-bottom: 1px solid var(--line);
