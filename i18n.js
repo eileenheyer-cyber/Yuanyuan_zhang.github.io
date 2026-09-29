@@ -19,7 +19,7 @@
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "site-lang";
+  const STORAGE_KEY = "site-lang-v2"; // bumped when the default changed from DE to EN
 
   function getPreferredLang() {
     try {
@@ -28,7 +28,7 @@
     } catch (e) {
       /* localStorage unavailable (private mode etc.) — fall through */
     }
-    return "de";
+    return "en";
   }
 
   function applyLang(lang) {
@@ -77,7 +77,7 @@
     const toggle = document.getElementById("lang-toggle");
     if (toggle) {
       toggle.addEventListener("click", () => {
-        const current = document.documentElement.lang === "en" ? "en" : "de";
+        const current = document.documentElement.lang === "de" ? "de" : "en";
         applyLang(current === "en" ? "de" : "en");
       });
     }
