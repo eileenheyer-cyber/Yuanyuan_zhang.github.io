@@ -12,8 +12,9 @@
    - A <meta name="description"> (or any element) that needs its
      `content` attribute translated instead of its innerHTML uses
      `data-en-content`.
-   - The toggle button (#lang-toggle) shows the language you can switch
-     TO, and the choice is remembered in localStorage.
+   - The toggle button (#lang-toggle) shows "DE / EN" with the current
+     language highlighted; clicking it switches to the other one, and the
+     choice is remembered in localStorage.
    ========================================================================== */
 
 (() => {
@@ -57,7 +58,11 @@
 
     const toggle = document.getElementById("lang-toggle");
     if (toggle) {
-      toggle.textContent = lang === "en" ? "DE" : "EN";
+      // Show both languages; the active (current) one is highlighted.
+      toggle.innerHTML =
+        '<span class="lang-opt' + (lang === "de" ? " is-active" : "") + '">DE</span>' +
+        '<span class="lang-sep">/</span>' +
+        '<span class="lang-opt' + (lang === "en" ? " is-active" : "") + '">EN</span>';
       toggle.setAttribute(
         "aria-label",
         lang === "en" ? "Auf Deutsch umschalten" : "Switch to English"

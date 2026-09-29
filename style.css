@@ -92,6 +92,9 @@ img { max-width: 100%; display: block; }
 }
 
 .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.lang-toggle .lang-opt { opacity: 0.45; transition: opacity 0.15s, color 0.15s; }
+.lang-toggle .lang-opt.is-active { opacity: 1; color: var(--accent); }
+.lang-toggle .lang-sep { opacity: 0.3; margin: 0 5px; }
 
 /* Layout */
 main > section {
