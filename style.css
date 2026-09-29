@@ -417,7 +417,12 @@ section#skills { background: var(--surface-alt); }
   gap: 64px;
   align-items: stretch;
   justify-content: start;
+  grid-template-areas: "kicker kicker" "photo text";
+  row-gap: 20px;
 }
+.about-kicker { grid-area: kicker; margin: 0; }
+.about-photo { grid-area: photo; }
+.about-text { grid-area: text; }
 .about-text { display: flex; flex-direction: column; justify-content: flex-start; }
 .about-text .section-title { margin-bottom: 28px; }
 .about-grid p:not(.overline) {
@@ -582,7 +587,7 @@ section#skills { background: var(--surface-alt); }
   .site-header nav { gap: 16px; }
   .site-header nav a { font-size: 0.72rem; }
   .lang-toggle { font-size: 0.7rem; padding: 4px 10px; }
-  .about-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; grid-template-areas: "kicker" "photo" "text"; }
   main > section { padding: 56px 20px; }
   .hero { padding-top: 40px; }
   .hero-grid { grid-template-columns: 1fr; }
