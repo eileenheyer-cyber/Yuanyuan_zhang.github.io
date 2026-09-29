@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title data-en="Star Schema vs. Data Vault 2.0 – Yuanyuan Zhang">Star Schema vs. Data Vault 2.0 – Yuanyuan Zhang</title>
-  <meta name="description" content="Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten." data-en-content="Project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data.">
+  <title data-en="Star Schema vs. Data Vault 2.0 – Yuanyuan Zhang" data-de="Star Schema vs. Data Vault 2.0 – Yuanyuan Zhang">Star Schema vs. Data Vault 2.0 – Yuanyuan Zhang</title>
+  <meta name="description" content="Project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-en-content="Project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-de-content="Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,22 +16,22 @@
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
   <div class="header-right">
     <nav aria-label="Hauptnavigation">
-      <a href="index.html#projekte" data-en="Projects">Projekte</a>
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
       <a href="index.html#skills">Skills</a>
-      <a href="index.html#ueber-mich" data-en="About me">Über mich</a>
-      <a href="index.html#kontakt" data-en="Contact">Kontakt</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
     </nav>
-    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch to English">EN</button>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten">DE</button>
   </div>
 </header>
 
 <main>
 
   <div class="cs-hero">
-    <a class="cs-back" href="index.html#projekte" data-en="← All projects">← Alle Projekte</a>
-    <span class="cs-status done" data-en="Completed">Abgeschlossen</span>
+    <a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
+    <span class="cs-status done" data-en="Completed" data-de="Abgeschlossen">Completed</span>
     <h1>Star Schema vs. Data Vault 2.0</h1>
-    <p class="lead" data-en="Academic project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data.">Wissenschaftlicher Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten.</p>
+    <p class="lead" data-en="Academic project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-de="Wissenschaftlicher Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten.">Academic project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data.</p>
   </div>
 
   <div class="cs-hero">
@@ -43,28 +43,28 @@
 
   <div class="cs-section" style="padding-top: 0;">
     <div class="cs-meta-grid">
-      <div><h4 data-en="Role">Rolle</h4><p data-en="Data modeling, analysis, evaluation">Datenmodellierung, Analyse, Bewertung</p></div>
-      <div><h4 data-en="Context">Kontext</h4><p data-en="Project report, IU International University">Projektbericht, IU International Hochschule</p></div>
-      <div><h4 data-en="Technology">Technik</h4><p>SQL, Dimensional Modeling, Data Vault 2.0</p></div>
-      <div><h4 data-en="Status">Status</h4><p data-en="Completed">Abgeschlossen</p></div>
+      <div><h4 data-en="Role" data-de="Rolle">Role</h4><p data-en="Data modeling, analysis, evaluation" data-de="Datenmodellierung, Analyse, Bewertung">Data modeling, analysis, evaluation</p></div>
+      <div><h4 data-en="Context" data-de="Kontext">Context</h4><p data-en="Project report, IU International University" data-de="Projektbericht, IU International Hochschule">Project report, IU International University</p></div>
+      <div><h4 data-en="Technology" data-de="Technik">Technology</h4><p>SQL, Dimensional Modeling, Data Vault 2.0</p></div>
+      <div><h4 data-en="Status" data-de="Status">Status</h4><p data-en="Completed" data-de="Abgeschlossen">Completed</p></div>
     </div>
 
     <div class="cs-cols">
       <div>
-        <h2 data-en="Starting point">Ausgangslage</h2>
-        <p data-en="The basis is a digital retail receipt with header- and line-item-level data. The goal was a market-basket analysis at the individual line-item level — the level at which it becomes visible which products occur together in one purchase. On this basis I developed both a Star Schema (per Kimball) and a Data Vault 2.0 model (per Linstedt) and compared them against each other.">Grundlage ist ein digitaler Kassenbon aus dem Einzelhandel mit Bonkopf- und Bonpositionsdaten. Ziel war eine Warenkorbanalyse auf Ebene der einzelnen Bonposition — der Ebene, auf der sichtbar wird, welche Produkte gemeinsam in einem Einkauf vorkommen. Auf dieser Grundlage habe ich sowohl ein Star Schema (nach Kimball) als auch ein Data-Vault-2.0-Modell (nach Linstedt) entwickelt und einander gegenübergestellt.</p>
+        <h2 data-en="Starting point" data-de="Ausgangslage">Starting point</h2>
+        <p data-en="The basis is a digital retail receipt with header- and line-item-level data. The goal was a market-basket analysis at the individual line-item level — the level at which it becomes visible which products occur together in one purchase. On this basis I developed both a Star Schema (per Kimball) and a Data Vault 2.0 model (per Linstedt) and compared them against each other." data-de="Grundlage ist ein digitaler Kassenbon aus dem Einzelhandel mit Bonkopf- und Bonpositionsdaten. Ziel war eine Warenkorbanalyse auf Ebene der einzelnen Bonposition — der Ebene, auf der sichtbar wird, welche Produkte gemeinsam in einem Einkauf vorkommen. Auf dieser Grundlage habe ich sowohl ein Star Schema (nach Kimball) als auch ein Data-Vault-2.0-Modell (nach Linstedt) entwickelt und einander gegenübergestellt.">The basis is a digital retail receipt with header- and line-item-level data. The goal was a market-basket analysis at the individual line-item level — the level at which it becomes visible which products occur together in one purchase. On this basis I developed both a Star Schema (per Kimball) and a Data Vault 2.0 model (per Linstedt) and compared them against each other.</p>
         <h2 style="margin-top: 40px;">Star Schema</h2>
         <ul>
-          <li data-en="Central fact table &lt;code&gt;Fact_Sales_Item&lt;/code&gt; at line-item granularity">Zentrale Faktentabelle <code>Fact_Sales_Item</code> auf Granularität der Bonposition</li>
-          <li data-en="Three dimension tables: &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt;, &lt;code&gt;Dim_Store&lt;/code&gt;">Drei Dimensionstabellen: <code>Dim_Product</code>, <code>Dim_Date</code>, <code>Dim_Store</code></li>
-          <li data-en="The star-shaped structure makes the analytical axes immediately visible">Sternförmige Struktur macht die analytischen Auswertungsachsen unmittelbar sichtbar</li>
+          <li data-en="Central fact table &lt;code&gt;Fact_Sales_Item&lt;/code&gt; at line-item granularity" data-de="Zentrale Faktentabelle &lt;code&gt;Fact_Sales_Item&lt;/code&gt; auf Granularität der Bonposition">Central fact table <code>Fact_Sales_Item</code> at line-item granularity</li>
+          <li data-en="Three dimension tables: &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt;, &lt;code&gt;Dim_Store&lt;/code&gt;" data-de="Drei Dimensionstabellen: &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt;, &lt;code&gt;Dim_Store&lt;/code&gt;">Three dimension tables: <code>Dim_Product</code>, <code>Dim_Date</code>, <code>Dim_Store</code></li>
+          <li data-en="The star-shaped structure makes the analytical axes immediately visible" data-de="Sternförmige Struktur macht die analytischen Auswertungsachsen unmittelbar sichtbar">The star-shaped structure makes the analytical axes immediately visible</li>
         </ul>
       </div>
       <div>
         <h2>Data Vault 2.0</h2>
-        <p data-en="Built from Hubs (business objects such as receipt, product, store), Links (relationships between them) and Satellites (descriptive, historized attributes) — with hash keys, load date and record source for traceability.">Aufbau aus Hubs (Geschäftsobjekte wie Kassenbon, Produkt, Filiale), Links (Beziehungen zwischen ihnen) und Satellites (beschreibende, historisierte Attribute) — mit Hash Keys, Load-Date und Record-Source für Nachvollziehbarkeit.</p>
-        <h2 style="margin-top: 40px;" data-en="Result">Ergebnis</h2>
-        <p data-en="For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes.">Für diesen Anwendungsfall — eine einzelne Datenquelle, direkte Warenkorbanalyse — erweist sich das Star Schema als geeigneter: einfacher, verständlicher, schneller nutzbar. Data Vault punktet bei Flexibilität, Historisierung und Erweiterbarkeit und würde seinen Mehrwert vor allem bei mehreren Quellsystemen und wachsenden Datenlandschaften entfalten.</p>
+        <p data-en="Built from Hubs (business objects such as receipt, product, store), Links (relationships between them) and Satellites (descriptive, historized attributes) — with hash keys, load date and record source for traceability." data-de="Aufbau aus Hubs (Geschäftsobjekte wie Kassenbon, Produkt, Filiale), Links (Beziehungen zwischen ihnen) und Satellites (beschreibende, historisierte Attribute) — mit Hash Keys, Load-Date und Record-Source für Nachvollziehbarkeit.">Built from Hubs (business objects such as receipt, product, store), Links (relationships between them) and Satellites (descriptive, historized attributes) — with hash keys, load date and record source for traceability.</p>
+        <h2 style="margin-top: 40px;" data-en="Result" data-de="Ergebnis">Result</h2>
+        <p data-en="For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes." data-de="Für diesen Anwendungsfall — eine einzelne Datenquelle, direkte Warenkorbanalyse — erweist sich das Star Schema als geeigneter: einfacher, verständlicher, schneller nutzbar. Data Vault punktet bei Flexibilität, Historisierung und Erweiterbarkeit und würde seinen Mehrwert vor allem bei mehreren Quellsystemen und wachsenden Datenlandschaften entfalten.">For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes.</p>
         <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;">
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Star Schema</span>
           <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Data Vault 2.0</span>
@@ -80,7 +80,7 @@
 
 <footer class="site-footer">
   <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
-  <p><a href="index.html#projekte" data-en="← All projects">← Alle Projekte</a></p>
+  <p><a href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a></p>
 </footer>
 
 <script src="script.js"></script>
