@@ -418,7 +418,8 @@ section#skills { background: var(--surface-alt); }
   align-items: stretch;
   justify-content: start;
 }
-.about-text { display: flex; flex-direction: column; justify-content: center; }
+.about-text { display: flex; flex-direction: column; justify-content: flex-start; }
+.about-text .section-title { margin-bottom: 28px; }
 .about-grid p:not(.overline) {
   margin: 0 0 20px;
   font-size: 1.05rem;
