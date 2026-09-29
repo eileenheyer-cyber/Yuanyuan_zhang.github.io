@@ -7,10 +7,10 @@
   <meta name="description" content="Case study: exploratory data analysis of NordHome Retail — distributions, group comparisons, relationships and outliers." data-en-content="Case study: exploratory data analysis of NordHome Retail — distributions, group comparisons, relationships and outliers." data-de-content="Case Study: explorative Datenanalyse von NordHome Retail — Verteilungen, Gruppenvergleiche, Zusammenhänge und Ausreißer.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="eda-page">
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
@@ -27,156 +27,140 @@
 
 <main>
 
-<div class="cs-hero eda-hero">
-<a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
-<span class="cs-status done" data-en="Completed" data-de="Abgeschlossen">Completed</span>
-<p class="overline" data-en="Exploratory data analysis" data-de="Explorative Datenanalyse">Exploratory data analysis</p>
-<h1 class="eda-h1" data-en="Exploring patterns, relationships and anomalies hidden in retail data." data-de="Muster, Zusammenhänge und Anomalien in Handelsdaten sichtbar machen.">Exploring patterns, relationships and anomalies hidden in retail data.</h1>
-<p class="eda-hero-meta"><strong>NordHome Retail Analytics</strong> · 2021–2024</p>
+<section class="eda-hero"><div class="eda-wrap">
+<div class="eda-hero-grid"><div class="eda-hero-text">
+<p class="eda-crumbs"><a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a><span class="cs-status done" data-en="Completed" data-de="Abgeschlossen">Completed</span></p>
+<h1 class="eda-title" data-en="Exploratory data analysis" data-de="Explorative Datenanalyse">Exploratory data analysis</h1>
+<p class="eda-sub" data-en="Finding patterns in retail data" data-de="Muster in Handelsdaten finden">Finding patterns in retail data</p>
+<p class="eda-hero-meta"><strong>NordHome Retail Analytics</strong><span>2021 — 2024</span></p>
 <p class="eda-hero-tech">Python · Pandas · NumPy · Matplotlib</p>
 <a class="eda-link" href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics/tree/main/04_EDA" target="_blank" rel="noopener" data-en="GitHub: full EDA notebook and insights →" data-de="GitHub: vollständiges EDA-Notebook und Insights →">GitHub: full EDA notebook and insights →</a>
 </div>
-<div class="cs-section eda-first">
-<p class="overline" data-en="01 — Dataset" data-de="01 — Datensatz">01 — Dataset</p>
-<h2 data-en="Dataset at a glance" data-de="Der Datensatz auf einen Blick">Dataset at a glance</h2>
-<div class="eda-stats">
-<div class="eda-stat"><strong data-en="8,364" data-de="8.364">8,364</strong><span data-en="customers" data-de="Kunden">customers</span></div>
-<div class="eda-stat"><strong data-en="31,465" data-de="31.465">31,465</strong><span data-en="orders" data-de="Bestellungen">orders</span></div>
-<div class="eda-stat"><strong data-en="75,473" data-de="75.473">75,473</strong><span data-en="order items" data-de="Bestellpositionen">order items</span></div>
-<div class="eda-stat"><strong data-en="31,936" data-de="31.936">31,936</strong><span data-en="payments" data-de="Zahlungen">payments</span></div>
-<div class="eda-stat"><strong data-en="6,097" data-de="6.097">6,097</strong><span data-en="returns" data-de="Retouren">returns</span></div>
+<div class="eda-hero-vis" aria-hidden="true"><img src="images/eda-hero-silhouette.png" alt=""></div>
 </div>
-<p data-en="&lt;strong&gt;Dataset period:&lt;/strong&gt; January 2021 – June 2024" data-de="&lt;strong&gt;Zeitraum:&lt;/strong&gt; Januar 2021 – Juni 2024"><strong>Dataset period:</strong> January 2021 – June 2024</p>
-<p class="eda-note" data-en="Counts come from the raw files. Duplicates and data-quality issues were cleaned or flagged before the analysis." data-de="Die Zahlen stammen aus den Rohdaten. Duplikate und Datenqualitätsprobleme wurden vor der Analyse bereinigt oder markiert.">Counts come from the raw files. Duplicates and data-quality issues were cleaned or flagged before the analysis.</p>
-<p data-en="Before analysing individual metrics, I explored the structure, distributions and quality of the dataset to understand what patterns could reasonably be investigated." data-de="Bevor ich einzelne Kennzahlen analysiert habe, habe ich Struktur, Verteilungen und Qualität des Datensatzes untersucht, um zu verstehen, welche Muster sich sinnvoll untersuchen lassen.">Before analysing individual metrics, I explored the structure, distributions and quality of the dataset to understand what patterns could reasonably be investigated.</p>
+<div class="eda-hero-strip">
+<div class="eda-mini"><strong data-en="8,364" data-de="8.364">8,364</strong><span data-en="customers" data-de="Kunden">customers</span></div>
+<div class="eda-mini"><strong data-en="31,465" data-de="31.465">31,465</strong><span data-en="orders" data-de="Bestellungen">orders</span></div>
+<div class="eda-mini"><strong data-en="75,473" data-de="75.473">75,473</strong><span data-en="order items" data-de="Bestellpositionen">order items</span></div>
+<div class="eda-mini"><strong data-en="Jan 2021 — Jun 2024" data-de="Jan 2021 — Jun 2024">Jan 2021 — Jun 2024</strong><span data-en="period" data-de="Zeitraum">period</span></div>
+</div></div></section>
+<section class="eda-sec" id="dataset"><div class="eda-wrap eda-dataset">
+<div class="eda-dataset-head">
+<header class="eda-head"><p class="eda-eyebrow" data-en="01 — Dataset" data-de="01 — Datensatz">01 — Dataset</p><h2 data-en="Dataset at a glance" data-de="Der Datensatz auf einen Blick">Dataset at a glance</h2></header>
+<p class="eda-small" data-en="Counts come from the raw files. Duplicates and data-quality issues were cleaned or flagged before the analysis." data-de="Die Zahlen stammen aus den Rohdaten. Duplikate und Datenqualitätsprobleme wurden vor der Analyse bereinigt oder markiert.">Counts come from the raw files. Duplicates and data-quality issues were cleaned or flagged before the analysis.</p>
+<p class="eda-small" data-en="Explored across six areas — revenue, customers, products, payments, returns and marketing — through 24 questions." data-de="Untersucht in sechs Bereichen — Umsatz, Kunden, Produkte, Zahlungen, Retouren und Marketing — anhand von 24 Fragen.">Explored across six areas — revenue, customers, products, payments, returns and marketing — through 24 questions.</p>
 </div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="02 — Scope" data-de="02 — Umfang">02 — Scope</p>
-<h2 data-en="What I explored" data-de="Was ich untersucht habe">What I explored</h2>
-<ul class="eda-areas">
-<li><span class="eda-area" data-en="Revenue" data-de="Umsatz">Revenue</span><span class="eda-q" data-en="5 questions" data-de="5 Fragen">5 questions</span></li>
-<li><span class="eda-area" data-en="Customers" data-de="Kunden">Customers</span><span class="eda-q" data-en="6 questions" data-de="6 Fragen">6 questions</span></li>
-<li><span class="eda-area" data-en="Products" data-de="Produkte">Products</span><span class="eda-q" data-en="4 questions" data-de="4 Fragen">4 questions</span></li>
-<li><span class="eda-area" data-en="Payments" data-de="Zahlungen">Payments</span><span class="eda-q" data-en="2 questions" data-de="2 Fragen">2 questions</span></li>
-<li><span class="eda-area" data-en="Returns" data-de="Retouren">Returns</span><span class="eda-q" data-en="4 questions" data-de="4 Fragen">4 questions</span></li>
-<li><span class="eda-area" data-en="Marketing" data-de="Marketing">Marketing</span><span class="eda-q" data-en="3 questions" data-de="3 Fragen">3 questions</span></li>
-</ul>
-<p data-en="For each area, I examined distributions, segment differences, relationships, trends and unusual observations." data-de="Für jeden Bereich habe ich Verteilungen, Segmentunterschiede, Zusammenhänge, Trends und auffällige Beobachtungen untersucht.">For each area, I examined distributions, segment differences, relationships, trends and unusual observations.</p>
-</div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="03 — Exploration" data-de="03 — Exploration">03 — Exploration</p>
-<h2 data-en="Exploring the data" data-de="Die Daten erkunden">Exploring the data</h2>
-<div class="eda-sub">
-<p class="eda-label" data-en="A · Distributions" data-de="A · Verteilungen">A · Distributions</p>
-<p class="eda-question" data-en="Question: How are order values distributed, and do a few extreme orders inflate the average?" data-de="Frage: Wie verteilen sich die Bestellwerte, und treiben einige extreme Bestellungen den Durchschnitt nach oben?">Question: How are order values distributed, and do a few extreme orders inflate the average?</p>
-<h3 data-en="Order values are strongly right-skewed" data-de="Bestellwerte sind stark rechtsschief verteilt">Order values are strongly right-skewed</h3>
-
-<p data-en="Most orders fall within a relatively narrow range, while a small number extend far beyond the typical distribution. The median order is €658; the mean is €787." data-de="Die meisten Bestellungen liegen in einem relativ engen Bereich, während einige wenige weit über die typische Verteilung hinausreichen. Der Median liegt bei 658 €, der Mittelwert bei 787 €.">Most orders fall within a relatively narrow range, while a small number extend far beyond the typical distribution. The median order is €658; the mean is €787.</p>
-<p data-en="I kept the extreme orders in the analysis: excluding the 717 flagged orders (2.5%) would shift the average order value by only 6.3%." data-de="Die extremen Bestellungen habe ich in der Analyse belassen: Ohne die 717 markierten Bestellungen (2,5 %) würde sich der durchschnittliche Bestellwert nur um 6,3 % verändern.">I kept the extreme orders in the analysis: excluding the 717 flagged orders (2.5%) would shift the average order value by only 6.3%.</p>
-
-<figure class="eda-fig"><img src="images/eda-order-value-distribution.png" alt="Histogram of order values with an IQR threshold at €2,305; 717 orders (2.5%) lie beyond it, shown in orange." loading="lazy"></figure>
-</div>
-<div class="eda-sub">
-<p class="eda-label" data-en="B · Comparisons &amp; segments" data-de="B · Vergleiche &amp; Segmente">B · Comparisons & segments</p>
-<p class="eda-question" data-en="Question: Do customers who buy more than once look different from one-time buyers?" data-de="Frage: Unterscheiden sich Kunden mit Folgekäufen von Kunden mit nur einer Bestellung?">Question: Do customers who buy more than once look different from one-time buyers?</p>
+<div class="eda-bignums">
+<div class="eda-big"><strong data-en="8,364" data-de="8.364">8,364</strong><span data-en="Customers" data-de="Kunden">Customers</span></div>
+<div class="eda-big"><strong data-en="31,465" data-de="31.465">31,465</strong><span data-en="Orders" data-de="Bestellungen">Orders</span></div>
+<div class="eda-big"><strong data-en="75,473" data-de="75.473">75,473</strong><span data-en="Order items" data-de="Bestellpositionen">Order items</span></div>
+<div class="eda-big"><strong data-en="31,936" data-de="31.936">31,936</strong><span data-en="Payments" data-de="Zahlungen">Payments</span></div>
+<div class="eda-big"><strong data-en="6,097" data-de="6.097">6,097</strong><span data-en="Returns" data-de="Retouren">Returns</span></div>
+<div class="eda-big eda-big--period"><strong data-en="Jan 2021 — Jun 2024" data-de="Jan 2021 — Jun 2024">Jan 2021 — Jun 2024</strong><span data-en="Dataset period" data-de="Zeitraum des Datensatzes">Dataset period</span></div>
+</div></div></section>
+<section class="eda-sec" id="journey"><div class="eda-wrap">
+<header class="eda-head"><p class="eda-eyebrow" data-en="02 — Approach" data-de="02 — Vorgehen">02 — Approach</p><h2 data-en="The EDA journey" data-de="Die EDA-Reise">The EDA journey</h2></header>
+<ol class="eda-journey">
+<li><span class="eda-j-n">01</span><span class="eda-j-t" data-en="Understand" data-de="Verstehen">Understand</span><span class="eda-j-d" data-en="Structure and quality of the data" data-de="Struktur und Qualität der Daten">Structure and quality of the data</span></li>
+<li><span class="eda-j-n">02</span><span class="eda-j-t" data-en="Explore" data-de="Erkunden">Explore</span><span class="eda-j-d" data-en="Distributions and change over time" data-de="Verteilungen und zeitliche Entwicklung">Distributions and change over time</span></li>
+<li><span class="eda-j-n">03</span><span class="eda-j-t" data-en="Compare" data-de="Vergleichen">Compare</span><span class="eda-j-d" data-en="Groups and segments" data-de="Gruppen und Segmente">Groups and segments</span></li>
+<li><span class="eda-j-n">04</span><span class="eda-j-t" data-en="Question" data-de="Hinterfragen">Question</span><span class="eda-j-d" data-en="Relationships and unexpected patterns" data-de="Zusammenhänge und unerwartete Muster">Relationships and unexpected patterns</span></li>
+<li><span class="eda-j-n">05</span><span class="eda-j-t" data-en="Investigate" data-de="Untersuchen">Investigate</span><span class="eda-j-d" data-en="Outliers, anomalies and next questions" data-de="Ausreißer, Anomalien und nächste Fragen">Outliers, anomalies and next questions</span></li>
+</ol></div></section>
+<section class="eda-sec eda-explore" id="exploring"><div class="eda-wrap">
+<header class="eda-head"><p class="eda-eyebrow" data-en="03 — Exploration" data-de="03 — Exploration">03 — Exploration</p><h2 data-en="Exploring the data" data-de="Die Daten erkunden">Exploring the data</h2><p class="eda-lead" data-en="Charts are grouped by EDA technique, not by business area." data-de="Die Diagramme sind nach EDA-Technik gruppiert, nicht nach Geschäftsbereich.">Charts are grouped by EDA technique, not by business area.</p></header>
+<div class="eda-block eda-block--large">
+<div class="eda-meta"><span class="eda-tech" data-en="Distributions" data-de="Verteilungen">Distributions</span><span class="eda-q" data-en="How are order values distributed, and do a few extreme orders inflate the average?" data-de="Wie verteilen sich die Bestellwerte, und treiben einige extreme Bestellungen den Durchschnitt nach oben?">How are order values distributed, and do a few extreme orders inflate the average?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-dist-order-value.png" aria-label="Enlarge chart"><img src="images/eda-dist-order-value.png" alt="Histogram of order values with an IQR threshold at €2,305; 717 orders (2.5%) lie beyond it, shown in orange." loading="lazy"></button><figcaption data-en="Order value = sum of line totals per order, cancelled orders excluded (28,835 orders). Dashed line: IQR upper bound at €2,305." data-de="Bestellwert = Summe der Positionswerte je Bestellung, stornierte Bestellungen ausgeschlossen (28.835 Bestellungen). Gestrichelte Linie: IQR-Obergrenze bei 2.305 €.">Order value = sum of line totals per order, cancelled orders excluded (28,835 orders). Dashed line: IQR upper bound at €2,305.</figcaption></figure>
+<div class="eda-take">
+<h3 data-en="Spending is strongly right-skewed" data-de="Die Ausgaben sind stark rechtsschief verteilt">Spending is strongly right-skewed</h3>
+<div class="eda-take-text">
+<p data-en="Most orders sit in a narrow range, while a small number extend far beyond it: the median order is €658, the mean €787." data-de="Die meisten Bestellungen liegen in einem engen Bereich, einige wenige reichen weit darüber hinaus: Der Median liegt bei 658 €, der Mittelwert bei 787 €.">Most orders sit in a narrow range, while a small number extend far beyond it: the median order is €658, the mean €787.</p>
+<p data-en="I kept the 717 flagged orders (2.5%) in — excluding them moves the average order value by only 6.3%." data-de="Die 717 markierten Bestellungen (2,5 %) habe ich beibehalten — ohne sie ändert sich der durchschnittliche Bestellwert nur um 6,3 %.">I kept the 717 flagged orders (2.5%) in — excluding them moves the average order value by only 6.3%.</p>
+</div></div></div>
+<div class="eda-pair">
+<article class="eda-item">
+<div class="eda-meta"><span class="eda-tech" data-en="Comparisons &amp; segments" data-de="Vergleiche &amp; Segmente">Comparisons & segments</span><span class="eda-q" data-en="Do customers who buy more than once look different from one-time buyers?" data-de="Unterscheiden sich Kunden mit Folgekäufen von Kunden mit nur einer Bestellung?">Do customers who buy more than once look different from one-time buyers?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-repeat-pair.png" aria-label="Enlarge chart"><img src="images/eda-repeat-pair.png" alt="Two bar panels comparing repeat and one-time buyers: customer share 85.2% vs 14.8%, revenue per customer €2,845 vs €800." loading="lazy"></button><figcaption data-en="Excludes returned, refunded and cancelled orders. Orders are counted, not the time between them." data-de="Ohne retournierte, erstattete und stornierte Bestellungen. Gezählt werden Bestellungen, nicht der zeitliche Abstand dazwischen.">Excludes returned, refunded and cancelled orders. Orders are counted, not the time between them.</figcaption></figure>
 <h3 data-en="Repeat customers show a substantially different spending pattern" data-de="Wiederkäufer zeigen ein deutlich anderes Ausgabenmuster">Repeat customers show a substantially different spending pattern</h3>
-
-<p data-en="85.2% of customers ordered more than once. They spend €2,845 on average across 3.6 orders, compared with €800 for one-time buyers — about 3.6× more per customer. The comparison counts orders, not the time between them, so two orders in one week also count as “repeat”." data-de="85,2 % der Kunden haben mehr als einmal bestellt. Sie geben im Schnitt 2.845 € über 3,6 Bestellungen aus, Einmalkäufer dagegen 800 € — rund 3,6-mal so viel pro Kunde. Der Vergleich zählt Bestellungen, nicht den zeitlichen Abstand dazwischen: Zwei Bestellungen in einer Woche zählen also ebenfalls als „Wiederkauf“.">85.2% of customers ordered more than once. They spend €2,845 on average across 3.6 orders, compared with €800 for one-time buyers — about 3.6× more per customer. The comparison counts orders, not the time between them, so two orders in one week also count as “repeat”.</p>
-
-<figure class="eda-fig"><img src="images/eda-repeat-vs-onetime.png" alt="Three bar panels comparing repeat and one-time buyers: customer share 85.2% vs 14.8%, revenue per customer €2,845 vs €800, average orders 3.62 vs 1.00." loading="lazy"></figure>
-</div>
-<div class="eda-stack">
-<div class="eda-item">
-<p class="eda-question" data-en="Question: Does age separate high-value from low-value customers?" data-de="Frage: Trennt das Alter wertvolle von weniger wertvollen Kunden?">Question: Does age separate high-value from low-value customers?</p>
-<h3 data-en="Age groups show relatively similar revenue per customer" data-de="Altersgruppen zeigen einen ähnlichen Umsatz pro Kunde">Age groups show relatively similar revenue per customer</h3>
-<p data-en="Average revenue per customer runs from €2,465 (50–59) to €2,617 (30–39), a spread of roughly 6%. Age alone does not separate customers by spend." data-de="Der durchschnittliche Umsatz pro Kunde reicht von 2.465 € (50–59) bis 2.617 € (30–39), eine Spanne von rund 6 %. Das Alter allein trennt Kunden nicht nach Ausgaben.">Average revenue per customer runs from €2,465 (50–59) to €2,617 (30–39), a spread of roughly 6%. Age alone does not separate customers by spend.</p>
-<figure class="eda-fig"><img src="images/eda-revenue-by-age.png" alt="Horizontal bar chart of average revenue per customer by age group, from €2,617 for 30–39 down to €2,465 for 50–59." loading="lazy"></figure>
-</div>
-<div class="eda-item">
-<p class="eda-question" data-en="Question: Which products lead on revenue, and which categories do they come from?" data-de="Frage: Welche Produkte führen beim Umsatz, und aus welchen Kategorien stammen sie?">Question: Which products lead on revenue, and which categories do they come from?</p>
+<p data-en="85.2% of customers ordered more than once. They spend €2,845 on average across 3.6 orders, versus €800 for one-time buyers — about 3.6× more per customer." data-de="85,2 % der Kunden haben mehr als einmal bestellt. Sie geben im Schnitt 2.845 € über 3,6 Bestellungen aus, Einmalkäufer 800 € — rund 3,6-mal so viel pro Kunde.">85.2% of customers ordered more than once. They spend €2,845 on average across 3.6 orders, versus €800 for one-time buyers — about 3.6× more per customer.</p>
+</article>
+<article class="eda-item">
+<div class="eda-meta"><span class="eda-tech" data-en="Comparisons &amp; segments" data-de="Vergleiche &amp; Segmente">Comparisons & segments</span><span class="eda-q" data-en="Does age separate high-value from low-value customers?" data-de="Trennt das Alter wertvolle von weniger wertvollen Kunden?">Does age separate high-value from low-value customers?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-age-pair.png" aria-label="Enlarge chart"><img src="images/eda-age-pair.png" alt="Horizontal bar chart of average revenue per customer by age group, from €2,617 for 30–39 down to €2,465 for 50–59." loading="lazy"></button><figcaption data-en="Excludes cancelled, returned and refunded orders; under-18s excluded (n = 25, too few). The narrow spread may reflect the data generation rather than real behaviour." data-de="Ohne stornierte, retournierte und erstattete Bestellungen; unter 18-Jährige ausgeschlossen (n = 25, zu wenige). Die geringe Spanne kann den Generierungsprozess widerspiegeln statt echtes Verhalten.">Excludes cancelled, returned and refunded orders; under-18s excluded (n = 25, too few). The narrow spread may reflect the data generation rather than real behaviour.</figcaption></figure>
+<h3 data-en="Age groups show limited differentiation" data-de="Altersgruppen zeigen kaum Unterschiede">Age groups show limited differentiation</h3>
+<p data-en="Average revenue per customer runs from €2,465 (50–59) to €2,617 (30–39) — a spread of roughly 6%. Age alone does not separate customers by spend." data-de="Der durchschnittliche Umsatz pro Kunde reicht von 2.465 € (50–59) bis 2.617 € (30–39) — eine Spanne von rund 6 %. Das Alter allein trennt Kunden nicht nach Ausgaben.">Average revenue per customer runs from €2,465 (50–59) to €2,617 (30–39) — a spread of roughly 6%. Age alone does not separate customers by spend.</p>
+</article></div>
+<div class="eda-block eda-block--large">
+<div class="eda-meta"><span class="eda-tech" data-en="Relationships" data-de="Zusammenhänge">Relationships</span><span class="eda-q" data-en="Where do order return rates run highest, and is the variation meaningful?" data-de="Wo liegen die Bestell-Retourenquoten am höchsten, und ist die Streuung aussagekräftig?">Where do order return rates run highest, and is the variation meaningful?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-heatmap-large.png" aria-label="Enlarge chart"><img src="images/eda-heatmap-large.png" alt="Heatmap of order return rates for four sales channels across ten countries, ranging from 16.0% to 22.8%." loading="lazy"></button><figcaption data-en="Each cell rests on a small sample (about 769 orders on average) — extreme cells may reflect sampling noise rather than a real channel–country effect." data-de="Jede Zelle beruht auf einer kleinen Stichprobe (im Schnitt rund 769 Bestellungen) — extreme Zellen können Stichprobenrauschen sein statt eines echten Kanal-Land-Effekts.">Each cell rests on a small sample (about 769 orders on average) — extreme cells may reflect sampling noise rather than a real channel–country effect.</figcaption></figure>
+<div class="eda-take">
+<h3 data-en="Order return rates cluster around 19% across channels and countries" data-de="Bestell-Retourenquoten liegen über Kanäle und Länder hinweg um 19 %">Order return rates cluster around 19% across channels and countries</h3>
+<div class="eda-take-text">
+<p data-en="Across 40 channel × country combinations, order return rates run from 16.0% to 22.8% (average 19.0%). The highest cell, Marketplace in the Netherlands, rests on roughly 750 orders and may be sampling noise; a proportion test would be the next step." data-de="Über 40 Kombinationen aus Kanal × Land liegen die Bestell-Retourenquoten zwischen 16,0 % und 22,8 % (Durchschnitt 19,0 %). Die höchste Zelle, Marketplace in den Niederlanden, beruht auf rund 750 Bestellungen und kann Stichprobenrauschen sein; ein Anteilstest wäre der nächste Schritt.">Across 40 channel × country combinations, order return rates run from 16.0% to 22.8% (average 19.0%). The highest cell, Marketplace in the Netherlands, rests on roughly 750 orders and may be sampling noise; a proportion test would be the next step.</p>
+<p data-en="A null result points the same way: unpaid payment value tracked processed value for every payment method (largest deviation +0.29 percentage points)." data-de="Ein Nullergebnis deutet in dieselbe Richtung: Der offene Zahlungswert folgte bei jeder Zahlungsart dem verarbeiteten Wert (größte Abweichung +0,29 Prozentpunkte).">A null result points the same way: unpaid payment value tracked processed value for every payment method (largest deviation +0.29 percentage points).</p>
+</div></div></div>
+<div class="eda-pair">
+<article class="eda-item">
+<div class="eda-meta"><span class="eda-tech" data-en="Change over time" data-de="Entwicklung im Zeitverlauf">Change over time</span><span class="eda-q" data-en="How have return rates developed year over year?" data-de="Wie haben sich die Retourenquoten von Jahr zu Jahr entwickelt?">How have return rates developed year over year?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-trend-pair.png" aria-label="Enlarge chart"><img src="images/eda-trend-pair.png" alt="Line chart of item and revenue return rates for 2021 to H1 2024; both rise in 2024, to 9.74% and 4.50%." loading="lazy"></button><figcaption data-en="2024 covers January–June only. Cancelled orders are excluded from sold items; returns of unmatched (“ghost”) products are included in company-wide totals." data-de="2024 umfasst nur Januar bis Juni. Stornierte Bestellungen sind aus den verkauften Artikeln ausgeschlossen; Retouren nicht zuordenbarer („Ghost“-)Produkte sind in den Gesamtwerten enthalten.">2024 covers January–June only. Cancelled orders are excluded from sold items; returns of unmatched (“ghost”) products are included in company-wide totals.</figcaption></figure>
+<h3 data-en="Return rates increased in H1 2024" data-de="Die Retourenquoten stiegen im ersten Halbjahr 2024">Return rates increased in H1 2024</h3>
+<p data-en="The item return rate held at 8.2–8.7% from 2021 to 2023, then reached 9.7%; the revenue return rate moved from about 4% to 4.5%. A signal to investigate, not a conclusion." data-de="Die Artikel-Retourenquote lag 2021 bis 2023 bei 8,2–8,7 % und erreichte dann 9,7 %; die umsatzbezogene Quote stieg von rund 4 % auf 4,5 %. Ein Hinweis zum Nachgehen, keine Schlussfolgerung.">The item return rate held at 8.2–8.7% from 2021 to 2023, then reached 9.7%; the revenue return rate moved from about 4% to 4.5%. A signal to investigate, not a conclusion.</p>
+</article>
+<article class="eda-item">
+<div class="eda-meta"><span class="eda-tech" data-en="Comparisons &amp; segments" data-de="Vergleiche &amp; Segmente">Comparisons & segments</span><span class="eda-q" data-en="Which products lead on revenue, and which categories do they come from?" data-de="Welche Produkte führen beim Umsatz, und aus welchen Kategorien stammen sie?">Which products lead on revenue, and which categories do they come from?</span></div>
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-products-pair.png" aria-label="Enlarge chart"><img src="images/eda-products-pair.png" alt="Bar chart of the top 10 products by revenue; the six Gifts products are highlighted, led by Candle Collection Mini at €144K." loading="lazy"></button><figcaption data-en="Gifts highlighted. Excludes unmatched (“ghost”) products and returned, refunded or cancelled orders." data-de="Gifts hervorgehoben. Ohne nicht zuordenbare („Ghost“-)Produkte und retournierte, erstattete oder stornierte Bestellungen.">Gifts highlighted. Excludes unmatched (“ghost”) products and returned, refunded or cancelled orders.</figcaption></figure>
 <h3 data-en="A small group of products dominates the top revenue range" data-de="Eine kleine Produktgruppe dominiert die Umsatzspitze">A small group of products dominates the top revenue range</h3>
-<p data-en="Gifts (orange) account for 6 of the 10 best-selling products, including the top three. The ten sit in a tight band: the best earns about 1.6× the tenth (€144K vs €92K)." data-de="Auf Gifts (orange) entfallen 6 der 10 umsatzstärksten Produkte, darunter die ersten drei. Die zehn liegen eng beieinander: Das beste Produkt erzielt rund das 1,6-Fache des zehnten (144 Tsd. € vs. 92 Tsd. €).">Gifts (orange) account for 6 of the 10 best-selling products, including the top three. The ten sit in a tight band: the best earns about 1.6× the tenth (€144K vs €92K).</p>
-<figure class="eda-fig"><img src="images/eda-top10-products-gifts.png" alt="Bar chart of the top 10 products by revenue; the six Gifts products are highlighted in orange, led by Candle Collection Mini at €144K." loading="lazy"></figure>
-</div>
-</div>
-<div class="eda-sub">
-<p class="eda-label" data-en="C · Change over time" data-de="C · Entwicklung im Zeitverlauf">C · Change over time</p>
-<p class="eda-question" data-en="Question: How have return rates developed year over year?" data-de="Frage: Wie haben sich die Retourenquoten von Jahr zu Jahr entwickelt?">Question: How have return rates developed year over year?</p>
-<h3 data-en="Return rates held steady for three years, then rose in H1 2024" data-de="Die Retourenquoten blieben drei Jahre stabil und stiegen dann im ersten Halbjahr 2024">Return rates held steady for three years, then rose in H1 2024</h3>
-
-<p data-en="The item return rate stayed between 8.2% and 8.7% from 2021 to 2023 and reached 9.7% in H1 2024; the revenue return rate moved from about 4% to 4.5%. 2024 covers January–June only, so this is a signal to investigate, not a conclusion." data-de="Die Artikel-Retourenquote lag 2021 bis 2023 zwischen 8,2 % und 8,7 % und erreichte im ersten Halbjahr 2024 9,7 %; die umsatzbezogene Quote stieg von rund 4 % auf 4,5 %. 2024 umfasst nur Januar bis Juni — das ist ein Hinweis, dem man nachgehen sollte, keine Schlussfolgerung.">The item return rate stayed between 8.2% and 8.7% from 2021 to 2023 and reached 9.7% in H1 2024; the revenue return rate moved from about 4% to 4.5%. 2024 covers January–June only, so this is a signal to investigate, not a conclusion.</p>
-
-<figure class="eda-fig"><img src="images/eda-return-rate-trend.png" alt="Line chart of item and revenue return rates for 2021 to H1 2024; both rise in 2024, to 9.74% and 4.50%." loading="lazy"></figure>
-</div>
-<div class="eda-sub">
-<p class="eda-label" data-en="D · Relationships" data-de="D · Zusammenhänge">D · Relationships</p>
-<p class="eda-question" data-en="Question: Where do order return rates run highest, and is the variation meaningful?" data-de="Frage: Wo liegen die Retourenquoten am höchsten, und ist die Streuung aussagekräftig?">Question: Where do order return rates run highest, and is the variation meaningful?</p>
-<h3 data-en="Return rates vary little by channel or country — until the two are crossed" data-de="Retourenquoten unterscheiden sich kaum nach Kanal oder Land — erst die Kombination zeigt Ausschläge">Return rates vary little by channel or country — until the two are crossed</h3>
-
-<p data-en="EDA is not only about single distributions. I also looked at how variables interact and how much of the visible variation could be noise. Across 40 channel × country combinations, order return rates range from 16.0% to 22.8% (average 19.0%). The highest cell, Marketplace in the Netherlands, rests on roughly 750 orders, so it may be sampling noise; a proportion test would be the next step." data-de="EDA heißt nicht nur, einzelne Verteilungen zu betrachten. Ich habe auch untersucht, wie Variablen zusammenspielen und wie viel der sichtbaren Streuung Zufall sein könnte. Über 40 Kombinationen aus Kanal × Land liegen die Bestell-Retourenquoten zwischen 16,0 % und 22,8 % (Durchschnitt 19,0 %). Die höchste Zelle, Marketplace in den Niederlanden, beruht auf rund 750 Bestellungen und kann daher Stichprobenrauschen sein; ein Anteilstest wäre der nächste Schritt.">EDA is not only about single distributions. I also looked at how variables interact and how much of the visible variation could be noise. Across 40 channel × country combinations, order return rates range from 16.0% to 22.8% (average 19.0%). The highest cell, Marketplace in the Netherlands, rests on roughly 750 orders, so it may be sampling noise; a proportion test would be the next step.</p>
-<p data-en="A null result points the same way: unpaid payment value was proportional to processed value for every payment method (largest deviation +0.29 percentage points)." data-de="Ein Nullergebnis deutet in dieselbe Richtung: Der offene Zahlungswert stand bei jeder Zahlungsart im Verhältnis zum verarbeiteten Wert (größte Abweichung +0,29 Prozentpunkte).">A null result points the same way: unpaid payment value was proportional to processed value for every payment method (largest deviation +0.29 percentage points).</p>
-
-<figure class="eda-fig"><img src="images/eda-return-heatmap.png" alt="Heatmap of order return rates for four sales channels across ten countries, ranging from 16.0% to 22.8%." loading="lazy"></figure>
-</div>
-<div class="eda-sub">
-<p class="eda-label" data-en="E · Outliers &amp; anomalies" data-de="E · Ausreißer &amp; Anomalien">E · Outliers & anomalies</p>
-<p class="eda-question" data-en="Question: How is revenue per customer distributed, and who falls outside the typical range?" data-de="Frage: Wie verteilt sich der Umsatz pro Kunde, und wer liegt außerhalb des typischen Bereichs?">Question: How is revenue per customer distributed, and who falls outside the typical range?</p>
+<p data-en="Gifts account for 6 of the 10 best-selling products, including the top three. The ten sit in a tight band: the best earns about 1.6× the tenth (€144K vs €92K)." data-de="Auf Gifts entfallen 6 der 10 umsatzstärksten Produkte, darunter die ersten drei. Die zehn liegen eng beieinander: Das beste erzielt rund das 1,6-Fache des zehnten (144 Tsd. € vs. 92 Tsd. €).">Gifts account for 6 of the 10 best-selling products, including the top three. The ten sit in a tight band: the best earns about 1.6× the tenth (€144K vs €92K).</p>
+</article></div>
+</div></section>
+<section class="eda-outlier" id="outliers"><div class="eda-wrap">
+<div class="eda-meta"><span class="eda-tech" data-en="Outliers &amp; anomalies" data-de="Ausreißer &amp; Anomalien">Outliers & anomalies</span><span class="eda-q" data-en="How is revenue per customer distributed, and who falls outside the typical range?" data-de="Wie verteilt sich der Umsatz pro Kunde, und wer liegt außerhalb des typischen Bereichs?">How is revenue per customer distributed, and who falls outside the typical range?</span></div>
+<div class="eda-outlier-grid">
+<div class="eda-outlier-side">
 <h3 data-en="A small number of customers fall outside the typical range" data-de="Eine kleine Zahl von Kunden liegt außerhalb des typischen Bereichs">A small number of customers fall outside the typical range</h3>
-<div class="eda-facts"><div class="eda-fact"><strong>151</strong><span data-en="customers" data-de="Kunden">customers</span></div><div class="eda-fact"><strong data-en="1.9%" data-de="1,9 %">1.9%</strong><span data-en="of customers" data-de="der Kunden">of customers</span></div><div class="eda-fact"><strong data-en="€6,790" data-de="6.790 €">€6,790</strong><span data-en="IQR upper boundary" data-de="IQR-Obergrenze">IQR upper boundary</span></div></div>
-<p data-en="I used the IQR method (Q3 + 1.5 × IQR) to identify observations outside the typical distribution. The typical range (Q1–Q3) of customer revenue runs from €1,216 to €3,446; the highest flagged customer reaches €11,428. The 1.9% refers to the 7,969 customers in the analysed base." data-de="Mit der IQR-Methode (Q3 + 1,5 × IQR) habe ich Beobachtungen außerhalb der typischen Verteilung identifiziert. Der typische Bereich (Q1–Q3) des Kundenumsatzes reicht von 1.216 € bis 3.446 €; der höchste markierte Kunde erreicht 11.428 €. Die 1,9 % beziehen sich auf die 7.969 Kunden der analysierten Basis.">I used the IQR method (Q3 + 1.5 × IQR) to identify observations outside the typical distribution. The typical range (Q1–Q3) of customer revenue runs from €1,216 to €3,446; the highest flagged customer reaches €11,428. The 1.9% refers to the 7,969 customers in the analysed base.</p>
-<p class="eda-callout" data-en="An outlier is an observation that differs statistically from the rest of the dataset — it is not automatically an error. The IQR rule is a statistical convention, not a business definition." data-de="Ein Ausreißer ist eine Beobachtung, die sich statistisch vom Rest des Datensatzes unterscheidet — er ist nicht automatisch ein Fehler. Die IQR-Regel ist eine statistische Konvention, keine geschäftliche Definition.">An outlier is an observation that differs statistically from the rest of the dataset — it is not automatically an error. The IQR rule is a statistical convention, not a business definition.</p>
-<figure class="eda-fig"><img src="images/eda-customer-outliers.png" alt="Histogram of revenue per customer with the IQR upper bound at €6,790; 151 customers (1.9%) lie beyond it, shown in orange." loading="lazy"></figure>
+<div class="eda-ostats">
+<div class="eda-ostat"><strong data-en="151" data-de="151">151</strong><span data-en="customers" data-de="Kunden">customers</span></div>
+<div class="eda-ostat"><strong data-en="1.9%" data-de="1,9 %">1.9%</strong><span data-en="of customers" data-de="der Kunden">of customers</span></div>
+<div class="eda-ostat"><strong data-en="€6,790" data-de="6.790 €">€6,790</strong><span data-en="IQR upper boundary" data-de="IQR-Obergrenze">IQR upper boundary</span></div>
 </div>
+<p class="eda-small" data-en="The typical range (Q1–Q3) of customer revenue runs from €1,216 to €3,446; the highest flagged customer reaches €11,428. The 1.9% refers to the 7,969 customers in the analysed base." data-de="Der typische Bereich (Q1–Q3) des Kundenumsatzes reicht von 1.216 € bis 3.446 €; der höchste markierte Kunde erreicht 11.428 €. Die 1,9 % beziehen sich auf die 7.969 Kunden der analysierten Basis.">The typical range (Q1–Q3) of customer revenue runs from €1,216 to €3,446; the highest flagged customer reaches €11,428. The 1.9% refers to the 7,969 customers in the analysed base.</p>
 </div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="04 — Findings" data-de="04 — Erkenntnisse">04 — Findings</p>
-<h2 data-en="Patterns that stood out" data-de="Was aufgefallen ist">Patterns that stood out</h2>
-<ul class="eda-patterns">
-<li><span class="eda-num">01</span><span class="eda-pat" data-en="Spending is highly skewed at both order and customer level." data-de="Die Ausgaben sind auf Bestell- und Kundenebene stark rechtsschief.">Spending is highly skewed at both order and customer level.</span></li>
-<li><span class="eda-num">02</span><span class="eda-pat" data-en="Repeat customers spend very differently from one-time customers (€2,845 vs €800)." data-de="Wiederkäufer geben ganz anders aus als Einmalkäufer (2.845 € vs. 800 €).">Repeat customers spend very differently from one-time customers (€2,845 vs €800).</span></li>
-<li><span class="eda-num">03</span><span class="eda-pat" data-en="A small group of products dominates the top revenue range: 6 of the top 10 are Gifts." data-de="Eine kleine Produktgruppe dominiert die Umsatzspitze: 6 der Top 10 sind Gifts.">A small group of products dominates the top revenue range: 6 of the top 10 are Gifts.</span></li>
-<li><span class="eda-num">04</span><span class="eda-pat" data-en="Many variables show surprisingly little differentiation between segments — country, channel, age group, loyalty status and payment method barely move the numbers." data-de="Viele Variablen differenzieren überraschend wenig zwischen Segmenten — Land, Kanal, Altersgruppe, Loyalty-Status und Zahlungsart verändern die Zahlen kaum.">Many variables show surprisingly little differentiation between segments — country, channel, age group, loyalty status and payment method barely move the numbers.</span></li>
-</ul>
-</div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="05 — Limitations" data-de="05 — Grenzen">05 — Limitations</p>
-<h2 data-en="Data quality &amp;amp; limitations" data-de="Datenqualität &amp;amp; Grenzen">Data quality &amp; limitations</h2>
-<ul>
-<li data-en="The dataset is synthetic. Some distributions are intentionally balanced — for example 9–10% of customers per country and about 25% of revenue per sales channel — and such similarities may reflect the data-generation process rather than real behaviour." data-de="Der Datensatz ist synthetisch. Einige Verteilungen sind bewusst ausgeglichen — etwa 9–10 % der Kunden pro Land und rund 25 % des Umsatzes pro Vertriebskanal — und solche Ähnlichkeiten können den Generierungsprozess widerspiegeln statt echtes Verhalten.">The dataset is synthetic. Some distributions are intentionally balanced — for example 9–10% of customers per country and about 25% of revenue per sales channel — and such similarities may reflect the data-generation process rather than real behaviour.</li>
-<li data-en="Order values look generation-driven too: unit prices are capped at €250 and the average quantity is exactly 3.00, so the average order value should not be benchmarked against real retail." data-de="Auch die Bestellwerte wirken generierungsbedingt: Stückpreise sind bei 250 € gedeckelt, die durchschnittliche Menge beträgt exakt 3,00 — der durchschnittliche Bestellwert sollte daher nicht mit realem Handel verglichen werden.">Order values look generation-driven too: unit prices are capped at €250 and the average quantity is exactly 3.00, so the average order value should not be benchmarked against real retail.</li>
-<li data-en="2024 covers January–June only, and some cell-level comparisons rest on small samples (roughly 750 orders per channel × country cell)." data-de="2024 umfasst nur Januar bis Juni, und manche Zellvergleiche beruhen auf kleinen Stichproben (rund 750 Bestellungen pro Kanal-Land-Zelle).">2024 covers January–June only, and some cell-level comparisons rest on small samples (roughly 750 orders per channel × country cell).</li>
-</ul>
-<p class="eda-callout" data-en="&lt;strong&gt;Statistical patterns identified during EDA should be treated as hypotheses for further analysis rather than causal conclusions.&lt;/strong&gt;" data-de="&lt;strong&gt;Statistische Muster aus der EDA sollten als Hypothesen für weitere Analysen verstanden werden, nicht als kausale Schlussfolgerungen.&lt;/strong&gt;"><strong>Statistical patterns identified during EDA should be treated as hypotheses for further analysis rather than causal conclusions.</strong></p>
-</div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="06 — Next" data-de="06 — Ausblick">06 — Next</p>
-<h2 data-en="From EDA to the next question" data-de="Von der EDA zur nächsten Frage">From EDA to the next question</h2>
-<div class="eda-next">
-<div class="eda-next-head"><span data-en="EDA observation" data-de="EDA-Beobachtung">EDA observation</span><span></span><span data-en="Next question" data-de="Nächste Frage">Next question</span></div>
-<div class="eda-next-row"><span class="eda-obs" data-en="Customer spending is highly skewed" data-de="Die Kundenausgaben sind stark rechtsschief">Customer spending is highly skewed</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Can customers be segmented by value and purchase behaviour?" data-de="Lassen sich Kunden nach Wert und Kaufverhalten segmentieren?">Can customers be segmented by value and purchase behaviour?</span></div>
-<div class="eda-next-row"><span class="eda-obs" data-en="Repeat customers behave differently" data-de="Wiederkäufer verhalten sich anders">Repeat customers behave differently</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="What drives retention and repeat purchases?" data-de="Was treibt Kundenbindung und Wiederkäufe?">What drives retention and repeat purchases?</span></div>
-<div class="eda-next-row"><span class="eda-obs" data-en="A few products lead the revenue ranking" data-de="Wenige Produkte führen das Umsatzranking an">A few products lead the revenue ranking</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Are these products also strong in margin and profitability?" data-de="Sind diese Produkte auch bei Marge und Profitabilität stark?">Are these products also strong in margin and profitability?</span></div>
-<div class="eda-next-row"><span class="eda-obs" data-en="Returns vary by reason" data-de="Retouren unterscheiden sich nach Grund">Returns vary by reason</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Which product and customer characteristics explain returns?" data-de="Welche Produkt- und Kundenmerkmale erklären Retouren?">Which product and customer characteristics explain returns?</span></div>
-</div>
-</div>
-<div class="cs-section eda-block">
-<p class="overline" data-en="07 — Methods" data-de="07 — Methoden">07 — Methods</p>
-<h2 data-en="Methods" data-de="Methoden">Methods</h2>
-<div class="eda-tags">
-<span class="eda-tag">Python</span>
-<span class="eda-tag">Pandas</span>
-<span class="eda-tag">NumPy</span>
-<span class="eda-tag">Matplotlib</span>
-<span class="eda-tag" data-en="Descriptive statistics" data-de="Deskriptive Statistik">Descriptive statistics</span>
-<span class="eda-tag" data-en="Distribution analysis" data-de="Verteilungsanalyse">Distribution analysis</span>
-<span class="eda-tag" data-en="Segment comparison" data-de="Segmentvergleich">Segment comparison</span>
-<span class="eda-tag" data-en="Relationship analysis" data-de="Zusammenhangsanalyse">Relationship analysis</span>
-<span class="eda-tag" data-en="IQR outlier detection" data-de="IQR-Ausreißererkennung">IQR outlier detection</span>
-<span class="eda-tag" data-en="Exploratory data analysis" data-de="Explorative Datenanalyse">Exploratory data analysis</span>
-</div>
-<p class="eda-note" data-en="The detailed analysis stays on GitHub — this page is the visual summary." data-de="Die ausführliche Analyse bleibt auf GitHub — diese Seite ist die visuelle Zusammenfassung.">The detailed analysis stays on GitHub — this page is the visual summary.</p>
-<a class="eda-link" href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics/tree/main/04_EDA" target="_blank" rel="noopener" data-en="GitHub: full EDA notebook and insights →" data-de="GitHub: vollständiges EDA-Notebook und Insights →">GitHub: full EDA notebook and insights →</a>
-</div>
+<div class="eda-outlier-main">
+<figure class="eda-fig"><button class="eda-zoom" type="button" data-full="images/eda-outliers-large.png" aria-label="Enlarge chart"><img src="images/eda-outliers-large.png" alt="Histogram of revenue per customer with the IQR upper bound at €6,790; 151 customers (1.9%) lie beyond it, shown in orange." loading="lazy"></button><figcaption data-en="Excludes unknown customers and returned, refunded or cancelled order value." data-de="Ohne unbekannte Kunden und ohne Wert retournierter, erstatteter oder stornierter Bestellungen.">Excludes unknown customers and returned, refunded or cancelled order value.</figcaption></figure>
+</div></div>
+<div class="eda-notebox">
+<p class="eda-notehead" data-en="Statistical outlier ≠ business error" data-de="Statistischer Ausreißer ≠ Fehler im Geschäftssinn">Statistical outlier ≠ business error</p>
+<p data-en="I used the IQR method (Q3 + 1.5 × IQR) to flag observations outside the typical distribution. An outlier differs statistically from the rest of the data — it is not automatically an error. Before it is classified as an error or a special customer group, it needs further investigation." data-de="Mit der IQR-Methode (Q3 + 1,5 × IQR) habe ich Beobachtungen außerhalb der typischen Verteilung markiert. Ein Ausreißer unterscheidet sich statistisch vom Rest der Daten — er ist nicht automatisch ein Fehler. Bevor er als Fehler oder als besondere Kundengruppe eingeordnet wird, braucht er weitere Untersuchung.">I used the IQR method (Q3 + 1.5 × IQR) to flag observations outside the typical distribution. An outlier differs statistically from the rest of the data — it is not automatically an error. Before it is classified as an error or a special customer group, it needs further investigation.</p>
+</div></div></section>
+<section class="eda-sec" id="findings"><div class="eda-wrap">
+<header class="eda-head"><p class="eda-eyebrow" data-en="04 — Findings" data-de="04 — Erkenntnisse">04 — Findings</p><h2 data-en="What stood out" data-de="Was aufgefallen ist">What stood out</h2></header>
+<ol class="eda-findings">
+<li><span class="eda-num">01</span><h3 data-en="Right-skewed spending" data-de="Rechtsschiefe Ausgaben">Right-skewed spending</h3><p data-en="Spending is concentrated toward the lower end, with a small number of high observations extending the distribution." data-de="Die Ausgaben konzentrieren sich am unteren Ende, wenige hohe Beobachtungen ziehen die Verteilung nach rechts.">Spending is concentrated toward the lower end, with a small number of high observations extending the distribution.</p></li>
+<li><span class="eda-num">02</span><h3 data-en="Repeat ≠ one-time" data-de="Wiederkauf ≠ Einmalkauf">Repeat ≠ one-time</h3><p data-en="Repeat customers show substantially different spending patterns from one-time buyers (€2,845 vs €800 per customer)." data-de="Wiederkäufer zeigen deutlich andere Ausgabenmuster als Einmalkäufer (2.845 € vs. 800 € pro Kunde).">Repeat customers show substantially different spending patterns from one-time buyers (€2,845 vs €800 per customer).</p></li>
+<li><span class="eda-num">03</span><h3 data-en="Limited differentiation" data-de="Geringe Differenzierung">Limited differentiation</h3><p data-en="Country, channel, age group, loyalty status and payment method show surprisingly similar patterns." data-de="Land, Kanal, Altersgruppe, Loyalty-Status und Zahlungsart zeigen überraschend ähnliche Muster.">Country, channel, age group, loyalty status and payment method show surprisingly similar patterns.</p></li>
+<li><span class="eda-num">04</span><h3 data-en="Anomalies require context" data-de="Anomalien brauchen Kontext">Anomalies require context</h3><p data-en="Statistical outliers are signals for investigation, not automatically errors." data-de="Statistische Ausreißer sind Anlass für weitere Untersuchung, nicht automatisch Fehler.">Statistical outliers are signals for investigation, not automatically errors.</p></li>
+</ol>
+<aside class="eda-method">
+<p class="eda-method-label" data-en="Method note" data-de="Methodischer Hinweis">Method note</p>
+<p data-en="The dataset is synthetic and intentionally contains more balanced distributions than real-world retail data. Observed differences should be read as exploratory signals rather than causal conclusions." data-de="Der Datensatz ist synthetisch und enthält bewusst ausgeglichenere Verteilungen als reale Handelsdaten. Beobachtete Unterschiede sind als explorative Signale zu verstehen, nicht als kausale Schlussfolgerungen.">The dataset is synthetic and intentionally contains more balanced distributions than real-world retail data. Observed differences should be read as exploratory signals rather than causal conclusions.</p>
+<p class="eda-small" data-en="Unit prices are capped at €250 and the average quantity is exactly 3.00, so order values should not be benchmarked against real retail. 2024 covers January–June only." data-de="Stückpreise sind bei 250 € gedeckelt und die durchschnittliche Menge beträgt exakt 3,00 — Bestellwerte sollten daher nicht mit realem Handel verglichen werden. 2024 umfasst nur Januar bis Juni.">Unit prices are capped at €250 and the average quantity is exactly 3.00, so order values should not be benchmarked against real retail. 2024 covers January–June only.</p>
+</aside></div></section>
+<section class="eda-sec" id="next"><div class="eda-wrap">
+<header class="eda-head"><p class="eda-eyebrow" data-en="05 — Next" data-de="05 — Ausblick">05 — Next</p><h2 data-en="From EDA to the next question" data-de="Von der EDA zur nächsten Frage">From EDA to the next question</h2></header>
+<div class="eda-next-head"><span data-en="Observation" data-de="Beobachtung">Observation</span><span></span><span data-en="Next question" data-de="Nächste Frage">Next question</span></div>
+<ul class="eda-next">
+<li><span class="eda-obs" data-en="Spending is highly skewed" data-de="Die Ausgaben sind stark rechtsschief">Spending is highly skewed</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Which customer segments drive the long tail?" data-de="Welche Kundensegmente treiben den langen Ausläufer?">Which customer segments drive the long tail?</span></li>
+<li><span class="eda-obs" data-en="Repeat customers spend differently" data-de="Wiederkäufer geben anders aus">Repeat customers spend differently</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="What distinguishes repeat buyers?" data-de="Was unterscheidet Wiederkäufer?">What distinguishes repeat buyers?</span></li>
+<li><span class="eda-obs" data-en="Some products dominate the top of the revenue ranking" data-de="Manche Produkte dominieren die Umsatzspitze">Some products dominate the top of the revenue ranking</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Is high revenue also associated with high margin?" data-de="Geht hoher Umsatz auch mit hoher Marge einher?">Is high revenue also associated with high margin?</span></li>
+<li><span class="eda-obs" data-en="Returns increased in H1 2024" data-de="Die Retouren stiegen im ersten Halbjahr 2024">Returns increased in H1 2024</span><span class="eda-arrow" aria-hidden="true">→</span><span class="eda-nq" data-en="Which products or categories drive the increase?" data-de="Welche Produkte oder Kategorien treiben den Anstieg?">Which products or categories drive the increase?</span></li>
+</ul></div></section>
+<section class="eda-methods"><div class="eda-wrap">
+<div class="eda-methods-grid">
+<div><p class="eda-method-label" data-en="Tools" data-de="Werkzeuge">Tools</p><p class="eda-tags"><span>Python</span><span>Pandas</span><span>NumPy</span><span>Matplotlib</span></p></div>
+<div><p class="eda-method-label" data-en="Techniques" data-de="Techniken">Techniques</p><p class="eda-tags"><span data-en="Descriptive statistics" data-de="Deskriptive Statistik">Descriptive statistics</span><span data-en="Distribution analysis" data-de="Verteilungsanalyse">Distribution analysis</span><span data-en="Segment comparison" data-de="Segmentvergleich">Segment comparison</span><span data-en="Relationship analysis" data-de="Zusammenhangsanalyse">Relationship analysis</span><span data-en="IQR outlier detection" data-de="IQR-Ausreißererkennung">IQR outlier detection</span></p></div>
+<div><p class="eda-method-label" data-en="Full analysis" data-de="Vollständige Analyse">Full analysis</p><a class="eda-link" href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics/tree/main/04_EDA" target="_blank" rel="noopener" data-en="GitHub: notebook and insights →" data-de="GitHub: Notebook und Insights →">GitHub: notebook and insights →</a></div>
+</div></div></section>
 
 </main>
 
@@ -185,7 +169,28 @@
   <p><a href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a></p>
 </footer>
 
+<div class="eda-lightbox" id="eda-lightbox" hidden><img alt=""></div>
+
 <script src="script.js"></script>
 <script src="i18n.js"></script>
+<script>
+(function () {
+  var lb = document.getElementById("eda-lightbox");
+  var img = lb.querySelector("img");
+  function close() { lb.hidden = true; img.removeAttribute("src"); document.body.classList.remove("eda-lb-open"); }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest(".eda-zoom");
+    if (b) {
+      img.src = b.getAttribute("data-full");
+      img.alt = b.querySelector("img").alt;
+      lb.hidden = false;
+      document.body.classList.add("eda-lb-open");
+      return;
+    }
+    if (!lb.hidden) close();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) close(); });
+})();
+</script>
 </body>
 </html>
