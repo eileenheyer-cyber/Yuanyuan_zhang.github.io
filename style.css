@@ -791,3 +791,11 @@ body.eda-lb-open { overflow: hidden; }
   border-bottom: 1px solid var(--line);
 }
 .project-group-title.second { margin-top: 80px; }
+
+/* About text: equal line lengths (justified), last line left-aligned */
+.about-text p:not(.overline) {
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
