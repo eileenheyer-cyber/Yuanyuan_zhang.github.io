@@ -1177,3 +1177,12 @@ body.home .milestone-label { color: #a3a7c1; }
 .ap-seven .nh-find p { font-size: 0.8rem; }
 @media (max-width: 1080px) { .nh-findings.ap-seven { gap: 0 14px; } .ap-seven .nh-find-n { font-size: 1.35rem; } .ap-seven .nh-find h3 { font-size: 0.85rem; } .ap-seven .nh-find p { font-size: 0.72rem; } }
 @media (max-width: 720px) { .nh-findings.ap-seven { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; } .ap-seven .nh-find-n { font-size: 1.7rem; } }
+/* AlpenTech KPI cards */
+.ap-kpis { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; }
+.ap-kpi { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 18px 14px 18px 18px; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.ap-kpi::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #b3261e; }
+.ap-kpi-l { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); line-height: 1.35; min-height: 2.7em; }
+.ap-kpi-v { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); white-space: nowrap; }
+.ap-kpi-d { font-size: 0.74rem; font-weight: 600; line-height: 1.35; color: #b3261e; }
+@media (max-width: 1080px) { .ap-kpis { gap: 10px; } .ap-kpi { padding: 14px 10px 14px 14px; } .ap-kpi-v { font-size: 1.2rem; } .ap-kpi-d { font-size: 0.68rem; } }
+@media (max-width: 720px) { .ap-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ap-kpi-l { min-height: 0; } .ap-kpi-v { font-size: 1.5rem; } }
