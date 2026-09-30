@@ -1196,3 +1196,5 @@ body.home .milestone-label { color: #a3a7c1; }
 #findings .nh-find h3 { font-size: 1.02rem; margin-bottom: 6px; }
 #findings .nh-find p { font-size: 0.84rem; line-height: 1.55; }
 @media (max-width: 720px) { #findings.nh-major { padding: 48px 0; } }
+/* AlpenTech: one consistent section heading size */
+body.nh-page.ap-page main .nh-sec .nh-h2 { font-size: 1.9rem; }
