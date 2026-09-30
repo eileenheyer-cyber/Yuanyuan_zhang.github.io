@@ -1399,3 +1399,9 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
 .nh-steps .nh-step-n { display: inline-block; width: 2.2em; color: var(--accent); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; }
 .nh-decisions { margin-top: 40px; }
 .nh-decisions .nh-quote { margin-top: 12px; }
+
+/* NordHome — Data foundation: text column height matches the diagram */
+.nh-split-model { grid-template-columns: 0.77fr 1.23fr; gap: 40px; }
+.nh-split-model .nh-list li { padding: 6px 0; font-size: 0.86rem; line-height: 1.45; }
+.nh-split-model .nh-decisions { margin-top: 18px; }
+.nh-split-model .nh-decisions .nh-body { font-size: 0.95rem; line-height: 1.55; margin: 8px 0 12px; }
