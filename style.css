@@ -1389,3 +1389,7 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
 .eda-page .eda-dataset-head .eda-head { margin-bottom: 12px; }
 .eda-page .eda-dataset-head .eda-small { max-width: 780px; }
 .eda-page .eda-crumbs .cs-back { margin: 0; }
+.eda-page .eda-scope { margin: 32px 0 8px; }
+.eda-page .eda-scope .eda-method-label { margin-bottom: 10px; }
+.eda-page .eda-scope .eda-mlist li { grid-template-columns: 160px minmax(0, 1fr); }
+.eda-page .eda-scope .eda-small { margin-top: 14px; }
