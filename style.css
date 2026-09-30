@@ -1035,13 +1035,6 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-fig img { width: 100%; height: auto; display: block; }
 .nh-fig figcaption { margin-top: 10px; font-size: 0.78rem; color: var(--muted); }
 
-/* dashboard */
-.nh-page-block { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 48px; align-items: start; margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
-.nh-page-block:first-of-type { margin-top: 0; }
-.nh-page-text { position: sticky; top: 110px; }
-.nh-page-n { display: block; font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; }
-.nh-page-text h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 12px; }
-.nh-page-q { font-size: 1rem; font-weight: 500; color: var(--accent); line-height: 1.5; margin-bottom: 16px !important; }
 
 /* insights */
 .nh-insights { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
@@ -1083,8 +1076,6 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-star figcaption { margin-top: 84px; }
   .nh-eda, .nh-eda-rev { grid-template-columns: 1fr; gap: 28px; }
   .nh-eda-rev .nh-fig { order: 0; }
-  .nh-page-block { grid-template-columns: 1fr; gap: 24px; }
-  .nh-page-text { position: static; order: -1; }
   .nh-insights { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
@@ -1102,7 +1093,6 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-bars { padding: 20px; }
   .nh-bar-row { grid-template-columns: 76px 1fr 72px; }
   .nh-ins-row { grid-template-columns: 1fr; gap: 4px; }
-  .nh-page-block { margin-top: 48px; padding-top: 32px; }
   .nh-btn { width: 100%; text-align: center; }
 }
 
@@ -1139,8 +1129,6 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-pi p { line-height: 1.6; }
 .nh-eda { padding: 28px 0; gap: 40px; }
 .nh-eda-text h3 { font-size: clamp(1.15rem, 1.8vw, 1.4rem); margin-bottom: 16px; }
-.nh-page-block { margin-top: 36px; padding-top: 28px; gap: 40px; }
-.nh-page-text h3 { font-size: clamp(1.25rem, 1.9vw, 1.5rem); }
 .nh-learn { gap: 14px; }
 .nh-learn p { font-size: 1rem; line-height: 1.65; }
 .nh-tools { padding-top: 22px; }
@@ -1172,23 +1160,32 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-sec-band { margin-top: 48px; padding: 40px 0; }
   .nh-ins { grid-template-columns: 1fr; }
   .nh-ins-row:nth-of-type(1), .nh-ins-row:nth-of-type(2) { grid-column: 1; }
-  .nh-page-block { margin-top: 28px; }
   .nh-star-facts { row-gap: 84px; }
 }
 
-/* Power BI section: all four pages at once, 2 x 2 */
-.nh-dash-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 28px; }
-.nh-dash-grid .nh-page-block { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; border-top: 0; }
-.nh-dash-grid .nh-page-text { position: static; }
-.nh-page-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
-.nh-page-title .nh-page-n { display: inline; margin: 0; }
-.nh-dash-grid .nh-page-text h3 { font-size: 1.15rem; margin: 0; }
-.nh-dash-grid .nh-page-q { font-size: 0.9rem; margin-bottom: 6px !important; }
-.nh-dash-grid .nh-page-d { font-size: 0.84rem; line-height: 1.5; }
-@media (max-width: 720px) {
-  .nh-dash-grid { grid-template-columns: 1fr; gap: 32px; }
-}
-@media (min-width: 1025px) {
-  .nh-dash-grid .nh-page-d { display: none; }
-  .nh-dash-grid { max-width: max(700px, calc((100vh - 250px) * 1.75)); margin: 0 auto; }
-}
+
+/* Power BI section — curated "views": question first, screenshot second */
+.nh-lead-strong { font-size: 1.25rem; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; margin-bottom: 8px; }
+.nh-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.nh-view { min-width: 0; }
+.nh-view-link { display: flex; flex-direction: column; height: 100%; padding: 30px 30px 22px; text-decoration: none; color: inherit; background: var(--bg); border: 1px solid var(--line); transition: border-color .3s ease, box-shadow .3s ease; }
+.nh-view-link:hover, .nh-view-link:focus-visible { border-color: #cfcfd6; box-shadow: 0 14px 34px rgba(22, 22, 26, 0.07); outline: none; }
+.nh-view-link:focus-visible { border-color: var(--accent); }
+.nh-view-label { margin: 0 0 12px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; color: var(--muted); }
+.nh-view-n { color: var(--accent); }
+.nh-view-q { margin: 0 0 24px; font-size: clamp(1.15rem, 1.55vw, 1.32rem); line-height: 1.32; letter-spacing: -0.015em; font-weight: 600; color: var(--accent); }
+.nh-view-img { display: block; overflow: hidden; border: 1px solid var(--line); background: #fff; margin-top: auto; }
+.nh-view-img img { width: 100%; height: auto; display: block; transition: transform .6s cubic-bezier(.2, .6, .2, 1); }
+.nh-view-link:hover .nh-view-img img, .nh-view-link:focus-visible .nh-view-img img { transform: scale(1.02); }
+.nh-view-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; }
+.nh-view-tags { font-size: 0.8rem; letter-spacing: 0.03em; color: var(--muted); }
+.nh-view-cta { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.nh-view-cta-t { font-size: 0.78rem; color: var(--muted); opacity: 0; transform: translateX(-4px); transition: opacity .3s ease, transform .3s ease; }
+.nh-view-arrow { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); transition: background .3s ease, border-color .3s ease, color .3s ease; }
+.nh-view-link:hover .nh-view-cta-t, .nh-view-link:focus-visible .nh-view-cta-t { opacity: 1; transform: none; }
+.nh-view-link:hover .nh-view-arrow, .nh-view-link:focus-visible .nh-view-arrow { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (min-width: 901px) { .nh-view-q { min-height: 2.6em; } }
+@media (max-width: 900px) { .nh-views { grid-template-columns: 1fr; gap: 28px; } }
+@media (max-width: 720px) { .nh-view-link { padding: 22px 18px 16px; } .nh-view-cta-t { display: none; } }
+@media (hover: none) { .nh-view-arrow { background: var(--bg); } }
+@media (prefers-reduced-motion: reduce) { .nh-view-link, .nh-view-img img, .nh-view-cta-t, .nh-view-arrow { transition: none; } .nh-view-link:hover .nh-view-img img { transform: none; } }
