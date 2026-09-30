@@ -1198,3 +1198,5 @@ body.home .milestone-label { color: #a3a7c1; }
 @media (max-width: 720px) { #findings.nh-major { padding: 48px 0; } }
 /* AlpenTech: one consistent section heading size */
 body.nh-page.ap-page main .nh-sec .nh-h2 { font-size: 1.9rem; }
+body.nh-page.ap-page main #dashboard .nh-h2 { font-size: 3rem; }
+@media (max-width: 720px) { body.nh-page.ap-page main #dashboard .nh-h2 { font-size: 2.2rem; } }
