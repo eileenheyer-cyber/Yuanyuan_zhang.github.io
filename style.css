@@ -818,3 +818,11 @@ body.eda-lb-open { overflow: hidden; }
   .about-photo { max-width: 360px; margin: 0 auto; }
   .about-grid { gap: 24px; }
 }
+
+/* About: desktop — text column takes all remaining width; portrait stretches
+   to the text height so photo and text end on the same line */
+@media (min-width: 1025px) {
+  .about-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); }
+  .about-photo { max-width: none; }
+  .about-photo img { height: 100%; aspect-ratio: auto; }
+}
