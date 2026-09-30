@@ -1372,5 +1372,5 @@ body.nh-page.ap-page main #dashboard .nh-h2 { font-size: 3rem; }
 }
 
 /* AlpenTech — unified heading scale: H3 16px, eyebrow 11.52px */
-body.nh-page.ap-page main h3 { font-size: 1rem; }
+body.nh-page.ap-page main h3, body.nh-page.ap-page main .nh-view-q, body.nh-page.ap-page main .nh-find h3 { font-size: 1rem; }
 body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
