@@ -1274,3 +1274,80 @@ body.nh-page.ap-page main #dashboard .nh-h2 { font-size: 3rem; }
   .sv-contrast { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink); padding-top: 20px; }
 }
 .sv-page .nh-intro + .nh-intro { margin-top: 16px; }
+
+/* ==========================================================================
+   EDA page — compact overrides: smaller visuals, analysis beside the charts
+   ========================================================================== */
+.eda-page .eda-hero { padding: 40px 0 0; }
+.eda-page .eda-hero-grid { grid-template-columns: 1fr; gap: 0; }
+.eda-page .eda-hero-vis { display: none; }
+.eda-page .eda-crumbs { margin-bottom: 24px !important; }
+.eda-page .eda-title { font-size: clamp(2rem, 4vw, 3rem); max-width: none; }
+.eda-page .eda-sub { font-size: 1.1rem; margin-top: 14px !important; }
+.eda-page .eda-hero-meta { margin-top: 20px !important; font-size: 0.95rem; }
+.eda-page .eda-hero-tech { margin-top: 8px !important; font-size: 0.85rem; }
+.eda-page .eda-link { margin-top: 16px; font-size: 0.9rem; }
+.eda-page .eda-hero-strip { margin-top: 32px; }
+.eda-page .eda-mini { padding-top: 14px; }
+.eda-page .eda-mini strong { font-size: 1.1rem; }
+.eda-page .eda-sec { padding-top: 64px; }
+.eda-page .eda-head { margin-bottom: 28px; }
+.eda-page .eda-head h2 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+.eda-page .eda-lead { margin-top: 10px !important; font-size: 1rem; }
+.eda-page .eda-explore { padding-top: 64px; }
+.eda-page .eda-explore .eda-head { margin-bottom: 8px; }
+.eda-page .eda-dataset { gap: 40px; }
+.eda-page .eda-bignums { gap: 24px 24px; }
+.eda-page .eda-big { padding-top: 12px; gap: 4px; }
+.eda-page .eda-big strong { font-size: clamp(1.4rem, 2.2vw, 1.9rem); }
+.eda-page .eda-big--period strong { font-size: 1.1rem; }
+.eda-page .eda-journey li { padding-top: 18px; }
+.eda-page .eda-j-d { font-size: 0.82rem; }
+
+/* every finding: chart left, analysis right */
+.eda-page .eda-block, .eda-page .eda-item { margin-top: 0; padding-top: 40px; margin-bottom: 0; border-top: 1px solid var(--line); margin-top: 40px; }
+.eda-page .eda-block:first-of-type { margin-top: 32px; }
+.eda-page .eda-block, .eda-page .eda-item {
+  display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); column-gap: 48px; row-gap: 0; align-items: start;
+}
+.eda-page .eda-block .eda-meta, .eda-page .eda-item .eda-meta { grid-column: 1 / -1; margin-bottom: 16px; min-height: 0; flex-direction: row; gap: 4px 16px; }
+.eda-page .eda-fig { grid-column: 1; grid-row: 2 / span 3; }
+.eda-page .eda-fig figcaption { margin-top: 8px; font-size: 0.72rem; }
+.eda-page .eda-take { grid-column: 2; grid-row: 2; display: block; margin-top: 0; }
+.eda-page .eda-take h3, .eda-page .eda-item h3 { grid-column: 2; margin: 0 0 8px; font-size: 1.2rem; line-height: 1.25; }
+.eda-page .eda-item h3 { grid-row: 2; margin-top: 0; }
+.eda-page .eda-item h3 + p { grid-column: 2; grid-row: 3; margin-top: 0; }
+.eda-page .eda-take-text { gap: 8px; }
+.eda-page .eda-take-text p, .eda-page .eda-item p { font-size: 0.92rem; line-height: 1.6; max-width: none; }
+.eda-page .eda-pair { display: block; margin-top: 0; }
+
+/* outliers band */
+.eda-page .eda-outlier { margin-top: 48px; padding: 48px 0; }
+.eda-page .eda-outlier-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; align-items: start; }
+.eda-page .eda-outlier-side { order: 1; }
+.eda-page .eda-outlier-main { order: 2; }
+.eda-page .eda-outlier h3 { font-size: 1.2rem; }
+.eda-page .eda-ostats { margin: 16px 0 12px; gap: 20px; }
+.eda-page .eda-ostat strong { font-size: 1.5rem; }
+.eda-page .eda-notebox { margin-top: 28px; }
+.eda-page .eda-notehead { font-size: 1rem; }
+.eda-page .eda-notebox p { font-size: 0.92rem; line-height: 1.6; }
+
+/* findings, next, methods */
+.eda-page .eda-findings { gap: 28px; }
+.eda-page .eda-findings li { padding-top: 14px; gap: 8px; }
+.eda-page .eda-findings h3 { font-size: 0.85rem; }
+.eda-page .eda-findings p { font-size: 0.88rem; line-height: 1.55; }
+.eda-page .eda-method { margin-top: 36px; padding: 16px 20px; }
+.eda-page .eda-next li { padding: 16px 0; }
+.eda-page .eda-nq { font-size: 1.02rem; }
+.eda-page .eda-obs { font-size: 0.95rem; }
+.eda-page .eda-methods { margin-top: 64px; padding: 28px 0 40px; }
+
+@media (max-width: 820px) {
+  .eda-page .eda-block, .eda-page .eda-item { display: block; }
+  .eda-page .eda-fig { margin-bottom: 16px; }
+  .eda-page .eda-take h3, .eda-page .eda-item h3 { margin-top: 0; }
+  .eda-page .eda-outlier-grid { grid-template-columns: 1fr; gap: 24px; }
+  .eda-page .eda-outlier-main { order: 0; }
+}
