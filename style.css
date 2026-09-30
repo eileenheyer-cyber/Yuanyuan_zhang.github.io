@@ -1186,3 +1186,13 @@ body.home .milestone-label { color: #a3a7c1; }
 .ap-kpi-d { font-size: 0.74rem; font-weight: 600; line-height: 1.35; color: #b3261e; }
 @media (max-width: 1080px) { .ap-kpis { gap: 10px; } .ap-kpi { padding: 14px 10px 14px 14px; } .ap-kpi-v { font-size: 1.2rem; } .ap-kpi-d { font-size: 0.68rem; } }
 @media (max-width: 720px) { .ap-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ap-kpi-l { min-height: 0; } .ap-kpi-v { font-size: 1.5rem; } }
+/* AlpenTech: compact key findings */
+#findings.nh-major { padding: 64px 0; }
+#findings .nh-head { margin-bottom: 28px; }
+#findings .nh-h2 { font-size: 1.9rem; }
+#findings .nh-findings { gap: 0 40px; }
+#findings .nh-find { padding-top: 20px; padding-bottom: 20px; }
+#findings .nh-find-n { font-size: 1.5rem; margin-bottom: 10px; }
+#findings .nh-find h3 { font-size: 1.02rem; margin-bottom: 6px; }
+#findings .nh-find p { font-size: 0.84rem; line-height: 1.55; }
+@media (max-width: 720px) { #findings.nh-major { padding: 48px 0; } }
