@@ -33,6 +33,14 @@
 <h1 class="nh-title">NordHome Retail Analytics</h1>
 <p class="nh-sub" data-en="From raw retail data to business insight." data-de="Von Rohdaten aus dem Handel zu Business-Erkenntnissen.">From raw retail data to business insight.</p>
 <p class="nh-intro" data-en="A retail analytics project combining PostgreSQL, Python, dimensional modeling and Power BI to investigate revenue, customer behaviour, product performance and marketing effectiveness." data-de="Ein Retail-Analytics-Projekt, das PostgreSQL, Python, dimensionale Modellierung und Power BI verbindet, um Umsatz, Kundenverhalten, Produktperformance und Marketingwirkung zu untersuchen.">A retail analytics project combining PostgreSQL, Python, dimensional modeling and Power BI to investigate revenue, customer behaviour, product performance and marketing effectiveness.</p>
+<div class="nh-hero-journey"><p class="nh-eyebrow" data-en="The data journey" data-de="Der Datenweg">The data journey</p>
+<ol class="nh-journey">
+<li><span class="nh-j-n">01</span><span class="nh-j-t" data-en="Raw data" data-de="Rohdaten">Raw data</span><span class="nh-j-d" data-en="Seven CSV files with planted errors: duplicates, orphaned keys, impossible values." data-de="Sieben CSV-Dateien mit eingebauten Fehlern: Duplikate, verwaiste Schlüssel, unmögliche Werte.">Seven CSV files with planted errors: duplicates, orphaned keys, impossible values.</span></li>
+<li><span class="nh-j-n">02</span><span class="nh-j-t" data-en="ETL" data-de="ETL">ETL</span><span class="nh-j-d" data-en="SQL in PostgreSQL: detect, count and judge each issue, then clean, flag or map to unknown." data-de="SQL in PostgreSQL: jedes Problem erkennen, zählen und bewerten, dann bereinigen, markieren oder auf „unbekannt“ mappen.">SQL in PostgreSQL: detect, count and judge each issue, then clean, flag or map to unknown.</span></li>
+<li><span class="nh-j-n">03</span><span class="nh-j-t" data-en="Model" data-de="Modell">Model</span><span class="nh-j-d" data-en="A Kimball star schema with the grain of every table defined first." data-de="Ein Kimball-Star-Schema mit vorab definiertem Grain jeder Tabelle.">A Kimball star schema with the grain of every table defined first.</span></li>
+<li><span class="nh-j-n">04</span><span class="nh-j-t" data-en="Analysis" data-de="Analyse">Analysis</span><span class="nh-j-d" data-en="Python EDA: one business question per chart, with limits stated." data-de="Python-EDA: eine Business-Frage pro Diagramm, mit klar benannten Grenzen.">Python EDA: one business question per chart, with limits stated.</span></li>
+<li><span class="nh-j-n">05</span><span class="nh-j-t" data-en="BI" data-de="BI">BI</span><span class="nh-j-d" data-en="A four-page Power BI report that turns the model into recommendations." data-de="Ein vierseitiger Power-BI-Report, der das Modell in Empfehlungen übersetzt.">A four-page Power BI report that turns the model into recommendations.</span></li>
+</ol></div>
 
 </div></div>
 <div class="nh-sec nh-sec-tight" id="glance"><div class="nh-wrap">
@@ -43,16 +51,7 @@
 </div>
 <p class="nh-note" data-en="NordHome is a fictional pan-European online retailer (home décor, kitchen, beauty, lifestyle and gift sets, ten markets). The data covers January 2021 to June 2024, read as H1 2024 against H1 2023. 166K+ raw rows in 7 source tables." data-de="NordHome ist ein fiktiver europäischer Online-Händler (Wohndeko, Küche, Beauty, Lifestyle und Geschenksets, zehn Märkte). Die Daten reichen von Januar 2021 bis Juni 2024 und werden als H1 2024 gegen H1 2023 gelesen. 166.000+ Rohzeilen in 7 Quelltabellen.">NordHome is a fictional pan-European online retailer (home décor, kitchen, beauty, lifestyle and gift sets, ten markets). The data covers January 2021 to June 2024, read as H1 2024 against H1 2023. 166K+ raw rows in 7 source tables.</p>
 </div></div>
-<div class="nh-sec nh-sec-tight" id="journey"><div class="nh-wrap">
-<p class="nh-eyebrow" data-en="The data journey" data-de="Der Datenweg">The data journey</p>
-<ol class="nh-journey">
-<li><span class="nh-j-n">01</span><span class="nh-j-t" data-en="Raw data" data-de="Rohdaten">Raw data</span><span class="nh-j-d" data-en="Seven CSV files with planted errors: duplicates, orphaned keys, impossible values." data-de="Sieben CSV-Dateien mit eingebauten Fehlern: Duplikate, verwaiste Schlüssel, unmögliche Werte.">Seven CSV files with planted errors: duplicates, orphaned keys, impossible values.</span></li>
-<li><span class="nh-j-n">02</span><span class="nh-j-t" data-en="ETL" data-de="ETL">ETL</span><span class="nh-j-d" data-en="SQL in PostgreSQL: detect, count and judge each issue, then clean, flag or map to unknown." data-de="SQL in PostgreSQL: jedes Problem erkennen, zählen und bewerten, dann bereinigen, markieren oder auf „unbekannt“ mappen.">SQL in PostgreSQL: detect, count and judge each issue, then clean, flag or map to unknown.</span></li>
-<li><span class="nh-j-n">03</span><span class="nh-j-t" data-en="Model" data-de="Modell">Model</span><span class="nh-j-d" data-en="A Kimball star schema with the grain of every table defined first." data-de="Ein Kimball-Star-Schema mit vorab definiertem Grain jeder Tabelle.">A Kimball star schema with the grain of every table defined first.</span></li>
-<li><span class="nh-j-n">04</span><span class="nh-j-t" data-en="Analysis" data-de="Analyse">Analysis</span><span class="nh-j-d" data-en="Python EDA: one business question per chart, with limits stated." data-de="Python-EDA: eine Business-Frage pro Diagramm, mit klar benannten Grenzen.">Python EDA: one business question per chart, with limits stated.</span></li>
-<li><span class="nh-j-n">05</span><span class="nh-j-t" data-en="BI" data-de="BI">BI</span><span class="nh-j-d" data-en="A four-page Power BI report that turns the model into recommendations." data-de="Ein vierseitiger Power-BI-Report, der das Modell in Empfehlungen übersetzt.">A four-page Power BI report that turns the model into recommendations.</span></li>
-</ol>
-</div></div>
+
 <div class="nh-sec " id="model"><div class="nh-wrap">
 <div class="nh-split nh-split-model"><div>
 <p class="nh-eyebrow" data-en="Data + modeling" data-de="Daten + Modellierung">Data + modeling</p>

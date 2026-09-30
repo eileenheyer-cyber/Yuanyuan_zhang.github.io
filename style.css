@@ -1092,3 +1092,6 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-zoom-schema { aspect-ratio: auto; border: 0; }
 .nh-zoom-schema img { height: auto; }
 .nh-split-model .nh-schema { border: 0; padding: 0; }
+
+.nh-hero-journey { margin-top: 56px; }
+.nh-hero { padding-bottom: 64px; }
