@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-en="NordHome Retail Analytics – Yuanyuan Zhang" data-de="NordHome Retail Analytics – Yuanyuan Zhang">NordHome Retail Analytics – Yuanyuan Zhang</title>
-  <meta name="description" content="Case study: end-to-end data warehouse and Power BI report for a fictional e-commerce retailer." data-en-content="Case study: end-to-end data warehouse and Power BI report for a fictional e-commerce retailer." data-de-content="Case Study: End-to-End Data Warehouse und Power-BI-Report für einen fiktiven E-Commerce-Händler.">
+  <meta name="description" content="Case study: from intentionally messy retail data to a star schema, Python EDA and a four-page Power BI report." data-en-content="Case study: from intentionally messy retail data to a star schema, Python EDA and a four-page Power BI report." data-de-content="Case Study: von bewusst fehlerhaften Handelsdaten zu Star Schema, Python-EDA und einem vierseitigen Power-BI-Report.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260929j">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260930c">
 </head>
-<body>
+<body class="nh-page">
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
@@ -25,56 +25,255 @@
   </div>
 </header>
 
-<main>
+<main class="nh">
 
-  <div class="cs-hero">
-    <a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
-    <span class="cs-status wip" data-en="In progress" data-de="In Arbeit">In progress</span>
-    <h1>NordHome Retail Analytics</h1>
-    <p class="lead" data-en="End-to-end project: data warehouse built on Kimball, ETL in PostgreSQL and a Power BI report for the H1 2024 review." data-de="End-to-End-Projekt: Data Warehouse nach Kimball, ETL in PostgreSQL und ein Power-BI-Report für den Halbjahresrückblick 2024.">End-to-end project: data warehouse built on Kimball, ETL in PostgreSQL and a Power BI report for the H1 2024 review.</p>
-  </div>
-
-  <div class="cs-hero">
-    <img class="cs-cover" src="images/nordhome-executive-overview.png" alt="Power BI Executive Overview Dashboard des NordHome Retail Projekts mit KPI-Karten, Umsatztrend und Kategorie-Tabelle">
-  </div>
-
-  <div class="cs-section" style="padding-top: 0;">
-    <div class="cs-meta-grid">
-      <div><h4 data-en="Role" data-de="Rolle">Role</h4><p data-en="End-to-end: data modeling, ETL, BI" data-de="End-to-End: Datenmodellierung, ETL, BI">End-to-end: data modeling, ETL, BI</p></div>
-      <div><h4 data-en="Timeframe" data-de="Zeitraum">Timeframe</h4><p data-en="Jan 2021 – Jun 2024 (data), 2026 (build)" data-de="Jan 2021 – Jun 2024 (Daten), 2026 (Build)">Jan 2021 – Jun 2024 (data), 2026 (build)</p></div>
-      <div><h4 data-en="Dataset" data-de="Datensatz">Dataset</h4><p data-en="166,000+ rows, 7 CSV sources" data-de="166.000+ Zeilen, 7 CSV-Quellen">166,000+ rows, 7 CSV sources</p></div>
-      <div><h4 data-en="Technology" data-de="Technik">Technology</h4><p>PostgreSQL, SQL, Python, Power BI, DAX</p></div>
-    </div>
-
-    <div class="cs-cols">
-      <div>
-        <h2 data-en="Starting point" data-de="Ausgangslage">Starting point</h2>
-        <p data-en="A fictional e-commerce retailer with markets across DACH, the Nordics and Benelux. I generated the dataset myself: seven CSV sources with over 166,000 rows and deliberately built-in data quality issues across six categories — from missing customer IDs to contradictory order statuses." data-de="Ein fiktiver E-Commerce-Händler mit Märkten in DACH, Nordics und Benelux. Ich habe den Datensatz selbst erzeugt: sieben CSV-Quellen mit über 166.000 Zeilen und bewusst eingebauten Datenqualitätsproblemen in sechs Kategorien — von fehlenden Kunden-IDs bis zu widersprüchlichen Bestellstatus.">A fictional e-commerce retailer with markets across DACH, the Nordics and Benelux. I generated the dataset myself: seven CSV sources with over 166,000 rows and deliberately built-in data quality issues across six categories — from missing customer IDs to contradictory order statuses.</p>
-        <h2 style="margin-top: 40px;" data-en="What I built" data-de="Was ich gebaut habe">What I built</h2>
-        <ul>
-          <li data-en="Layered architecture &lt;code&gt;raw → stg → mart&lt;/code&gt; in plain SQL" data-de="Schichtenarchitektur &lt;code&gt;raw → stg → mart&lt;/code&gt; in reinem SQL">Layered architecture <code>raw → stg → mart</code> in plain SQL</li>
-          <li data-en="Star schema with conformed dimensions (&lt;code&gt;dim_customer&lt;/code&gt;, &lt;code&gt;dim_date&lt;/code&gt;) and four fact tables" data-de="Star Schema mit konformen Dimensionen (&lt;code&gt;dim_customer&lt;/code&gt;, &lt;code&gt;dim_date&lt;/code&gt;) und vier Faktentabellen">Star schema with conformed dimensions (<code>dim_customer</code>, <code>dim_date</code>) and four fact tables</li>
-          <li data-en="Handling orphaned records via &lt;code&gt;-1&lt;/code&gt; placeholders (unknown member) and a lightweight audit log" data-de="Umgang mit Waisen-Datensätzen über &lt;code&gt;-1&lt;/code&gt;-Platzhalter (Unknown Member) und ein schlankes Audit-Log">Handling orphaned records via <code>-1</code> placeholders (unknown member) and a lightweight audit log</li>
-          <li data-en="SCD type 2, surrogate keys, window functions" data-de="SCD Typ 2, Surrogate Keys, Window Functions">SCD type 2, surrogate keys, window functions</li>
-          <li data-en="Fixed a revenue double-counting bug through correct grain definition" data-de="Behebung eines Umsatz-Doppelzählungsfehlers durch korrekte Grain-Definition">Fixed a revenue double-counting bug through correct grain definition</li>
-        </ul>
-      </div>
-      <div>
-        <h2 data-en="Power BI report" data-de="Power BI Report">Power BI report</h2>
-        <p data-en="Executive Overview with KPI cards (net revenue, net AOV, gross margin, completed orders, return rate), a revenue trend with H2 estimate, and a &quot;Revenue at risk&quot; panel: 18.0% of net revenue is lost to cancellations, returns and refunds." data-de="Executive Overview mit KPI-Karten (Net Revenue, Net AOV, Bruttomarge, Completed Orders, Return Rate), Umsatzverlauf mit H2-Schätzung und dem Panel „Revenue at risk“: 18,0 % des Nettoumsatzes gehen durch Stornos, Retouren und Erstattungen verloren.">Executive Overview with KPI cards (net revenue, net AOV, gross margin, completed orders, return rate), a revenue trend with H2 estimate, and a "Revenue at risk" panel: 18.0% of net revenue is lost to cancellations, returns and refunds.</p>
-        <h2 style="margin-top: 40px;" data-en="Technology" data-de="Technik">Technology</h2>
-        <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px;">
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">PostgreSQL</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">SQL</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Python</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Power BI</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">DAX</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Deneb</span>
-        </div>
-        <p style="margin-top: 24px;"><a href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics" style="color: var(--accent); font-weight: 500;" data-en="Repository on GitHub →" data-de="Repository auf GitHub →">Repository on GitHub →</a></p>
-      </div>
-    </div>
-  </div>
+<div class="nh-hero"><div class="nh-wrap">
+<a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
+<p class="nh-eyebrow" data-en="NordHome Retail Analytics · Case study" data-de="NordHome Retail Analytics · Case Study">NordHome Retail Analytics · Case study</p>
+<h1 class="nh-title" data-en="Turning messy retail data into a reliable foundation for business decisions." data-de="Aus unordentlichen Handelsdaten eine verlässliche Grundlage für Geschäftsentscheidungen machen.">Turning messy retail data into a reliable foundation for business decisions.</h1>
+<p class="nh-intro" data-en="NordHome is a fictional European online retailer. I built this project end to end: from intentionally messy raw data, through data quality checks, dimensional modelling and exploratory analysis, to a four-page Power BI report. The dashboard is only the last layer — most of the work, and most of the thinking, happens before it." data-de="NordHome ist ein fiktiver europäischer Online-Händler. Ich habe dieses Projekt komplett selbst aufgebaut: von bewusst fehlerhaften Rohdaten über Datenqualitätsprüfungen, dimensionale Modellierung und explorative Analyse bis zu einem vierseitigen Power-BI-Report. Das Dashboard ist nur die letzte Schicht – die meiste Arbeit und das meiste Denken passieren davor.">NordHome is a fictional European online retailer. I built this project end to end: from intentionally messy raw data, through data quality checks, dimensional modelling and exploratory analysis, to a four-page Power BI report. The dashboard is only the last layer — most of the work, and most of the thinking, happens before it.</p>
+<dl class="nh-facts">
+  <div><dt class="nh-num">166K+</dt><dd data-en="rows of raw data" data-de="Zeilen Rohdaten">rows of raw data</dd></div>
+  <div><dt class="nh-num">7</dt><dd data-en="source tables" data-de="Quelltabellen">source tables</dd></div>
+  <div><dt class="nh-num">6</dt><dd data-en="dimensions" data-de="Dimensionen">dimensions</dd></div>
+  <div><dt class="nh-num">4</dt><dd data-en="fact tables" data-de="Faktentabellen">fact tables</dd></div>
+  <div class="nh-facts-tools"><dt class="nh-num nh-num-sm">PostgreSQL · Python · Power&nbsp;BI</dt><dd data-en="tools" data-de="Werkzeuge">tools</dd></div>
+</dl>
+</div></div>
+<div class="nh-sec nh-sec-tight"><div class="nh-wrap">
+<p class="nh-eyebrow" data-en="The project journey" data-de="Der Projektweg">The project journey</p>
+<ol class="nh-journey">
+<li><span class="nh-j-n">01</span><span class="nh-j-t" data-en="Raw data" data-de="Rohdaten">Raw data</span><span class="nh-j-d" data-en="Seven CSV files with planted errors: duplicates, orphaned keys, impossible values." data-de="Sieben CSV-Dateien mit eingebauten Fehlern: Duplikate, verwaiste Schlüssel, unmögliche Werte.">Seven CSV files with planted errors: duplicates, orphaned keys, impossible values.</span><span class="nh-j-w" data-en="Source · CSV" data-de="Quelle · CSV">Source · CSV</span></li>
+<li><span class="nh-j-n">02</span><span class="nh-j-t" data-en="Clean &amp; validate" data-de="Bereinigen &amp; prüfen">Clean & validate</span><span class="nh-j-d" data-en="Detect, count, judge the business impact — then clean, flag or map to unknown." data-de="Erkennen, zählen, Geschäftsauswirkung bewerten – dann bereinigen, markieren oder auf „unbekannt“ mappen.">Detect, count, judge the business impact — then clean, flag or map to unknown.</span><span class="nh-j-w" data-en="Data cleaning · SQL" data-de="Datenbereinigung · SQL">Data cleaning · SQL</span></li>
+<li><span class="nh-j-n">03</span><span class="nh-j-t" data-en="Model" data-de="Modellieren">Model</span><span class="nh-j-d" data-en="A Kimball star schema, with the grain of every table defined first." data-de="Ein Kimball-Star-Schema – mit vorab definiertem Grain jeder Tabelle.">A Kimball star schema, with the grain of every table defined first.</span><span class="nh-j-w" data-en="Data modelling · PostgreSQL" data-de="Datenmodellierung · PostgreSQL">Data modelling · PostgreSQL</span></li>
+<li><span class="nh-j-n">04</span><span class="nh-j-t" data-en="Analyze" data-de="Analysieren">Analyze</span><span class="nh-j-d" data-en="Python EDA: one business question per chart, with the limits stated." data-de="Python-EDA: eine Business-Frage pro Diagramm, mit klar benannten Grenzen.">Python EDA: one business question per chart, with the limits stated.</span><span class="nh-j-w" data-en="EDA · Python, pandas" data-de="EDA · Python, pandas">EDA · Python, pandas</span></li>
+<li><span class="nh-j-n">05</span><span class="nh-j-t" data-en="Decide" data-de="Entscheiden">Decide</span><span class="nh-j-d" data-en="A four-page Power BI report that turns the model into recommendations for H2." data-de="Ein vierseitiger Power-BI-Report, der das Modell in Empfehlungen für das 2. Halbjahr übersetzt.">A four-page Power BI report that turns the model into recommendations for H2.</span><span class="nh-j-w" data-en="BI dashboard · Power BI" data-de="BI-Dashboard · Power BI">BI dashboard · Power BI</span></li>
+</ol>
+<p class="nh-note" data-en="The dashboard is the visible end of the process — not where it starts." data-de="Das Dashboard ist das sichtbare Ende des Prozesses – nicht sein Anfang.">The dashboard is the visible end of the process — not where it starts.</p>
+</div></div>
+<div class="nh-sec" id="context"><div class="nh-wrap nh-split">
+<div>
+<p class="nh-eyebrow" data-en="Business context" data-de="Geschäftlicher Kontext">Business context</p>
+<h2 class="nh-h2" data-en="A retailer that needs to know whether its growth is real." data-de="Ein Händler, der wissen muss, ob sein Wachstum echt ist.">A retailer that needs to know whether its growth is real.</h2>
+<p class="nh-body" data-en="NordHome, founded in 2018, sells home décor, kitchen essentials, beauty products, lifestyle goods and curated gift sets across ten European markets — DACH, the Nordics, Benelux, France and Poland. Orders come in through the website, a mobile app, marketplaces and by phone." data-de="NordHome, gegründet 2018, verkauft Wohndeko, Küchenzubehör, Beauty-Produkte, Lifestyle-Artikel und Geschenksets in zehn europäischen Märkten – DACH, Nordics, Benelux, Frankreich und Polen. Bestellt wird über Website, Mobile App, Marktplätze und telefonisch.">NordHome, founded in 2018, sells home décor, kitchen essentials, beauty products, lifestyle goods and curated gift sets across ten European markets — DACH, the Nordics, Benelux, France and Poland. Orders come in through the website, a mobile app, marketplaces and by phone.</p>
+<p class="nh-body" data-en="The data covers January 2021 to June 2024. Because 2024 is only a half-year, everything is read as H1 2024 against H1 2023." data-de="Die Daten reichen von Januar 2021 bis Juni 2024. Da 2024 nur ein Halbjahr umfasst, wird alles als H1 2024 gegen H1 2023 gelesen.">The data covers January 2021 to June 2024. Because 2024 is only a half-year, everything is read as H1 2024 against H1 2023.</p>
+</div><div>
+<p class="nh-label" data-en="The questions behind the analysis" data-de="Die Fragen hinter der Analyse">The questions behind the analysis</p>
+<ol class="nh-qlist">
+<li><span class="nh-q-n">01</span><span data-en="Is NordHome growing — and can I trust that growth?" data-de="Wächst NordHome – und kann ich diesem Wachstum trauen?">Is NordHome growing — and can I trust that growth?</span></li>
+<li><span class="nh-q-n">02</span><span data-en="How much revenue leaks away through cancellations, returns and refunds?" data-de="Wie viel Umsatz geht durch Stornos, Retouren und Erstattungen verloren?">How much revenue leaks away through cancellations, returns and refunds?</span></li>
+<li><span class="nh-q-n">03</span><span data-en="Are customers coming back, or is the business mostly acquiring one-time buyers?" data-de="Kommen Kunden wieder – oder gewinnt das Unternehmen vor allem Einmalkäufer?">Are customers coming back, or is the business mostly acquiring one-time buyers?</span></li>
+<li><span class="nh-q-n">04</span><span data-en="Which marketing channels actually convert, and where should budget shift?" data-de="Welche Marketingkanäle konvertieren wirklich – und wohin sollte das Budget wandern?">Which marketing channels actually convert, and where should budget shift?</span></li>
+</ol></div></div></div>
+<div class="nh-sec" id="quality"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Data cleaning" data-de="Datenbereinigung">Data cleaning</p>
+<h2 class="nh-h2" data-en="The data quality challenge" data-de="Die Datenqualitäts-Herausforderung">The data quality challenge</h2>
+<p class="nh-lead" data-en="The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged." data-de="Das Schwierige war nicht, die Daten einfach zu laden. Zuerst musste ich klären, welchen Datensätzen man trauen kann, welche korrigiert und welche markiert werden müssen.">The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged.</p>
+</div>
+<div class="nh-stats">
+<div class="nh-stat"><span class="nh-num" data-en="496" data-de="496">496</span>
+<span class="nh-stat-t" data-en="orders that point to customers who don’t exist" data-de="Bestellungen, die auf nicht existierende Kunden verweisen">orders that point to customers who don’t exist</span>
+<span class="nh-stat-s" data-en="raw_orders · 31,465 rows" data-de="raw_orders · 31.465 Zeilen">raw_orders · 31,465 rows</span>
+</div>
+<div class="nh-stat"><span class="nh-num" data-en="1,835" data-de="1.835">1,835</span>
+<span class="nh-stat-t" data-en="returns for products missing from the catalogue — 30.1% of all returns" data-de="Retouren zu Produkten, die im Katalog fehlen – 30,1 % aller Retouren">returns for products missing from the catalogue — 30.1% of all returns</span>
+<span class="nh-stat-s" data-en="raw_returns · 6,097 rows" data-de="raw_returns · 6.097 Zeilen">raw_returns · 6,097 rows</span>
+</div>
+<div class="nh-stat"><span class="nh-num" data-en="471" data-de="471">471</span>
+<span class="nh-stat-t" data-en="duplicate payment rows — and 1,930 payments with no method" data-de="doppelte Zahlungszeilen – und 1.930 Zahlungen ohne Zahlungsart">duplicate payment rows — and 1,930 payments with no method</span>
+<span class="nh-stat-s" data-en="raw_payments · 31,936 rows" data-de="raw_payments · 31.936 Zeilen">raw_payments · 31,936 rows</span>
+</div>
+<div class="nh-stat"><span class="nh-num" data-en="379" data-de="379">379</span>
+<span class="nh-stat-t" data-en="negative quantities on order lines — plus 241 zero prices" data-de="negative Mengen bei Bestellpositionen – plus 241 Nullpreise">negative quantities on order lines — plus 241 zero prices</span>
+<span class="nh-stat-s" data-en="raw_order_items · 75,473 rows" data-de="raw_order_items · 75.473 Zeilen">raw_order_items · 75,473 rows</span>
+</div>
+</div>
+<p class="nh-note" data-en="Also in the raw layer: every order_id appeared twice · ~18 spelling variants across 7 payment methods · 105 returns dated before the order · 22 negative refunds · invalid emails and mixed date formats." data-de="Außerdem in der Rohschicht: jede order_id kam doppelt vor · ca. 18 Schreibvarianten bei 7 Zahlungsarten · 105 Retouren mit Datum vor der Bestellung · 22 negative Erstattungen · ungültige E-Mails und gemischte Datumsformate.">Also in the raw layer: every order_id appeared twice · ~18 spelling variants across 7 payment methods · 105 returns dated before the order · 22 negative refunds · invalid emails and mixed date formats.</p>
+<div class="nh-split nh-split-top">
+<div>
+<p class="nh-label" data-en="How I decided what to do" data-de="Wie ich entschieden habe">How I decided what to do</p>
+<ol class="nh-steps">
+<li><span class="nh-q-n">01</span><span><strong data-en="Detect" data-de="Erkennen">Detect</strong> — <span data-en="Find the issue." data-de="Das Problem finden.">Find the issue.</span></span></li>
+<li><span class="nh-q-n">02</span><span><strong data-en="Count" data-de="Zählen">Count</strong> — <span data-en="How many rows are affected?" data-de="Wie viele Zeilen sind betroffen?">How many rows are affected?</span></span></li>
+<li><span class="nh-q-n">03</span><span><strong data-en="Assess" data-de="Bewerten">Assess</strong> — <span data-en="What would it do to the business numbers?" data-de="Was würde es mit den Geschäftszahlen anrichten?">What would it do to the business numbers?</span></span></li>
+<li><span class="nh-q-n">04</span><span><strong data-en="Decide" data-de="Entscheiden">Decide</strong> — <span data-en="Clean, standardise, flag, map to unknown — or exclude. And write down why." data-de="Bereinigen, vereinheitlichen, markieren, auf „unbekannt“ mappen – oder ausschließen. Und die Begründung dokumentieren.">Clean, standardise, flag, map to unknown — or exclude. And write down why.</span></span></li>
+</ol></div>
+<div class="nh-callout">
+<p class="nh-callout-h" data-en="Ghost records are kept, not deleted" data-de="Geisterdatensätze werden behalten, nicht gelöscht">Ghost records are kept, not deleted</p>
+<p class="nh-body" data-en="An order whose customer can’t be found is still a real sale. So instead of deleting these rows, I mapped them to an “unknown” key (−1): the totals stay correct, and analyses that need a real customer or product can still exclude them. Messy rows are never silently dropped." data-de="Eine Bestellung, deren Kunde nicht auffindbar ist, ist trotzdem ein echter Verkauf. Statt diese Zeilen zu löschen, habe ich sie auf einen „unbekannt“-Schlüssel (−1) gemappt: Die Summen bleiben korrekt, und Analysen, die einen echten Kunden oder ein echtes Produkt brauchen, können sie weiterhin ausschließen. Unordentliche Zeilen werden nie stillschweigend verworfen.">An order whose customer can’t be found is still a real sale. So instead of deleting these rows, I mapped them to an “unknown” key (−1): the totals stay correct, and analyses that need a real customer or product can still exclude them. Messy rows are never silently dropped.</p>
+</div></div>
+<p class="nh-label nh-label-gap" data-en="Found later, by questioning a number that looked wrong" data-de="Später gefunden – weil ich eine Zahl hinterfragt habe, die falsch aussah">Found later, by questioning a number that looked wrong</p>
+<div class="nh-trio">
+<div><h3 data-en="228 corrupted quantities" data-de="228 kaputte Mengen">228 corrupted quantities</h3><p data-en="A suspiciously high average order value led me to quantities of up to 1,996. Back-solving from the line total recovered the true quantity for 216 rows." data-de="Ein auffällig hoher durchschnittlicher Bestellwert führte mich zu Mengen bis 1.996. Über die Zeilensumme konnte ich die echte Menge für 216 Zeilen zurückrechnen.">A suspiciously high average order value led me to quantities of up to 1,996. Back-solving from the line total recovered the true quantity for 216 rows.</p></div>
+<div><h3 data-en="A date table that quietly stretched" data-de="Eine Datumstabelle, die sich still ausdehnte">A date table that quietly stretched</h3><p data-en="A downstream defect pushed the date range to Dec 2024 and silently broke every year-over-year measure. I fixed the range to the real Jan 2021 – Jun 2024 window." data-de="Ein nachgelagerter Fehler dehnte den Datumsbereich bis Dez 2024 aus und brach still alle Vorjahresvergleiche. Ich habe den Bereich fest auf Jan 2021 – Jun 2024 gesetzt.">A downstream defect pushed the date range to Dec 2024 and silently broke every year-over-year measure. I fixed the range to the real Jan 2021 – Jun 2024 window.</p></div>
+<div><h3 data-en="148 people registered twice" data-de="148 doppelt registrierte Personen">148 people registered twice</h3><p data-en="91% had real orders under both IDs. Deleting would lose history, merging would break keys — so I kept both and added a canonical customer key." data-de="91 % hatten echte Bestellungen unter beiden IDs. Löschen hätte Historie vernichtet, Zusammenführen Schlüssel gebrochen – also blieben beide, ergänzt um einen kanonischen Kundenschlüssel.">91% had real orders under both IDs. Deleting would lose history, merging would break keys — so I kept both and added a canonical customer key.</p></div>
+</div>
+</div></div>
+<div class="nh-sec" id="model"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Data modelling" data-de="Datenmodellierung">Data modelling</p>
+<h2 class="nh-h2" data-en="Modeling the business" data-de="Das Geschäft modellieren">Modeling the business</h2>
+<p class="nh-lead" data-en="I used a Kimball-style star schema: four fact tables that record what happens, surrounded by six dimensions that describe it." data-de="Ich habe ein Star-Schema nach Kimball verwendet: vier Faktentabellen, die festhalten, was passiert, umgeben von sechs Dimensionen, die es beschreiben.">I used a Kimball-style star schema: four fact tables that record what happens, surrounded by six dimensions that describe it.</p>
+</div>
+<blockquote class="nh-quote"><p data-en="Before building the fact tables, I asked a simple question: &lt;em&gt;What does one row actually represent?&lt;/em&gt;" data-de="Bevor ich die Faktentabellen gebaut habe, habe ich eine einfache Frage gestellt: &lt;em&gt;Was stellt eine Zeile eigentlich dar?&lt;/em&gt;">Before building the fact tables, I asked a simple question: <em>What does one row actually represent?</em></p></blockquote>
+<p class="nh-body nh-body-wide" data-en="That answer is called the grain, and I wrote it down for every table before building it. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice." data-de="Diese Antwort heißt Grain, und ich habe ihn für jede Tabelle festgehalten, bevor ich sie gebaut habe. Er entscheidet, welche Joins sicher sind, welche Kennzahlen sich addieren lassen und wo derselbe Wert doppelt gezählt werden könnte.">That answer is called the grain, and I wrote it down for every table before building it. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice.</p>
+<figure class="nh-star" role="group" aria-label="Simplified star schema of the NordHome data mart">
+<div class="nh-star-shared"><span class="nh-star-k" data-en="Shared by every fact table" data-de="Von jeder Faktentabelle genutzt">Shared by every fact table</span><span class="nh-dim">dim_customer</span><span class="nh-dim">dim_date</span></div>
+<div class="nh-star-facts">
+<div class="nh-fact"><span class="nh-fact-name">fact_order_items</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one order line item" data-de="eine Bestellposition">one order line item</span></span><span class="nh-dim nh-dim-own">dim_product</span></div>
+<div class="nh-fact"><span class="nh-fact-name">fact_payments</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one payment transaction" data-de="eine Zahlungstransaktion">one payment transaction</span></span><span class="nh-dim nh-dim-own">dim_payment</span></div>
+<div class="nh-fact"><span class="nh-fact-name">fact_returns</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one return event" data-de="ein Retourenereignis">one return event</span></span><span class="nh-dim nh-dim-own">dim_return_reason</span></div>
+<div class="nh-fact"><span class="nh-fact-name">fact_marketing_touchpoints</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one customer–campaign–channel touchpoint" data-de="ein Kontaktpunkt Kunde–Kampagne–Kanal">one customer–campaign–channel touchpoint</span></span><span class="nh-dim nh-dim-own">dim_marketing_campaigns</span></div>
+</div>
+<figcaption data-en="Simplified view: key relationships only. Unmatched (“ghost”) references point to an unknown member instead of being deleted." data-de="Vereinfachte Darstellung: nur die wichtigsten Beziehungen. Nicht zuordenbare („Geister“-)Verweise zeigen auf einen Unknown-Member, statt gelöscht zu werden.">Simplified view: key relationships only. Unmatched (“ghost”) references point to an unknown member instead of being deleted.</figcaption>
+</figure>
+</div></div>
+<div class="nh-sec nh-sec-band" id="problem"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Analytical problem-solving" data-de="Analytisches Problemlösen">Analytical problem-solving</p>
+<h2 class="nh-h2" data-en="A problem I had to solve" data-de="Ein Problem, das ich lösen musste">A problem I had to solve</h2>
+</div><div class="nh-split nh-split-problem"><div class="nh-pis">
+<div class="nh-pi"><span class="nh-pi-k" data-en="Problem" data-de="Problem">Problem</span><p data-en="On my first version of the revenue-leakage chart, refunds looked like the biggest source of lost revenue: &lt;strong&gt;€142K&lt;/strong&gt;." data-de="In meiner ersten Version des Umsatzverlust-Diagramms sahen Erstattungen wie die größte Quelle verlorenen Umsatzes aus: &lt;strong&gt;142 Tsd. €&lt;/strong&gt;.">On my first version of the revenue-leakage chart, refunds looked like the biggest source of lost revenue: <strong>€142K</strong>.</p></div>
+<div class="nh-pi"><span class="nh-pi-k" data-en="Investigation" data-de="Untersuchung">Investigation</span><p data-en="Three loss-rate measures had been written at different times against different bases — one divided by Net Revenue, another by Gross Sales Revenue. And the refund figure came from the returns table, which also holds refunds booked against cancelled and returned orders. The same money sat in more than one bucket." data-de="Drei Verlustquoten waren zu verschiedenen Zeitpunkten auf unterschiedlichen Basiswerten entstanden – eine geteilt durch den Nettoumsatz, eine andere durch den Bruttoverkaufsumsatz. Und die Erstattungszahl stammte aus der Retourentabelle, die auch Erstattungen zu stornierten und retournierten Bestellungen enthält. Dasselbe Geld lag in mehr als einem Topf.">Three loss-rate measures had been written at different times against different bases — one divided by Net Revenue, another by Gross Sales Revenue. And the refund figure came from the returns table, which also holds refunds booked against cancelled and returned orders. The same money sat in more than one bucket.</p></div>
+<div class="nh-pi"><span class="nh-pi-k" data-en="Solution" data-de="Lösung">Solution</span><p data-en="I rebuilt all three on one base — Gross Order Value — with mutually exclusive numerators, all taken from order status. Order value now splits cleanly into retained, cancelled, returned and refunded." data-de="Ich habe alle drei auf einer gemeinsamen Basis neu gebaut – dem Bruttobestellwert – mit sich gegenseitig ausschließenden Zählern, alle aus dem Bestellstatus. Der Bestellwert teilt sich nun sauber in behalten, storniert, retourniert und erstattet.">I rebuilt all three on one base — Gross Order Value — with mutually exclusive numerators, all taken from order status. Order value now splits cleanly into retained, cancelled, returned and refunded.</p></div>
+<div class="nh-pi nh-pi-lesson"><span class="nh-pi-k" data-en="Lesson" data-de="Erkenntnis">Lesson</span><p data-en="&lt;strong&gt;A reliable dashboard starts with a reliable data model.&lt;/strong&gt; A wrong denominator isn’t cosmetic — it can change the decision an executive makes." data-de="&lt;strong&gt;Ein verlässliches Dashboard beginnt mit einem verlässlichen Datenmodell.&lt;/strong&gt; Ein falscher Nenner ist keine Kosmetik – er kann die Entscheidung einer Führungskraft verändern."><strong>A reliable dashboard starts with a reliable data model.</strong> A wrong denominator isn’t cosmetic — it can change the decision an executive makes.</p></div>
+</div>
+<figure class="nh-bars" role="img" aria-label="Revenue lost by type after rebuilding on one base: cancelled 115.6K, returned 90.0K, refunded 85.3K euros. The first version showed refunds at 142K.">
+<p class="nh-label" data-en="Value lost, rebuilt on one base" data-de="Verlorener Wert, auf einer Basis neu berechnet">Value lost, rebuilt on one base</p>
+<div class="nh-bar-row"><span class="nh-bar-l" data-en="Cancelled" data-de="Storniert">Cancelled</span><span class="nh-bar-track"><span class="nh-bar-fill" style="width:77.1%"></span></span><span class="nh-bar-v" data-en="€115.6K" data-de="115,6 Tsd. €">€115.6K</span></div>
+<div class="nh-bar-row"><span class="nh-bar-l" data-en="Returned" data-de="Retourniert">Returned</span><span class="nh-bar-track"><span class="nh-bar-fill" style="width:60.0%"></span></span><span class="nh-bar-v" data-en="€90.0K" data-de="90,0 Tsd. €">€90.0K</span></div>
+<div class="nh-bar-row"><span class="nh-bar-l" data-en="Refunded" data-de="Erstattet">Refunded</span><span class="nh-bar-track"><span class="nh-bar-ghost" style="width:94.7%"></span><span class="nh-bar-fill" style="width:56.9%"></span></span><span class="nh-bar-v" data-en="€85.3K" data-de="85,3 Tsd. €">€85.3K</span></div>
+<p class="nh-bars-cap" data-en="Dashed outline: the first version’s refund figure, &lt;strong&gt;€142K&lt;/strong&gt; — overstated by about 67%. The ranking flipped: cancellations are the biggest leak, refunds the smallest." data-de="Gestrichelte Fläche: die Erstattungszahl der ersten Version, &lt;strong&gt;142 Tsd. €&lt;/strong&gt; – um rund 67 % zu hoch. Die Rangfolge drehte sich: Stornos sind das größte Leck, Erstattungen das kleinste.">Dashed outline: the first version’s refund figure, <strong>€142K</strong> — overstated by about 67%. The ranking flipped: cancellations are the biggest leak, refunds the smallest.</p>
+</figure></div></div></div>
+<div class="nh-sec" id="eda"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Exploratory data analysis" data-de="Explorative Datenanalyse">Exploratory data analysis</p>
+<h2 class="nh-h2" data-en="Asking questions before building the dashboard" data-de="Fragen stellen, bevor das Dashboard entsteht">Asking questions before building the dashboard</h2>
+<p class="nh-lead" data-en="Before the dashboard, I explored the data in Python: 25 charts across six business areas, each following the same pattern — question, chart, finding, interpretation, limitation. Three examples:" data-de="Vor dem Dashboard habe ich die Daten in Python erkundet: 25 Diagramme in sechs Geschäftsbereichen, jeweils nach demselben Muster – Frage, Diagramm, Befund, Interpretation, Grenze. Drei Beispiele:">Before the dashboard, I explored the data in Python: 25 charts across six business areas, each following the same pattern — question, chart, finding, interpretation, limitation. Three examples:</p>
+</div>
+<div class="nh-eda">
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-eda-status-impact.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-eda-status-impact.webp" alt="Bar chart of order value lost to cancellations, returns and refunds per year" width="1600" height="824" loading="lazy" decoding="async"></a></figure>
+<div class="nh-eda-text">
+<p class="nh-label" data-en="The question" data-de="Die Frage">The question</p>
+<h3 data-en="How much order value do cancellations, returns and refunds take away?" data-de="Wie viel Bestellwert nehmen Stornos, Retouren und Erstattungen weg?">How much order value do cancellations, returns and refunds take away?</h3>
+<p class="nh-label" data-en="What I found" data-de="Was ich fand">What I found</p>
+<p class="nh-body" data-en="About &lt;strong&gt;17%&lt;/strong&gt; of potential order value every year (16.5–17.4%) — a stable band with no improving trend. Cancellations are consistently the largest part." data-de="Etwa &lt;strong&gt;17 %&lt;/strong&gt; des potenziellen Bestellwerts pro Jahr (16,5–17,4 %) – ein stabiles Band ohne Verbesserungstrend. Stornos sind durchgehend der größte Anteil.">About <strong>17%</strong> of potential order value every year (16.5–17.4%) — a stable band with no improving trend. Cancellations are consistently the largest part.</p>
+<p class="nh-limit" data-en="Limit: This is operational impact, not cash loss: actual cash refunds are a much smaller 2.6%." data-de="Grenze: Das ist operative Auswirkung, kein Geldverlust: Tatsächliche Barerstattungen liegen bei nur 2,6 %.">Limit: This is operational impact, not cash loss: actual cash refunds are a much smaller 2.6%.</p>
+</div></div>
+<div class="nh-eda nh-eda-rev">
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-eda-customer-outliers.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-eda-customer-outliers.webp" alt="Histogram of revenue per customer with the top 1.9% highlighted above 6,790 euros" width="1600" height="928" loading="lazy" decoding="async"></a></figure>
+<div class="nh-eda-text">
+<p class="nh-label" data-en="The question" data-de="Die Frage">The question</p>
+<h3 data-en="Does the “average customer” describe the customer base?" data-de="Beschreibt der „Durchschnittskunde“ den Kundenstamm?">Does the “average customer” describe the customer base?</h3>
+<p class="nh-label" data-en="What I found" data-de="Was ich fand">What I found</p>
+<p class="nh-body" data-en="Not quite. &lt;strong&gt;151 of 7,969 customers (1.9%)&lt;/strong&gt; spend above €6,790, up to €11,428 — a small high-value group that the average hides." data-de="Nicht ganz. &lt;strong&gt;151 von 7.969 Kunden (1,9 %)&lt;/strong&gt; geben mehr als 6.790 € aus, bis zu 11.428 € – eine kleine Gruppe mit hohem Wert, die der Durchschnitt versteckt.">Not quite. <strong>151 of 7,969 customers (1.9%)</strong> spend above €6,790, up to €11,428 — a small high-value group that the average hides.</p>
+<p class="nh-limit" data-en="Limit: Unknown customers and returned, refunded or cancelled value are excluded." data-de="Grenze: Unbekannte Kunden sowie retournierter, erstatteter oder stornierter Wert sind ausgeschlossen.">Limit: Unknown customers and returned, refunded or cancelled value are excluded.</p>
+</div></div>
+<div class="nh-eda">
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-eda-return-heatmap.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-eda-return-heatmap.webp" alt="Heatmap of return rates by sales channel and country" width="1600" height="657" loading="lazy" decoding="async"></a></figure>
+<div class="nh-eda-text">
+<p class="nh-label" data-en="The question" data-de="Die Frage">The question</p>
+<h3 data-en="Do return rates depend on the sales channel or on the market?" data-de="Hängen Retourenquoten vom Vertriebskanal oder vom Markt ab?">Do return rates depend on the sales channel or on the market?</h3>
+<p class="nh-label" data-en="What I found" data-de="Was ich fand">What I found</p>
+<p class="nh-body" data-en="Neither alone. Across 40 channel × country combinations, rates range from &lt;strong&gt;16.0% to 22.8%&lt;/strong&gt; (average 19.0%), highest for Marketplace in the Netherlands." data-de="Keines allein. Über 40 Kombinationen aus Kanal × Land liegen die Quoten zwischen &lt;strong&gt;16,0 % und 22,8 %&lt;/strong&gt; (Durchschnitt 19,0 %), am höchsten für Marketplace in den Niederlanden.">Neither alone. Across 40 channel × country combinations, rates range from <strong>16.0% to 22.8%</strong> (average 19.0%), highest for Marketplace in the Netherlands.</p>
+<p class="nh-limit" data-en="Limit: A modest signal: each cell is a small sample (~769 orders), so extreme cells may be noise." data-de="Grenze: Ein schwaches Signal: Jede Zelle ist eine kleine Stichprobe (~769 Bestellungen), Extremwerte können Rauschen sein.">Limit: A modest signal: each cell is a small sample (~769 orders), so extreme cells may be noise.</p>
+</div></div>
+<p class="nh-note" data-en="The Python analysis and the Power BI report were built on different states of the data (some dashboard fields were regenerated later), so their numbers aren’t meant to be compared line by line." data-de="Die Python-Analyse und der Power-BI-Report basieren auf unterschiedlichen Datenständen (einige Dashboard-Felder wurden später neu erzeugt) – ihre Zahlen sind nicht dazu gedacht, Zeile für Zeile verglichen zu werden.">The Python analysis and the Power BI report were built on different states of the data (some dashboard fields were regenerated later), so their numbers aren’t meant to be compared line by line.</p>
+</div></div>
+<div class="nh-sec" id="dashboard"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="BI dashboard" data-de="BI-Dashboard">BI dashboard</p>
+<h2 class="nh-h2" data-en="The Power BI report" data-de="Der Power-BI-Report">The Power BI report</h2>
+<p class="nh-lead" data-en="Four pages, one shared design, each built around a business question. The default view compares H1 2024 with H1 2023; slicers for year, market and category open up other views." data-de="Vier Seiten, ein gemeinsames Design, jede um eine Business-Frage herum gebaut. Die Standardansicht vergleicht H1 2024 mit H1 2023; Slicer für Jahr, Markt und Kategorie erlauben andere Sichten.">Four pages, one shared design, each built around a business question. The default view compares H1 2024 with H1 2023; slicers for year, market and category open up other views.</p>
+</div>
+<article class="nh-page-block">
+<div class="nh-page-head">
+<span class="nh-page-n">01</span>
+<div><h3 data-en="Executive Overview" data-de="Executive Overview">Executive Overview</h3><p class="nh-page-q" data-en="Is NordHome growing, and is that growth trustworthy?" data-de="Wächst NordHome – und ist dieses Wachstum verlässlich?">Is NordHome growing, and is that growth trustworthy?</p></div>
+<p class="nh-body nh-page-d" data-en="Five KPI cards, the revenue leakage split, discounts by category, and a waterfall that breaks the year-over-year change into customers, frequency and order value." data-de="Fünf KPI-Karten, die Aufteilung der Umsatzverluste, Rabatte nach Kategorie und ein Wasserfall, der die Veränderung zum Vorjahr in Kunden, Frequenz und Bestellwert zerlegt.">Five KPI cards, the revenue leakage split, discounts by category, and a waterfall that breaks the year-over-year change into customers, frequency and order value.</p>
+</div>
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-pbi-01-executive.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-pbi-01-executive.webp" alt="Power BI dashboard page: Executive Overview" width="2000" height="1126" loading="lazy" decoding="async"></a></figure>
+</article>
+<article class="nh-page-block">
+<div class="nh-page-head">
+<span class="nh-page-n">02</span>
+<div><h3 data-en="Sales &amp; Product Performance" data-de="Sales &amp; Product Performance">Sales & Product Performance</h3><p class="nh-page-q" data-en="What is driving revenue, and what is dragging on it?" data-de="Was treibt den Umsatz – und was bremst ihn?">What is driving revenue, and what is dragging on it?</p></div>
+<p class="nh-body nh-page-d" data-en="Markets and categories ranked by revenue, every subcategory plotted by margin against growth, and the top 10 products." data-de="Märkte und Kategorien nach Umsatz, jede Unterkategorie nach Marge und Wachstum aufgetragen, dazu die Top-10-Produkte.">Markets and categories ranked by revenue, every subcategory plotted by margin against growth, and the top 10 products.</p>
+</div>
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-pbi-02-sales.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-pbi-02-sales.webp" alt="Power BI dashboard page: Sales &amp; Product Performance" width="2000" height="1126" loading="lazy" decoding="async"></a></figure>
+</article>
+<article class="nh-page-block">
+<div class="nh-page-head">
+<span class="nh-page-n">03</span>
+<div><h3 data-en="Customer Analysis" data-de="Kundenanalyse">Customer Analysis</h3><p class="nh-page-q" data-en="Are we earning repeat business, or just acquiring one-time buyers?" data-de="Verdienen wir wiederkehrendes Geschäft – oder gewinnen wir nur Einmalkäufer?">Are we earning repeat business, or just acquiring one-time buyers?</p></div>
+<p class="nh-body nh-page-d" data-en="New versus churned customers by month and market, repeat purchase rate, and a check on whether loyalty members really reorder more." data-de="Neue gegenüber verlorenen Kunden nach Monat und Markt, Wiederkaufrate und die Prüfung, ob Loyalty-Mitglieder wirklich häufiger nachbestellen.">New versus churned customers by month and market, repeat purchase rate, and a check on whether loyalty members really reorder more.</p>
+</div>
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-pbi-03-customer.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-pbi-03-customer.webp" alt="Power BI dashboard page: Customer Analysis" width="2000" height="1126" loading="lazy" decoding="async"></a></figure>
+</article>
+<article class="nh-page-block">
+<div class="nh-page-head">
+<span class="nh-page-n">04</span>
+<div><h3 data-en="Marketing Analysis" data-de="Marketing-Analyse">Marketing Analysis</h3><p class="nh-page-q" data-en="Which channels and campaigns actually convert — and where should budget shift?" data-de="Welche Kanäle und Kampagnen konvertieren wirklich – und wohin sollte das Budget wandern?">Which channels and campaigns actually convert — and where should budget shift?</p></div>
+<p class="nh-body nh-page-d" data-en="The funnel from touchpoints to clicks to conversions, a channel table with CPA, CPC and ROI, and conversion spikes around named campaigns." data-de="Der Trichter von Kontaktpunkten über Klicks zu Conversions, eine Kanaltabelle mit CPA, CPC und ROI und Conversion-Spitzen rund um benannte Kampagnen.">The funnel from touchpoints to clicks to conversions, a channel table with CPA, CPC and ROI, and conversion spikes around named campaigns.</p>
+</div>
+<figure class="nh-fig"><a class="nh-zoom" href="images/nordhome-pbi-04-marketing.webp" target="_blank" rel="noopener" aria-label="Open full size"><img src="images/nordhome-pbi-04-marketing.webp" alt="Power BI dashboard page: Marketing Analysis" width="2000" height="1126" loading="lazy" decoding="async"></a></figure>
+</article>
+<p class="nh-note" data-en="The report lives in a private Power BI workspace, so these are screenshots. Click an image to open it full size." data-de="Der Report liegt in einem privaten Power-BI-Workspace, daher sind dies Screenshots. Ein Klick auf ein Bild öffnet es in voller Größe.">The report lives in a private Power BI workspace, so these are screenshots. Click an image to open it full size.</p>
+</div></div>
+<div class="nh-sec" id="insights"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Business insight" data-de="Business-Erkenntnisse">Business insight</p>
+<h2 class="nh-h2" data-en="What the data revealed" data-de="Was die Daten gezeigt haben">What the data revealed</h2>
+<p class="nh-lead" data-en="Four findings from the Power BI report (H1 2024 vs. H1 2023) — each with what it means and why the business would care." data-de="Vier Befunde aus dem Power-BI-Report (H1 2024 vs. H1 2023) – jeweils mit Bedeutung und Grund, warum das Unternehmen es wissen sollte.">Four findings from the Power BI report (H1 2024 vs. H1 2023) — each with what it means and why the business would care.</p>
+</div>
+<div class="nh-insights">
+<article class="nh-ins">
+<span class="nh-num" data-en="1 of 3" data-de="1 von 3">1 of 3</span>
+<span class="nh-ins-t" data-en="drivers explains the revenue decline" data-de="Treibern erklärt den Umsatzrückgang">drivers explains the revenue decline</span>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="What it means" data-de="Was es bedeutet">What it means</span><p data-en="Fewer customers were roughly offset by more frequent purchases. Falling order value alone drove the year-over-year decline." data-de="Weniger Kunden wurden durch häufigere Käufe ungefähr ausgeglichen. Allein der sinkende Bestellwert trieb den Rückgang zum Vorjahr.">Fewer customers were roughly offset by more frequent purchases. Falling order value alone drove the year-over-year decline.</p></div>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="Why it matters" data-de="Warum es zählt">Why it matters</span><p data-en="H2 initiatives should target basket size — bundles, upsell prompts, minimum-order incentives — not acquisition." data-de="Initiativen für das 2. Halbjahr sollten die Warenkorbgröße angehen – Bundles, Upsell, Mindestbestellwert-Anreize – nicht die Neukundengewinnung.">H2 initiatives should target basket size — bundles, upsell prompts, minimum-order incentives — not acquisition.</p></div>
+</article>
+<article class="nh-ins">
+<span class="nh-num" data-en="€115.6K" data-de="115,6 Tsd. €">€115.6K</span>
+<span class="nh-ins-t" data-en="lost to cancellations — the biggest leak" data-de="durch Stornos verloren – das größte Leck">lost to cancellations — the biggest leak</span>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="What it means" data-de="Was es bedeutet">What it means</span><p data-en="Cancelled order value beats returned (€90.0K) and refunded (€85.3K). Refunds only looked biggest because of a denominator error." data-de="Stornierter Bestellwert liegt vor retourniertem (90,0 Tsd. €) und erstattetem (85,3 Tsd. €). Erstattungen wirkten nur wegen eines Nenner-Fehlers am größten.">Cancelled order value beats returned (€90.0K) and refunded (€85.3K). Refunds only looked biggest because of a denominator error.</p></div>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="Why it matters" data-de="Warum es zählt">Why it matters</span><p data-en="Cancellations are where an audit pays off first." data-de="Bei den Stornos lohnt sich eine Prüfung zuerst.">Cancellations are where an audit pays off first.</p></div>
+</article>
+<article class="nh-ins">
+<span class="nh-num" data-en="197–254" data-de="197–254">197–254</span>
+<span class="nh-ins-t" data-en="customers lost per month vs. 104–140 gained" data-de="verlorene Kunden pro Monat vs. 104–140 gewonnene">customers lost per month vs. 104–140 gained</span>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="What it means" data-de="Was es bedeutet">What it means</span><p data-en="Churn outpaces new customers in every month and every market. In the Nordics: 802 retained vs. 1,674 churned." data-de="Abwanderung übersteigt Neukunden in jedem Monat und jedem Markt. In den Nordics: 802 gehalten vs. 1.674 abgewandert.">Churn outpaces new customers in every month and every market. In the Nordics: 802 retained vs. 1,674 churned.</p></div>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="Why it matters" data-de="Warum es zählt">Why it matters</span><p data-en="Retention budget should come before acquisition budget, starting in the Nordics and DACH." data-de="Retention-Budget sollte vor Akquise-Budget kommen, beginnend in den Nordics und in DACH.">Retention budget should come before acquisition budget, starting in the Nordics and DACH.</p></div>
+</article>
+<article class="nh-ins">
+<span class="nh-num" data-en="6–8×" data-de="6–8×">6–8×</span>
+<span class="nh-ins-t" data-en="better ROI for Display and Pinterest than Influencer" data-de="besserer ROI bei Display und Pinterest als bei Influencer">better ROI for Display and Pinterest than Influencer</span>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="What it means" data-de="Was es bedeutet">What it means</span><p data-en="Influencer has the highest cost per acquisition (€28.21) and the lowest ROI (184.9%)." data-de="Influencer hat die höchsten Akquisitionskosten (28,21 €) und den niedrigsten ROI (184,9 %).">Influencer has the highest cost per acquisition (€28.21) and the lowest ROI (184.9%).</p></div>
+<div class="nh-ins-row"><span class="nh-ins-k" data-en="Why it matters" data-de="Warum es zählt">Why it matters</span><p data-en="Moving spend from Influencer to Display and Pinterest is the most direct budget lever in the report." data-de="Budget von Influencer zu Display und Pinterest zu verschieben ist der direkteste Hebel im Report.">Moving spend from Influencer to Display and Pinterest is the most direct budget lever in the report.</p></div>
+</article>
+</div>
+</div></div>
+<div class="nh-sec" id="learned"><div class="nh-wrap nh-split nh-split-learn">
+<div>
+<p class="nh-eyebrow" data-en="Reflection" data-de="Reflexion">Reflection</p>
+<h2 class="nh-h2" data-en="What I learned" data-de="Was ich gelernt habe">What I learned</h2>
+</div><div class="nh-learn">
+<p data-en="This project changed how I think about analytics. The dashboard is the visible part of the work, but most of the real thinking happens before it: understanding the business, defining the grain, checking relationships, writing down assumptions and deciding how imperfect data should be handled." data-de="Dieses Projekt hat verändert, wie ich über Analytics denke. Das Dashboard ist der sichtbare Teil der Arbeit, aber das meiste echte Denken passiert davor: das Geschäft verstehen, den Grain festlegen, Beziehungen prüfen, Annahmen dokumentieren und entscheiden, wie mit unvollkommenen Daten umzugehen ist.">This project changed how I think about analytics. The dashboard is the visible part of the work, but most of the real thinking happens before it: understanding the business, defining the grain, checking relationships, writing down assumptions and deciding how imperfect data should be handled.</p>
+<p data-en="Some of my best lessons came from numbers that looked fine and weren’t. A refund figure that ranked first rested on a different base than its neighbours. A date table quietly stretched to December 2024 and broke every year-over-year measure. I learned to ask of every number: would I still trust this if someone challenged it?" data-de="Einige meiner besten Lektionen kamen von Zahlen, die gut aussahen und es nicht waren. Eine Erstattungszahl auf Platz eins beruhte auf einer anderen Basis als ihre Nachbarn. Eine Datumstabelle dehnte sich still bis Dezember 2024 aus und brach jede Vorjahreskennzahl. Ich habe gelernt, bei jeder Zahl zu fragen: Würde ich ihr noch trauen, wenn jemand sie infrage stellt?">Some of my best lessons came from numbers that looked fine and weren’t. A refund figure that ranked first rested on a different base than its neighbours. A date table quietly stretched to December 2024 and broke every year-over-year measure. I learned to ask of every number: would I still trust this if someone challenged it?</p>
+<p data-en="And not everything I can build should be shipped. I built concentration measures, checked them, and dropped them when the data showed no real pattern. A correct number that shows nothing is still clutter." data-de="Und nicht alles, was ich bauen kann, sollte ich auch ausliefern. Ich habe Konzentrationskennzahlen gebaut, geprüft und wieder verworfen, als die Daten kein echtes Muster zeigten. Eine korrekte Zahl, die nichts zeigt, ist trotzdem Ballast.">And not everything I can build should be shipped. I built concentration measures, checked them, and dropped them when the data showed no real pattern. A correct number that shows nothing is still clutter.</p>
+<p class="nh-next" data-en="Next, I want to take the customer question further with a separate segmentation (RFM) project." data-de="Als Nächstes möchte ich die Kundenfrage mit einem eigenen Segmentierungsprojekt (RFM) weiterverfolgen.">Next, I want to take the customer question further with a separate segmentation (RFM) project.</p>
+</div></div></div>
+<div class="nh-sec nh-sec-tight" id="tools"><div class="nh-wrap"><div class="nh-tools">
+<p class="nh-label" data-en="Tools" data-de="Werkzeuge">Tools</p>
+<ul class="nh-chips"><li>PostgreSQL</li><li>SQL</li><li>Python</li><li>Pandas</li><li>Power BI</li><li>DAX</li><li>Power Query</li></ul>
+</div></div></div>
+<div class="nh-sec nh-sec-cta" id="explore"><div class="nh-wrap"><div class="nh-cta">
+<h2 class="nh-h2" data-en="Explore the full project" data-de="Das ganze Projekt ansehen">Explore the full project</h2>
+<p class="nh-body" data-en="The SQL scripts, model documentation, Python notebook and decision log are all in the repository." data-de="SQL-Skripte, Modelldokumentation, Python-Notebook und Entscheidungslog liegen im Repository.">The SQL scripts, model documentation, Python notebook and decision log are all in the repository.</p>
+<a class="nh-btn" href="https://github.com/eileenheyer-cyber/nordhome_retail_analytics" target="_blank" rel="noopener" data-en="View GitHub Repository →" data-de="GitHub-Repository ansehen →">View GitHub Repository →</a>
+<p class="nh-note" data-en="NordHome is fictional and the data is synthetic." data-de="NordHome ist fiktiv, die Daten sind synthetisch.">NordHome is fictional and the data is synthetic.</p>
+</div></div></div>
 
 </main>
 
