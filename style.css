@@ -1273,3 +1273,4 @@ body.nh-page.ap-page main #dashboard .nh-h2 { font-size: 3rem; }
   .sv-col { display: block; margin-bottom: 2px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); }
   .sv-contrast { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink); padding-top: 20px; }
 }
+.sv-page .nh-intro + .nh-intro { margin-top: 16px; }
