@@ -1171,3 +1171,9 @@ body.home .milestone-label { color: #a3a7c1; }
 .ap-tile-d.good { color: #2e7d32; }
 @media (max-width: 1080px) { .ap-tiles { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 720px) { .ap-tiles { grid-template-columns: repeat(2, 1fr); } }
+.nh-findings.ap-seven { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 24px; }
+.ap-seven .nh-find-n { font-size: 1.7rem; white-space: nowrap; }
+.ap-seven .nh-find h3 { font-size: 0.95rem; }
+.ap-seven .nh-find p { font-size: 0.8rem; }
+@media (max-width: 1080px) { .nh-findings.ap-seven { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 720px) { .nh-findings.ap-seven { grid-template-columns: 1fr 1fr; } }
