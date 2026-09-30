@@ -413,8 +413,8 @@ section#skills { background: var(--surface-alt); }
 /* About */
 .about-grid {
   display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 470px);
-  gap: 64px;
+  grid-template-columns: minmax(0, 380px) minmax(0, 660px);
+  gap: 56px;
   align-items: stretch;
   justify-content: center;
   grid-template-areas: "photo text";
@@ -428,10 +428,11 @@ section#skills { background: var(--surface-alt); }
   font-size: 1.05rem;
   font-family: "Inter", system-ui, sans-serif;
   font-weight: 400;
-  max-width: 62ch;
+  line-height: 1.7;
+  max-width: none;
 }
 .about-grid p:not(.overline):last-child { margin-bottom: 0; }
-.about-photo { max-width: 420px; }
+.about-photo { max-width: 380px; }
 .about-photo img {
   display: block;
   width: 100%;
@@ -796,10 +797,23 @@ body.eda-lb-open { overflow: hidden; }
 }
 .project-group-title.second { margin-top: 80px; }
 
-/* About text: equal line lengths (justified), last line left-aligned */
+/* About text: natural left-aligned flow (no justification, no auto-hyphenation) */
 .about-text p:not(.overline) {
-  text-align: justify;
-  text-align-last: left;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
+  hyphens: manual;
+  -webkit-hyphens: manual;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+/* About: tablet — keep side-by-side, slimmer portrait */
+@media (max-width: 1024px) and (min-width: 721px) {
+  .about-grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; }
+  .about-photo { max-width: 300px; }
+  main > section.about { padding-left: 28px; padding-right: 28px; }
+}
+/* About: mobile — stacked, portrait capped so text follows sooner */
+@media (max-width: 720px) {
+  .about-photo { max-width: 360px; margin: 0 auto; }
+  .about-grid { gap: 32px; }
 }
