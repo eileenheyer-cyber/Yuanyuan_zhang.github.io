@@ -1,6 +1,6 @@
 /* ==========================================================================
    Editorial particle data-flow visualization
-   RAW DATA -> TRANSFORMATION -> INSIGHT, rendered as an organic particle
+   RAW DATA -> STRUCTURE & MODEL -> ANALYSIS & INSIGHT -> BUSINESS DECISION, rendered as an organic particle
    cloud on <canvas>. No chart libraries, no external data — everything is
    generated in the browser.
 
@@ -37,12 +37,12 @@
       { t: 1.0, rgb: [106, 79, 160] }, // deep plum lilac
     ],
     // "Transformation" zone: raw points resolving into a light structure.
-    linkZone: [0.3, 0.7],
+    linkZone: [0.28, 0.58],
     linkMaxDistance: 26, // px, only connect close neighbors
     linkMaxCount: 130,
     linkOpacity: 0.4,
     // "Insight" zone: a clean analytical trend line drawn over the cloud.
-    trendZone: [0.68, 0.97],
+    trendZone: [0.58, 0.97],
     trendRevealMs: 900,
   };
 
