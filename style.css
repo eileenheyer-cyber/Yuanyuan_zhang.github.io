@@ -1162,3 +1162,12 @@ body.home .milestone-label { color: #a3a7c1; }
 .ap-three-views { grid-template-columns: repeat(3, 1fr); gap: 40px 24px; }
 .ap-three-views .nh-view-q { min-height: 0; font-size: 1.05rem; }
 @media (max-width: 720px) { .ap-three-views { grid-template-columns: 1fr; } }
+.ap-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 20px; }
+.ap-tile { display: flex; flex-direction: column; gap: 6px; padding: 22px 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.ap-tile-l { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.ap-tile-v { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); }
+.ap-tile-d { font-size: 0.78rem; color: var(--muted); }
+.ap-tile-d.bad { color: #b3261e; }
+.ap-tile-d.good { color: #2e7d32; }
+@media (max-width: 1080px) { .ap-tiles { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 720px) { .ap-tiles { grid-template-columns: repeat(2, 1fr); } }
