@@ -1175,3 +1175,20 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-page-block { margin-top: 28px; }
   .nh-star-facts { row-gap: 84px; }
 }
+
+/* Power BI section: all four pages at once, 2 x 2 */
+.nh-dash-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 28px; }
+.nh-dash-grid .nh-page-block { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; border-top: 0; }
+.nh-dash-grid .nh-page-text { position: static; }
+.nh-page-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.nh-page-title .nh-page-n { display: inline; margin: 0; }
+.nh-dash-grid .nh-page-text h3 { font-size: 1.15rem; margin: 0; }
+.nh-dash-grid .nh-page-q { font-size: 0.9rem; margin-bottom: 6px !important; }
+.nh-dash-grid .nh-page-d { font-size: 0.84rem; line-height: 1.5; }
+@media (max-width: 720px) {
+  .nh-dash-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+@media (min-width: 1025px) {
+  .nh-dash-grid .nh-page-d { display: none; }
+  .nh-dash-grid { max-width: max(700px, calc((100vh - 250px) * 1.75)); margin: 0 auto; }
+}
