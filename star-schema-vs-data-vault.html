@@ -7,10 +7,10 @@
   <meta name="description" content="Project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-en-content="Project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-de-content="Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260929j">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260930u">
 </head>
-<body>
+<body class="nh-page sv-page">
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
@@ -25,56 +25,117 @@
   </div>
 </header>
 
-<main>
+<main class="nh">
 
-  <div class="cs-hero">
-    <a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
-    <span class="cs-status done" data-en="Completed" data-de="Abgeschlossen">Completed</span>
-    <h1>Star Schema vs. Data Vault 2.0</h1>
-    <p class="lead" data-en="Academic project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data." data-de="Wissenschaftlicher Projektbericht: Vergleich von Star Schema und Data Vault 2.0 am Beispiel einer Warenkorbanalyse auf Basis von Kassenbondaten.">Academic project report: comparing Star Schema and Data Vault 2.0 on a market-basket analysis built from receipt data.</p>
-  </div>
-
-  <div class="cs-hero">
-    <div class="cs-cover-row">
-      <img src="images/star-schema-diagram.png" alt="Star-Schema-Modell mit zentraler Faktentabelle Fact_Sales_Item und den Dimensionstabellen Dim_Product, Dim_Date und Dim_Store">
-      <img src="images/data-vault-diagram.png" alt="Data-Vault-2.0-Modell mit Hubs (Hub_Store, Hub_Product, Hub_Receipt), dem Link Link_Sales_Item und den zugehörigen Satellites">
-    </div>
-  </div>
-
-  <div class="cs-section" style="padding-top: 0;">
-    <div class="cs-meta-grid">
-      <div><h4 data-en="Role" data-de="Rolle">Role</h4><p data-en="Data modeling, analysis, evaluation" data-de="Datenmodellierung, Analyse, Bewertung">Data modeling, analysis, evaluation</p></div>
-      <div><h4 data-en="Context" data-de="Kontext">Context</h4><p data-en="Project report, IU International University" data-de="Projektbericht, IU International Hochschule">Project report, IU International University</p></div>
-      <div><h4 data-en="Technology" data-de="Technik">Technology</h4><p>SQL, Dimensional Modeling, Data Vault 2.0</p></div>
-      <div><h4 data-en="Status" data-de="Status">Status</h4><p data-en="Completed" data-de="Abgeschlossen">Completed</p></div>
-    </div>
-
-    <div class="cs-cols">
-      <div>
-        <h2 data-en="Starting point" data-de="Ausgangslage">Starting point</h2>
-        <p data-en="The basis is a digital retail receipt with header- and line-item-level data. The goal was a market-basket analysis at the individual line-item level — the level at which it becomes visible which products occur together in one purchase. On this basis I developed both a Star Schema (per Kimball) and a Data Vault 2.0 model (per Linstedt) and compared them against each other." data-de="Grundlage ist ein digitaler Kassenbon aus dem Einzelhandel mit Bonkopf- und Bonpositionsdaten. Ziel war eine Warenkorbanalyse auf Ebene der einzelnen Bonposition — der Ebene, auf der sichtbar wird, welche Produkte gemeinsam in einem Einkauf vorkommen. Auf dieser Grundlage habe ich sowohl ein Star Schema (nach Kimball) als auch ein Data-Vault-2.0-Modell (nach Linstedt) entwickelt und einander gegenübergestellt.">The basis is a digital retail receipt with header- and line-item-level data. The goal was a market-basket analysis at the individual line-item level — the level at which it becomes visible which products occur together in one purchase. On this basis I developed both a Star Schema (per Kimball) and a Data Vault 2.0 model (per Linstedt) and compared them against each other.</p>
-        <h2 style="margin-top: 40px;">Star Schema</h2>
-        <ul>
-          <li data-en="Central fact table &lt;code&gt;Fact_Sales_Item&lt;/code&gt; at line-item granularity" data-de="Zentrale Faktentabelle &lt;code&gt;Fact_Sales_Item&lt;/code&gt; auf Granularität der Bonposition">Central fact table <code>Fact_Sales_Item</code> at line-item granularity</li>
-          <li data-en="Three dimension tables: &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt;, &lt;code&gt;Dim_Store&lt;/code&gt;" data-de="Drei Dimensionstabellen: &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt;, &lt;code&gt;Dim_Store&lt;/code&gt;">Three dimension tables: <code>Dim_Product</code>, <code>Dim_Date</code>, <code>Dim_Store</code></li>
-          <li data-en="The star-shaped structure makes the analytical axes immediately visible" data-de="Sternförmige Struktur macht die analytischen Auswertungsachsen unmittelbar sichtbar">The star-shaped structure makes the analytical axes immediately visible</li>
-        </ul>
-      </div>
-      <div>
-        <h2>Data Vault 2.0</h2>
-        <p data-en="Built from Hubs (business objects such as receipt, product, store), Links (relationships between them) and Satellites (descriptive, historized attributes) — with hash keys, load date and record source for traceability." data-de="Aufbau aus Hubs (Geschäftsobjekte wie Kassenbon, Produkt, Filiale), Links (Beziehungen zwischen ihnen) und Satellites (beschreibende, historisierte Attribute) — mit Hash Keys, Load-Date und Record-Source für Nachvollziehbarkeit.">Built from Hubs (business objects such as receipt, product, store), Links (relationships between them) and Satellites (descriptive, historized attributes) — with hash keys, load date and record source for traceability.</p>
-        <h2 style="margin-top: 40px;" data-en="Result" data-de="Ergebnis">Result</h2>
-        <p data-en="For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes." data-de="Für diesen Anwendungsfall — eine einzelne Datenquelle, direkte Warenkorbanalyse — erweist sich das Star Schema als geeigneter: einfacher, verständlicher, schneller nutzbar. Data Vault punktet bei Flexibilität, Historisierung und Erweiterbarkeit und würde seinen Mehrwert vor allem bei mehreren Quellsystemen und wachsenden Datenlandschaften entfalten.">For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes.</p>
-        <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;">
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Star Schema</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Data Vault 2.0</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Dimensional Modeling</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Kimball</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Linstedt</span>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="nh-hero"><div class="nh-wrap">
+<a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
+<p class="nh-eyebrow" data-en="STAR SCHEMA × DATA VAULT 2.0" data-de="STAR SCHEMA × DATA VAULT 2.0">STAR SCHEMA × DATA VAULT 2.0</p>
+<h1 class="nh-title" data-en="Two ways to model the same retail data" data-de="Zwei Wege, dieselben Einzelhandelsdaten zu modellieren">Two ways to model the same retail data</h1>
+<p class="nh-intro" data-en="A practical comparison of analytical simplicity, historization and scalability using receipt-level retail data." data-de="Ein praktischer Vergleich von analytischer Einfachheit, Historisierung und Skalierbarkeit anhand von Einzelhandelsdaten auf Bonebene.">A practical comparison of analytical simplicity, historization and scalability using receipt-level retail data.</p>
+<ul class="nh-chips nh-chips-hero"><li>SQL</li><li>Data Modeling</li><li>Kimball</li><li>Data Vault 2.0</li></ul>
+<p class="sv-meta" data-en="IU Academic Project · Completed" data-de="IU-Hochschulprojekt · Abgeschlossen">IU Academic Project · Completed</p>
+</div></div>
+<div class="nh-sec" id="question"><div class="nh-wrap">
+<div class="sv-split">
+<div><p class="nh-eyebrow" data-en="THE QUESTION" data-de="DIE FRAGE">THE QUESTION</p><h2 class="nh-h2" data-en="How should the same retail data be modeled?" data-de="Wie sollten dieselben Einzelhandelsdaten modelliert werden?">How should the same retail data be modeled?</h2></div>
+<div><p class="nh-body" data-en="The project explores two fundamentally different approaches to structuring the same retail dataset: a dimensional Star Schema designed for analytics and a Data Vault 2.0 model designed around business objects, relationships, historization and traceability. The basis is a digital retail receipt with header- and line-item-level data; the goal was a market-basket analysis at the level of the individual line item, where it becomes visible which products occur together in one purchase." data-de="Das Projekt untersucht zwei grundlegend verschiedene Ansätze, denselben Einzelhandelsdatensatz zu strukturieren: ein dimensionales Star Schema für Analysen und ein Data-Vault-2.0-Modell, das auf Geschäftsobjekten, Beziehungen, Historisierung und Nachvollziehbarkeit aufbaut. Grundlage ist ein digitaler Kassenbon mit Bonkopf- und Bonpositionsdaten; Ziel war eine Warenkorbanalyse auf Ebene der einzelnen Bonposition, auf der sichtbar wird, welche Produkte gemeinsam in einem Einkauf vorkommen.">The project explores two fundamentally different approaches to structuring the same retail dataset: a dimensional Star Schema designed for analytics and a Data Vault 2.0 model designed around business objects, relationships, historization and traceability. The basis is a digital retail receipt with header- and line-item-level data; the goal was a market-basket analysis at the level of the individual line item, where it becomes visible which products occur together in one purchase.</p></div>
+</div>
+<div class="sv-blocks">
+<div class="sv-block"><p class="sv-block-l"><span>01</span> <span data-en="INPUT" data-de="INPUT">INPUT</span></p><p class="sv-block-t" data-en="Retail receipt and line-item data" data-de="Einzelhandels-Kassenbons und Bonpositionsdaten">Retail receipt and line-item data</p></div>
+<div class="sv-block"><p class="sv-block-l"><span>02</span> <span data-en="APPROACH" data-de="VORGEHEN">APPROACH</span></p><p class="sv-block-t" data-en="One dataset · two modeling approaches" data-de="Ein Datensatz · zwei Modellierungsansätze">One dataset · two modeling approaches</p></div>
+<div class="sv-block"><p class="sv-block-l"><span>03</span> <span data-en="OUTPUT" data-de="ERGEBNIS">OUTPUT</span></p><p class="sv-block-t" data-en="Two architectures · one analytical comparison" data-de="Zwei Architekturen · ein analytischer Vergleich">Two architectures · one analytical comparison</p></div>
+</div>
+</div></div>
+<div class="nh-sec sv-tint" id="models"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="SAME DATA. TWO MODELS." data-de="GLEICHE DATEN. ZWEI MODELLE.">SAME DATA. TWO MODELS.</p>
+<h2 class="nh-h2" data-en="Two architectures, built from one dataset" data-de="Zwei Architekturen aus einem Datensatz">Two architectures, built from one dataset</h2>
+</div>
+<div class="sv-models">
+<div class="sv-model">
+<p class="sv-model-l"><span>01</span> <span data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span></p>
+<figure class="sv-fig"><a href="images/star-schema-diagram.png" target="_blank" rel="noopener"><img src="images/star-schema-diagram.png" alt="Star-Schema-Modell mit zentraler Faktentabelle Fact_Sales_Item und den Dimensionstabellen Dim_Product, Dim_Date und Dim_Store" width="1748" height="1098" loading="lazy" decoding="async"></a></figure>
+<h3 class="sv-model-h" data-en="DESIGNED FOR ANALYSIS" data-de="FÜR ANALYSE GEBAUT">DESIGNED FOR ANALYSIS</h3>
+<p class="nh-body" data-en="Fact and dimension tables organize the retail data around analytical queries and make the model straightforward to consume for BI and reporting. A central fact table &lt;code&gt;Fact_Sales_Item&lt;/code&gt; sits at line-item granularity, surrounded by &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt; and &lt;code&gt;Dim_Store&lt;/code&gt;; the star-shaped structure makes the analytical axes immediately visible." data-de="Fakten- und Dimensionstabellen ordnen die Einzelhandelsdaten um analytische Abfragen und machen das Modell für BI und Reporting leicht nutzbar. Eine zentrale Faktentabelle &lt;code&gt;Fact_Sales_Item&lt;/code&gt; liegt auf Granularität der Bonposition, umgeben von &lt;code&gt;Dim_Product&lt;/code&gt;, &lt;code&gt;Dim_Date&lt;/code&gt; und &lt;code&gt;Dim_Store&lt;/code&gt;; die sternförmige Struktur macht die analytischen Auswertungsachsen unmittelbar sichtbar.">Fact and dimension tables organize the retail data around analytical queries and make the model straightforward to consume for BI and reporting. A central fact table <code>Fact_Sales_Item</code> sits at line-item granularity, surrounded by <code>Dim_Product</code>, <code>Dim_Date</code> and <code>Dim_Store</code>; the star-shaped structure makes the analytical axes immediately visible.</p>
+<div class="sv-grain"><p class="sv-grain-l" data-en="GRAIN" data-de="GRANULARITÄT">GRAIN</p><p class="sv-grain-t" data-en="One row in &lt;code&gt;Fact_Sales_Item&lt;/code&gt; = one product line within a receipt." data-de="Eine Zeile in &lt;code&gt;Fact_Sales_Item&lt;/code&gt; = eine Produktzeile innerhalb eines Kassenbons.">One row in <code>Fact_Sales_Item</code> = one product line within a receipt.</p></div>
+</div>
+<div class="sv-model">
+<p class="sv-model-l"><span>02</span> <span data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span></p>
+<figure class="sv-fig"><a href="images/data-vault-diagram.png" target="_blank" rel="noopener"><img src="images/data-vault-diagram.png" alt="Data-Vault-2.0-Modell mit Hubs (Hub_Store, Hub_Product, Hub_Receipt), dem Link Link_Sales_Item und den zugehörigen Satellites" width="1200" height="1034" loading="lazy" decoding="async"></a></figure>
+<h3 class="sv-model-h" data-en="DESIGNED FOR CHANGE" data-de="FÜR VERÄNDERUNG GEBAUT">DESIGNED FOR CHANGE</h3>
+<p class="nh-body" data-en="Hubs represent business objects, Links represent relationships and Satellites store descriptive attributes with historization and source tracking. Hash keys, load date and record source make every row traceable." data-de="Hubs repräsentieren Geschäftsobjekte, Links Beziehungen und Satellites speichern beschreibende Attribute mit Historisierung und Quellenverfolgung. Hash Keys, Load-Date und Record-Source machen jede Zeile nachvollziehbar.">Hubs represent business objects, Links represent relationships and Satellites store descriptive attributes with historization and source tracking. Hash keys, load date and record source make every row traceable.</p>
+<dl class="sv-defs">
+<div class="sv-def"><dt data-en="HUBS" data-de="HUBS">HUBS</dt><dd data-en="Business objects" data-de="Geschäftsobjekte">Business objects</dd></div>
+<div class="sv-def"><dt data-en="LINKS" data-de="LINKS">LINKS</dt><dd data-en="Relationships" data-de="Beziehungen">Relationships</dd></div>
+<div class="sv-def"><dt data-en="SATELLITES" data-de="SATELLITES">SATELLITES</dt><dd data-en="Attributes + history" data-de="Attribute + Historie">Attributes + history</dd></div>
+</dl>
+</div>
+</div>
+</div></div>
+<div class="nh-sec nh-major nh-sec-dark" id="basket"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="SAME BUSINESS QUESTION" data-de="GLEICHE BUSINESS-FRAGE">SAME BUSINESS QUESTION</p>
+<h2 class="nh-h2" data-en="The real test is the analytical question." data-de="Der eigentliche Test ist die analytische Frage.">The real test is the analytical question.</h2>
+</div>
+<div class="sv-q"><p class="sv-q-l" data-en="BUSINESS QUESTION" data-de="BUSINESS-FRAGE">BUSINESS QUESTION</p><p class="sv-q-t" data-en="Which products are frequently purchased together?" data-de="Welche Produkte werden häufig gemeinsam gekauft?">Which products are frequently purchased together?</p></div>
+<div class="sv-paths">
+<div class="sv-path"><p class="sv-path-l" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</p><p class="sv-path-t"><span>Receipt</span> → <span>Sales Item</span> → <span>Product</span></p></div>
+<div class="sv-path"><p class="sv-path-l" data-en="DATA VAULT" data-de="DATA VAULT">DATA VAULT</p><p class="sv-path-t"><span>Hub Receipt</span> → <span>Link Sales Item</span> ← <span>Hub Product</span></p></div>
+</div>
+<p class="nh-lead" data-en="Both models can support the market-basket analysis, but the path through the data and the structure behind it are different." data-de="Beide Modelle können die Warenkorbanalyse tragen, aber der Weg durch die Daten und die Struktur dahinter sind verschieden.">Both models can support the market-basket analysis, but the path through the data and the structure behind it are different.</p>
+</div></div>
+<div class="nh-sec" id="compare"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="MODEL COMPARISON" data-de="MODELLVERGLEICH">MODEL COMPARISON</p>
+<h2 class="nh-h2" data-en="Two models. Different priorities." data-de="Zwei Modelle. Unterschiedliche Prioritäten.">Two models. Different priorities.</h2>
+</div>
+<div class="sv-table" role="table">
+<div class="sv-row sv-row-h" role="row"><div class="sv-cell sv-cell-k"></div><div class="sv-cell" role="columnheader">STAR SCHEMA</div><div class="sv-cell" role="columnheader">DATA VAULT 2.0</div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Primary purpose" data-de="Hauptzweck">Primary purpose</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="Analytical querying and reporting" data-de="Analytische Abfragen und Reporting">Analytical querying and reporting</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Integrating and historizing data from source systems" data-de="Integration und Historisierung von Daten aus Quellsystemen">Integrating and historizing data from source systems</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Structure" data-de="Struktur">Structure</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="A central fact table surrounded by dimension tables" data-de="Eine zentrale Faktentabelle, umgeben von Dimensionstabellen">A central fact table surrounded by dimension tables</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Hubs (business keys), Links (relationships) and Satellites (descriptive attributes)" data-de="Hubs (Geschäftsschlüssel), Links (Beziehungen) und Satellites (beschreibende Attribute)">Hubs (business keys), Links (relationships) and Satellites (descriptive attributes)</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Analytical readability" data-de="Analytische Lesbarkeit">Analytical readability</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="The analytical axes are visible directly in the structure" data-de="Die Auswertungsachsen sind direkt in der Struktur sichtbar">The analytical axes are visible directly in the structure</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Data is spread across hubs, links and satellites and has to be joined back together for analysis" data-de="Die Daten sind auf Hubs, Links und Satellites verteilt und müssen für Analysen wieder zusammengeführt werden">Data is spread across hubs, links and satellites and has to be joined back together for analysis</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Historization" data-de="Historisierung">Historization</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="Depends on how the dimensions are designed" data-de="Hängt davon ab, wie die Dimensionen gestaltet sind">Depends on how the dimensions are designed</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Built in: satellites keep descriptive attributes over time, with load date" data-de="Eingebaut: Satellites bewahren beschreibende Attribute über die Zeit auf, mit Load-Date">Built in: satellites keep descriptive attributes over time, with load date</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Source-system flexibility" data-de="Flexibilität bei Quellsystemen">Source-system flexibility</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="Modeled around the needs of the analysis" data-de="Modelliert nach den Anforderungen der Analyse">Modeled around the needs of the analysis</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Designed to take in additional sources through new links and satellites" data-de="Ausgelegt darauf, weitere Quellen über neue Links und Satellites aufzunehmen">Designed to take in additional sources through new links and satellites</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Query complexity" data-de="Abfragekomplexität">Query complexity</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="Fewer joins between the fact table and its dimensions" data-de="Weniger Joins zwischen Faktentabelle und Dimensionen">Fewer joins between the fact table and its dimensions</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="More joins across hubs, links and satellites" data-de="Mehr Joins über Hubs, Links und Satellites">More joins across hubs, links and satellites</span></div></div>
+<div class="sv-row"><div class="sv-cell sv-cell-k"><span data-en="Typical use" data-de="Typischer Einsatz">Typical use</span></div><div class="sv-cell"><span class="sv-col" data-en="STAR SCHEMA" data-de="STAR SCHEMA">STAR SCHEMA</span><span data-en="Reporting and BI on a single, well-understood source" data-de="Reporting und BI auf einer einzelnen, gut verstandenen Quelle">Reporting and BI on a single, well-understood source</span></div><div class="sv-cell"><span class="sv-col" data-en="DATA VAULT 2.0" data-de="DATA VAULT 2.0">DATA VAULT 2.0</span><span data-en="Long-lived warehouses with multiple or changing source systems" data-de="Langlebige Warehouses mit mehreren oder sich ändernden Quellsystemen">Long-lived warehouses with multiple or changing source systems</span></div></div>
+</div>
+</div></div>
+<div class="nh-sec sv-tint" id="decisions"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="MODELING DECISIONS" data-de="MODELLIERUNGSENTSCHEIDUNGEN">MODELING DECISIONS</p>
+<h2 class="nh-h2" data-en="What changed under the hood?" data-de="Was ändert sich unter der Haube?">What changed under the hood?</h2>
+</div>
+<div class="sv-decs">
+<div class="sv-dec"><h3 data-en="GRAIN" data-de="GRANULARITÄT">GRAIN</h3><p data-en="One row in the fact table represents one product line within a receipt." data-de="Eine Zeile in der Faktentabelle steht für eine Produktzeile innerhalb eines Kassenbons.">One row in the fact table represents one product line within a receipt.</p></div>
+<div class="sv-dec"><h3 data-en="BUSINESS KEYS" data-de="GESCHÄFTSSCHLÜSSEL">BUSINESS KEYS</h3><p data-en="Product, store and receipt represent core business objects." data-de="Produkt, Filiale und Kassenbon stehen für zentrale Geschäftsobjekte.">Product, store and receipt represent core business objects.</p></div>
+<div class="sv-dec"><h3 data-en="HISTORIZATION" data-de="HISTORISIERUNG">HISTORIZATION</h3><p data-en="Data Vault satellites preserve descriptive attributes over time." data-de="Data-Vault-Satellites bewahren beschreibende Attribute über die Zeit auf.">Data Vault satellites preserve descriptive attributes over time.</p></div>
+<div class="sv-dec"><h3 data-en="TRACEABILITY" data-de="NACHVOLLZIEHBARKEIT">TRACEABILITY</h3><p data-en="&lt;code&gt;load_date&lt;/code&gt; and &lt;code&gt;record_source&lt;/code&gt; support historical tracking and lineage." data-de="&lt;code&gt;load_date&lt;/code&gt; und &lt;code&gt;record_source&lt;/code&gt; unterstützen die historische Nachverfolgung und die Herkunft der Daten."><code>load_date</code> and <code>record_source</code> support historical tracking and lineage.</p></div>
+</div>
+</div></div>
+<div class="nh-sec" id="learned"><div class="nh-wrap">
+<div class="sv-split sv-split-learn">
+<div><p class="nh-eyebrow" data-en="WHAT I LEARNED" data-de="WAS ICH GELERNT HABE">WHAT I LEARNED</p><h2 class="sv-statement" data-en="Data modeling is not about making the architecture as complex as possible." data-de="Datenmodellierung heißt nicht, die Architektur so komplex wie möglich zu machen.">Data modeling is not about making the architecture as complex as possible.</h2><p class="nh-body" data-en="The comparison showed that different modeling approaches optimize for different priorities." data-de="Der Vergleich hat gezeigt, dass verschiedene Modellierungsansätze auf unterschiedliche Prioritäten optimieren.">The comparison showed that different modeling approaches optimize for different priorities.</p></div>
+<div class="sv-contrast">
+<div class="sv-pole"><p class="sv-pole-l" data-en="ANALYTICAL SIMPLICITY" data-de="ANALYTISCHE EINFACHHEIT">ANALYTICAL SIMPLICITY</p><p class="sv-pole-t" data-en="Star Schema" data-de="Star Schema">Star Schema</p></div>
+<div class="sv-axis" aria-hidden="true"><span></span>↕<span></span></div>
+<div class="sv-pole"><p class="sv-pole-l" data-en="STRUCTURAL FLEXIBILITY" data-de="STRUKTURELLE FLEXIBILITÄT">STRUCTURAL FLEXIBILITY</p><p class="sv-pole-t" data-en="Data Vault 2.0" data-de="Data Vault 2.0">Data Vault 2.0</p></div>
+</div>
+</div>
+</div></div>
+<div class="nh-sec nh-major nh-sec-dark" id="conclusion"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="CONCLUSION" data-de="FAZIT">CONCLUSION</p>
+<h2 class="nh-h2" data-en="What fits this use case?" data-de="Was passt zu diesem Anwendungsfall?">What fits this use case?</h2>
+</div>
+<p class="nh-lead sv-concl" data-en="For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes." data-de="Für diesen Anwendungsfall — eine einzelne Datenquelle, direkte Warenkorbanalyse — erweist sich das Star Schema als geeigneter: einfacher, verständlicher, schneller nutzbar. Data Vault punktet bei Flexibilität, Historisierung und Erweiterbarkeit und würde seinen Mehrwert vor allem bei mehreren Quellsystemen und wachsenden Datenlandschaften entfalten.">For this use case — a single data source, direct market-basket analysis — the Star Schema proves more suitable: simpler, easier to understand, faster to use. Data Vault scores on flexibility, historization and extensibility, and would show its value primarily with multiple source systems and growing data landscapes.</p>
+<p class="nh-note" data-en="This is a conclusion about this project, not a universal rule." data-de="Das ist ein Fazit zu diesem Projekt, keine allgemeingültige Regel.">This is a conclusion about this project, not a universal rule.</p>
+</div></div>
+<div class="nh-sec nh-sec-cta" id="links"><div class="nh-wrap">
+<nav class="nh-links" aria-label="Project links">
+<a href="#models" data-en="View the two models →" data-de="Die beiden Modelle ansehen →">View the two models →</a>
+<a href="index.html#projekte" data-en="Back to projects →" data-de="Zurück zu den Projekten →">Back to projects →</a>
+</nav>
+</div></div>
 
 </main>
 
