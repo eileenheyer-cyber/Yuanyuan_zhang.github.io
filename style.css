@@ -1222,3 +1222,6 @@ body.home .milestone-label { color: #a3a7c1; }
 @media (max-width: 720px) { .nh-views { grid-template-columns: 1fr; } .nh-view-q { font-size: 1rem; } }
 .nh-view-q { font-size: 0.85rem; line-height: 1.4; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
 @media (max-width: 720px) { .nh-view-q { font-size: 0.95rem; } }
+.nh-view-q { transition: color .25s ease; }
+.nh-view-link:hover .nh-view-q, .nh-view-link:focus-visible .nh-view-q { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .nh-view-q { transition: none; } }
