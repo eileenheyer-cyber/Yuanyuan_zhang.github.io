@@ -6,6 +6,9 @@
   --muted: #6b6b70;
   --navy: #1f3a5f;
   --accent: #6a4fa0;
+  --accent-light: #b8a3ee; /* accent tint for text/lines on dark backgrounds */
+  --night: #0a0d1c;
+  --night-line: rgba(255, 255, 255, 0.09);
   --line: #e5e5e7;
   --maxw: 1180px;
   --text: 780px;
@@ -598,13 +601,6 @@ h2.about-title { grid-area: title; margin: 0; max-width: none; text-align: left;
 }
 
 /* Mobile */
-/* Tablet: two-column hero still fits, but the milestone labels get too
-   tight against the particle field's own width — drop them here and
-   let the visual pattern (and the desktop-only labels) carry the point. */
-@media (max-width: 900px) and (min-width: 721px) {
-  .milestone-label { display: none; }
-}
-
 @media (max-width: 720px) {
   .header-right { gap: 14px; }
   .site-header nav { gap: 16px; }
@@ -619,8 +615,8 @@ h2.about-title { grid-area: title; margin: 0; max-width: none; text-align: left;
   .facts { flex-direction: column; gap: 20px; }
   .facts li { border-left: none; padding: 20px 0 0; border-top: 1px solid rgba(255,255,255,0.18); }
   .facts li:first-child { padding-top: 0; border-top: none; }
-  .viz-wrap { height: 280px; margin-top: 40px; order: 2; }
-  .milestone-label { display: none; }
+  .viz-wrap { height: 300px; margin-top: 40px; order: 2; }
+  .milestone-label { font-size: 0.56rem; letter-spacing: 0.06em; padding-left: 5px; }
 }
 
 @media (max-width: 480px) {
@@ -853,3 +849,70 @@ body.eda-lb-open { overflow: hidden; }
 
 /* Contact: two short paragraphs */
 .contact p:not(.overline) { max-width: 60ch; margin: 0 0 14px; }
+
+
+/* ==========================================================================
+   Home page — dark hero (scoped to body.home so project pages are unchanged)
+   Navy / near-black surface, existing purple accent, light typography.
+   ========================================================================== */
+body.home .site-header {
+  background: rgba(10, 13, 28, 0.97);
+  border-bottom: 1px solid var(--night-line);
+}
+body.home .brand,
+body.home .site-header nav a { color: #e9e9f3; }
+body.home .site-header nav a:hover { color: var(--accent-light); }
+body.home .lang-toggle { color: #e9e9f3; border-color: rgba(255, 255, 255, 0.24); }
+body.home .lang-toggle:hover { border-color: var(--accent-light); color: var(--accent-light); }
+body.home .lang-toggle .lang-opt.is-active { color: var(--accent-light); }
+
+body.home .hero {
+  max-width: none;
+  padding: 72px max(24px, calc((100vw - var(--maxw)) / 2 + 8px)) 88px;
+  background:
+    radial-gradient(56% 78% at 76% 52%, rgba(106, 79, 160, 0.26), transparent 72%),
+    radial-gradient(40% 50% at 4% 100%, rgba(106, 79, 160, 0.10), transparent 70%),
+    var(--night);
+  color: #e9e9f3;
+}
+
+body.home .hero .overline { color: var(--accent-light); }
+body.home .hero h1 { color: #f6f6fb; }
+body.home .hero h1 .accent { color: var(--accent-light); }
+body.home .hero .lead { color: #b6b9cf; }
+/* the oversized quote mark from the light design has no place on the dark hero */
+body.home .hero-quotemark { display: none; }
+
+/* Buttons on dark */
+body.home .hero .btn {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #f1f1f8;
+  background: transparent;
+}
+body.home .hero .btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+body.home .hero .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+body.home .hero .btn.primary:hover { background: #7d62b8; border-color: #7d62b8; }
+body.home .hero .btn:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 3px;
+}
+
+/* Visualization stage labels on dark */
+body.home .milestone::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(184, 163, 238, 0.30) 0,
+    rgba(184, 163, 238, 0.30) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+}
+body.home .milestone-label { color: #a3a7c1; }
+
+@media (max-width: 720px) {
+  body.home .hero { padding: 40px 20px 56px; }
+}
