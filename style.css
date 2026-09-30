@@ -1189,3 +1189,18 @@ body.home .milestone-label { color: #a3a7c1; }
 @media (max-width: 720px) { .nh-view-link { padding: 22px 18px 16px; } .nh-view-cta-t { display: none; } }
 @media (hover: none) { .nh-view-arrow { background: var(--bg); } }
 @media (prefers-reduced-motion: reduce) { .nh-view-link, .nh-view-img img, .nh-view-cta-t, .nh-view-arrow { transition: none; } .nh-view-link:hover .nh-view-img img { transform: none; } }
+
+/* Power BI views — scaled down so the section reads as supporting, not hero */
+.nh-lead-strong { font-size: 1.1rem; }
+.nh-views { gap: 20px; }
+.nh-view-link { padding: 20px 20px 14px; }
+.nh-view-label { margin-bottom: 8px; font-size: 0.66rem; }
+.nh-view-q { margin-bottom: 14px; font-size: clamp(1rem, 1.25vw, 1.12rem); line-height: 1.35; }
+.nh-view-foot { margin-top: 12px; }
+.nh-view-tags { font-size: 0.74rem; }
+.nh-view-cta-t { font-size: 0.72rem; }
+.nh-view-arrow { width: 26px; height: 26px; }
+.nh-view-arrow svg { width: 12px; height: 12px; }
+@media (max-width: 720px) { .nh-view-link { padding: 16px 14px 12px; } }
+.nh-views { max-width: 960px; }
+.nh-view-q { font-size: clamp(0.98rem, 1.15vw, 1.05rem); text-wrap: balance; }
