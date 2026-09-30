@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260930zq">
+  <link rel="stylesheet" href="style.css?v=20260930zr">
 </head>
 <body class="nh-page">
 
@@ -101,28 +101,9 @@
 </div></div>
 <div class="nh-support">
 <div class="nh-sec nh-sec-tight nh-support-head" id="build"><div class="nh-wrap"><p class="nh-eyebrow" data-en="Under the hood" data-de="Unter der Haube">Under the hood</p><h2 class="nh-h2" data-en="How I built it" data-de="Wie ich es gebaut habe">How I built it</h2><p class="nh-lead" data-en="The data foundation, the quality work and the exploratory analysis behind the dashboards." data-de="Das Datenfundament, die Qualitätsarbeit und die explorative Analyse hinter den Dashboards.">The data foundation, the quality work and the exploratory analysis behind the dashboards.</p></div></div>
-<div class="nh-sec nh-minor " id="model"><div class="nh-wrap">
-<div class="nh-split nh-split-model"><div>
+<div class="nh-sec nh-minor" id="quality"><div class="nh-wrap">
 <p class="nh-eyebrow" data-en="Data + modeling" data-de="Daten + Modellierung">Data + modeling</p>
-<h2 class="nh-h2" data-en="Data foundation" data-de="Datenfundament">Data foundation</h2>
-<p class="nh-label" data-en="Pipeline" data-de="Pipeline">Pipeline</p>
-<ul class="nh-list nh-steps">
-<li><span class="nh-step-n">01</span><strong data-en="PostgreSQL" data-de="PostgreSQL">PostgreSQL</strong> — <span data-en="raw, staging and mart layers" data-de="Raw-, Staging- und Mart-Schicht">raw, staging and mart layers</span></li>
-<li><span class="nh-step-n">02</span><strong data-en="Staging / transformation" data-de="Staging / Transformation">Staging / transformation</strong> — <span data-en="cleaning and standardising seven source tables" data-de="Bereinigung und Vereinheitlichung von sieben Quelltabellen">cleaning and standardising seven source tables</span></li>
-<li><span class="nh-step-n">03</span><strong data-en="Data quality checks" data-de="Datenqualitätsprüfungen">Data quality checks</strong> — <span data-en="detect, count, assess the impact, then decide" data-de="erkennen, zählen, Auswirkung bewerten, dann entscheiden">detect, count, assess the impact, then decide</span></li>
-<li><span class="nh-step-n">04</span><strong data-en="Fact and dimension tables" data-de="Fakten- und Dimensionstabellen">Fact and dimension tables</strong> — <span data-en="4 facts and 6 dimensions, with customer and date shared" data-de="4 Fakten und 6 Dimensionen, Kunde und Datum geteilt">4 facts and 6 dimensions, with customer and date shared</span></li>
-<li><span class="nh-step-n">05</span><strong data-en="Validation" data-de="Validierung">Validation</strong> — <span data-en="post-cleaning checks, with later findings documented" data-de="Prüfungen nach der Bereinigung, spätere Funde dokumentiert">post-cleaning checks, with later findings documented</span></li>
-</ul></div><div>
-<figure class="nh-frame nh-schema"><a class="nh-zoom nh-zoom-schema" href="images/nordhome-star-schema.webp" target="_blank" rel="noopener" aria-label="Open star schema full size"><img src="images/nordhome-star-schema.webp" alt="Power BI model view: four fact tables (marketing touchpoints, payments, order items, returns) connected to six dimension tables (date, customer, product, payment, return reason, marketing campaign)" width="1932" height="1470" loading="lazy" decoding="async"></a><figcaption data-en="Star schema in the Power BI model view: four fact tables around six dimensions. Unmatched (“ghost”) references point to an unknown member instead of being deleted." data-de="Star-Schema in der Power-BI-Modellansicht: vier Faktentabellen um sechs Dimensionen. Nicht zuordenbare („Geister“-)Verweise zeigen auf einen Unknown-Member, statt gelöscht zu werden.">Star schema in the Power BI model view: four fact tables around six dimensions. Unmatched (“ghost”) references point to an unknown member instead of being deleted.</figcaption></figure>
-<div class="nh-decisions"><p class="nh-label" data-en="Modeling decisions" data-de="Modellierungsentscheidungen">Modeling decisions</p>
-<blockquote class="nh-quote"><p data-en="Before building the fact tables, I asked a simple question: &lt;em&gt;What does one row actually represent?&lt;/em&gt;" data-de="Bevor ich die Faktentabellen gebaut habe, habe ich eine einfache Frage gestellt: &lt;em&gt;Was stellt eine Zeile eigentlich dar?&lt;/em&gt;">Before building the fact tables, I asked a simple question: <em>What does one row actually represent?</em></p></blockquote>
-<p class="nh-body" data-en="That answer is the grain. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice." data-de="Diese Antwort ist der Grain. Er entscheidet, welche Joins sicher sind, welche Kennzahlen sich addieren lassen und wo derselbe Wert doppelt gezählt werden könnte.">That answer is the grain. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice.</p>
-<ul class="nh-list">
-<li><strong data-en="Grain decisions" data-de="Grain-Entscheidungen">Grain decisions</strong> — <span data-en="“one row = what?” answered before each build" data-de="„Eine Zeile = was?“ vor jedem Bau beantwortet">“one row = what?” answered before each build</span></li>
-<li><strong data-en="Surrogate keys" data-de="Surrogate Keys">Surrogate keys</strong> — <span data-en="an unknown member (−1) instead of deleted records" data-de="ein Unknown-Member (−1) statt gelöschter Datensätze">an unknown member (−1) instead of deleted records</span></li>
-</ul></div></div></div>
-<div class="nh-sub-block">
-<p class="nh-label" data-en="Data quality" data-de="Datenqualität">Data quality</p>
+<h2 class="nh-h2" data-en="Data quality" data-de="Datenqualität">Data quality</h2>
 <p class="nh-lead nh-lead-sm" data-en="The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged." data-de="Das Schwierige war nicht, die Daten einfach zu laden. Zuerst musste ich klären, welchen Datensätzen man trauen kann, welche korrigiert und welche markiert werden müssen.">The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged.</p>
 <div class="nh-stats">
 <div class="nh-stat"><span class="nh-num" data-en="496" data-de="496">496</span><span class="nh-stat-t" data-en="orders that point to customers who don’t exist" data-de="Bestellungen, die auf nicht existierende Kunden verweisen">orders that point to customers who don’t exist</span><span class="nh-stat-s">raw_orders</span></div>
@@ -136,7 +117,26 @@
 <div><h3 data-en="228 corrupted quantities" data-de="228 kaputte Mengen">228 corrupted quantities</h3><p data-en="A suspiciously high average order value led me to quantities of up to 1,996. Back-solving from the line total recovered the true quantity for 216 rows." data-de="Ein auffällig hoher durchschnittlicher Bestellwert führte mich zu Mengen bis 1.996. Über die Zeilensumme konnte ich die echte Menge für 216 Zeilen zurückrechnen.">A suspiciously high average order value led me to quantities of up to 1,996. Back-solving from the line total recovered the true quantity for 216 rows.</p></div>
 <div><h3 data-en="A date table that quietly stretched" data-de="Eine Datumstabelle, die sich still ausdehnte">A date table that quietly stretched</h3><p data-en="A downstream defect pushed the date range to Dec 2024 and silently broke every year-over-year measure. I fixed it to the real Jan 2021 – Jun 2024 window." data-de="Ein nachgelagerter Fehler dehnte den Datumsbereich bis Dez 2024 aus und brach still alle Vorjahresvergleiche. Ich habe ihn fest auf Jan 2021 – Jun 2024 gesetzt.">A downstream defect pushed the date range to Dec 2024 and silently broke every year-over-year measure. I fixed it to the real Jan 2021 – Jun 2024 window.</p></div>
 <div><h3 data-en="148 people registered twice" data-de="148 doppelt registrierte Personen">148 people registered twice</h3><p data-en="91% had real orders under both IDs. Deleting would lose history, merging would break keys — so I kept both and added a canonical customer key." data-de="91 % hatten echte Bestellungen unter beiden IDs. Löschen hätte Historie vernichtet, Zusammenführen Schlüssel gebrochen – also blieben beide, ergänzt um einen kanonischen Kundenschlüssel.">91% had real orders under both IDs. Deleting would lose history, merging would break keys — so I kept both and added a canonical customer key.</p></div>
-</div></div>
+</div></div></div>
+<div class="nh-sec nh-minor " id="model"><div class="nh-wrap">
+<div class="nh-split nh-split-model"><div>
+<p class="nh-eyebrow" data-en="Data + modeling" data-de="Daten + Modellierung">Data + modeling</p>
+<h2 class="nh-h2" data-en="Data foundation" data-de="Datenfundament">Data foundation</h2>
+<p class="nh-label" data-en="Pipeline" data-de="Pipeline">Pipeline</p>
+<ul class="nh-list nh-steps">
+<li><span class="nh-step-n">01</span><strong data-en="PostgreSQL" data-de="PostgreSQL">PostgreSQL</strong> — <span data-en="raw, staging and mart layers" data-de="Raw-, Staging- und Mart-Schicht">raw, staging and mart layers</span></li>
+<li><span class="nh-step-n">02</span><strong data-en="Staging / transformation" data-de="Staging / Transformation">Staging / transformation</strong> — <span data-en="cleaning and standardising seven source tables" data-de="Bereinigung und Vereinheitlichung von sieben Quelltabellen">cleaning and standardising seven source tables</span></li>
+<li><span class="nh-step-n">03</span><strong data-en="Fact and dimension tables" data-de="Fakten- und Dimensionstabellen">Fact and dimension tables</strong> — <span data-en="4 facts and 6 dimensions, with customer and date shared" data-de="4 Fakten und 6 Dimensionen, Kunde und Datum geteilt">4 facts and 6 dimensions, with customer and date shared</span></li>
+<li><span class="nh-step-n">04</span><strong data-en="Validation" data-de="Validierung">Validation</strong> — <span data-en="post-cleaning checks, with later findings documented" data-de="Prüfungen nach der Bereinigung, spätere Funde dokumentiert">post-cleaning checks, with later findings documented</span></li>
+</ul></div><div>
+<figure class="nh-frame nh-schema"><a class="nh-zoom nh-zoom-schema" href="images/nordhome-star-schema.webp" target="_blank" rel="noopener" aria-label="Open star schema full size"><img src="images/nordhome-star-schema.webp" alt="Power BI model view: four fact tables (marketing touchpoints, payments, order items, returns) connected to six dimension tables (date, customer, product, payment, return reason, marketing campaign)" width="1932" height="1470" loading="lazy" decoding="async"></a><figcaption data-en="Star schema in the Power BI model view: four fact tables around six dimensions. Unmatched (“ghost”) references point to an unknown member instead of being deleted." data-de="Star-Schema in der Power-BI-Modellansicht: vier Faktentabellen um sechs Dimensionen. Nicht zuordenbare („Geister“-)Verweise zeigen auf einen Unknown-Member, statt gelöscht zu werden.">Star schema in the Power BI model view: four fact tables around six dimensions. Unmatched (“ghost”) references point to an unknown member instead of being deleted.</figcaption></figure>
+<div class="nh-decisions"><p class="nh-label" data-en="Modeling decisions" data-de="Modellierungsentscheidungen">Modeling decisions</p>
+<blockquote class="nh-quote"><p data-en="Before building the fact tables, I asked a simple question: &lt;em&gt;What does one row actually represent?&lt;/em&gt;" data-de="Bevor ich die Faktentabellen gebaut habe, habe ich eine einfache Frage gestellt: &lt;em&gt;Was stellt eine Zeile eigentlich dar?&lt;/em&gt;">Before building the fact tables, I asked a simple question: <em>What does one row actually represent?</em></p></blockquote>
+<p class="nh-body" data-en="That answer is the grain. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice." data-de="Diese Antwort ist der Grain. Er entscheidet, welche Joins sicher sind, welche Kennzahlen sich addieren lassen und wo derselbe Wert doppelt gezählt werden könnte.">That answer is the grain. It decides which joins are safe, which measures can be added up, and where the same value might be counted twice.</p>
+<ul class="nh-list">
+<li><strong data-en="Grain decisions" data-de="Grain-Entscheidungen">Grain decisions</strong> — <span data-en="“one row = what?” answered before each build" data-de="„Eine Zeile = was?“ vor jedem Bau beantwortet">“one row = what?” answered before each build</span></li>
+<li><strong data-en="Surrogate keys" data-de="Surrogate Keys">Surrogate keys</strong> — <span data-en="an unknown member (−1) instead of deleted records" data-de="ein Unknown-Member (−1) statt gelöschter Datensätze">an unknown member (−1) instead of deleted records</span></li>
+</ul></div></div></div>
 <div class="nh-sub-block">
 <p class="nh-label" data-en="A problem I had to solve" data-de="Ein Problem, das ich lösen musste">A problem I had to solve</p>
 <div class="nh-split nh-split-problem"><div class="nh-pis">
