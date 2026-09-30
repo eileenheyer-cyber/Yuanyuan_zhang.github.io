@@ -946,9 +946,8 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-title { margin: 0 0 18px; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800; color: var(--ink); }
 .nh-sub { margin: 0 0 22px; font-size: clamp(1.15rem, 2vw, 1.5rem); color: var(--ink); font-weight: 500; }
 .nh-intro { margin: 0 0 48px; max-width: 640px; font-size: 1.02rem; line-height: 1.65; color: var(--muted); }
-.nh-meta { margin: 0; display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 0; border-top: 1px solid var(--line); }
-.nh-meta > div { padding: 18px 40px 0 0; margin-right: 40px; }
-.nh-meta > div + div { border-left: 1px solid var(--line); padding-left: 40px; }
+.nh-meta { margin: 0; display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.nh-meta > div { padding: 20px 0; }
 .nh-meta dt { margin: 0 0 6px; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
 .nh-meta dd { margin: 0; font-size: 0.95rem; color: var(--ink); }
 
@@ -1068,7 +1067,7 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-stats { grid-template-columns: 1fr 1fr; }
   .nh-stat:nth-child(3) { border-left: 0; padding-left: 0; }
   .nh-meta { grid-template-columns: 1fr 1fr; }
-  .nh-meta > div, .nh-meta > div + div { border-left: 0; padding: 16px 20px 0 0; margin: 0; }
+  .nh-meta > div { padding: 16px 20px 16px 0; }
 }
 @media (max-width: 720px) {
   .nh-sec { padding: 60px 0; }
