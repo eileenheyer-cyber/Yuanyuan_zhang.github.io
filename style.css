@@ -1036,16 +1036,12 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-fig figcaption { margin-top: 10px; font-size: 0.78rem; color: var(--muted); }
 
 /* dashboard */
-.nh-page-block { margin-top: 88px; }
+.nh-page-block { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 48px; align-items: start; margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--line); }
 .nh-page-block:first-of-type { margin-top: 0; }
-.nh-page-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 56px; align-items: start; margin-bottom: 28px; }
-.nh-page-head > div { display: grid; grid-template-columns: 56px 1fr; }
-.nh-page-n { font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; padding-top: 6px; }
-.nh-page-head { grid-template-columns: 48px minmax(0, 1fr) minmax(0, 1fr); }
-.nh-page-head > div { display: block; }
-.nh-page-head h3 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.02em; margin-bottom: 8px; }
-.nh-page-q { font-size: 1rem; font-weight: 500; color: var(--accent); line-height: 1.5; }
-.nh-page-d { padding-top: 4px; }
+.nh-page-text { position: sticky; top: 110px; }
+.nh-page-n { display: block; font-size: 0.85rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; }
+.nh-page-text h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 12px; }
+.nh-page-q { font-size: 1rem; font-weight: 500; color: var(--accent); line-height: 1.5; margin-bottom: 16px !important; }
 
 /* insights */
 .nh-insights { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 56px; }
@@ -1087,8 +1083,8 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-star figcaption { margin-top: 84px; }
   .nh-eda, .nh-eda-rev { grid-template-columns: 1fr; gap: 28px; }
   .nh-eda-rev .nh-fig { order: 0; }
-  .nh-page-head { grid-template-columns: 40px 1fr; }
-  .nh-page-d { grid-column: 2; }
+  .nh-page-block { grid-template-columns: 1fr; gap: 24px; }
+  .nh-page-text { position: static; order: -1; }
   .nh-insights { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
@@ -1106,8 +1102,6 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-bars { padding: 20px; }
   .nh-bar-row { grid-template-columns: 76px 1fr 72px; }
   .nh-ins-row { grid-template-columns: 1fr; gap: 4px; }
-  .nh-page-head { grid-template-columns: 1fr; }
-  .nh-page-d { grid-column: 1; }
-  .nh-page-block { margin-top: 64px; }
+  .nh-page-block { margin-top: 48px; padding-top: 32px; }
   .nh-btn { width: 100%; text-align: center; }
 }
