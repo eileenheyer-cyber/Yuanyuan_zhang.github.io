@@ -1105,3 +1105,73 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-page-block { margin-top: 48px; padding-top: 32px; }
   .nh-btn { width: 100%; text-align: center; }
 }
+
+/* NordHome page — compact density pass (overrides the roomier defaults above) */
+.nh-sec { padding-top: 72px; }
+.nh-sec-tight { padding-top: 48px; }
+.nh-sec-band { margin-top: 72px; padding: 56px 0; }
+.nh-head { margin-bottom: 32px; }
+.nh-head .nh-h2, .nh-split .nh-h2 { margin-bottom: 14px; }
+.nh-h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+.nh-eyebrow { margin-bottom: 12px !important; }
+.nh-lead { font-size: 1.05rem; line-height: 1.6; }
+.nh-body { line-height: 1.65; }
+.nh-note { margin-top: 18px !important; }
+.nh-hero { padding-top: 32px; }
+.nh-hero .cs-back { margin-bottom: 28px; }
+.nh-title { font-size: clamp(2rem, 4.6vw, 3.4rem); }
+.nh-intro { margin-top: 20px !important; font-size: 1.05rem; line-height: 1.65; }
+.nh-facts { margin-top: 36px !important; }
+.nh-num { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
+.nh-journey li { padding-top: 22px; }
+.nh-split { gap: 56px; }
+.nh-split-top { margin-top: 36px; }
+.nh-qlist li, .nh-steps li { padding: 12px 0; font-size: 0.98rem; }
+.nh-stat { padding-top: 18px; gap: 8px; }
+.nh-stat .nh-num { font-size: clamp(2.1rem, 3.8vw, 3rem); }
+.nh-label-gap { margin-top: 36px !important; padding-top: 18px; }
+.nh-quote p { font-size: clamp(1.3rem, 2.3vw, 1.75rem); }
+.nh-quote { margin-bottom: 18px !important; }
+.nh-body-wide { margin-top: 14px; }
+.nh-star { margin-top: 40px !important; }
+.nh-star figcaption { margin-top: 74px; }
+.nh-pi { padding: 16px 0; }
+.nh-pi p { line-height: 1.6; }
+.nh-eda { padding: 28px 0; gap: 40px; }
+.nh-eda-text h3 { font-size: clamp(1.15rem, 1.8vw, 1.4rem); margin-bottom: 16px; }
+.nh-page-block { margin-top: 36px; padding-top: 28px; gap: 40px; }
+.nh-page-text h3 { font-size: clamp(1.25rem, 1.9vw, 1.5rem); }
+.nh-learn { gap: 14px; }
+.nh-learn p { font-size: 1rem; line-height: 1.65; }
+.nh-tools { padding-top: 22px; }
+.nh-cta { padding-top: 36px; gap: 14px; }
+.nh-sec-cta { padding-bottom: 16px; }
+
+/* insights: one compact row per finding — number + label left, meaning/why right */
+.nh-insights { grid-template-columns: 1fr; gap: 0; }
+.nh-ins { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr) minmax(0, 1fr); column-gap: 32px; row-gap: 0; align-items: start; padding: 20px 0 22px; }
+.nh-ins .nh-num { font-size: clamp(1.9rem, 3vw, 2.5rem); grid-column: 1; grid-row: 1; }
+.nh-ins-t { grid-column: 1; grid-row: 2; font-size: 0.95rem; margin: 8px 0 0; }
+.nh-ins-row { grid-row: 1 / span 2; display: block; border-top: 0; padding-top: 0; }
+.nh-ins-row:nth-of-type(1) { grid-column: 2; }
+.nh-ins-row:nth-of-type(2) { grid-column: 3; }
+.nh-ins-k { display: block; margin-bottom: 6px; padding-top: 0; }
+.nh-ins-row p { font-size: 0.9rem; line-height: 1.55; }
+
+@media (max-width: 1024px) {
+  .nh-sec { padding-top: 60px; }
+  .nh-ins { grid-template-columns: 1fr 1fr; row-gap: 12px; }
+  .nh-ins .nh-num, .nh-ins-t { grid-column: 1 / -1; grid-row: auto; }
+  .nh-ins-row { grid-row: auto; }
+  .nh-ins-row:nth-of-type(1) { grid-column: 1; }
+  .nh-ins-row:nth-of-type(2) { grid-column: 2; }
+  .nh-star-facts { row-gap: 84px; }
+}
+@media (max-width: 720px) {
+  .nh-sec { padding-top: 48px; }
+  .nh-sec-band { margin-top: 48px; padding: 40px 0; }
+  .nh-ins { grid-template-columns: 1fr; }
+  .nh-ins-row:nth-of-type(1), .nh-ins-row:nth-of-type(2) { grid-column: 1; }
+  .nh-page-block { margin-top: 28px; }
+  .nh-star-facts { row-gap: 84px; }
+}
