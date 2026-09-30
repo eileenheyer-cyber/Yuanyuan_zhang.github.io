@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-en="AlpenTech Controlling – Power BI Finance Reporting – Yuanyuan Zhang" data-de="AlpenTech Controlling – Power-BI-Finanzreporting – Yuanyuan Zhang">AlpenTech Controlling – Power BI Finance Reporting – Yuanyuan Zhang</title>
-  <meta name="description" content="Case study: five-page Power BI controlling report for the fictional AlpenTech GmbH — plan-vs-actual forecast, cash flow and scenario analysis." data-en-content="Case study: five-page Power BI controlling report for the fictional AlpenTech GmbH — plan-vs-actual forecast, cash flow and scenario analysis." data-de-content="Case Study: fünfseitiger Power-BI-Controllingbericht für die fiktive AlpenTech GmbH – Plan-Ist-Forecast, Cashflow und Szenarioanalyse.">
+  <meta name="description" content="Case study: five-page Power BI controlling report for the fictional AlpenTech GmbH — KPIs, plan-vs-actual variances, forecast, cash flow and scenario analysis." data-en-content="Case study: five-page Power BI controlling report for the fictional AlpenTech GmbH — KPIs, plan-vs-actual variances, forecast, cash flow and scenario analysis." data-de-content="Case Study: fünfseitiger Power-BI-Controllingbericht für die fiktive AlpenTech GmbH – KPIs, Plan-Ist-Abweichungen, Forecast, Cashflow und Szenarioanalyse.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260929j">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20260930h">
 </head>
-<body>
+<body class="nh-page">
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
@@ -25,107 +25,140 @@
   </div>
 </header>
 
-<main>
+<main class="nh">
 
-  <div class="cs-hero">
-    <a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
-    <span class="cs-status done" data-en="Completed" data-de="Abgeschlossen">Completed</span>
-    <h1 data-en="AlpenTech Controlling – Power BI Finance Reporting" data-de="AlpenTech Controlling – Power-BI-Finanzreporting">AlpenTech Controlling – Power BI Finance Reporting</h1>
-    <p class="lead" data-en="A five-page controlling report in Power BI for the fictional AlpenTech GmbH, a German industrial B2B manufacturer — from plan-vs-actual variances through cash flow to a scenario analysis for 2026." data-de="Ein fünfseitiger Controlling-Bericht in Power BI für die fiktive AlpenTech GmbH, einen deutschen Industrie-B2B-Hersteller — von Plan-Ist-Abweichungen über Cashflow bis zur Szenarioanalyse für 2026.">A five-page controlling report in Power BI for the fictional AlpenTech GmbH, a German industrial B2B manufacturer — from plan-vs-actual variances through cash flow to a scenario analysis for 2026.</p>
-  </div>
-
-  <div class="cs-hero">
-    <img class="cs-cover" src="images/alpentech-management-cockpit.png" alt="Management Cockpit: drei Kern-KPIs (Jahresüberschuss, Cash Conversion Rate, Ist vs. Plan), EBITDA-Verlauf gegen Plan und eine Brücke vom Umsatz zum Jahresüberschuss">
-  </div>
-
-  <div class="cs-section" style="padding-top: 0;">
-    <div class="cs-meta-grid">
-      <div><h4 data-en="Role" data-de="Rolle">Role</h4><p data-en="Data modeling, DAX, report design" data-de="Datenmodellierung, DAX, Reportdesign">Data modeling, DAX, report design</p></div>
-      <div><h4 data-en="Context" data-de="Kontext">Context</h4><p data-en="Portfolio project for Controlling / FP&amp;A" data-de="Portfolioprojekt für Controlling / FP&amp;amp;A">Portfolio project for Controlling / FP&A</p></div>
-      <div><h4 data-en="Technology" data-de="Technik">Technology</h4><p>Power BI, DAX, Power Query, TMDL, Python</p></div>
-      <div><h4 data-en="Status" data-de="Status">Status</h4><p data-en="Completed" data-de="Abgeschlossen">Completed</p></div>
-    </div>
-
-    <div class="cs-cols">
-      <div>
-        <h2 data-en="Starting point" data-de="Ausgangslage">Starting point</h2>
-        <p data-en="For the fictional AlpenTech GmbH, a controlling report was to be built that goes beyond a plain P&amp;L: plan-vs-actual-vs-forecast comparison, cash flow and working capital, and a scenario analysis for the current fiscal year. Fiscal years 2023–2025 are shown in full, with 2026 as the open year — actuals through June, forecast through December." data-de="Für die fiktive AlpenTech GmbH sollte ein Controlling-Bericht entstehen, der über eine reine GuV hinausgeht: Plan-Ist-Forecast-Vergleich, Cashflow und Working Capital, und eine Szenarioanalyse für das laufende Geschäftsjahr. Die Geschäftsjahre 2023–2025 sind vollständig abgebildet, 2026 als offenes Jahr mit Ist-Werten bis Juni und Forecast bis Dezember.">For the fictional AlpenTech GmbH, a controlling report was to be built that goes beyond a plain P&L: plan-vs-actual-vs-forecast comparison, cash flow and working capital, and a scenario analysis for the current fiscal year. Fiscal years 2023–2025 are shown in full, with 2026 as the open year — actuals through June, forecast through December.</p>
-        <h2 style="margin-top: 40px;" data-en="Five report pages" data-de="Fünf Berichtsseiten">Five report pages</h2>
-        <ul>
-          <li data-en="&lt;strong&gt;Management Cockpit&lt;/strong&gt; — core KPIs, EBITDA trend and revenue-to-net-income bridge" data-de="&lt;strong&gt;Management Cockpit&lt;/strong&gt; — Kern-KPIs, EBITDA-Verlauf und Umsatz-zu-Ergebnis-Brücke"><strong>Management Cockpit</strong> — core KPIs, EBITDA trend and revenue-to-net-income bridge</li>
-          <li data-en="&lt;strong&gt;P&amp;amp;L Analysis&lt;/strong&gt; — P&amp;amp;L by quarter, EBITDA bridge 2024→2025, margin trend" data-de="&lt;strong&gt;P&amp;amp;L Analysis&lt;/strong&gt; — GuV nach Quartal, EBITDA-Brücke 2024→2025, Margenentwicklung"><strong>P&amp;L Analysis</strong> — P&amp;L by quarter, EBITDA bridge 2024→2025, margin trend</li>
-          <li data-en="&lt;strong&gt;Budget &amp;amp; Variance&lt;/strong&gt; — plan attainment, variance by cost center, biggest cost drivers" data-de="&lt;strong&gt;Budget &amp;amp; Variance&lt;/strong&gt; — Planerreichung, Abweichung nach Kostenstelle, größte Kostentreiber"><strong>Budget &amp; Variance</strong> — plan attainment, variance by cost center, biggest cost drivers</li>
-          <li data-en="&lt;strong&gt;Forecast&lt;/strong&gt; — mid-year projection, cash flow and working capital 2026" data-de="&lt;strong&gt;Forecast&lt;/strong&gt; — Hochrechnung zur Jahresmitte, Cashflow und Working Capital 2026"><strong>Forecast</strong> — mid-year projection, cash flow and working capital 2026</li>
-          <li data-en="&lt;strong&gt;Scenario Analysis&lt;/strong&gt; — base/downside/upside with data-anchored assumptions" data-de="&lt;strong&gt;Scenario Analysis&lt;/strong&gt; — Base/Downside/Upside mit datenverankerten Annahmen"><strong>Scenario Analysis</strong> — base/downside/upside with data-anchored assumptions</li>
-        </ul>
-      </div>
-      <div>
-        <h2 data-en="Key findings (FY 2025)" data-de="Zentrale Erkenntnisse (GJ 2025)">Key findings (FY 2025)</h2>
-        <p data-en="Revenue hit plan at €20.16m, but EBITDA came in €1.12m below plan — the gap is cost-driven, with raw materials the biggest single driver at +€490k over plan. Gross margin eroded from 50.9% (2023) to 47.5% (2025), and €2.0m of EBITDA turned into only €391k of free cash flow." data-de="Der Umsatz traf mit 20,16 Mio. € den Plan, das EBITDA lag aber 1,12 Mio. € darunter — die Lücke ist kostengetrieben, größter Treiber sind Rohstoffe mit +490 Tsd. € über Plan. Die Bruttomarge erodierte von 50,9 % (2023) auf 47,5 % (2025), und aus 2,0 Mio. € EBITDA wurden nur 391 Tsd. € Free Cashflow.">Revenue hit plan at €20.16m, but EBITDA came in €1.12m below plan — the gap is cost-driven, with raw materials the biggest single driver at +€490k over plan. Gross margin eroded from 50.9% (2023) to 47.5% (2025), and €2.0m of EBITDA turned into only €391k of free cash flow.</p>
-        <h2 style="margin-top: 40px;" data-en="2026 outlook" data-de="Ausblick 2026">2026 outlook</h2>
-        <p data-en="The mid-year forecast shows an operating result of −€107k against a plan of +€2.72m — the first loss in the dataset. About a third of the gap comes from the loss of the largest customer, two thirds from the structural cost trend in logistics, IT and energy." data-de="Der Forecast zur Jahresmitte zeigt ein operatives Ergebnis von −107 Tsd. € gegenüber einem Plan von +2,72 Mio. € — der erste Verlust im Datensatz. Rund ein Drittel der Lücke stammt vom Verlust des größten Kunden, zwei Drittel vom strukturellen Kostentrend in Logistik, IT und Energie.">The mid-year forecast shows an operating result of −€107k against a plan of +€2.72m — the first loss in the dataset. About a third of the gap comes from the loss of the largest customer, two thirds from the structural cost trend in logistics, IT and energy.</p>
-        <div class="tags" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;">
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Power BI</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">DAX</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">Power Query</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);" data-en="Star Schema" data-de="Sternschema">Star Schema</span>
-          <span style="font-size:0.78rem; padding:5px 12px; border:1px solid var(--line); color:var(--ink);">FP&amp;A</span>
-        </div>
-        <p style="margin-top: 24px;"><a href="https://github.com/eileenheyer-cyber/alpentech-finanz-controlling-analytics" style="color: var(--accent); font-weight: 500;" data-en="Repository on GitHub →" data-de="Repository auf GitHub →">Repository on GitHub →</a></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="cs-hero">
-    <div class="cs-cover-row">
-      <img src="images/alpentech-pl-analysis.png" alt="P&amp;L Analysis: GuV vom Umsatz bis zum Jahresüberschuss nach Quartal, EBITDA-Brücke 2024 auf 2025 und Margenentwicklung über 12 Quartale">
-      <img src="images/alpentech-budget-variance.png" alt="Budget & Variance: Planerreichung als Tacho, Plan-Ist-Vergleich nach Kostenstelle und die größten ungünstigen Kostentreiber">
-    </div>
-  </div>
-
-  <div class="cs-section" style="padding-top: 0;">
-    <div class="cs-cols">
-      <div>
-        <h2 data-en="Data model" data-de="Datenmodell">Data model</h2>
-        <p data-en="Star schema with seven dimensions (date, company, business unit, cost center, account, customer, product) and seven fact tables for actuals, plan, forecast, working capital, capex and tax — plus a decoupled layout table that drives the P&amp;L rows. Revenue is defined as positive, costs as negative, so &lt;code&gt;SUM(amount)&lt;/code&gt; yields the operating result directly." data-de="Sternschema mit sieben Dimensionen (Datum, Gesellschaft, Business Unit, Kostenstelle, Konto, Kunde, Produkt) und sieben Fakttabellen für Ist, Plan, Forecast, Working Capital, Capex und Steuern — plus einer entkoppelten Layouttabelle, die die GuV-Zeilen steuert. Umsatz ist positiv, Kosten sind negativ definiert, sodass &lt;code&gt;SUM(amount)&lt;/code&gt; direkt das Betriebsergebnis ergibt.">Star schema with seven dimensions (date, company, business unit, cost center, account, customer, product) and seven fact tables for actuals, plan, forecast, working capital, capex and tax — plus a decoupled layout table that drives the P&L rows. Revenue is defined as positive, costs as negative, so <code>SUM(amount)</code> yields the operating result directly.</p>
-      </div>
-      <div>
-        <h2 data-en="DAX in detail" data-de="DAX im Detail">DAX in detail</h2>
-        <ul>
-          <li data-en="Percentage variances are divided by &lt;code&gt;ABS()&lt;/code&gt; of the base, so a cost overrun never wrongly shows up as positive" data-de="Abweichungen in % werden durch &lt;code&gt;ABS()&lt;/code&gt; der Basis geteilt, damit eine Kostenüberschreitung nie fälschlich als positiv erscheint">Percentage variances are divided by <code>ABS()</code> of the base, so a cost overrun never wrongly shows up as positive</li>
-          <li data-en="Forecast accuracy is measured only for the actual forecast period (&lt;code&gt;KEEPFILTERS&lt;/code&gt;), not for months already known as actuals" data-de="Forecast-Genauigkeit wird nur für die tatsächliche Prognoseperiode gemessen (&lt;code&gt;KEEPFILTERS&lt;/code&gt;), nicht für die bereits bekannten Ist-Monate">Forecast accuracy is measured only for the actual forecast period (<code>KEEPFILTERS</code>), not for months already known as actuals</li>
-          <li data-en="Metrics that span accounts (margins, cost ratios) use &lt;code&gt;REMOVEFILTERS ( dim_account )&lt;/code&gt;" data-de="Kennzahlen über Konten hinweg (Margen, Kostenquoten) nutzen &lt;code&gt;REMOVEFILTERS ( dim_account )&lt;/code&gt;">Metrics that span accounts (margins, cost ratios) use <code>REMOVEFILTERS ( dim_account )</code></li>
-          <li data-en="34 measures were renamed via a TMDL text transform and checked against all 122 field references in the report" data-de="34 Measures wurden per TMDL-Texttransformation umbenannt und gegen alle 122 Feldverweise geprüft">34 measures were renamed via a TMDL text transform and checked against all 122 field references in the report</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="cs-hero">
-    <div class="cs-cover-row">
-      <img src="images/alpentech-forecast.png" alt="Forecast: Hochrechnung zur Jahresmitte 2026 mit Betriebsergebnis, kumuliertem Free Cashflow und Working-Capital-Kommentar">
-      <img src="images/alpentech-scenario-analysis.png" alt="Scenario Analysis: drei Szenarien Base, Downside und Upside mit kumuliertem Free Cashflow und Annahmen">
-    </div>
-  </div>
-
-  <div class="cs-section" style="padding-top: 0;">
-    <div class="cs-cols">
-      <div>
-        <h2 data-en="Design decisions" data-de="Designentscheidungen">Design decisions</h2>
-        <p data-en="Every non-obvious definition is documented with its rationale: COGS as direct production cost excluding depreciation (the only definition where gross profit minus operating expense lands exactly on EBITDA), a 75% cash-conversion target instead of 100% (the structural ceiling after tax sits at 77–81%), and fixed scenarios instead of free sliders, so they can be defended in front of management." data-de="Jede nicht offensichtliche Definition ist begründet dokumentiert: COGS als direkte Produktionskosten ohne Abschreibungen (einzige Definition, bei der Bruttoergebnis minus Betriebsaufwand exakt zum EBITDA führt), ein Cash-Conversion-Ziel von 75 % statt 100 % (die strukturelle Obergrenze liegt nach Steuern bei 77–81 %), und feste Szenarien statt freier Schieberegler, damit sie sich vor dem Management begründen lassen.">Every non-obvious definition is documented with its rationale: COGS as direct production cost excluding depreciation (the only definition where gross profit minus operating expense lands exactly on EBITDA), a 75% cash-conversion target instead of 100% (the structural ceiling after tax sits at 77–81%), and fixed scenarios instead of free sliders, so they can be defended in front of management.</p>
-      </div>
-      <div>
-        <h2 data-en="About the data" data-de="Zu den Daten">About the data</h2>
-        <p data-en="The dataset is synthetic and deliberately clean (fixed seed, reproducible) and is validated by script against keys, signs and scenarios. Every variance between plan, forecast and actual is a deliberate, explainable business scenario — the way a controller would investigate and report it." data-de="Der Datensatz ist synthetisch und bewusst sauber generiert (fester Seed, reproduzierbar) und wird per Skript gegen Schlüssel, Vorzeichen und Szenarien validiert. Jede Abweichung zwischen Plan, Forecast und Ist ist ein bewusstes, erklärbares Geschäftsszenario — so, wie ein Controller es untersuchen und berichten würde.">The dataset is synthetic and deliberately clean (fixed seed, reproducible) and is validated by script against keys, signs and scenarios. Every variance between plan, forecast and actual is a deliberate, explainable business scenario — the way a controller would investigate and report it.</p>
-      </div>
-    </div>
-    <div class="cs-cols" style="margin-top: 40px;">
-      <div>
-        <h2 data-en="Data model diagram" data-de="Datenmodell-Diagramm">Data model diagram</h2>
-        <img src="images/alpentech-data-model.png" alt="Sternschema-Diagramm: sieben Dimensionstabellen und sieben Fakttabellen rund um GuV, Working Capital, Capex und Steuern" style="width:100%; height:auto; border:1px solid var(--line);">
-      </div>
-    </div>
-  </div>
+<div class="nh-hero"><div class="nh-wrap">
+<a class="cs-back" href="index.html#projekte" data-en="← All projects" data-de="← Alle Projekte">← All projects</a>
+<p class="nh-eyebrow" data-en="02 — Finance reporting / Power BI" data-de="02 — Finanzreporting / Power BI">02 — Finance reporting / Power BI</p>
+<h1 class="nh-title">AlpenTech Controlling</h1>
+<p class="nh-intro" data-en="A five-page Power BI controlling report for AlpenTech GmbH, a fictional German industrial B2B manufacturer. It turns plan, actuals and forecast into KPIs, variance views and a scenario analysis a controller can present to management. Fiscal years 2023–2025 are complete; 2026 is the open year, with actuals through June and forecast through December." data-de="Ein fünfseitiger Power-BI-Controllingbericht für die AlpenTech GmbH, einen fiktiven deutschen Industrie-B2B-Hersteller. Er macht aus Plan, Ist und Forecast KPIs, Abweichungsanalysen und eine Szenarioanalyse, die ein Controller dem Management präsentieren kann. Die Geschäftsjahre 2023–2025 sind vollständig, 2026 ist das offene Jahr mit Ist-Werten bis Juni und Forecast bis Dezember.">A five-page Power BI controlling report for AlpenTech GmbH, a fictional German industrial B2B manufacturer. It turns plan, actuals and forecast into KPIs, variance views and a scenario analysis a controller can present to management. Fiscal years 2023–2025 are complete; 2026 is the open year, with actuals through June and forecast through December.</p>
+<ul class="nh-chips nh-chips-hero"><li>Power BI</li><li>DAX</li><li>Power Query</li><li>TMDL / PBIP</li><li>Star schema</li><li>Python</li><li>Git / GitHub</li></ul>
+<p class="nh-repo"><a href="https://github.com/eileenheyer-cyber/alpentech-finanz-controlling-analytics" target="_blank" rel="noopener" data-en="View the repository on GitHub →" data-de="Repository auf GitHub ansehen →">View the repository on GitHub →</a></p>
+</div></div>
+<div class="nh-sec nh-sec-tight nh-sec-dark" id="glance"><div class="nh-wrap">
+<div class="nh-glance">
+<div><p class="nh-label" data-en="Business question" data-de="Business-Frage">Business question</p><p class="nh-glance-t" data-en="How is the business performing against plan, and what will management have to decide next?" data-de="Wie läuft das Geschäft im Vergleich zum Plan, und was muss das Management als Nächstes entscheiden?">How is the business performing against plan, and what will management have to decide next?</p></div>
+<div><p class="nh-label" data-en="Approach" data-de="Vorgehen">Approach</p><p class="nh-glance-t" data-en="Star schema → DAX measures → KPI targets → five question-led report pages" data-de="Sternschema → DAX-Measures → KPI-Zielwerte → fünf fragengeleitete Berichtsseiten">Star schema → DAX measures → KPI targets → five question-led report pages</p></div>
+<div><p class="nh-label" data-en="Output" data-de="Ergebnis">Output</p><p class="nh-glance-t" data-en="A Power BI report with 34+ documented measures, built as an importable .pbix and as a PBIP with TMDL." data-de="Ein Power-BI-Bericht mit über 34 dokumentierten Measures, als importierbare .pbix und als PBIP mit TMDL.">A Power BI report with 34+ documented measures, built as an importable .pbix and as a PBIP with TMDL.</p></div>
+</div>
+</div></div>
+<div class="nh-sec nh-major" id="kpis"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="The KPIs" data-de="Die KPIs">The KPIs</p>
+<h2 class="nh-h2" data-en="Three KPIs, three kinds of target" data-de="Drei KPIs, drei Arten von Zielwert">Three KPIs, three kinds of target</h2>
+<p class="nh-lead" data-en="The cockpit opens with three numbers. Each answers a different question, so each gets a different target. FY 2025 status shown." data-de="Das Cockpit beginnt mit drei Zahlen. Jede beantwortet eine andere Frage und bekommt deshalb einen anderen Zielwert. Stand GJ 2025.">The cockpit opens with three numbers. Each answers a different question, so each gets a different target. FY 2025 status shown.</p>
+</div>
+<div class="nh-findings ap-three">
+<article class="nh-find"><span class="nh-find-n">53%</span><h3 data-en="Net income vs. derived target" data-de="Jahresüberschuss vs. abgeleitetes Ziel">Net income vs. derived target</h3><p data-en="€908k against a target of €1.72m. There is no planned net income, so the target is the planned operating result after the constant 29.8% tax rate, and the card says so. Attainment fell from 104% in 2023 to 83% in 2024." data-de="908 Tsd. € gegenüber einem Ziel von 1,72 Mio. €. Einen geplanten Jahresüberschuss gibt es nicht, das Ziel ist daher das geplante Betriebsergebnis nach dem konstanten Steuersatz von 29,8 %, und die Karte kennzeichnet das. Die Erreichung sank von 104 % (2023) auf 83 % (2024).">€908k against a target of €1.72m. There is no planned net income, so the target is the planned operating result after the constant 29.8% tax rate, and the card says so. Attainment fell from 104% in 2023 to 83% in 2024.</p></article>
+<article class="nh-find"><span class="nh-find-n">56.9%</span><h3 data-en="Cash conversion rate vs. 75%" data-de="Cash Conversion Rate vs. 75 %">Cash conversion rate vs. 75%</h3><p data-en="The target is 75%, not 100%: after tax, the structural ceiling is only 77–81%, and a 100% target would leave the KPI permanently red until nobody reads it." data-de="Das Ziel liegt bei 75 %, nicht 100 %: Nach Steuern liegt die strukturelle Obergrenze nur bei 77–81 %, und ein 100-%-Ziel würde den KPI dauerhaft rot färben, bis ihn niemand mehr liest.">The target is 75%, not 100%: after tax, the structural ceiling is only 77–81%, and a 100% target would leave the KPI permanently red until nobody reads it.</p></article>
+<article class="nh-find"><span class="nh-find-n">−47.1%</span><h3 data-en="Actual vs. plan, with a tolerance band" data-de="Ist vs. Plan, mit Toleranzband">Actual vs. plan, with a tolerance band</h3><p data-en="A variance has no target except zero, so the card uses bands: green within ±5%, yellow to ±10%, red beyond. FY 2025 sits deep in the red band, on an operating result of €1.29m against a plan of €2.45m." data-de="Eine Abweichung hat kein Ziel außer null, deshalb nutzt die Karte Bänder: grün innerhalb ±5 %, gelb bis ±10 %, rot darüber. GJ 2025 liegt tief im roten Band, mit einem Betriebsergebnis von 1,29 Mio. € gegenüber einem Plan von 2,45 Mio. €.">A variance has no target except zero, so the card uses bands: green within ±5%, yellow to ±10%, red beyond. FY 2025 sits deep in the red band, on an operating result of €1.29m against a plan of €2.45m.</p></article>
+</div>
+</div></div>
+<div class="nh-sec nh-major nh-sec-dark" id="dashboard"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Power BI report" data-de="Power-BI-Bericht">Power BI report</p>
+<h2 class="nh-h2" data-en="Five pages, five questions" data-de="Fünf Seiten, fünf Fragen">Five pages, five questions</h2>
+<p class="nh-lead" data-en="Every page starts with a business question and is built to answer it: the cockpit for the overview, then variance, forecast and scenarios in the order a controller would investigate them." data-de="Jede Seite beginnt mit einer Business-Frage und ist darauf gebaut, sie zu beantworten: das Cockpit für den Überblick, dann Abweichung, Forecast und Szenarien in der Reihenfolge, in der ein Controller sie untersuchen würde.">Every page starts with a business question and is built to answer it: the cockpit for the overview, then variance, forecast and scenarios in the order a controller would investigate them.</p>
+</div>
+<div class="nh-views ap-feature">
+<article class="nh-view"><a class="nh-view-link" href="images/alpentech-pbi-01-cockpit.webp" target="_blank" rel="noopener">
+<p class="nh-view-label"><span class="nh-view-n">01</span> <span class="nh-view-t" data-en="MANAGEMENT COCKPIT" data-de="MANAGEMENT COCKPIT">MANAGEMENT COCKPIT</span></p>
+<h3 class="nh-view-q" data-en="How is the business performing?" data-de="Wie läuft das Geschäft?">How is the business performing?</h3>
+<span class="nh-view-img"><img src="images/alpentech-pbi-01-cockpit.webp" alt="Power BI report page: Management Cockpit" width="2536" height="1422" loading="lazy" decoding="async"></span>
+<span class="nh-view-foot"><span class="nh-view-tags" data-en="3 core KPIs · EBITDA vs. plan · Revenue-to-net-income bridge · Working capital · Attention list" data-de="3 Kern-KPIs · EBITDA vs. Plan · Umsatz-zu-Ergebnis-Brücke · Working Capital · Aufmerksamkeitsliste">3 core KPIs · EBITDA vs. plan · Revenue-to-net-income bridge · Working capital · Attention list</span><span class="nh-view-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+</a></article>
+</div>
+<div class="nh-views ap-two">
+<article class="nh-view"><a class="nh-view-link" href="images/alpentech-pbi-02-pl.webp" target="_blank" rel="noopener">
+<p class="nh-view-label"><span class="nh-view-n">02</span> <span class="nh-view-t" data-en="P&amp;L ANALYSIS" data-de="GUV-ANALYSE">P&L ANALYSIS</span></p>
+<h3 class="nh-view-q" data-en="What happened to profit, and why?" data-de="Was ist mit dem Gewinn passiert, und warum?">What happened to profit, and why?</h3>
+<span class="nh-view-img"><img src="images/alpentech-pbi-02-pl.webp" alt="Power BI report page: P&amp;L Analysis" width="2532" height="1422" loading="lazy" decoding="async"></span>
+<span class="nh-view-foot"><span class="nh-view-tags" data-en="P&amp;L by quarter · EBITDA bridge · Margin trend · Opex" data-de="GuV nach Quartal · EBITDA-Brücke · Margenverlauf · Opex">P&L by quarter · EBITDA bridge · Margin trend · Opex</span><span class="nh-view-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+</a></article>
+<article class="nh-view"><a class="nh-view-link" href="images/alpentech-pbi-03-variance.webp" target="_blank" rel="noopener">
+<p class="nh-view-label"><span class="nh-view-n">03</span> <span class="nh-view-t" data-en="BUDGET &amp; VARIANCE" data-de="PLAN &amp; ABWEICHUNG">BUDGET & VARIANCE</span></p>
+<h3 class="nh-view-q" data-en="Where exactly did we miss the plan?" data-de="Wo genau haben wir den Plan verfehlt?">Where exactly did we miss the plan?</h3>
+<span class="nh-view-img"><img src="images/alpentech-pbi-03-variance.webp" alt="Power BI report page: Budget and Variance" width="2526" height="1390" loading="lazy" decoding="async"></span>
+<span class="nh-view-foot"><span class="nh-view-tags" data-en="Plan attainment · Cost centers · Cost drivers · Actions" data-de="Planerreichung · Kostenstellen · Kostentreiber · Maßnahmen">Plan attainment · Cost centers · Cost drivers · Actions</span><span class="nh-view-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+</a></article>
+<article class="nh-view"><a class="nh-view-link" href="images/alpentech-pbi-04-forecast.webp" target="_blank" rel="noopener">
+<p class="nh-view-label"><span class="nh-view-n">04</span> <span class="nh-view-t" data-en="FORECAST 2026" data-de="FORECAST 2026">FORECAST 2026</span></p>
+<h3 class="nh-view-q" data-en="Where does the year end up?" data-de="Wo landet das Jahr?">Where does the year end up?</h3>
+<span class="nh-view-img"><img src="images/alpentech-pbi-04-forecast.webp" alt="Power BI report page: Forecast 2026" width="2516" height="1432" loading="lazy" decoding="async"></span>
+<span class="nh-view-foot"><span class="nh-view-tags" data-en="6 actual + 6 forecast months · Cash flow · FCF · Working capital" data-de="6 Ist- + 6 Forecast-Monate · Cashflow · FCF · Working Capital">6 actual + 6 forecast months · Cash flow · FCF · Working capital</span><span class="nh-view-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+</a></article>
+<article class="nh-view"><a class="nh-view-link" href="images/alpentech-pbi-05-scenario.webp" target="_blank" rel="noopener">
+<p class="nh-view-label"><span class="nh-view-n">05</span> <span class="nh-view-t" data-en="SCENARIO ANALYSIS" data-de="SZENARIOANALYSE">SCENARIO ANALYSIS</span></p>
+<h3 class="nh-view-q" data-en="What if the assumptions do not hold?" data-de="Was, wenn die Annahmen nicht halten?">What if the assumptions do not hold?</h3>
+<span class="nh-view-img"><img src="images/alpentech-pbi-05-scenario.webp" alt="Power BI report page: Scenario Analysis" width="2546" height="1390" loading="lazy" decoding="async"></span>
+<span class="nh-view-foot"><span class="nh-view-tags" data-en="Base · Downside · Upside · Cumulative FCF" data-de="Base · Downside · Upside · Kumulierter FCF">Base · Downside · Upside · Cumulative FCF</span><span class="nh-view-arrow"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+</a></article>
+</div>
+<p class="nh-note" data-en="Screenshots of the Power BI report; the .pbix file is in the repository. Click a view to open it full size." data-de="Screenshots des Power-BI-Berichts; die .pbix-Datei liegt im Repository. Klick auf eine Ansicht öffnet sie in voller Größe.">Screenshots of the Power BI report; the .pbix file is in the repository. Click a view to open it full size.</p>
+</div></div>
+<div class="nh-sec nh-major" id="findings"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Key findings — FY 2025" data-de="Zentrale Erkenntnisse — GJ 2025">Key findings — FY 2025</p>
+<h2 class="nh-h2" data-en="What the KPIs revealed" data-de="Was die KPIs gezeigt haben">What the KPIs revealed</h2>
+</div>
+<div class="nh-findings">
+<article class="nh-find"><span class="nh-find-n">01</span><h3 data-en="Revenue hit the plan, EBITDA did not." data-de="Der Umsatz traf den Plan, das EBITDA nicht.">Revenue hit the plan, EBITDA did not.</h3><p data-en="Revenue of €20.16m was exactly on plan (+4.5% YoY), yet EBITDA landed €1.12m below plan and 22.2% below the prior year. The gap is cost-driven." data-de="Der Umsatz von 20,16 Mio. € lag exakt auf Plan (+4,5 % ggü. Vorjahr), das EBITDA aber 1,12 Mio. € unter Plan und 22,2 % unter Vorjahr. Die Lücke ist kostengetrieben.">Revenue of €20.16m was exactly on plan (+4.5% YoY), yet EBITDA landed €1.12m below plan and 22.2% below the prior year. The gap is cost-driven.</p></article>
+<article class="nh-find"><span class="nh-find-n">02</span><h3 data-en="Raw materials are the biggest single driver." data-de="Rohstoffe sind der größte Einzeltreiber.">Raw materials are the biggest single driver.</h3><p data-en="+€490k over plan, 43% of the unfavourable cost variance. Gross margin eroded from 50.9% (2023) to 49.9% and 47.5%; gross profit fell in absolute terms in 2025." data-de="+490 Tsd. € über Plan, 43 % der ungünstigen Kostenabweichung. Die Bruttomarge sank von 50,9 % (2023) auf 49,9 % und 47,5 %; der Rohertrag fiel 2025 auch absolut.">+€490k over plan, 43% of the unfavourable cost variance. Gross margin eroded from 50.9% (2023) to 49.9% and 47.5%; gross profit fell in absolute terms in 2025.</p></article>
+<article class="nh-find"><span class="nh-find-n">03</span><h3 data-en="Profit does not turn into cash." data-de="Gewinn wird nicht zu Cash.">Profit does not turn into cash.</h3><p data-en="€2.0m of EBITDA became only €391k of free cash flow. Net working capital grew 19.7% against 4.5% revenue growth, and customers now pay ten days later than in 2023." data-de="Aus 2,0 Mio. € EBITDA wurden nur 391 Tsd. € Free Cashflow. Das Net Working Capital wuchs um 19,7 % bei nur 4,5 % Umsatzwachstum, und Kunden zahlen heute zehn Tage später als 2023.">€2.0m of EBITDA became only €391k of free cash flow. Net working capital grew 19.7% against 4.5% revenue growth, and customers now pay ten days later than in 2023.</p></article>
+<article class="nh-find"><span class="nh-find-n">04</span><h3 data-en="2026 flips to a loss." data-de="2026 kippt ins Minus.">2026 flips to a loss.</h3><p data-en="Mid-year forecast: an operating result of −€107k against a plan of +€2.72m, the first loss in the dataset. A third comes from losing the largest customer (25.6% of revenue), two thirds from the cost trend in logistics, IT and energy. Past mid-year forecasts were too optimistic, so this is the better end of the range." data-de="Forecast zur Jahresmitte: ein Betriebsergebnis von −107 Tsd. € gegenüber einem Plan von +2,72 Mio. €, der erste Verlust im Datensatz. Ein Drittel stammt vom Verlust des größten Kunden (25,6 % des Umsatzes), zwei Drittel vom Kostentrend bei Logistik, IT und Energie. Frühere Jahresmitte-Forecasts waren zu optimistisch, dies ist also das bessere Ende der Bandbreite.">Mid-year forecast: an operating result of −€107k against a plan of +€2.72m, the first loss in the dataset. A third comes from losing the largest customer (25.6% of revenue), two thirds from the cost trend in logistics, IT and energy. Past mid-year forecasts were too optimistic, so this is the better end of the range.</p></article>
+</div>
+</div></div>
+<div class="nh-support">
+<div class="nh-sec nh-sec-tight nh-support-head" id="build"><div class="nh-wrap"><p class="nh-eyebrow" data-en="Under the hood" data-de="Unter der Haube">Under the hood</p><h2 class="nh-h2" data-en="How I built it" data-de="Wie ich es gebaut habe">How I built it</h2><p class="nh-lead" data-en="The KPI definitions, the DAX and the data model behind the report pages." data-de="Die KPI-Definitionen, das DAX und das Datenmodell hinter den Berichtsseiten.">The KPI definitions, the DAX and the data model behind the report pages.</p></div></div>
+<div class="nh-sec nh-minor" id="dax"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="KPI logic + DAX" data-de="KPI-Logik + DAX">KPI logic + DAX</p>
+<h2 class="nh-h2" data-en="Definitions that hold up in front of management" data-de="Definitionen, die vor dem Management bestehen">Definitions that hold up in front of management</h2>
+</div>
+<div class="nh-trio">
+<div><h3 data-en="Variance % divided by ABS()" data-de="Abweichung % durch ABS() geteilt">Variance % divided by ABS()</h3><p data-en="Energy costs 30.6% over plan would show +30.6% if divided by a negative base. Every variance denominator uses ABS(), so an overrun never looks like an improvement." data-de="Energiekosten, die 30,6 % über Plan liegen, würden bei negativer Basis als +30,6 % erscheinen. Jeder Abweichungsnenner nutzt ABS(), damit eine Überschreitung nie wie eine Verbesserung aussieht.">Energy costs 30.6% over plan would show +30.6% if divided by a negative base. Every variance denominator uses ABS(), so an overrun never looks like an improvement.</p></div>
+<div><h3 data-en="Forecast accuracy, measured honestly" data-de="Forecast-Genauigkeit, ehrlich gemessen">Forecast accuracy, measured honestly</h3><p data-en="January–June of the forecast equal actuals by construction. Accuracy is measured only on July–December (KEEPFILTERS): for 2024 the error moves from −8.5% to −18.9%." data-de="Januar–Juni des Forecasts entsprechen per Konstruktion dem Ist. Die Genauigkeit wird nur für Juli–Dezember gemessen (KEEPFILTERS): für 2024 wandert der Fehler von −8,5 % auf −18,9 %.">January–June of the forecast equal actuals by construction. Accuracy is measured only on July–December (KEEPFILTERS): for 2024 the error moves from −8.5% to −18.9%.</p></div>
+<div><h3 data-en="COGS as direct production cost" data-de="COGS als direkte Produktionskosten">COGS as direct production cost</h3><p data-en="Excluding depreciation. Of three definitions tested, it is the only one where gross profit minus operating expense lands exactly on EBITDA." data-de="Ohne Abschreibungen. Von drei getesteten Definitionen ist es die einzige, bei der Rohertrag minus Betriebsaufwand exakt auf das EBITDA führt.">Excluding depreciation. Of three definitions tested, it is the only one where gross profit minus operating expense lands exactly on EBITDA.</p></div>
+<div><h3 data-en="P&amp;L matrix from a layout table" data-de="GuV-Matrix aus einer Layouttabelle">P&L matrix from a layout table</h3><p data-en="A decoupled PnL_Layout table with a SWITCH measure drives rows and subtotals, so the P&amp;L structure changes in data, not in visuals." data-de="Eine entkoppelte Tabelle PnL_Layout mit einem SWITCH-Measure steuert Zeilen und Zwischensummen, die GuV-Struktur ändert sich also in den Daten, nicht in den Visuals.">A decoupled PnL_Layout table with a SWITCH measure drives rows and subtotals, so the P&L structure changes in data, not in visuals.</p></div>
+<div><h3 data-en="Ratios across accounts" data-de="Kennzahlen über Konten">Ratios across accounts</h3><p data-en="Margins and cost ratios use REMOVEFILTERS(dim_account), so a filter on one account cannot distort the ratio." data-de="Margen und Kostenquoten nutzen REMOVEFILTERS(dim_account), damit ein Filter auf ein Konto die Quote nicht verzerrt.">Margins and cost ratios use REMOVEFILTERS(dim_account), so a filter on one account cannot distort the ratio.</p></div>
+<div><h3 data-en="Fixed scenarios, not sliders" data-de="Feste Szenarien statt Schieberegler">Fixed scenarios, not sliders</h3><p data-en="Base, Downside and Upside change only the open months and rest on assumptions anchored in the data, so each can be defended with a source." data-de="Base, Downside und Upside verändern nur die offenen Monate und beruhen auf datenverankerten Annahmen, sodass sich jedes mit einer Quelle begründen lässt.">Base, Downside and Upside change only the open months and rest on assumptions anchored in the data, so each can be defended with a source.</p></div>
+</div>
+</div></div>
+<div class="nh-sec nh-minor" id="model"><div class="nh-wrap">
+<div class="nh-split nh-split-model"><div>
+<p class="nh-eyebrow" data-en="Data + modeling" data-de="Daten + Modellierung">Data + modeling</p>
+<h2 class="nh-h2" data-en="Data model" data-de="Datenmodell">Data model</h2>
+<p class="nh-body" data-en="A star schema for one company at monthly and transaction level. Revenue is positive and costs negative, so SUM(amount) yields the operating result directly." data-de="Ein Sternschema für ein Unternehmen auf Monats- und Transaktionsebene. Umsatz ist positiv, Kosten sind negativ, sodass SUM(amount) direkt das Betriebsergebnis ergibt.">A star schema for one company at monthly and transaction level. Revenue is positive and costs negative, so SUM(amount) yields the operating result directly.</p>
+<ul class="nh-list">
+<li><strong data-en="7 dimensions" data-de="7 Dimensionen">7 dimensions</strong> — <span data-en="date, company, business unit, cost center, account, customer, product" data-de="Datum, Gesellschaft, Business Unit, Kostenstelle, Konto, Kunde, Produkt">date, company, business unit, cost center, account, customer, product</span></li>
+<li><strong data-en="Facts" data-de="Fakten">Facts</strong> — <span data-en="actuals, plan and forecast (cost center × account × month), working capital, capex, tax, forecast events" data-de="Ist, Plan und Forecast (Kostenstelle × Konto × Monat), Working Capital, Capex, Steuern, Forecast-Ereignisse">actuals, plan and forecast (cost center × account × month), working capital, capex, tax, forecast events</span></li>
+<li><strong data-en="Layout table" data-de="Layouttabelle">Layout table</strong> — <span data-en="PnL_Layout drives the P&amp;L rows" data-de="PnL_Layout steuert die GuV-Zeilen">PnL_Layout drives the P&L rows</span></li>
+<li><strong data-en="Measures" data-de="Measures">Measures</strong> — <span data-en="34 renamed via a TMDL text transform, checked against all 122 field references" data-de="34 per TMDL-Texttransformation umbenannt, geprüft gegen alle 122 Feldverweise">34 renamed via a TMDL text transform, checked against all 122 field references</span></li>
+<li><strong data-en="Repository" data-de="Repository">Repository</strong> — <span data-en="importable .pbix plus PBIP with TMDL, a data dictionary and a decision log" data-de="importierbare .pbix plus PBIP mit TMDL, Datenwörterbuch und Entscheidungsprotokoll">importable .pbix plus PBIP with TMDL, a data dictionary and a decision log</span></li>
+</ul></div><div>
+<figure class="nh-frame nh-schema"><a class="nh-zoom nh-zoom-schema" href="images/alpentech-pbi-data-model.webp" target="_blank" rel="noopener" aria-label="Open data model full size"><img src="images/alpentech-pbi-data-model.webp" alt="Power BI model view: fact tables for actuals, plan, forecast, working capital, capex and tax connected to seven dimension tables" width="2100" height="1314" loading="lazy" decoding="async"></a><figcaption data-en="Data model in the Power BI model view: fact tables around seven shared dimensions." data-de="Datenmodell in der Power-BI-Modellansicht: Fakttabellen rund um sieben gemeinsame Dimensionen.">Data model in the Power BI model view: fact tables around seven shared dimensions.</figcaption></figure>
+</div></div>
+</div></div>
+</div>
+<div class="nh-sec" id="learned"><div class="nh-wrap">
+<div class="nh-head">
+<p class="nh-eyebrow" data-en="Reflection" data-de="Reflexion">Reflection</p>
+<h2 class="nh-h2" data-en="Design decisions" data-de="Designentscheidungen">Design decisions</h2>
+</div>
+<div class="nh-learn-grid">
+<div class="nh-learn"><h3 data-en="A KPI needs the right target" data-de="Ein KPI braucht das richtige Ziel">A KPI needs the right target</h3><p data-en="The most useful work was deciding what “good” means for each KPI: a derived target for net income, 75% instead of 100% for cash conversion, and a tolerance band for variance. A red-by-design KPI teaches readers to ignore it." data-de="Am wertvollsten war die Entscheidung, was für jeden KPI „gut“ heißt: ein abgeleitetes Ziel für den Jahresüberschuss, 75 % statt 100 % für die Cash Conversion und ein Toleranzband für die Abweichung. Ein KPI, der konstruktionsbedingt rot ist, bringt Leser dazu, ihn zu ignorieren.">The most useful work was deciding what “good” means for each KPI: a derived target for net income, 75% instead of 100% for cash conversion, and a tolerance band for variance. A red-by-design KPI teaches readers to ignore it.</p></div>
+<div class="nh-learn"><h3 data-en="Every definition is written down" data-de="Jede Definition ist dokumentiert">Every definition is written down</h3><p data-en="The repository holds a decision log with the reason for each non-obvious choice, including the ones I later reversed, such as the gross-profit definition. A number that can be explained is a number that can be trusted." data-de="Das Repository enthält ein Entscheidungsprotokoll mit der Begründung jeder nicht offensichtlichen Entscheidung, auch der später revidierten, etwa der Definition des Bruttoergebnisses. Eine Zahl, die sich erklären lässt, ist eine Zahl, der man vertrauen kann.">The repository holds a decision log with the reason for each non-obvious choice, including the ones I later reversed, such as the gross-profit definition. A number that can be explained is a number that can be trusted.</p></div>
+<div class="nh-learn"><h3 data-en="Synthetic, but deliberately built" data-de="Synthetisch, aber bewusst gebaut">Synthetic, but deliberately built</h3><p data-en="The data is synthetic and clean (fixed seed, reproducible, validated by script), and every variance is a deliberate business scenario. Working capital, capex and tax are derived from the P&amp;L with assumed payment terms: the trends are real, the absolute levels are illustrative." data-de="Die Daten sind synthetisch und sauber (fester Seed, reproduzierbar, per Skript validiert), und jede Abweichung ist ein bewusstes Geschäftsszenario. Working Capital, Capex und Steuern sind mit angenommenen Zahlungszielen aus der GuV abgeleitet: Die Trends sind real, die absoluten Niveaus illustrativ.">The data is synthetic and clean (fixed seed, reproducible, validated by script), and every variance is a deliberate business scenario. Working capital, capex and tax are derived from the P&L with assumed payment terms: the trends are real, the absolute levels are illustrative.</p></div>
+</div>
+</div></div>
+<div class="nh-sec nh-sec-cta" id="links"><div class="nh-wrap">
+<nav class="nh-links" aria-label="Project links">
+<a href="https://github.com/eileenheyer-cyber/alpentech-finanz-controlling-analytics" target="_blank" rel="noopener" data-en="View the code → GitHub" data-de="Code ansehen → GitHub">View the code → GitHub</a>
+<a href="#dashboard" data-en="View the report → Screenshots" data-de="Bericht ansehen → Screenshots">View the report → Screenshots</a>
+<a href="index.html#projekte" data-en="Back to projects →" data-de="Zurück zu den Projekten →">Back to projects →</a>
+</nav>
+<p class="nh-note" data-en="AlpenTech GmbH is fictional and the data is synthetic." data-de="Die AlpenTech GmbH ist fiktiv und die Daten sind synthetisch.">AlpenTech GmbH is fictional and the data is synthetic.</p>
+</div></div>
 
 </main>
 
