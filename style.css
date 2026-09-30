@@ -1158,3 +1158,7 @@ body.home .milestone-label { color: #a3a7c1; }
 .ap-two { grid-template-columns: 1fr 1fr; gap: 40px 24px; }
 .ap-two .nh-view-q { min-height: 0; font-size: 1.05rem; }
 @media (max-width: 720px) { .ap-two { grid-template-columns: 1fr; } }
+.ap-two { margin-bottom: 40px; }
+.ap-three-views { grid-template-columns: repeat(3, 1fr); gap: 40px 24px; }
+.ap-three-views .nh-view-q { min-height: 0; font-size: 1.05rem; }
+@media (max-width: 720px) { .ap-three-views { grid-template-columns: 1fr; } }
