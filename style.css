@@ -415,14 +415,15 @@ section#skills { background: var(--surface-alt); }
   display: grid;
   grid-template-columns: minmax(0, 380px) minmax(0, 660px);
   gap: 56px;
+  row-gap: 28px;
   align-items: stretch;
   justify-content: center;
-  grid-template-areas: "photo text";
+  grid-template-areas: "title title" "photo text";
 }
+h2.about-title { grid-area: title; margin: 0; max-width: none; text-align: left; }
 .about-photo { grid-area: photo; }
 .about-text { grid-area: text; }
 .about-text { display: flex; flex-direction: column; justify-content: flex-start; }
-.about-text .section-title { margin-bottom: 28px; }
 .about-grid p:not(.overline) {
   margin: 0 0 20px;
   font-size: 1.05rem;
@@ -586,7 +587,7 @@ section#skills { background: var(--surface-alt); }
   .site-header nav { gap: 16px; }
   .site-header nav a { font-size: 0.72rem; }
   .lang-toggle { font-size: 0.7rem; padding: 4px 10px; }
-  .about-grid { grid-template-columns: 1fr; grid-template-areas: "photo" "text"; }
+  .about-grid { grid-template-columns: 1fr; grid-template-areas: "title" "photo" "text"; }
   main > section { padding: 56px 20px; }
   .hero { padding-top: 40px; }
   .hero-grid { grid-template-columns: 1fr; }
@@ -808,12 +809,12 @@ body.eda-lb-open { overflow: hidden; }
 
 /* About: tablet — keep side-by-side, slimmer portrait */
 @media (max-width: 1024px) and (min-width: 721px) {
-  .about-grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; }
+  .about-grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 40px; row-gap: 24px; }
   .about-photo { max-width: 300px; }
   main > section.about { padding-left: 28px; padding-right: 28px; }
 }
 /* About: mobile — stacked, portrait capped so text follows sooner */
 @media (max-width: 720px) {
   .about-photo { max-width: 360px; margin: 0 auto; }
-  .about-grid { gap: 32px; }
+  .about-grid { gap: 24px; }
 }
