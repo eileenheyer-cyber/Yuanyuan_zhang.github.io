@@ -1405,3 +1405,6 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
 .nh-split-model .nh-list li { padding: 6px 0; font-size: 0.86rem; line-height: 1.45; }
 .nh-split-model .nh-decisions { margin-top: 18px; }
 .nh-split-model .nh-decisions .nh-body { font-size: 0.95rem; line-height: 1.55; margin: 8px 0 12px; }
+
+/* NordHome — sub-heading inside a section (e.g. "Found later…") */
+.nh-subh { margin: 56px 0 20px; font-size: 1.4rem; line-height: 1.25; letter-spacing: -0.015em; font-weight: 700; color: var(--ink); }
