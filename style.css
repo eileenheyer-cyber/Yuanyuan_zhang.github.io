@@ -1099,3 +1099,9 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-title { margin-bottom: 26px; }
 
 .nh-chips-hero { margin-top: 28px; }
+
+/* Dark band */
+.nh-sec-dark { background: var(--ink); border-top: 0; color: #fff; }
+.nh-sec-dark .nh-label { color: var(--accent-light); }
+.nh-sec-dark .nh-glance-t { color: #fff; }
+.nh-sec-dark + .nh-sec { border-top: 0; }
