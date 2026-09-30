@@ -1138,3 +1138,7 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-major.nh-sec-dark .nh-view-link:hover .nh-view-arrow { color: var(--accent-light); border-color: var(--accent-light); }
 .nh-major.nh-sec-dark .nh-view-q { font-size: 0.95rem; }
 @media (max-width: 720px) { .nh-major { padding: 72px 0; } .nh-find-n { font-size: 2.4rem; } }
+
+.nh-repo { margin: 24px 0 0; }
+.nh-repo a { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.nh-repo a:hover { color: var(--ink); }
