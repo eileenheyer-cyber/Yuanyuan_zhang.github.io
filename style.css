@@ -1393,3 +1393,9 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
 .eda-page .eda-scope .eda-method-label { margin-bottom: 10px; }
 .eda-page .eda-scope .eda-mlist li { grid-template-columns: 160px minmax(0, 1fr); }
 .eda-page .eda-scope .eda-small { margin-top: 14px; }
+
+/* NordHome — Data foundation: pipeline steps + modeling decisions */
+.nh-steps { margin-top: 12px; }
+.nh-steps .nh-step-n { display: inline-block; width: 2.2em; color: var(--accent); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; }
+.nh-decisions { margin-top: 40px; }
+.nh-decisions .nh-quote { margin-top: 12px; }
