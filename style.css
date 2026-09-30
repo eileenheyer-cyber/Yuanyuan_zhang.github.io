@@ -966,7 +966,7 @@ body.home .milestone-label { color: #a3a7c1; }
 
 /* 4 Model */
 .nh-split { display: grid; gap: 64px; align-items: start; }
-.nh-split-model { grid-template-columns: 1fr 1fr; }
+.nh-split-model { grid-template-columns: 0.85fr 1.15fr; }
 .nh-split-problem { grid-template-columns: 1.15fr 0.85fr; gap: 56px; }
 .nh-split-learn { grid-template-columns: 0.8fr 1.2fr; }
 .nh-quote { margin: 0 0 20px; padding: 0 0 0 18px; border-left: 2px solid var(--accent); font-size: 1.15rem; line-height: 1.5; color: var(--ink); }
@@ -1085,3 +1085,7 @@ body.home .milestone-label { color: #a3a7c1; }
   .nh-arch li { margin-right: 30px; }
   .nh-links { flex-direction: column; }
 }
+
+.nh-schema { padding: 16px; }
+.nh-zoom-schema { aspect-ratio: auto; border: 0; }
+.nh-zoom-schema img { height: auto; }

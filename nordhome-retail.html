@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260930d">
+  <link rel="stylesheet" href="style.css?v=20260930e">
 </head>
 <body class="nh-page">
 
@@ -73,16 +73,7 @@
 <li><strong data-en="Surrogate keys" data-de="Surrogate Keys">Surrogate keys</strong> — <span data-en="an unknown member (−1) instead of deleted records" data-de="ein Unknown-Member (−1) statt gelöschter Datensätze">an unknown member (−1) instead of deleted records</span></li>
 <li><strong data-en="Validation" data-de="Validierung">Validation</strong> — <span data-en="post-cleaning checks, with later findings documented" data-de="Prüfungen nach der Bereinigung, spätere Funde dokumentiert">post-cleaning checks, with later findings documented</span></li>
 </ul></div><div>
-<figure class="nh-star nh-frame" role="group" aria-label="Simplified star schema of the NordHome data mart">
-<div class="nh-star-shared"><span class="nh-star-k" data-en="Shared by every fact table" data-de="Von jeder Faktentabelle genutzt">Shared by every fact table</span><span class="nh-dim">dim_customer</span><span class="nh-dim">dim_date</span></div>
-<div class="nh-star-facts">
-<div class="nh-fact"><span class="nh-fact-name">fact_order_items</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one order line item" data-de="eine Bestellposition">one order line item</span></span><span class="nh-dim nh-dim-own">dim_product</span></div>
-<div class="nh-fact"><span class="nh-fact-name">fact_payments</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one payment transaction" data-de="eine Zahlungstransaktion">one payment transaction</span></span><span class="nh-dim nh-dim-own">dim_payment</span></div>
-<div class="nh-fact"><span class="nh-fact-name">fact_returns</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one return event" data-de="ein Retourenereignis">one return event</span></span><span class="nh-dim nh-dim-own">dim_return_reason</span></div>
-<div class="nh-fact"><span class="nh-fact-name">fact_marketing_touchpoints</span><span class="nh-grain"><span class="nh-grain-k" data-en="One row =" data-de="Eine Zeile =">One row =</span> <span data-en="one customer–campaign–channel touchpoint" data-de="ein Kontaktpunkt Kunde–Kampagne–Kanal">one customer–campaign–channel touchpoint</span></span><span class="nh-dim nh-dim-own">dim_marketing_campaigns</span></div>
-</div>
-<figcaption data-en="Simplified: key relationships only. Unmatched (“ghost”) references point to an unknown member instead of being deleted." data-de="Vereinfacht: nur die wichtigsten Beziehungen. Nicht zuordenbare („Geister“-)Verweise zeigen auf einen Unknown-Member, statt gelöscht zu werden.">Simplified: key relationships only. Unmatched (“ghost”) references point to an unknown member instead of being deleted.</figcaption>
-</figure></div></div>
+<figure class="nh-frame nh-schema"><a class="nh-zoom nh-zoom-schema" href="images/nordhome-star-schema.svg" target="_blank" rel="noopener" aria-label="Open star schema full size"><img src="images/nordhome-star-schema.svg" alt="Star schema: four fact tables (order items, payments, returns, marketing touchpoints) sharing dim_customer and dim_date, each with its own dimension" width="1000" height="570" loading="lazy" decoding="async"></a><figcaption data-en="Star schema, simplified to key relationships. Unmatched (“ghost”) references point to an unknown member instead of being deleted." data-de="Star-Schema, vereinfacht auf die wichtigsten Beziehungen. Nicht zuordenbare („Geister“-)Verweise zeigen auf einen Unknown-Member, statt gelöscht zu werden.">Star schema, simplified to key relationships. Unmatched (“ghost”) references point to an unknown member instead of being deleted.</figcaption></figure></div></div>
 <div class="nh-sub-block">
 <p class="nh-label" data-en="Data quality" data-de="Datenqualität">Data quality</p>
 <p class="nh-lead nh-lead-sm" data-en="The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged." data-de="Das Schwierige war nicht, die Daten einfach zu laden. Zuerst musste ich klären, welchen Datensätzen man trauen kann, welche korrigiert und welche markiert werden müssen.">The difficult part wasn’t simply loading the data. I first had to determine which records could be trusted, which needed correction and which needed to be flagged.</p>
