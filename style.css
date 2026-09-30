@@ -798,9 +798,10 @@ body.eda-lb-open { overflow: hidden; }
 }
 .project-group-title.second { margin-top: 80px; }
 
-/* About text: natural left-aligned flow (no justification, no auto-hyphenation) */
+/* About text: justified lines, last line left-aligned, no auto-hyphenation */
 .about-text p:not(.overline) {
-  text-align: left;
+  text-align: justify;
+  text-align-last: left;
   hyphens: manual;
   -webkit-hyphens: manual;
   overflow-wrap: break-word;
