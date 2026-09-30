@@ -1105,3 +1105,36 @@ body.home .milestone-label { color: #a3a7c1; }
 .nh-sec-dark .nh-label { color: var(--accent-light); }
 .nh-sec-dark .nh-glance-t { color: #fff; }
 .nh-sec-dark + .nh-sec { border-top: 0; }
+
+/* ---- Hierarchy pass: major / supporting tiers ---- */
+.nh-major { padding: 112px 0; }
+.nh-major .nh-h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 22px; }
+.nh-major .nh-head { margin-bottom: 56px; }
+.nh-major .nh-eyebrow { font-size: 0.7rem; }
+.nh-support { background: var(--surface-alt); border-top: 1px solid var(--line); }
+.nh-support .nh-sec { border-top: 0; }
+.nh-support-head { padding: 88px 0 8px; }
+.nh-support-head .nh-h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin-bottom: 12px; }
+.nh-minor { padding: 64px 0; }
+.nh-minor .nh-h2 { font-size: 1.5rem; letter-spacing: -0.015em; }
+.nh-minor .nh-frame, .nh-minor .nh-zoom { background: #fff; }
+.nh-support .nh-list li { border-color: #e2e2e5; }
+
+/* findings: big numerals */
+.nh-find { padding: 32px 0 40px; }
+.nh-find-n { font-size: 3rem; line-height: 1; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 18px; }
+.nh-find h3 { font-size: clamp(1.4rem, 2.2vw, 1.85rem); }
+.nh-find p { font-size: 0.98rem; }
+
+/* dashboards on black */
+.nh-major.nh-sec-dark .nh-h2, .nh-major.nh-sec-dark .nh-view-q { color: #fff; }
+.nh-major.nh-sec-dark .nh-lead { color: #b4b4ba; }
+.nh-major.nh-sec-dark .nh-eyebrow { color: var(--accent-light); }
+.nh-major.nh-sec-dark .nh-view-label, .nh-major.nh-sec-dark .nh-view-tags, .nh-major.nh-sec-dark .nh-note { color: #9a9aa2; }
+.nh-major.nh-sec-dark .nh-view-n { color: var(--accent-light); }
+.nh-major.nh-sec-dark .nh-view-img { border-color: #33333a; }
+.nh-major.nh-sec-dark .nh-view-arrow { border-color: #44444c; color: #b4b4ba; }
+.nh-major.nh-sec-dark .nh-view-link:hover .nh-view-q { color: var(--accent-light); }
+.nh-major.nh-sec-dark .nh-view-link:hover .nh-view-arrow { color: var(--accent-light); border-color: var(--accent-light); }
+.nh-major.nh-sec-dark .nh-view-q { font-size: 0.95rem; }
+@media (max-width: 720px) { .nh-major { padding: 72px 0; } .nh-find-n { font-size: 2.4rem; } }
