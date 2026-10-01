@@ -1408,3 +1408,6 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
 
 /* NordHome — sub-heading inside a section (e.g. "Found later…") */
 .nh-subh { margin: 56px 0 20px; font-size: 1.4rem; line-height: 1.25; letter-spacing: -0.015em; font-weight: 700; color: var(--ink); }
+
+/* About: closing line in italics */
+.about-text p:not(.overline):last-of-type { font-style: italic; }
