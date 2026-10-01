@@ -842,7 +842,7 @@ body.eda-lb-open { overflow: hidden; }
 /* About: desktop — text column takes all remaining width; portrait stretches
    to the text height so photo and text end on the same line */
 @media (min-width: 1025px) {
-  .about-grid { grid-template-columns: minmax(0, 420px) minmax(0, 590px); }
+  .about-grid { grid-template-columns: minmax(0, 420px) minmax(0, 575px); }
   .about-photo { max-width: none; }
   .about-photo img { height: 100%; aspect-ratio: auto; }
 }
