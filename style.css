@@ -1422,3 +1422,42 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
   .about-grid { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); }
   .about-photo { max-width: 360px; }
 }
+
+/* Knowledge sections (Statistics, Data Visualization) + "All projects" link */
+#statistics .overline,
+#statistics .section-title,
+#data-visualization .overline,
+#data-visualization .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
+
+main > section.knowledge { border-top: 1px solid var(--line); }
+
+.section-intro {
+  max-width: 560px;
+  margin: 18px auto 48px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.section-more { margin: 48px 0 0; text-align: center; }
+
+/* Fewer than three cards: keep the three-column card width, centre the row */
+.knowledge .project-grid { display: flex; flex-wrap: wrap; justify-content: center; }
+.knowledge .project-card { flex: 0 1 calc((100% - 64px) / 3); min-width: 0; }
+@media (max-width: 1024px) { .knowledge .project-card { flex-basis: calc((100% - 32px) / 2); } }
+@media (max-width: 640px) { .knowledge .project-card { flex-basis: 100%; } }
+
+@media (max-width: 720px) {
+  .site-header nav { flex-wrap: wrap; justify-content: flex-end; gap: 4px 12px; }
+}
+
+main > section.knowledge .section-title { margin-bottom: 0; }
+
+/* All projects page */
+h1.section-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 48px;
+  max-width: 16ch;
+}
+#alle-projekte .overline,
+#alle-projekte .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
+#alle-projekte .cs-back { margin-bottom: 24px; }
