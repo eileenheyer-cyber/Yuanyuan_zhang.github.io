@@ -1471,3 +1471,23 @@ h1.section-title {
 #alle-projekte .overline,
 #alle-projekte .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
 #alle-projekte .cs-back { margin-bottom: 24px; }
+
+/* Section pages (Statistics, Data Storytelling) */
+.knowledge-page::before { display: none; }
+.knowledge-page .overline,
+.knowledge-page .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
+.knowledge-page .cs-back { margin-bottom: 24px; }
+
+/* Quieter "more" buttons under each section */
+.section-more .btn {
+  padding: 9px 22px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.section-more .btn:hover { color: var(--accent); border-color: var(--accent); background: transparent; }
