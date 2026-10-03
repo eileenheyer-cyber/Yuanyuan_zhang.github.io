@@ -1491,3 +1491,9 @@ h1.section-title {
   transition: color 0.15s, border-color 0.15s;
 }
 .section-more .btn:hover { color: var(--accent); border-color: var(--accent); background: transparent; }
+
+/* Tighter vertical rhythm between Projects, Statistics and Data Storytelling */
+main > section#projekte { padding-bottom: 48px; }
+main > section.knowledge { padding-top: 56px; padding-bottom: 48px; }
+.section-intro { margin-bottom: 36px; }
+.section-more { margin-top: 36px; }
