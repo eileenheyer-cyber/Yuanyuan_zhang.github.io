@@ -1423,11 +1423,11 @@ body.nh-page.ap-page main .nh-eyebrow { font-size: 0.72rem; }
   .about-photo { max-width: 360px; }
 }
 
-/* Knowledge sections (Statistics, Data Visualization) + "All projects" link */
+/* Knowledge sections (Statistics, Data Storytelling) + "All projects" link */
 #statistics .overline,
 #statistics .section-title,
-#data-visualization .overline,
-#data-visualization .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
+#data-storytelling .overline,
+#data-storytelling .section-title { text-align: center; max-width: none; margin-left: auto; margin-right: auto; }
 
 main > section.knowledge { border-top: 1px solid var(--line); }
 
