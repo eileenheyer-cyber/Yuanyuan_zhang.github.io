@@ -1533,3 +1533,12 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-points { margin: 0 0 24px; padding-left: 1.2em; }
 .post-points li { margin-bottom: 12px; padding-left: 4px; line-height: 1.7; }
 .post-points li::marker { color: var(--accent); }
+
+/* Slide deck bar */
+.post-deck { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; margin:0 0 32px; padding:14px 18px; background:#f3f3f5; border-radius:10px; }
+.post-deck p { margin:0; }
+.post-deck-t { font-size:.95rem; }
+.post-deck-t span { color:var(--muted); margin-left:6px; }
+.post-deck-l { display:flex; gap:10px; }
+.post-deck-l a { padding:6px 14px; border:1px solid #16161a; border-radius:999px; font-size:.85rem; font-weight:600; color:#16161a; text-decoration:none; background:#fff; }
+.post-deck-l a:hover { background:#16161a; color:#fff; }
