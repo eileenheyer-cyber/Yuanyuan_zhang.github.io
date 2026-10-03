@@ -1529,3 +1529,7 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
   main > article.post { padding: 40px 20px 72px; }
   .post-flow strong { display: block; min-width: 0; }
 }
+
+.post-points { margin: 0 0 24px; padding-left: 1.2em; }
+.post-points li { margin-bottom: 12px; padding-left: 4px; line-height: 1.7; }
+.post-points li::marker { color: var(--accent); }
