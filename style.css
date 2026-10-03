@@ -1497,3 +1497,35 @@ main > section#projekte { padding-bottom: 48px; }
 main > section.knowledge { padding-top: 56px; padding-bottom: 48px; }
 .section-intro { margin-bottom: 36px; }
 .section-more { margin-top: 36px; }
+
+/* Knowledge article (blog format) */
+main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+.post .cs-back { margin-bottom: 24px; }
+.post-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 12px; }
+.post-sub { margin: 0 0 32px; font-size: 1.15rem; font-style: italic; color: var(--muted); }
+.post-cover { margin: 0 0 40px; }
+.post-cover img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; }
+.post p { margin: 0 0 16px; font-size: 1.02rem; line-height: 1.75; }
+.post h2 { font-size: 1.7rem; margin: 64px 0 16px; padding-top: 24px; border-top: 1px solid var(--line); }
+.post h3 { font-size: 1.2rem; margin: 40px 0 12px; letter-spacing: -0.01em; }
+.post .formula { padding: 12px 18px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-weight: 500; overflow-x: auto; }
+.post-note { margin: 20px 0 24px; padding: 14px 18px; background: var(--surface-alt); border-radius: 10px; }
+.post-note p { margin: 0; font-size: 0.97rem; }
+.post-note .post-note-l { margin-bottom: 4px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.post-takeaway { margin-top: 48px; padding: 22px 26px; border: 1px solid var(--accent); background: #fff; }
+.post-fig { margin: 24px 0 28px; }
+.post-fig img { width: 100%; height: auto; }
+.post-fig figcaption { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+.post-fig figcaption span { margin-right: 8px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.72rem; color: var(--ink); }
+.post-table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+.post-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.post-table th { text-align: left; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--ink); }
+.post-table th, .post-table td { padding: 10px 14px 10px 0; vertical-align: top; }
+.post-table td { border-bottom: 1px solid var(--line); }
+.post-flow { list-style: none; margin: 0 0 24px; padding: 0; }
+.post-flow li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.post-flow strong { display: inline-block; min-width: 120px; letter-spacing: 0.06em; }
+@media (max-width: 720px) {
+  main > article.post { padding: 40px 20px 72px; }
+  .post-flow strong { display: block; min-width: 0; }
+}
