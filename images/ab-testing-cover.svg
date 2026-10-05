@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-label="A/B testing: users randomly split into a control group A and a treatment group B">
+  <rect width="1280" height="720" fill="#fafafa"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="640" y="96" text-anchor="middle" font-size="54" font-weight="700" fill="#16161a" letter-spacing="-1">A/B Testing</text>
+    <text x="640" y="142" text-anchor="middle" font-size="26" fill="#6b6b70">Randomly split. Compare. Decide.</text>
+
+    <!-- Control -->
+    <rect x="130" y="200" width="460" height="400" rx="20" fill="#ffffff" stroke="#e5e5e7" stroke-width="2"/>
+    <text x="170" y="256" font-size="22" font-weight="600" letter-spacing="3" fill="#6b6b70">A · CONTROL</text>
+    <text x="170" y="292" font-size="22" fill="#6b6b70">Current version</text>
+    <g fill="#c9c9ce">
+      <circle cx="190" cy="350" r="16"/><circle cx="250" cy="350" r="16"/><circle cx="310" cy="350" r="16"/><circle cx="370" cy="350" r="16"/><circle cx="430" cy="350" r="16"/><circle cx="490" cy="350" r="16"/>
+      <circle cx="190" cy="410" r="16"/><circle cx="250" cy="410" r="16"/><circle cx="310" cy="410" r="16"/><circle cx="370" cy="410" r="16"/><circle cx="430" cy="410" r="16"/><circle cx="490" cy="410" r="16"/>
+      <circle cx="190" cy="470" r="16"/><circle cx="250" cy="470" r="16"/><circle cx="310" cy="470" r="16"/><circle cx="370" cy="470" r="16"/><circle cx="430" cy="470" r="16"/><circle cx="490" cy="470" r="16"/>
+    </g>
+    <text x="170" y="552" font-size="22" fill="#16161a">1:1 video calling</text>
+
+    <!-- Treatment -->
+    <rect x="690" y="200" width="460" height="400" rx="20" fill="#ffffff" stroke="#6a4fa0" stroke-width="2"/>
+    <text x="730" y="256" font-size="22" font-weight="600" letter-spacing="3" fill="#6a4fa0">B · TREATMENT</text>
+    <text x="730" y="292" font-size="22" fill="#6b6b70">New feature</text>
+    <g fill="#6a4fa0">
+      <circle cx="750" cy="350" r="16"/><circle cx="810" cy="350" r="16"/><circle cx="870" cy="350" r="16"/><circle cx="930" cy="350" r="16"/><circle cx="990" cy="350" r="16"/><circle cx="1050" cy="350" r="16"/>
+      <circle cx="750" cy="410" r="16"/><circle cx="810" cy="410" r="16"/><circle cx="870" cy="410" r="16"/><circle cx="930" cy="410" r="16"/><circle cx="990" cy="410" r="16"/><circle cx="1050" cy="410" r="16"/>
+      <circle cx="750" cy="470" r="16"/><circle cx="810" cy="470" r="16"/><circle cx="870" cy="470" r="16"/><circle cx="930" cy="470" r="16"/><circle cx="990" cy="470" r="16"/><circle cx="1050" cy="470" r="16"/>
+    </g>
+    <text x="730" y="552" font-size="22" fill="#16161a">Group video calling</text>
+
+    <!-- vs -->
+    <circle cx="640" cy="400" r="34" fill="#16161a"/>
+    <text x="640" y="410" text-anchor="middle" font-size="26" font-weight="600" fill="#ffffff">vs</text>
+  </g>
+</svg>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A/B Testing – Yuanyuan Zhang</title>
+  <meta name="description" content="What A/B testing is, why it matters, and how to design and analyse an experiment step by step: hypothesis, metrics, randomization and results.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261003h">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">A/B Testing</h1>
+  <p class="post-sub">How to tell whether a change really made things better</p>
+
+  <figure class="post-cover">
+    <img src="images/ab-testing-cover.svg" alt="A/B testing: users randomly split into a control group A with the current version and a treatment group B with the new feature" width="1280" height="720">
+  </figure>
+
+  <h2>What is it?</h2>
+  <p>A/B testing compares two versions of a product experience to understand which one performs better. Users are randomly split into two groups:</p>
+  <ul class="post-points">
+    <li><strong>A control group</strong>, which experiences the current version.</li>
+    <li><strong>A treatment group</strong>, which is exposed to the new feature.</li>
+  </ul>
+
+  <h2>Why do we need A/B testing?</h2>
+  <p>Observed differences between two versions may simply be due to random chance. Statistical inference helps determine whether a difference is likely to be genuine before a decision is made.</p>
+  <p>The two problems A/B testing is exceptionally good at solving are:</p>
+  <ul class="post-points">
+    <li><strong>Confusing correlation with causation</strong> (spurious correlation).</li>
+    <li><strong>Selection bias.</strong></li>
+  </ul>
+
+  <h2>How to design an A/B test</h2>
+  <p>This is a common interview question. A clean answer walks through four steps: hypothesis, metrics, experiment design, and analysis of the results.</p>
+
+  <h3>Step 1: Define the hypothesis</h3>
+  <p>A good experiment starts with a clear, testable hypothesis: a statement that connects the feature to an expected outcome. A strong hypothesis has three parts:</p>
+  <ul class="post-points">
+    <li><strong>The change.</strong> What are you introducing?</li>
+    <li><strong>The expected impact.</strong> What do you think will happen?</li>
+    <li><strong>The metric.</strong> How will you measure it?</li>
+  </ul>
+
+  <h3>Step 2: Choose metrics</h3>
+  <p>The goal is not to track activity, but to measure whether the feature is delivering real value.</p>
+  <ul class="post-points">
+    <li><strong>Primary metric.</strong> Directly reflects the success of your hypothesis. For example, average time spent per user or number of calls per user when the hypothesis is about increasing engagement.</li>
+    <li><strong>Supporting metrics.</strong> Provide context and help explain why the primary metric changed. Examples: average order value, bounce rate, or session duration (if conversion rate is measured).</li>
+    <li><strong>Guardrail metrics.</strong> Ensure you don't improve one aspect of the product while harming another.</li>
+  </ul>
+  <div class="post-note"><p class="post-note-l">Before running an A/B test, ask</p>
+    <ol class="post-points" style="margin:8px 0 0">
+      <li>What decision am I trying to make?</li>
+      <li>What user behavior represents success?</li>
+      <li>Can I measure it reliably?</li>
+      <li>Will the experiment likely affect this metric?</li>
+      <li>Are there guardrail metrics to ensure I'm not causing unintended harm?</li>
+    </ol>
+  </div>
+
+  <h3>Step 3: Design the experiment (control vs treatment)</h3>
+  <p>Split users into two groups:</p>
+  <ul class="post-points">
+    <li><strong>Control group</strong> continues with the existing experience (1:1 video calling).</li>
+    <li><strong>Treatment group</strong> gets access to the new feature (group video calling).</li>
+  </ul>
+  <p>An important decision is who to include in the experiment.</p>
+
+  <h3>Key principle: randomization</h3>
+  <p>Randomization is important because it:</p>
+  <ul class="post-points">
+    <li><strong>Creates comparable groups</strong>, so the only systematic difference is the tested change.</li>
+    <li><strong>Reduces selection bias</strong> by giving each participant an equal chance of being assigned to either group.</li>
+    <li><strong>Balances known and unknown factors</strong> (such as age, device, or user behavior) across groups on average.</li>
+    <li><strong>Supports causal conclusions</strong>, allowing you to attribute differences in outcomes to the treatment rather than other variables.</li>
+    <li><strong>Makes statistical tests valid</strong>, since most inferential methods assume random assignment.</li>
+  </ul>
+  <div class="post-note"><p class="post-note-l">Why it matters</p><p>Without randomization, it's difficult to know whether the change caused the result or whether some other factor did. Such a factor is called a confounder, and confounders can lead to incorrect conclusions about cause and effect.</p></div>
+  <p>Also think about how long to run the experiment. The duration should be long enough to capture typical user behavior, but not so long that it delays decision-making.</p>
+  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly state who is in control vs treatment, how users are assigned, and what you are comparing. Also consider network effects. For example, if a group of friends interacts frequently, assigning them to different groups can introduce bias. Where possible, group related users together to minimize interference.</p></div>
+
+  <h3>Checklist for reducing bias</h3>
+  <p>Before launching an A/B test, ask yourself:</p>
+  <ul class="post-points">
+    <li>✅ Have I clearly defined who is eligible?</li>
+    <li>✅ Are participants assigned randomly?</li>
+    <li>✅ Are the control and treatment groups similar in important characteristics?</li>
+    <li>✅ Are both groups exposed to the same conditions at the same time?</li>
+    <li>✅ Can participants influence which group they're assigned to? (If yes, redesign the assignment.)</li>
+    <li>✅ Have I verified that the allocation matches the intended split?</li>
+  </ul>
+
+  <h3>Step 4: Analyse results and draw conclusions</h3>
+  <p>The question to ask: <em>"Did B perform better because of our change, is the improvement large enough to matter, and did it avoid causing other problems?"</em></p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>#</th><th>Check</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Experiment validity</td><td>Make sure the experiment was conducted correctly. Check randomization, and look for problems such as missing data, users who saw both versions, or unequal exposure.</td></tr>
+      <tr><td>2</td><td>Effect size</td><td>Calculate the key metrics and the effect, as an absolute and a relative improvement (see below).</td></tr>
+      <tr><td>3</td><td>Statistical significance</td><td>Ask whether this difference could have happened by random chance, using the p-value.</td></tr>
+      <tr><td>4</td><td>Confidence interval</td><td>Look at the range of plausible effects.</td></tr>
+      <tr><td>5</td><td>Supporting and guardrail metrics</td><td>The change may not be a success if it created other problems.</td></tr>
+      <tr><td>6</td><td>Segments</td><td>Check important user groups carefully to see whether the new design helps some users but harms others.</td></tr>
+      <tr><td>7</td><td>Decision</td><td>Treatment wins, no clear difference, or treatment loses.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Effect size: absolute vs relative</h3>
+  <ul class="post-points">
+    <li><strong>Absolute improvement.</strong> The difference between the groups.</li>
+    <li><strong>Relative improvement.</strong> The percentage increase compared with the original.</li>
+  </ul>
+
+  <h3>Statistical significance and the p-value</h3>
+  <p>If there were actually no difference between A and B, how likely is it to observe a difference this large? If that is unlikely (commonly p &lt; 0.05), the difference is considered statistically significant.</p>
+
+  <h3>Confidence intervals</h3>
+  <p>A confidence interval shows the range of plausible effects. It tells us, for example: based on this experiment, the true improvement is plausibly between 0.40% and 0.80%.</p>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
