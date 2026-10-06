@@ -1559,3 +1559,7 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 /* Figure inside a note box */
 .post-note .post-fig { margin: 18px 0 4px; }
 .post-note .post-fig figcaption { margin-top: 6px; }
+
+/* Smaller, quieter figures in a knowledge article (add class post-small-figs to <article>) */
+.post.post-small-figs .post-fig { max-width: 78%; margin-left: auto; margin-right: auto; }
+@media (max-width: 640px) { .post.post-small-figs .post-fig { max-width: 100%; } }
