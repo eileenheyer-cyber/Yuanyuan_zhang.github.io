@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IQR – Yuanyuan Zhang</title>
+  <meta name="description" content="The interquartile range (IQR) explained: the spread of the middle 50% of your data, why it beats the range, and how it flags potential outliers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261003h">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">IQR</h1>
+  <p class="post-sub">The middle 50% of your data</p>
+
+  <figure class="post-cover">
+    <img src="images/iqr-cover.webp" alt="A box plot with the interquartile range marked above the box and one potential outlier to the right" width="1800" height="1012">
+  </figure>
+
+  <p>When I first learned about the Interquartile Range (IQR), the formula looked simple:</p>
+  <p class="formula">IQR = Q3 − Q1</p>
+  <p>But the interesting part isn't the calculation. It's what IQR tells us about the data.</p>
+
+  <h2>What is IQR?</h2>
+  <p>The Interquartile Range measures the spread of the middle 50% of a dataset. To understand it, we first divide the data into four parts:</p>
+  <ul class="post-points">
+    <li><strong>Q1 (25th percentile)</strong> — 25% of the observations are below this value.</li>
+    <li><strong>Median (50th percentile)</strong> — half of the observations are below this value.</li>
+    <li><strong>Q3 (75th percentile)</strong> — 75% of the observations are below this value.</li>
+  </ul>
+  <p>The distance between Q1 and Q3 is the IQR. So if Q1 is 20 and Q3 is 40:</p>
+  <p class="formula">IQR = 40 − 20 = 20</p>
+  <p>This means the middle 50% of the observations are spread across 20 units.</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-1-quartiles.svg" alt="Eleven values on a number line with Q1 at 20, the median at 30 and Q3 at 40; the shaded area between Q1 and Q3 is the IQR of 20" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 1</span> Eleven observations with their quartiles. The shaded area between Q1 and Q3 holds the middle 50% of the data.</figcaption>
+  </figure>
+
+  <h2>Why not just use the range?</h2>
+  <p>The range is simply:</p>
+  <p class="formula">Range = Maximum − Minimum</p>
+  <p>It is easy to calculate, but there is a problem: outliers can completely change it. Imagine these customer order values:</p>
+  <p>€20 · €25 · €30 · €32 · €35 · €40 · €45 · €500</p>
+  <p>The €500 order dramatically increases the range. But the IQR focuses on the middle 50% of the data, making it much less sensitive to extreme values.</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-2-range-vs-iqr.svg" alt="Bar chart: the range grows from 25 to 480 euros when the 500 euro order is added, while the IQR only grows from 10 to 12.5 euros" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 2</span> The same orders with and without the €500 order. The range jumps from €25 to €480; the IQR barely moves, from €10 to €12.5.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Good to know</p><p>There are several ways to calculate quartiles, so Excel, Python or R can return slightly different Q1 and Q3 values for small datasets. The numbers here use the linear-interpolation method (NumPy's default).</p></div>
+  <p>That's what makes IQR especially useful for skewed data and datasets with outliers.</p>
+
+  <h2>IQR and outliers</h2>
+  <p>One of the most common applications of IQR is identifying potential outliers. After calculating the IQR, we can create two boundaries:</p>
+  <p class="formula">Lower bound = Q1 − 1.5 × IQR<br>Upper bound = Q3 + 1.5 × IQR</p>
+  <p>Observations outside these boundaries are typically flagged as potential outliers. For example, with Q1 = 20 and Q3 = 40:</p>
+  <p class="formula">IQR = 40 − 20 = 20<br>Lower bound = 20 − 1.5 × 20 = −10<br>Upper bound = 40 + 1.5 × 20 = 70</p>
+  <p>Any observation above €70 or below −€10 would be flagged as a potential outlier. (Order values can't be negative, so in practice only the upper bound matters here.)</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-3-fences.svg" alt="Number line with a lower bound at minus 10 and an upper bound at 70; values between them are not flagged, while a value of 88 euros is flagged as a potential outlier" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 3</span> The bounds are 1.5 × IQR beyond Q1 and Q3. Anything outside them, like the €88 order, is flagged as a potential outlier.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Important</p><p>An outlier is not automatically an error. It is simply an observation that deserves a closer look.</p></div>
+
+  <h2>IQR in a box plot</h2>
+  <p>This is also where IQR becomes visual. In a box plot, the box represents the middle 50% of the data. The bottom (or left side) of the box is Q1, the top (or right side) is Q3, and the distance between them is the IQR. The median sits inside the box, while observations beyond the whiskers may be displayed as potential outliers.</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-4-boxplot.svg" alt="Annotated box plot: the box spans Q1 to Q3 and is the IQR, a line marks the median, whiskers extend to the furthest values within 1.5 times the IQR, and a point beyond is a potential outlier" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 4</span> The anatomy of a box plot. The box is the IQR.</figcaption>
+  </figure>
+
+  <p>So when looking at a box plot, IQR gives us a quick way to understand how concentrated or spread out the central part of the distribution is.</p>
+
+  <h2>What IQR tells us</h2>
+  <p>A small IQR means the middle 50% of observations are relatively close together. A large IQR means they are more spread out. For example:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Q1</th><th>Q3</th><th>IQR</th></tr></thead>
+    <tbody>
+      <tr><td>Dataset A</td><td>20</td><td>30</td><td>10</td></tr>
+      <tr><td>Dataset B</td><td>20</td><td>60</td><td>40</td></tr>
+    </tbody>
+  </table></div>
+  <p>Even though both datasets might have the same median, Dataset B has much greater variability in its middle 50%.</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-5-a-vs-b.svg" alt="Two boxes with the same median: Dataset A is narrow with an IQR of 10, Dataset B is wide with an IQR of 40" loading="lazy" width="800" height="300">
+    <figcaption><span>Chart 5</span> Same median, different spread. The wider the box, the larger the IQR.</figcaption>
+  </figure>
+
+  <h2>Why I find IQR useful as a Data Analyst</h2>
+  <p>When analysing real-world data, averages don't always tell the whole story. A few extreme customers, unusually large transactions, or unexpected values can distort the mean and the range. IQR gives me another perspective:</p>
+  <p class="formula">Where is the typical middle of the data, and how much does it vary?</p>
+  <p>That's particularly useful when working with things like:</p>
+  <ul class="post-points">
+    <li>Customer spending</li>
+    <li>Order values</li>
+    <li>Delivery times</li>
+    <li>Salaries</li>
+    <li>Website session durations</li>
+    <li>Transaction amounts</li>
+  </ul>
+  <p>Instead of immediately removing an unusual value, I can first identify it, investigate it, and decide whether it represents an error, a special case, or a genuinely interesting observation.</p>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">The takeaway</p><p>IQR is more than just a formula. Q1 → 25%, Median → 50%, Q3 → 75%, and IQR = Q3 − Q1. It describes the spread of the middle 50% of the data and provides a simple way to identify potential outliers. For me, that's the real value of IQR: it helps separate the typical pattern from the extreme values.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
