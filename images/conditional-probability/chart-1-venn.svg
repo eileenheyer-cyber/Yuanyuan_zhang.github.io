@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-06T12:33:34.662962</dc:date>
+    <dc:date>2026-10-06T11:43:43.241513</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -41,7 +41,7 @@ C 48.412884 55.713318 41.538462 72.309641 41.538462 89.612308
 C 41.538462 106.914974 48.412884 123.511297 60.647716 135.74613 
 C 72.882549 147.980962 89.478872 154.855385 106.781538 154.855385 
 z
-" clip-path="url(#p8cf587638f)" style="fill: #e03a1e"/>
+" clip-path="url(#p9233ffc8ae)" style="fill: #e03a1e"/>
    </g>
    <g id="patch_3">
     <path d="M 175.458462 154.855385 
@@ -54,7 +54,7 @@ C 117.089807 55.713318 110.215385 72.309641 110.215385 89.612308
 C 110.215385 106.914974 117.089807 123.511297 129.324639 135.74613 
 C 141.559472 147.980962 158.155795 154.855385 175.458462 154.855385 
 z
-" clip-path="url(#p8cf587638f)" style="fill: #0a3fb5"/>
+" clip-path="url(#p9233ffc8ae)" style="fill: #0a3fb5"/>
    </g>
    <g id="patch_4">
     <path d="M 175.458462 154.855385 
@@ -67,7 +67,7 @@ C 117.089807 55.713318 110.215385 72.309641 110.215385 89.612308
 C 110.215385 106.914974 117.089807 123.511297 129.324639 135.74613 
 C 141.559472 147.980962 158.155795 154.855385 175.458462 154.855385 
 z
-" clip-path="url(#pf88d52e780)" style="fill: #16161a"/>
+" clip-path="url(#pe7bbf1ee32)" style="fill: #16161a"/>
    </g>
    <g id="patch_5">
     <path d="M 106.781538 158.976 
@@ -81,7 +81,7 @@ C 37.417846 108.007774 44.726442 125.652286 57.734001 138.659845
 C 70.74156 151.667404 88.386072 158.976 106.781538 158.976 
 L 106.781538 158.976 
 z
-" clip-path="url(#p8cf587638f)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #16161a; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#p9233ffc8ae)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #16161a; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <!-- P(B | A) = P(A and B) ÷ P(A) -->
@@ -1109,10 +1109,10 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p8cf587638f">
+  <clipPath id="p9233ffc8ae">
    <rect x="7.2" y="7.2" width="446.4" height="164.824615"/>
   </clipPath>
-  <clipPath id="pf88d52e780">
+  <clipPath id="pe7bbf1ee32">
    <path d="M 106.781538 154.855385 
 C 124.084205 154.855385 140.680528 147.980962 152.915361 135.74613 
 C 165.150193 123.511297 172.024615 106.914974 172.024615 89.612308 
