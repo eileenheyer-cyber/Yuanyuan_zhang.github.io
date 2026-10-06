@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conditional Probability &amp; Independence – Yuanyuan Zhang</title>
+  <meta name="description" content="Conditional probability explained with cards and an email campaign: dependent and independent events, the notation P(B | A), and the formula P(A and B) = P(A) × P(B | A).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261006d">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">Conditional Probability &amp; Independence</h1>
+
+  <figure class="post-cover">
+    <img src="images/conditional-probability-cover.webp" alt="Conditional Probability and Independence: two overlapping circles A and B, with the overlap split out below" width="2354" height="1566">
+  </figure>
+
+  <p>So far we looked at the probability of a single event, and at independent events such as two coin tosses. But in real data, one thing happening often changes how likely another thing is. Conditional probability is the tool for that.</p>
+
+  <h2>Independent vs dependent events</h2>
+  <p>Two events are <strong>independent</strong> if one happening does not change the probability of the other. Two coin tosses are the classic case: getting heads first tells you nothing about the second toss.</p>
+  <p>Two events are <strong>dependent</strong> if the first one does change the probability of the second. Think of a customer who first has to open a marketing email before they can click the link inside it. The second event is <em>conditional</em> on the first.</p>
+  <div class="post-types">
+    <div class="post-type"><p class="post-type-l">Independent</p><p class="post-type-t">No influence</p><p>The first event does not change the probability of the second.</p><p class="post-type-use">Example: two coin tosses</p></div>
+    <div class="post-type"><p class="post-type-l">Dependent</p><p class="post-type-t">One shapes the other</p><p>The first event changes the probability of the second.</p><p class="post-type-use">Example: open an email, then click</p></div>
+  </div>
+
+  <h2>The conditional probability formula</h2>
+  <p>The notation P(B | A) is read as "the probability of B given A". The vertical bar means "given that": we assume A has already happened and ask how likely B is under that condition. For two dependent events:</p>
+  <p class="formula">P(A and B) = P(A) × P(B | A)</p>
+  <p>In words: the probability that both happen equals the probability of A, times the probability of B once A has happened. The same equation can be rearranged to solve for the conditional probability:</p>
+  <p class="formula">P(B | A) = P(A and B) ÷ P(A)</p>
+  <p>These are two views of one equation. Use whichever fits the information you have: the first when you know P(B | A) and want the probability of both, the second when you know the probability of both and want to isolate the condition.</p>
+  <figure class="post-fig">
+    <img src="images/conditional-probability/chart-1-venn.svg" alt="Two overlapping circles A and B with the overlap highlighted; P of B given A is the overlap divided by all of A" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 1</span> Conditioning on A means we only look inside circle A and ask which share of it is also B.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Independence is a special case</p><p>If A and B are independent, knowing A tells us nothing about B, so P(B | A) = P(B). The formula then becomes P(A and B) = P(A) × P(B), which is exactly the multiplication rule from <a href="probability-basics.html">Probability Basics</a>.</p></div>
+
+  <h2>Example: drawing two hearts</h2>
+  <p>Draw two cards from a standard deck of 52, one after the other, and keep the first card out of the deck. What is the probability that both are hearts?</p>
+  <ul class="post-points">
+    <li><strong>First draw.</strong> There are 13 hearts among 52 cards, so P(1st heart) = 13/52 = 25%.</li>
+    <li><strong>Second draw.</strong> One heart is gone, so 12 hearts are left among 51 cards. P(2nd heart | 1st heart) = 12/51 ≈ 23.5%.</li>
+  </ul>
+  <p>The second probability is lower than the first, which is what makes the events dependent. Putting it together:</p>
+  <p class="formula">P(2 hearts) = 13/52 × 12/51 = 1/17 ≈ 5.9%</p>
+  <figure class="post-fig">
+    <img src="images/conditional-probability/chart-2-two-hearts.svg" alt="Probability tree for two draws from a deck: 13 over 52 for a heart on the first draw, then 12 over 51 for a heart on the second, giving 1 over 17" loading="lazy" width="800" height="390">
+    <figcaption><span>Chart 2</span> Because the first heart stays out of the deck, the odds of the second draw change.</figcaption>
+  </figure>
+  <p>And what if you put the first card back and shuffle? Then the deck is full again, the second draw is 13/52 once more, and the two draws are independent.</p>
+  <figure class="post-fig">
+    <img src="images/conditional-probability/chart-4-independent-vs-dependent.svg" alt="Bar chart: the chance of a heart on the second draw is 25 percent if the first card is put back, and about 23.5 percent if it is kept out" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 3</span> The same question, two ways of drawing. Only when the first card stays out does the second probability change.</figcaption>
+  </figure>
+
+  <h2>Example: an email campaign</h2>
+  <p>Imagine you work in e-commerce. Past data shows that 30% of customers open a promotional email, and that 10% of the customers who open it go on to buy. Buying happens after opening, so it depends on it.</p>
+  <p class="formula">P(open and buy) = P(open) × P(buy | open) = 0.30 × 0.10 = 0.03</p>
+  <p>So 3% of all customers both open the email and buy. Going the other way works too: if you only knew that 3% of customers open and buy, and that 30% open, then P(buy | open) = 0.03 ÷ 0.30 = 10%.</p>
+  <figure class="post-fig">
+    <img src="images/conditional-probability/chart-3-email-funnel.svg" alt="Of 1,000 customers, 300 open the email; of those 300, 30 buy, which is 10 percent of openers and 3 percent of all customers" loading="lazy" width="800" height="380">
+    <figcaption><span>Chart 4</span> Illustrative numbers. The condition shrinks the group we look at: from all customers to only those who opened.</figcaption>
+  </figure>
+  <div class="post-note"><p class="post-note-l">Don't mix up the two directions</p><p>P(B | A) and P(A | B) are different questions. "Of the customers who opened, how many bought?" is not the same as "of the customers who bought, how many opened?" The condition always decides which group you start from.</p></div>
+
+  <h2>Summary of the formulas</h2>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Situation</th><th>Formula</th></tr></thead>
+    <tbody>
+      <tr><td>Both events happen (dependent)</td><td>P(A and B) = P(A) × P(B | A)</td></tr>
+      <tr><td>Probability of B given A</td><td>P(B | A) = P(A and B) ÷ P(A)</td></tr>
+      <tr><td>Independent events</td><td>P(B | A) = P(B), so P(A and B) = P(A) × P(B)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Conditional probability describes how likely an event is once we know that another one has happened. When events are dependent, the second probability changes, so we multiply P(A) by P(B | A). In business, this is how analysts estimate things like the impact of a campaign on sales, which helps stakeholders decide where to invest.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
