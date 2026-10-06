@@ -123,6 +123,23 @@
   </ul>
   <p>Instead of immediately removing an unusual value, I can first identify it, investigate it, and decide whether it represents an error, a special case, or a genuinely interesting observation.</p>
 
+  <h2>How to explain IQR to stakeholders</h2>
+  <p>When presenting IQR to stakeholders, I would start with the business question:</p>
+  <p class="formula">How much do our typical values vary?</p>
+  <p>IQR helps answer this by looking at the middle 50% of the data. This makes it particularly useful when a dataset contains extreme values that could distort the overall picture.</p>
+  <p>For example, imagine we're analysing customer order values. A few customers might place unusually large orders, but those orders don't necessarily represent typical customer behaviour. Instead of letting these extreme values dominate the analysis, IQR helps us understand where the majority of typical orders are concentrated.</p>
+  <p>If the middle 50% of orders falls between €20 and €45, we can say that the typical range of order values is relatively concentrated around this interval.</p>
+
+  <h3>Why does this matter?</h3>
+  <p>Because an average alone can hide the story. Two customer segments could have the same average order value but very different distributions. One might have customers whose orders are consistently similar, while the other might contain a mixture of very small and very large orders.</p>
+  <figure class="post-fig">
+    <img src="images/iqr/chart-6-same-average.svg" alt="Two customer segments with the same average order value of 32 euros: Segment A has orders tightly grouped with an IQR of 4 euros, Segment B has orders spread widely with an IQR of 33 euros" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 6</span> Same average, different story (illustrative data). Both segments average €32, but their IQRs are €4 and €33.</figcaption>
+  </figure>
+  <p>IQR gives stakeholders another perspective:</p>
+  <p class="formula">Not just “What is the average?” but “How much variation is there among our typical observations?”</p>
+  <p>It can also help identify potential outliers that deserve further investigation. But an outlier isn't automatically a mistake. It could represent a VIP customer, a bulk purchase, a special promotion, or simply an unusual but legitimate event.</p>
+
   <div class="post-note post-takeaway"><p class="post-note-l">The takeaway</p><p>IQR is more than just a formula. Q1 → 25%, Median → 50%, Q3 → 75%, and IQR = Q3 − Q1. It describes the spread of the middle 50% of the data and provides a simple way to identify potential outliers. For me, that's the real value of IQR: it helps separate the typical pattern from the extreme values.</p></div>
 
 </article>
