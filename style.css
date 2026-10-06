@@ -1542,3 +1542,13 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-deck-l { display:flex; gap:10px; }
 .post-deck-l a { padding:6px 14px; border:1px solid #16161a; border-radius:999px; font-size:.85rem; font-weight:600; color:#16161a; text-decoration:none; background:#fff; }
 .post-deck-l a:hover { background:#16161a; color:#fff; }
+
+/* Event-type cards (knowledge articles) */
+.post-types { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0 28px; }
+.post-type { padding: 16px 18px 18px; background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 10px; }
+.post-type .post-type-l { margin: 0 0 6px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.post-type .post-type-t { margin: 0 0 8px; font-size: 1.1rem; font-weight: 700; line-height: 1.3; }
+.post-type p:not(.post-type-l):not(.post-type-t) { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.6; }
+.post-type p:last-child { margin-bottom: 0; }
+.post-type .post-type-use { color: var(--muted); font-size: 0.85rem; }
+@media (max-width: 640px) { .post-types { grid-template-columns: 1fr; } }
