@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-06T10:23:18.376984</dc:date>
+    <dc:date>2026-10-06T10:39:36.866754</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -36,7 +36,7 @@ L 92.76 90.36
 L 92.76 48.78 
 L 44.4 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #f1f1f3"/>
+" clip-path="url(#pce884d053f)" style="fill: #f1f1f3"/>
    </g>
    <g id="patch_3">
     <path d="M 107.64 90.36 
@@ -44,7 +44,7 @@ L 156 90.36
 L 156 48.78 
 L 107.64 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #0a3fb5"/>
+" clip-path="url(#pce884d053f)" style="fill: #0a3fb5"/>
    </g>
    <g id="patch_4">
     <path d="M 170.88 90.36 
@@ -52,7 +52,7 @@ L 219.24 90.36
 L 219.24 48.78 
 L 170.88 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #f1f1f3"/>
+" clip-path="url(#pce884d053f)" style="fill: #f1f1f3"/>
    </g>
    <g id="patch_5">
     <path d="M 234.12 90.36 
@@ -60,7 +60,7 @@ L 282.48 90.36
 L 282.48 48.78 
 L 234.12 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #0a3fb5"/>
+" clip-path="url(#pce884d053f)" style="fill: #0a3fb5"/>
    </g>
    <g id="patch_6">
     <path d="M 297.36 90.36 
@@ -68,7 +68,7 @@ L 345.72 90.36
 L 345.72 48.78 
 L 297.36 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #f1f1f3"/>
+" clip-path="url(#pce884d053f)" style="fill: #f1f1f3"/>
    </g>
    <g id="patch_7">
     <path d="M 360.6 90.36 
@@ -76,7 +76,7 @@ L 408.96 90.36
 L 408.96 48.78 
 L 360.6 48.78 
 z
-" clip-path="url(#pcae565805f)" style="fill: #0a3fb5"/>
+" clip-path="url(#pce884d053f)" style="fill: #0a3fb5"/>
    </g>
    <g id="text_1">
     <!-- 1 -->
@@ -1108,7 +1108,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pcae565805f">
+  <clipPath id="pce884d053f">
    <rect x="7.2" y="7.2" width="446.4" height="166.32"/>
   </clipPath>
  </defs>
