@@ -72,6 +72,10 @@
     <li><strong>Supporting metrics.</strong> Provide context and help explain why the primary metric changed. Examples: average order value, bounce rate, or session duration (if conversion rate is measured).</li>
     <li><strong>Guardrail metrics.</strong> Ensure you don't improve one aspect of the product while harming another.</li>
   </ul>
+  <figure class="post-fig">
+    <img src="images/ab-testing/chart-1-metrics.svg" alt="Three cards: a primary metric that shows whether the feature delivered value, supporting metrics that explain why it changed, and guardrail metrics that check nothing else got worse" loading="lazy" width="800" height="300">
+    <figcaption><span>Chart 1</span> The three kinds of metrics and the question each one answers (examples).</figcaption>
+  </figure>
   <div class="post-note"><p class="post-note-l">Before running an A/B test, ask</p>
     <ol class="post-points" style="margin:8px 0 0">
       <li>What decision am I trying to make?</li>
@@ -88,6 +92,10 @@
     <li><strong>Control group</strong> continues with the existing experience (1:1 video calling).</li>
     <li><strong>Treatment group</strong> gets access to the new feature (group video calling).</li>
   </ul>
+  <figure class="post-fig">
+    <img src="images/ab-testing/chart-2-random-split.svg" alt="Eligible users are randomly assigned to group A, the control with 1:1 video calling, or group B, the treatment with group video calling" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 2</span> Random assignment: every eligible user has the same chance of landing in either group.</figcaption>
+  </figure>
   <p>An important decision is who to include in the experiment.</p>
 
   <h3>Key principle: randomization</h3>
@@ -99,7 +107,12 @@
     <li><strong>Supports causal conclusions</strong>, allowing you to attribute differences in outcomes to the treatment rather than other variables.</li>
     <li><strong>Makes statistical tests valid</strong>, since most inferential methods assume random assignment.</li>
   </ul>
-  <div class="post-note"><p class="post-note-l">Why it matters</p><p>Without randomization, it's difficult to know whether the change caused the result or whether some other factor did. Such a factor is called a confounder, and confounders can lead to incorrect conclusions about cause and effect.</p></div>
+  <div class="post-note"><p class="post-note-l">Why it matters</p><p>Without randomization, it's difficult to know whether the change caused the result or whether some other factor did. Such a factor is called a confounder, and confounders can lead to incorrect conclusions about cause and effect.</p>
+    <figure class="post-fig">
+      <img src="images/ab-testing/chart-3-randomization.svg" alt="Bar chart: when users choose their group, 70 percent of the treatment group are heavy users versus 25 percent of control; with random assignment the shares are about 45 and 47 percent" loading="lazy" width="800" height="320">
+      <figcaption><span>Chart 3</span> Illustrative data. If heavy users pick the new feature themselves, the groups differ before the test starts. Random assignment evens them out.</figcaption>
+    </figure>
+  </div>
   <p>Also think about how long to run the experiment. The duration should be long enough to capture typical user behavior, but not so long that it delays decision-making.</p>
   <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly state who is in control vs treatment, how users are assigned, and what you are comparing. Also consider network effects. For example, if a group of friends interacts frequently, assigning them to different groups can introduce bias. Where possible, group related users together to minimize interference.</p></div>
 
@@ -136,11 +149,20 @@
     <li><strong>Relative improvement.</strong> The percentage increase compared with the original.</li>
   </ul>
 
+  <figure class="post-fig">
+    <img src="images/ab-testing/chart-4-effect-size.svg" alt="Bars showing a conversion rate of 5.0 percent for control and 5.6 percent for treatment, an absolute difference of 0.6 percentage points and a relative improvement of 12 percent" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 4</span> Illustrative numbers: the same result as an absolute and as a relative improvement.</figcaption>
+  </figure>
   <h3>Statistical significance and the p-value</h3>
   <p>If there were actually no difference between A and B, how likely is it to observe a difference this large? If that is unlikely (commonly p &lt; 0.05), the difference is considered statistically significant.</p>
 
   <h3>Confidence intervals</h3>
   <p>A confidence interval shows the range of plausible effects. It tells us, for example: based on this experiment, the true improvement is plausibly between 0.40% and 0.80%.</p>
+
+  <figure class="post-fig">
+    <img src="images/ab-testing/chart-5-confidence-interval.svg" alt="Three confidence intervals: one entirely above zero where the treatment wins, one that crosses zero meaning no clear difference, and one entirely below zero where the treatment loses" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 5</span> How the confidence interval relates to the decision (illustrative).</figcaption>
+  </figure>
 
 </article>
 </main>
