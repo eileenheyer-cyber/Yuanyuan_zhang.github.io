@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Conditional Probability &amp; Independence – Yuanyuan Zhang</title>
-  <meta name="description" content="Conditional probability explained with cards and an email campaign: dependent and independent events, the notation P(B | A), and the formula P(A and B) = P(A) × P(B | A).">
+  <meta name="description" content="Conditional probability explained with cards and an online shop: dependent and independent events, the notation P(B | A), and the formula P(A and B) = P(A) × P(B | A).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,10 +42,10 @@
 
   <h2>Independent vs dependent events</h2>
   <p>Two events are <strong>independent</strong> if one happening does not change the probability of the other. Two coin tosses are the classic case: getting heads first tells you nothing about the second toss.</p>
-  <p>Two events are <strong>dependent</strong> if the first one does change the probability of the second. Think of a customer who first has to open a marketing email before they can click the link inside it. The second event is <em>conditional</em> on the first.</p>
+  <p>Two events are <strong>dependent</strong> if the first one does change the probability of the second. Think of an online shop: a customer can only use a discount code after they have made a purchase. The second event is <em>conditional</em> on the first.</p>
   <div class="post-types">
     <div class="post-type"><p class="post-type-l">Independent</p><p class="post-type-t">No influence</p><p>The first event does not change the probability of the second.</p><p class="post-type-use">Example: two coin tosses</p></div>
-    <div class="post-type"><p class="post-type-l">Dependent</p><p class="post-type-t">One shapes the other</p><p>The first event changes the probability of the second.</p><p class="post-type-use">Example: open an email, then click</p></div>
+    <div class="post-type"><p class="post-type-l">Dependent</p><p class="post-type-t">One shapes the other</p><p>The first event changes the probability of the second.</p><p class="post-type-use">Example: purchase, then discount code</p></div>
   </div>
 
   <h2>The conditional probability formula</h2>
@@ -79,15 +79,20 @@
     <figcaption><span>Chart 3</span> The same question, two ways of drawing. Only when the first card stays out does the second probability change.</figcaption>
   </figure>
 
-  <h2>Example: an email campaign</h2>
-  <p>Imagine you work in e-commerce. Past data shows that 30% of customers open a promotional email, and that 10% of the customers who open it go on to buy. Buying happens after opening, so it depends on it.</p>
-  <p class="formula">P(open and buy) = P(open) × P(buy | open) = 0.30 × 0.10 = 0.03</p>
-  <p>So 3% of all customers both open the email and buy. Going the other way works too: if you only knew that 3% of customers open and buy, and that 30% open, then P(buy | open) = 0.03 ÷ 0.30 = 10%.</p>
+  <h2>Example: online shopping</h2>
+  <p>Imagine an e-commerce store. A customer has a 20% probability of making a purchase, and among customers who make a purchase, 30% use a discount code. What is the probability that a randomly selected customer makes a purchase <em>and</em> uses a discount code?</p>
+  <ul class="post-points">
+    <li><strong>A</strong> = the customer makes a purchase</li>
+    <li><strong>B</strong> = the customer uses a discount code</li>
+  </ul>
+  <p>Using a discount code depends on making a purchase, so these are dependent events:</p>
+  <p class="formula">P(A and B) = P(A) × P(B | A) = 0.20 × 0.30 = 0.06 = 6%</p>
   <figure class="post-fig">
-    <img src="images/conditional-probability/chart-3-email-funnel.svg" alt="Of 1,000 customers, 300 open the email; of those 300, 30 buy, which is 10 percent of openers and 3 percent of all customers" loading="lazy" width="800" height="380">
-    <figcaption><span>Chart 4</span> Illustrative numbers. The condition shrinks the group we look at: from all customers to only those who opened.</figcaption>
+    <img src="images/conditional-probability/chart-3-discount-code.svg" alt="Of 1,000 customers, 200 make a purchase; of those 200, 60 use a discount code, which is 30 percent of buyers and 6 percent of all customers" loading="lazy" width="800" height="380">
+    <figcaption><span>Chart 4</span> Illustrative numbers. The condition shrinks the group we look at: from all customers to only those who purchased.</figcaption>
   </figure>
-  <div class="post-note"><p class="post-note-l">Don't mix up the two directions</p><p>P(B | A) and P(A | B) are different questions. "Of the customers who opened, how many bought?" is not the same as "of the customers who bought, how many opened?" The condition always decides which group you start from.</p></div>
+  <div class="post-note"><p class="post-note-l">Stakeholder-friendly interpretation</p><p>There is a 6% probability that a randomly selected customer both makes a purchase and uses a discount code.</p></div>
+  <div class="post-note"><p class="post-note-l">Don't mix up the two directions</p><p>P(B | A) and P(A | B) are different questions. "Of the customers who purchased, how many used a code?" is 30%. "Of the customers who used a code, how many purchased?" is 100%, since a code can only be used with a purchase. The condition always decides which group you start from.</p></div>
 
   <h2>Summary of the formulas</h2>
   <div class="post-table-wrap"><table class="post-table">
