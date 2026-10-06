@@ -1608,3 +1608,8 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .knowledge-page { padding-top: 18px; }
 .knowledge-page .section-intro { margin: 6px auto 16px; }
 .knowledge-page .project-card-img img { object-position: left 30%; }
+.knowledge-page { max-width: 1340px; }
+.knowledge-page .project-title { font-size: 1.15rem; }
+.knowledge-page .project-card-body p { font-size: 0.84rem; }
+.knowledge-page .project-tags span { font-size: 0.7rem; }
+.knowledge-page { padding-top: 6px; }
