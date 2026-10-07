@@ -81,7 +81,7 @@
   </ul>
   <p>Why do we need them? Because business questions are really probability questions: How likely is it that the campaign gets at least 4 clicks in the first hour? What share of visitors stay longer than 4 minutes? Each function is the right tool for a different kind of question, and which one you use depends on the type of variable and on what you want to know. The next sections go through them one by one.</p>
 
-  <h2>PMF: probability mass function</h2>
+  <h3>PMF: probability mass function</h3>
   <p>For a discrete variable, the <strong>probability mass function (PMF)</strong> gives the probability of each exact value:</p>
   <p class="formula">P(X = x)</p>
   <p>It is read as "the probability that X equals x". Two rules always hold: every probability is between 0 and 1, and all probabilities add up to 1.</p>
@@ -96,7 +96,7 @@
   </figure>
   <p><strong>How to read it:</strong> find the value on the horizontal axis and read the height of its bar. P(X = 3) = 0.20, so in about 20% of hours you would expect exactly 3 clicks. The tallest bar, 2 clicks at 0.30, is the most likely value. To get the probability of several values, add their bars: P(X ≥ 4) = 0.10 + 0.05 = 0.15.</p>
 
-  <h2>PDF: probability density function</h2>
+  <h3>PDF: probability density function</h3>
   <p>A continuous variable works differently. Time on the page could be 3 minutes, 3.1 minutes, 3.14159 minutes, and so on, with infinitely many possible values. If each exact value had a positive probability, the total would be far above 1. So for a continuous variable, the probability of one exact value is zero: P(X = exactly 3.000) = 0. Instead, we ask about <em>ranges</em>.</p>
   <p>The <strong>probability density function (PDF)</strong> describes this. Two ideas are important:</p>
   <ul class="post-points">
@@ -110,7 +110,7 @@
   </figure>
   <p><strong>How to interpret it:</strong> where the curve is high, values are concentrated, and where it is low, they are rare. A wide, flat curve means more spread. To answer a question, choose a range and look at the area above it, never at the height at a single point.</p>
 
-  <h2>CDF: cumulative distribution function</h2>
+  <h3>CDF: cumulative distribution function</h3>
   <p>The <strong>cumulative distribution function (CDF)</strong> answers a different question: how likely is it that X is <em>at most</em> a certain value?</p>
   <p class="formula">F(x) = P(X ≤ x)</p>
   <p>It accumulates probability, starting from the left and adding up as x grows. This works for both types of variable:</p>
