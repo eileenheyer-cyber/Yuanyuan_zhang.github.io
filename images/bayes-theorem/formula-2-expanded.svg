@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>Expanded Bayes’ theorem: the posterior P(A | B) equals the true positives P(A) times P(B | A), divided by the true positives plus the false positives P(not A) times P(B | not A)</title>
+
+  <g font-size="24" font-weight="600" fill="#0a3fb5" text-anchor="middle">
+    <text x="105" y="62">posterior</text>
+    <text x="400" y="62">true positives</text>
+    <text x="400" y="338">true positives</text>
+    <text x="746" y="338">false positives</text>
+  </g>
+
+  <g stroke="#6b7280" stroke-width="2" fill="#6b7280">
+    <line x1="105" y1="80" x2="105" y2="126"/>
+    <polygon points="99,124 111,124 105,138" stroke="none"/>
+    <line x1="400" y1="80" x2="400" y2="106"/>
+    <polygon points="394,104 406,104 400,118" stroke="none"/>
+    <line x1="400" y1="304" x2="400" y2="256"/>
+    <polygon points="394,258 406,258 400,244" stroke="none"/>
+    <line x1="746" y1="304" x2="746" y2="256"/>
+    <polygon points="740,258 752,258 746,244" stroke="none"/>
+  </g>
+
+  <text x="105" y="196" font-size="34" font-style="italic" fill="#111" text-anchor="middle">P(A | B) =</text>
+
+  <g font-size="28" font-style="italic" fill="#111" text-anchor="middle">
+    <text x="330" y="158">P(A)</text>
+    <text x="378" y="158" font-style="normal">×</text>
+    <text x="450" y="158">P(B | A)</text>
+
+    <text x="330" y="226">P(A)</text>
+    <text x="378" y="226" font-style="normal">×</text>
+    <text x="450" y="226">P(B | A)</text>
+    <text x="548" y="226" font-style="normal">+</text>
+    <text x="635" y="226">P(not A)</text>
+    <text x="718" y="226" font-style="normal">×</text>
+    <text x="830" y="226">P(B | not A)</text>
+  </g>
+  <line x1="230" y1="180" x2="940" y2="180" stroke="#6b7280" stroke-width="2"/>
+</svg>

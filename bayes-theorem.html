@@ -46,7 +46,9 @@
 
   <h2>The theorem</h2>
   <p>For any two events A and B, the probability of A given B equals the probability of B given A, multiplied by the probability of A, divided by the probability of B:</p>
-  <p class="formula">P(A | B) = P(B | A) × P(A) ÷ P(B)</p>
+  <figure class="post-fig">
+    <img src="images/bayes-theorem/formula-1-bayes.svg" alt="Bayes’ theorem: posterior P(A | B) equals likelihood P(B | A) times prior P(A), divided by evidence P(B)" loading="lazy" width="800" height="340">
+  </figure>
   <p>Each part of the formula has a name:</p>
   <ul class="post-points">
     <li><strong>P(A) is the prior.</strong> What you believed before the new data.</li>
@@ -68,7 +70,9 @@
     <li><strong>False positives</strong> = P(not A) × P(B | not A). How common "not A" is, times how often the test raises a false alarm.</li>
   </ul>
   <p>Written with symbols, that is the expanded formula:</p>
-  <p class="formula">P(A | B) = P(A) × P(B | A) ÷ [ P(A) × P(B | A) + P(not A) × P(B | not A) ]</p>
+  <figure class="post-fig">
+    <img src="images/bayes-theorem/formula-2-expanded.svg" alt="Expanded Bayes’ theorem: posterior P(A | B) equals true positives P(A) times P(B | A), divided by true positives plus false positives P(not A) times P(B | not A)" loading="lazy" width="960" height="360">
+  </figure>
 
   <h2>Why test accuracy is tricky</h2>
   <p>No test is perfect, and it can be wrong in two ways:</p>
