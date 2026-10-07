@@ -1639,3 +1639,4 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .knowledge-page .theme-head h2 { margin: 0; font-size: 1.3rem; font-weight: 700; color: var(--ink); }
 .knowledge-page .theme-head p { margin: 0; font-size: 0.9rem; color: var(--muted); }
 .knowledge-page .project-grid { justify-content: flex-start; }
+.knowledge-page .theme-head h2 { font-size: 1.85rem; font-style: italic; letter-spacing: -0.01em; }
