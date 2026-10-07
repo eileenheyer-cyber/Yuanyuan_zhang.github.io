@@ -60,8 +60,15 @@
 
   <h2>The expanded formula</h2>
   <p>Sometimes you do not know P(B), the evidence, so the basic formula cannot be used directly. The expanded version works it out from probabilities you usually do have. The evidence is the sum of all the ways B can happen: together with A, and together with "not A".</p>
-  <p class="formula">P(A | B) = P(B | A) × P(A) ÷ [ P(B | A) × P(A) + P(B | not A) × P(not A) ]</p>
-  <p>The numerator is the same as before. The denominator now spells out P(B) in two parts, so you only need the prior, the likelihood and how often B happens when A is <em>not</em> true.</p>
+  <p>The easiest way to read the expanded formula is as a question: <em>out of everyone who gets this result, how many are the real thing?</em></p>
+  <p class="formula">P(A | B) = true positives ÷ (true positives + false positives)</p>
+  <p>Each of the two groups is a simple "how common × how often" product:</p>
+  <ul class="post-points">
+    <li><strong>True positives</strong> = P(A) × P(B | A). How common A is, times how often the test catches it.</li>
+    <li><strong>False positives</strong> = P(not A) × P(B | not A). How common "not A" is, times how often the test raises a false alarm.</li>
+  </ul>
+  <p>Written with symbols, that is the expanded formula:</p>
+  <p class="formula">P(A | B) = P(A) × P(B | A) ÷ [ P(A) × P(B | A) + P(not A) × P(B | not A) ]</p>
 
   <h2>Why test accuracy is tricky</h2>
   <p>No test is perfect, and it can be wrong in two ways:</p>
@@ -79,7 +86,7 @@
     <li><strong>False positive rate.</strong> The test is also positive for 2% of people who do not have the allergy, so P(positive | no allergy) = 0.02.</li>
   </ul>
   <p>The question: if someone tests positive, how likely is it that they really have the allergy? We want P(allergy | positive), so A is "has the allergy" and B is "tests positive". Put the numbers into the expanded formula:</p>
-  <p class="formula">P(allergy | positive) = (0.95 × 0.01) ÷ [ (0.95 × 0.01) + (0.02 × 0.99) ]</p>
+  <p class="formula">P(allergy | positive) = (0.01 × 0.95) ÷ [ (0.01 × 0.95) + (0.99 × 0.02) ]</p>
   <p class="formula">= 0.0095 ÷ (0.0095 + 0.0198) = 0.0095 ÷ 0.0293 ≈ 0.324</p>
   <p>So the probability that a person with a positive test has the allergy is only about <strong>32.4%</strong>.</p>
   <p>That looks surprising for a test that finds 95% of real cases. The reason is how rare the allergy is. Picture 10,000 people: 100 have the allergy and 95 of them test positive. The other 9,900 do not have it, but 2% of them, 198 people, test positive anyway. Out of 293 positive tests, only 95 are real.</p>
@@ -96,7 +103,8 @@
     <tbody>
       <tr><td>Bayes’ theorem</td><td>P(A | B) = P(B | A) × P(A) ÷ P(B)</td></tr>
       <tr><td>In words</td><td>Posterior = Likelihood × Prior ÷ Evidence</td></tr>
-      <tr><td>Expanded (P(B) unknown)</td><td>P(A | B) = P(B | A) × P(A) ÷ [ P(B | A) × P(A) + P(B | not A) × P(not A) ]</td></tr>
+      <tr><td>Expanded, in words</td><td>P(A | B) = true positives ÷ (true positives + false positives)</td></tr>
+      <tr><td>Expanded, with symbols (P(B) unknown)</td><td>P(A | B) = P(A) × P(B | A) ÷ [ P(A) × P(B | A) + P(not A) × P(B | not A) ]</td></tr>
     </tbody>
   </table></div>
 
