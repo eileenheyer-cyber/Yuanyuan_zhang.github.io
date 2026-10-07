@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Four Common Discrete Distributions – Yuanyuan Zhang</title>
+  <meta name="description" content="Uniform, Bernoulli, binomial and Poisson: four common discrete probability distributions, when to use each, and how they show up in business data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261007g">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">Four Common Discrete Distributions</h1>
+
+  <figure class="post-cover">
+    <img src="images/discrete-distributions-cover.webp" alt="Four Common Discrete Distributions: uniform, Bernoulli, binomial and Poisson shown as small bar charts" width="2370" height="1568">
+  </figure>
+
+  <p>In <a href="random-variables-distributions.html">Random Variables &amp; Probability Distributions</a> we saw that a discrete variable takes countable values and that its PMF lists the probability of each one. In practice you rarely build a PMF from scratch. Many real situations follow a small set of well-known patterns, and recognising the pattern tells you which model to use. This post covers four of them: uniform, Bernoulli, binomial and Poisson.</p>
+
+  <h2>Uniform distribution</h2>
+  <p>The uniform distribution describes a situation where <strong>all outcomes are equally likely</strong>. Rolling a die has six outcomes (1 to 6), and each has the same probability: 1 out of 6, or about 16.7%.</p>
+  <p>You can show a discrete distribution as a histogram: the possible values of the random variable go on the x-axis, and the probability of each value goes on the y-axis. For a uniform distribution every bar has the same height.</p>
+  <figure class="post-fig">
+    <img src="images/discrete-distributions/chart-1-uniform.svg" alt="Histogram of a single die roll: six bars of equal height, each 16.7 percent" loading="lazy" width="800" height="330">
+    <figcaption><span>Chart 1</span> Every outcome of a single die roll has the same probability, so all bars are equally tall.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Where it is used</p><p>Data professionals often use the uniform distribution as a building block for more complex methods, such as Monte Carlo simulations. In a business setting, think of randomly assigning customers to one of several test groups: each group is equally likely. The uniform distribution also exists for continuous variables, not only discrete ones.</p></div>
+
+  <h2>Bernoulli distribution</h2>
+  <p>The Bernoulli distribution models <strong>a single trial with only two possible outcomes</strong>: success or failure. The two outcomes cannot happen at the same time. If the probability of success is p, the probability of failure is 1 − p.</p>
+  <p>A classic example is a single coin toss. In business data, it is a single customer who either opens a marketing email or does not. If 30% of customers open it, then p = 0.30 for success and 1 − p = 0.70 for failure.</p>
+  <figure class="post-fig">
+    <img src="images/discrete-distributions/chart-2-bernoulli.svg" alt="Bernoulli distribution of one email: opened with probability 0.30, not opened with probability 0.70" loading="lazy" width="800" height="280">
+    <figcaption><span>Chart 2</span> One trial, two outcomes. The probabilities p and 1 − p always add up to 1.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Success is just a label</p><p>"Success" and "failure" are labels chosen for convenience. For a coin toss you could call heads the success or tails the success, depending on what your analysis needs. In a fraud model, the "success" is usually the event you are trying to detect, such as a fraudulent transaction.</p></div>
+
+  <h2>Binomial distribution</h2>
+  <p>The binomial distribution is the Bernoulli distribution repeated. It models <strong>the number of successes in a fixed number of independent trials</strong>. The only difference is that Bernoulli covers one trial, while the binomial covers n trials. The process behind it is called a binomial experiment, which has four attributes:</p>
+  <ul class="post-points">
+    <li><strong>Repeated trials.</strong> The experiment consists of a fixed number of trials.</li>
+    <li><strong>Two outcomes.</strong> Each trial has only two possible outcomes: success or failure.</li>
+    <li><strong>Same probability.</strong> The probability of success is the same for every trial.</li>
+    <li><strong>Independence.</strong> Each trial is independent, so one result does not affect any other.</li>
+  </ul>
+  <p>Tossing a coin 10 times in a row is a binomial experiment: there are 10 trials, each toss gives heads or tails, the probability of heads is 50% every time, and one toss does not influence the next. The histogram shows the number of heads on the x-axis and the probability of each result on the y-axis. The most likely result is 5 heads, at about 24.6%, and the bars fall away on both sides.</p>
+  <figure class="post-fig">
+    <img src="images/discrete-distributions/chart-3-binomial.svg" alt="Binomial distribution of 10 coin tosses: bars peak at 5 heads with about 25 percent" loading="lazy" width="800" height="330">
+    <figcaption><span>Chart 3</span> Number of heads in 10 coin tosses. The shape is symmetric because the probability of heads is 50%.</figcaption>
+  </figure>
+
+  <p>Data professionals use the binomial distribution to model, for example, the probability that:</p>
+  <ul class="post-points">
+    <li>a new medication causes side effects,</li>
+    <li>a credit card transaction is fraudulent,</li>
+    <li>a stock price rises in value,</li>
+    <li>a customer who received an offer makes a purchase.</li>
+  </ul>
+  <p>In machine learning, the binomial idea is also behind classification: an algorithm can be trained to decide whether a digital image shows a specific animal, like a cat or a dog, or not.</p>
+
+  <h2>Poisson distribution</h2>
+  <p>The Poisson distribution models <strong>the number of events that occur in a fixed period of time</strong>. It can also describe events in a fixed space, such as a distance, an area or a volume, but here we focus on time. A Poisson experiment has three attributes:</p>
+  <ul class="post-points">
+    <li><strong>Countable.</strong> The number of events can be counted.</li>
+    <li><strong>Known average.</strong> The mean number of events per time period is known.</li>
+    <li><strong>Independence.</strong> Each event is independent of the others.</li>
+  </ul>
+  <p>Imagine you publish content on a website that averages two views per hour. You want to know how likely it is to get a certain number of views in a given hour. This fits a Poisson experiment: views can be counted, the average of two per hour is known, and one person viewing the site does not affect whether another one does.</p>
+  <p>On the histogram, the x-axis shows the number of views per hour and the y-axis shows the probability. The tallest bars are 1 and 2 views, at about 27% each. Getting no views at all in an hour has a probability of about 14%.</p>
+  <figure class="post-fig">
+    <img src="images/discrete-distributions/chart-4-poisson.svg" alt="Poisson distribution with an average of 2 views per hour: the tallest bars are 1 and 2 views at about 27 percent" loading="lazy" width="800" height="330">
+    <figcaption><span>Chart 4</span> Website views per hour with an average of 2. The distribution leans to the right: high counts are possible but rare.</figcaption>
+  </figure>
+
+  <p>Data professionals use the Poisson distribution to model the number of:</p>
+  <ul class="post-points">
+    <li>calls per hour in a customer service call center,</li>
+    <li>customers per day in a shop,</li>
+    <li>thunderstorms per month in a city,</li>
+    <li>financial transactions per second at a bank.</li>
+  </ul>
+
+  <h2>Which distribution should I use?</h2>
+  <p>A quick way to choose is to ask what you are counting.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Distribution</th><th>What it models</th><th>Business example</th></tr></thead>
+    <tbody>
+      <tr><td>Uniform</td><td>All outcomes equally likely</td><td>Randomly assigning a customer to 1 of 4 test groups</td></tr>
+      <tr><td>Bernoulli</td><td>One trial, two outcomes</td><td>One customer opens the email or not</td></tr>
+      <tr><td>Binomial</td><td>Number of successes in n independent trials</td><td>How many of 100 customers open the email</td></tr>
+      <tr><td>Poisson</td><td>Number of events in a fixed interval, with a known average</td><td>Support calls per hour</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/discrete-distributions/chart-5-overview.svg" alt="Four small bar charts: uniform with equal bars, Bernoulli with two bars, binomial with a bell-like shape, and Poisson leaning to the right" loading="lazy" width="800" height="260">
+    <figcaption><span>Chart 5</span> The four distributions side by side.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Binomial vs Poisson</p><p>Both count events, but the binomial has a fixed number of trials and a success probability (10 tosses, 50% each). The Poisson has no fixed number of trials, only an average rate per time period (2 views per hour).</p></div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Identifying the distribution of your data is a key step in any analysis, and it helps you make informed predictions about future outcomes. Discrete distributions like the binomial and the Poisson are the ones you will meet most often as a data professional. Knowing the distribution of your data also helps you choose the statistical method or machine learning model that works best for your analysis.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
