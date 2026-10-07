@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bayes’ Theorem – Yuanyuan Zhang</title>
-  <meta name="description" content="Bayes’ theorem explained: prior, likelihood, evidence and posterior, the expanded formula, and a peanut allergy test that shows why a positive result is not always what it seems.">
+  <meta name="description" content="Bayes’ theorem explained: prior, likelihood, evidence and posterior, the expanded formula, a fraud alert example that shows why an alert is not always what it seems, and how to explain it to stakeholders.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -74,32 +74,54 @@
     <img src="images/bayes-theorem/formula-2-expanded.svg" alt="Expanded Bayes’ theorem: posterior P(A | B) equals true positives P(A) times P(B | A), divided by true positives plus false positives P(not A) times P(B | not A)" loading="lazy" width="960" height="360">
   </figure>
 
-  <h2>Why test accuracy is tricky</h2>
-  <p>No test is perfect, and it can be wrong in two ways:</p>
+  <h2>Why alert accuracy is tricky</h2>
+  <p>No test or model is perfect, and it can be wrong in two ways:</p>
   <div class="post-types">
-    <div class="post-type"><p class="post-type-l">False positive</p><p class="post-type-t">Says yes, but it is no</p><p>The test indicates something is present when it is not.</p><p class="post-type-use">Example: a healthy person is flagged</p></div>
-    <div class="post-type"><p class="post-type-l">False negative</p><p class="post-type-t">Says no, but it is yes</p><p>The test indicates something is absent when it is present.</p><p class="post-type-use">Example: a real case is missed</p></div>
+    <div class="post-type"><p class="post-type-l">False positive</p><p class="post-type-t">Alert, but nothing is wrong</p><p>The model raises an alert when there is no problem.</p><p class="post-type-use">Example: a normal payment gets blocked</p></div>
+    <div class="post-type"><p class="post-type-l">False negative</p><p class="post-type-t">No alert, but something is wrong</p><p>The model stays quiet when there is a problem.</p><p class="post-type-use">Example: a real fraud goes through</p></div>
   </div>
-  <p>Spam filters make both mistakes when they flag a normal email or let spam through, and medical tests do too. The expanded theorem takes both kinds of error into account.</p>
+  <p>Fraud filters, spam filters and medical tests all make both mistakes. The expanded theorem takes both kinds of error into account.</p>
 
-  <h2>Example: a peanut allergy test</h2>
-  <p>Suppose the following is known about a peanut allergy test:</p>
+  <h2>Example: fraud alerts on card payments</h2>
+  <p>Suppose an online shop uses a model that flags suspicious card payments. From past data we know:</p>
   <ul class="post-points">
-    <li><strong>Prevalence.</strong> 1% of people have the allergy, so P(allergy) = 0.01.</li>
-    <li><strong>True positive rate.</strong> The test is positive for 95% of people who have the allergy, so P(positive | allergy) = 0.95.</li>
-    <li><strong>False positive rate.</strong> The test is also positive for 2% of people who do not have the allergy, so P(positive | no allergy) = 0.02.</li>
+    <li><strong>Prevalence.</strong> 1% of payments are fraud, so P(fraud) = 0.01.</li>
+    <li><strong>Detection rate (true positives).</strong> The model raises an alert for 90% of fraudulent payments, so P(alert | fraud) = 0.90.</li>
+    <li><strong>False alarm rate (false positives).</strong> The model also raises an alert for 2% of normal payments, so P(alert | not fraud) = 0.02.</li>
   </ul>
-  <p>The question: if someone tests positive, how likely is it that they really have the allergy? We want P(allergy | positive), so A is "has the allergy" and B is "tests positive". Put the numbers into the expanded formula:</p>
-  <p class="formula">P(allergy | positive) = (0.01 × 0.95) ÷ [ (0.01 × 0.95) + (0.99 × 0.02) ]</p>
-  <p class="formula">= 0.0095 ÷ (0.0095 + 0.0198) = 0.0095 ÷ 0.0293 ≈ 0.324</p>
-  <p>So the probability that a person with a positive test has the allergy is only about <strong>32.4%</strong>.</p>
-  <p>That looks surprising for a test that finds 95% of real cases. The reason is how rare the allergy is. Picture 10,000 people: 100 have the allergy and 95 of them test positive. The other 9,900 do not have it, but 2% of them, 198 people, test positive anyway. Out of 293 positive tests, only 95 are real.</p>
+  <p>The question: when a payment triggers an alert, how likely is it that it really is fraud? We want P(fraud | alert), so A is "is fraud" and B is "triggers an alert". Put the numbers into the expanded formula:</p>
+  <p class="formula">P(fraud | alert) = (0.01 × 0.90) ÷ [ (0.01 × 0.90) + (0.99 × 0.02) ]</p>
+  <p class="formula">= 0.009 ÷ (0.009 + 0.0198) = 0.009 ÷ 0.0288 ≈ 0.313</p>
+  <p>So the probability that a flagged payment is really fraud is only about <strong>31.3%</strong>.</p>
+  <p>That looks surprising for a model that catches 90% of fraud. The reason is how rare fraud is. Picture 10,000 payments: 100 are fraud and the model flags 90 of them. The other 9,900 are normal, but 2% of them, 198 payments, get flagged anyway. Out of 288 alerts, only 90 are real fraud.</p>
   <figure class="post-fig">
-    <img src="images/bayes-theorem/chart-1-peanut-test.svg" alt="Of 10,000 people, 100 are allergic and 95 of them test positive; of the 9,900 who are not allergic, 198 also test positive. Of 293 positive tests, 95 are real, which is about 32.4 percent" loading="lazy" width="800" height="410">
-    <figcaption><span>Chart 1</span> Illustrative numbers for 10,000 people. Because the allergy is rare, false positives from the large healthy group outnumber the true positives.</figcaption>
+    <img src="images/bayes-theorem/chart-1-fraud-alerts.svg" alt="Of 10,000 payments, 100 are fraud and 90 of them trigger an alert; of the 9,900 normal payments, 198 also trigger an alert. Of 288 alerts, 90 are real fraud, which is about 31.3 percent" loading="lazy" width="800" height="410">
+    <figcaption><span>Chart 1</span> Illustrative numbers for 10,000 payments. Because fraud is rare, false alarms from the large group of normal payments outnumber the real cases.</figcaption>
   </figure>
 
-  <div class="post-note"><p class="post-note-l">Why the prior matters</p><p>A positive result moves the probability from 1% to 32.4%, which is a big update, but not the near-certainty many people expect. If the allergy were much more common, the same test would be far more convincing. The posterior always depends on both the evidence and where you started.</p></div>
+  <div class="post-note"><p class="post-note-l">Why the prior matters</p><p>An alert moves the probability of fraud from 1% to 31.3%. That is a big update, but it is not the near-certainty many people expect from a model that catches 90% of fraud. If fraud were more common, the same model would be far more convincing. The posterior always depends on both the evidence and where you started.</p></div>
+
+  <h2>How to explain it to stakeholders</h2>
+  <p>Stakeholders rarely think in conditional probabilities. A figure like "90% detection" sounds reassuring, but the number they need is a different one: when an alert goes off, how often is it real? Here is how to bridge that gap.</p>
+  <ul class="post-points">
+    <li><strong>Start with the answer, not the formula.</strong> "About one in three alerts is real fraud." The method can follow if they ask.</li>
+    <li><strong>Use counts instead of percentages.</strong> "Out of 10,000 payments, we expect 288 alerts, and 90 of them are real" is easier to picture than a conditional probability.</li>
+    <li><strong>Name the base rate.</strong> "Fraud is rare, only 1 in 100 payments, so even a good model produces many false alarms." This is the prior, said in plain words.</li>
+    <li><strong>Tie it to a decision.</strong> Reviewing an alert costs time, and missing fraud costs money. Ask which matters more, because that decides how sensitive the model should be.</li>
+    <li><strong>Drop the jargon.</strong> Say "the chance an alert is real" instead of "posterior", and "the share of fraud we catch" instead of "true positive rate".</li>
+  </ul>
+  <p>A few translations you can reuse:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Instead of saying</th><th>Say</th></tr></thead>
+    <tbody>
+      <tr><td>The posterior probability is 31.3%.</td><td>About one in three alerts is real fraud.</td></tr>
+      <tr><td>The true positive rate is 90%.</td><td>The model catches 9 out of 10 fraud cases.</td></tr>
+      <tr><td>The false positive rate is 2%.</td><td>It wrongly flags about 2 of every 100 normal payments.</td></tr>
+      <tr><td>The prior is 1%.</td><td>Fraud is rare: about 1 in 100 payments.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="post-note"><p class="post-note-l">What it could sound like in a meeting</p><p>"Our model catches 9 out of 10 fraud cases. Because fraud is rare, though, only about 1 in 3 alerts is real. The team should expect more false alarms than real cases, so the question for us is how much review time we are willing to spend to catch each fraud case."</p></div>
+  <p>One more honest point to share: the 1%, 90% and 2% come from historical data and can change over time. If the share of fraud changes, the answer changes too, so the calculation should be refreshed with current numbers.</p>
 
   <h2>Summary of the formulas</h2>
   <div class="post-table-wrap"><table class="post-table">
@@ -112,7 +134,7 @@
     </tbody>
   </table></div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Bayes’ theorem updates a prior belief into a posterior using new evidence, and its expanded form works even when P(B) is not known, while accounting for false positives and false negatives. Always ask how rare the event is before trusting a positive result. It is the foundation of Bayesian statistics, which data professionals use in fields from artificial intelligence to medical testing.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Bayes’ theorem updates a prior belief into a posterior using new evidence, and its expanded form works even when P(B) is not known, while accounting for false positives and false negatives. Always ask how rare the event is before trusting an alert, and when you present the result, lead with the answer in plain language and use counts. It is the foundation of Bayesian statistics, which data professionals use in fields from artificial intelligence to fraud detection and medical testing.</p></div>
 
 </article>
 </main>
