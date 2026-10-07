@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>Probability mass function: bars show the probability of each number of clicks, with P(X = 3) = 0.20 highlighted</title>
+  <line x1="90" y1="227.14285714285714" x2="740" y2="227.14285714285714" stroke="#e4e4e8" stroke-width="1"/>
+  <text x="78" y="231.14285714285714" text-anchor="end" font-size="12" font-weight="400" fill="#555">0.1</text>
+  <line x1="90" y1="164.28571428571428" x2="740" y2="164.28571428571428" stroke="#e4e4e8" stroke-width="1"/>
+  <text x="78" y="168.28571428571428" text-anchor="end" font-size="12" font-weight="400" fill="#555">0.2</text>
+  <line x1="90" y1="101.42857142857144" x2="740" y2="101.42857142857144" stroke="#e4e4e8" stroke-width="1"/>
+  <text x="78" y="105.42857142857144" text-anchor="end" font-size="12" font-weight="400" fill="#555">0.3</text>
+  <line x1="90" y1="290" x2="740" y2="290" stroke="#111" stroke-width="2"/>
+  <line x1="90" y1="70.00000000000003" x2="90" y2="290" stroke="#111" stroke-width="1.5"/>
+  <rect x="116" y="227.14285714285714" width="68" height="62.85714285714286" fill="#d9e0f3"/>
+  <text x="150" y="219.14285714285714" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0.10</text>
+  <text x="150" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0</text>
+  <rect x="221" y="132.85714285714286" width="68" height="157.14285714285714" fill="#d9e0f3"/>
+  <text x="255" y="124.85714285714286" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0.25</text>
+  <text x="255" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">1</text>
+  <rect x="326" y="101.42857142857144" width="68" height="188.57142857142856" fill="#d9e0f3"/>
+  <text x="360" y="93.42857142857144" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0.30</text>
+  <text x="360" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">2</text>
+  <rect x="431" y="164.28571428571428" width="68" height="125.71428571428572" fill="#0a3fb5"/>
+  <text x="465" y="156.28571428571428" text-anchor="middle" font-size="14" font-weight="700" fill="#0a3fb5">0.20</text>
+  <text x="465" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">3</text>
+  <rect x="536" y="227.14285714285714" width="68" height="62.85714285714286" fill="#d9e0f3"/>
+  <text x="570" y="219.14285714285714" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0.10</text>
+  <text x="570" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">4</text>
+  <rect x="641" y="258.57142857142856" width="68" height="31.42857142857143" fill="#d9e0f3"/>
+  <text x="675" y="250.57142857142856" text-anchor="middle" font-size="14" font-weight="500" fill="#111">0.05</text>
+  <text x="675" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#111">5</text>
+  <text x="415" y="338" text-anchor="middle" font-size="13" font-weight="600" fill="#111">Clicks in the first hour (X)</text>
+  <text x="30" y="180.0" transform="rotate(-90 30 180.0)" text-anchor="middle" font-size="13" font-weight="600" fill="#555">P(X = x)</text>
+  <text x="640" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#0a3fb5">P(X = 3) = 0.20</text>
+  <text x="640" y="130" text-anchor="middle" font-size="12.5" font-weight="400" fill="#555">exactly 3 clicks in 20% of hours</text>
+  <line x1="548" y1="126" x2="492" y2="160" stroke="#9aa0ad" stroke-width="1.5"/>
+
+</svg>

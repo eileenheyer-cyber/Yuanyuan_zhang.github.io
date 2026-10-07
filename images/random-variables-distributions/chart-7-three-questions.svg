@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>PMF answers how likely exactly 3 clicks are, PDF how much probability is in a range, CDF how likely 3 clicks or fewer are</title>
+  <rect x="20" y="16" width="240" height="290" fill="#fff" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="140" y="44" text-anchor="middle" font-size="18" font-weight="700" fill="#0a3fb5">PMF</text>
+  <text x="140" y="68" text-anchor="middle" font-size="13" font-weight="400" fill="#555">How likely are</text>
+  <text x="140" y="85" text-anchor="middle" font-size="13" font-weight="400" fill="#555">exactly 3 clicks?</text>
+  <line x1="36" y1="248" x2="244" y2="248" stroke="#111" stroke-width="1.8"/>
+  <rect x="45" y="214.66666666666666" width="22" height="33.333333333333336" fill="#d9e0f3"/>
+  <text x="56" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">0</text>
+  <rect x="79" y="164.66666666666666" width="22" height="83.33333333333334" fill="#d9e0f3"/>
+  <text x="90" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">1</text>
+  <rect x="113" y="148.0" width="22" height="100.0" fill="#d9e0f3"/>
+  <text x="124" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">2</text>
+  <rect x="147" y="181.33333333333331" width="22" height="66.66666666666667" fill="#0a3fb5"/>
+  <text x="158" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">3</text>
+  <rect x="181" y="214.66666666666666" width="22" height="33.333333333333336" fill="#d9e0f3"/>
+  <text x="192" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">4</text>
+  <rect x="215" y="231.33333333333334" width="22" height="16.666666666666668" fill="#d9e0f3"/>
+  <text x="226" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">5</text>
+  <text x="140" y="290" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0a3fb5">P(X = 3) = 0.20</text>
+  <rect x="280" y="16" width="240" height="290" fill="#fff" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="400" y="44" text-anchor="middle" font-size="18" font-weight="700" fill="#0a3fb5">PDF</text>
+  <text x="400" y="68" text-anchor="middle" font-size="13" font-weight="400" fill="#555">How much probability is</text>
+  <text x="400" y="85" text-anchor="middle" font-size="13" font-weight="400" fill="#555">around this range?</text>
+  <line x1="296" y1="248" x2="504" y2="248" stroke="#111" stroke-width="1.8"/>
+  <polygon points="367.3,248 367.3,181.5 370.6,174.8 373.9,168.3 377.1,162.1 380.4,156.4 383.7,151.2 386.9,146.7 390.2,143.1 393.5,140.5 396.7,138.8 400.0,138.3 403.3,138.8 406.5,140.5 409.8,143.1 413.1,146.7 416.3,151.2 419.6,156.4 422.9,162.1 426.1,168.3 429.4,174.8 432.7,181.5 432.7,248" fill="#0a3fb5" opacity="0.85"/>
+  <polyline points="302.0,246.8 305.3,246.4 308.5,245.8 311.8,245.1 315.1,244.3 318.3,243.2 321.6,241.8 324.9,240.2 328.1,238.2 331.4,235.9 334.7,233.2 337.9,230.0 341.2,226.3 344.5,222.1 347.7,217.5 351.0,212.4 354.3,206.8 357.5,200.9 360.8,194.6 364.1,188.1 367.3,181.5 370.6,174.8 373.9,168.3 377.1,162.1 380.4,156.4 383.7,151.2 386.9,146.7 390.2,143.1 393.5,140.5 396.7,138.8 400.0,138.3 403.3,138.8 406.5,140.5 409.8,143.1 413.1,146.7 416.3,151.2 419.6,156.4 422.9,162.1 426.1,168.3 429.4,174.8 432.7,181.5 435.9,188.1 439.2,194.6 442.5,200.9 445.7,206.8 449.0,212.4 452.3,217.5 455.5,222.1 458.8,226.3 462.1,230.0 465.3,233.2 468.6,235.9 471.9,238.2 475.1,240.2 478.4,241.8 481.7,243.2 484.9,244.3 488.2,245.1 491.5,245.8 494.7,246.4 498.0,246.8" fill="none" stroke="#111" stroke-width="2"/>
+  <text x="302.0" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">0</text>
+  <text x="367.3333333333333" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">2</text>
+  <text x="432.66666666666663" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">4</text>
+  <text x="498.0" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">6</text>
+  <text x="400" y="290" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0a3fb5">area between 2 and 4 ≈ 68%</text>
+  <rect x="540" y="16" width="240" height="290" fill="#fff" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="660" y="44" text-anchor="middle" font-size="18" font-weight="700" fill="#0a3fb5">CDF</text>
+  <text x="660" y="68" text-anchor="middle" font-size="13" font-weight="400" fill="#555">How likely are</text>
+  <text x="660" y="85" text-anchor="middle" font-size="13" font-weight="400" fill="#555">3 clicks or fewer?</text>
+  <line x1="556" y1="248" x2="764" y2="248" stroke="#111" stroke-width="1.8"/>
+  <line x1="576" y1="237.0" x2="610" y2="237.0" stroke="#111" stroke-width="2"/>
+  <text x="576" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">0</text>
+  <line x1="610" y1="209.5" x2="644" y2="209.5" stroke="#111" stroke-width="2"/>
+  <line x1="610" y1="237.0" x2="610" y2="209.5" stroke="#111" stroke-width="1.2"/>
+  <text x="610" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">1</text>
+  <line x1="644" y1="176.5" x2="678" y2="176.5" stroke="#111" stroke-width="2"/>
+  <line x1="644" y1="209.5" x2="644" y2="176.5" stroke="#111" stroke-width="1.2"/>
+  <text x="644" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">2</text>
+  <line x1="678" y1="154.5" x2="712" y2="154.5" stroke="#0a3fb5" stroke-width="3"/>
+  <line x1="678" y1="176.5" x2="678" y2="154.5" stroke="#111" stroke-width="1.2"/>
+  <text x="678" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">3</text>
+  <line x1="712" y1="143.5" x2="746" y2="143.5" stroke="#111" stroke-width="2"/>
+  <line x1="712" y1="154.5" x2="712" y2="143.5" stroke="#111" stroke-width="1.2"/>
+  <text x="712" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">4</text>
+  <line x1="746" y1="138.0" x2="768" y2="138.0" stroke="#111" stroke-width="2"/>
+  <line x1="746" y1="143.5" x2="746" y2="138.0" stroke="#111" stroke-width="1.2"/>
+  <text x="746" y="264" text-anchor="middle" font-size="11" font-weight="500" fill="#111">5</text>
+  <circle cx="678" cy="154.5" r="5" fill="#0a3fb5"/>
+  <text x="660" y="290" text-anchor="middle" font-size="13.5" font-weight="700" fill="#0a3fb5">P(X ≤ 3) = 0.85</text>
+
+</svg>

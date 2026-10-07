@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>A random variable is discrete or continuous; discrete uses a PMF, continuous uses a PDF, and both lead to the CDF</title>
+  <rect x="300" y="16" width="200" height="44" fill="#0a3fb5"/>
+  <text x="400" y="44" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" letter-spacing="1">RANDOM VARIABLE</text>
+  <line x1="400" y1="60" x2="400" y2="80" stroke="#9aa0ad" stroke-width="1.8"/>
+  <line x1="200" y1="80" x2="600" y2="80" stroke="#9aa0ad" stroke-width="1.8"/>
+  <line x1="200" y1="80" x2="200" y2="100" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="195,99 205,99 200,108" fill="#9aa0ad"/>
+  <line x1="600" y1="80" x2="600" y2="100" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="595,99 605,99 600,108" fill="#9aa0ad"/>
+  <rect x="90" y="108" width="220" height="52" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="200" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#111">DISCRETE</text>
+  <text x="200" y="150" text-anchor="middle" font-size="12.5" font-weight="400" fill="#555">a count</text>
+  <rect x="490" y="108" width="220" height="52" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="600" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#111">CONTINUOUS</text>
+  <text x="600" y="150" text-anchor="middle" font-size="12.5" font-weight="400" fill="#555">a measurement</text>
+  <line x1="200" y1="160" x2="200" y2="188" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="195,187 205,187 200,196" fill="#9aa0ad"/>
+  <line x1="600" y1="160" x2="600" y2="188" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="595,187 605,187 600,196" fill="#9aa0ad"/>
+  <rect x="90" y="196" width="220" height="44" fill="#fff" stroke="#0a3fb5" stroke-width="2.5"/>
+  <text x="200" y="225" text-anchor="middle" font-size="17" font-weight="700" fill="#0a3fb5">PMF</text>
+  <text x="200" y="262" text-anchor="middle" font-size="13" font-weight="400" fill="#555">probability at</text>
+  <text x="200" y="280" text-anchor="middle" font-size="13" font-weight="400" fill="#555">each value</text>
+  <rect x="490" y="196" width="220" height="44" fill="#fff" stroke="#0a3fb5" stroke-width="2.5"/>
+  <text x="600" y="225" text-anchor="middle" font-size="17" font-weight="700" fill="#0a3fb5">PDF</text>
+  <text x="600" y="262" text-anchor="middle" font-size="13" font-weight="400" fill="#555">probability from</text>
+  <text x="600" y="280" text-anchor="middle" font-size="13" font-weight="400" fill="#555">area under the curve</text>
+  <line x1="200" y1="292" x2="200" y2="312" stroke="#9aa0ad" stroke-width="1.8"/>
+  <line x1="600" y1="292" x2="600" y2="312" stroke="#9aa0ad" stroke-width="1.8"/>
+  <line x1="200" y1="312" x2="600" y2="312" stroke="#9aa0ad" stroke-width="1.8"/>
+  <line x1="400" y1="312" x2="400" y2="326" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="395,325 405,325 400,334" fill="#9aa0ad"/>
+  <rect x="290" y="334" width="220" height="44" fill="#0a3fb5"/>
+  <text x="400" y="363" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">CDF</text>
+  <text x="400" y="402" text-anchor="middle" font-size="13" font-weight="400" fill="#555">cumulative probability, P(X ≤ x)</text>
+
+</svg>

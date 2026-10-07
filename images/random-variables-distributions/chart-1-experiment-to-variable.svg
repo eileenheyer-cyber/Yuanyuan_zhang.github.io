@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 180" width="800" height="180" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>A random experiment gives an outcome, and the random variable turns that outcome into a number</title>
+  <rect x="20" y="30" width="230" height="124" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="135" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#555" letter-spacing="1">RANDOM EXPERIMENT</text>
+  <text x="135" y="92" text-anchor="middle" font-size="16" font-weight="700" fill="#111">Send an email campaign,</text>
+  <text x="135" y="113" text-anchor="middle" font-size="16" font-weight="700" fill="#111">watch the first hour</text>
+  <text x="135" y="138" text-anchor="middle" font-size="12.5" font-weight="400" fill="#555">result is not known in advance</text>
+  <line x1="252" y1="92" x2="274" y2="92" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="273,87 273,97 282,92" fill="#9aa0ad"/>
+  <rect x="285" y="30" width="230" height="124" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="400" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#555" letter-spacing="1">OUTCOME</text>
+  <text x="400" y="92" text-anchor="middle" font-size="16" font-weight="700" fill="#111">3 customers click</text>
+  <text x="400" y="113" text-anchor="middle" font-size="16" font-weight="700" fill="#111">the link</text>
+  <text x="400" y="138" text-anchor="middle" font-size="12.5" font-weight="400" fill="#555">one possible result</text>
+  <line x1="517" y1="92" x2="539" y2="92" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="538,87 538,97 547,92" fill="#9aa0ad"/>
+  <rect x="550" y="30" width="230" height="124" fill="#0a3fb5"/>
+  <text x="665" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#d9e0f3" letter-spacing="1">RANDOM VARIABLE X</text>
+  <text x="665" y="104" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">X = 3</text>
+  <text x="665" y="138" text-anchor="middle" font-size="12.5" font-weight="400" fill="#d9e0f3">the outcome as a number</text>
+
+</svg>

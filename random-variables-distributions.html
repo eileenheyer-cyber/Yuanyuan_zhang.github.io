@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Random Variables &amp; Probability Distributions – Yuanyuan Zhang</title>
+  <meta name="description" content="Random variables and probability distributions explained with a marketing email campaign: discrete vs continuous variables, PMF, PDF and CDF, and how to think about any distribution.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261007b">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">Random Variables &amp; Probability Distributions</h1>
+
+  <figure class="post-cover">
+    <img src="images/random-variables-distributions-cover.webp" alt="Probability Distributions: three overlapping bell curves in red, blue and yellow, each with a dashed line at its centre" width="2358" height="1566">
+  </figure>
+
+  <p>Data is full of uncertainty: how many customers will click a campaign email, or how long they will stay on the page afterwards. A <strong>random variable</strong> gives that uncertainty a number, and a <strong>probability distribution</strong> describes how likely each value is. This post builds the idea step by step, from random variables to PMF, PDF and CDF, with one running example: a marketing email campaign. It builds on <a href="probability-basics.html">Probability Basics</a> and <a href="conditional-probability.html">Conditional Probability &amp; Independence</a>. All numbers are illustrative.</p>
+
+  <h2>Random variables</h2>
+  <p>A <strong>random experiment</strong> is a process whose result we cannot predict with certainty, although we know which results are possible. Each possible result is an <strong>outcome</strong>. A <strong>random variable</strong> is a rule that turns each outcome into a number, so that we can calculate with it. By convention, a capital X is the variable itself, and a lowercase x is one specific value it can take.</p>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-1-experiment-to-variable.svg" alt="A random experiment, sending an email campaign and watching the first hour, gives an outcome of 3 customers clicking, which the random variable X turns into X = 3" loading="lazy" width="800" height="180">
+    <figcaption><span>Chart 1</span> From experiment to outcome to a number.</figcaption>
+  </figure>
+  <p>Imagine you send an email campaign and watch the first hour. One possible outcome is "3 customers click the link". The random variable X = number of clicks in the first hour turns this outcome into X = 3. Before you send the email, you do not know what X will be, but you can know which values are possible (0, 1, 2 and so on) and how likely each one is. That description is exactly what a distribution gives you.</p>
+  <div class="post-note"><p class="post-note-l">Random does not mean patternless</p><p>The value of a random variable is uncertain in any single run, but the pattern of how likely the values are can be studied. That pattern is what analysts work with.</p></div>
+
+  <h2>Discrete vs continuous</h2>
+  <p>The first question to ask about any random variable is whether you <em>count</em> it or <em>measure</em> it.</p>
+  <div class="post-types">
+    <div class="post-type"><p class="post-type-l">Discrete</p><p class="post-type-t">A count</p><p>Separate values that you can list, with gaps in between. It is usually a whole number.</p><p class="post-type-use">Example: clicks in the first hour</p></div>
+    <div class="post-type"><p class="post-type-l">Continuous</p><p class="post-type-t">A measurement</p><p>Any value in a range, limited only by how precisely you can measure.</p><p class="post-type-use">Example: time on the landing page</p></div>
+  </div>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-2-discrete-vs-continuous.svg" alt="Discrete variables take separate values such as 0, 1, 2, while continuous variables can take any value in a range such as 3.27 minutes" loading="lazy" width="800" height="260">
+    <figcaption><span>Chart 2</span> Discrete values have gaps between them, continuous values do not.</figcaption>
+  </figure>
+  <p>Some examples from data analytics:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Variable</th><th>Type</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Orders per day</td><td>Discrete</td><td>You count them</td></tr>
+      <tr><td>Clicks on a campaign email</td><td>Discrete</td><td>You count them</td></tr>
+      <tr><td>Support tickets per week</td><td>Discrete</td><td>You count them</td></tr>
+      <tr><td>Time on the landing page</td><td>Continuous</td><td>You measure it</td></tr>
+      <tr><td>Delivery time</td><td>Continuous</td><td>You measure it</td></tr>
+      <tr><td>Order value</td><td>Continuous (in practice)</td><td>Money is counted in cents, but with so many possible values it is treated as continuous</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>PMF: probability mass function</h2>
+  <p>For a discrete variable, the <strong>probability mass function (PMF)</strong> gives the probability of each exact value:</p>
+  <p class="formula">P(X = x)</p>
+  <p>It is read as "the probability that X equals x". Two rules always hold: every probability is between 0 and 1, and all probabilities add up to 1.</p>
+  <p>Say that, for your campaign, the number of clicks in the first hour has this PMF:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Clicks (x)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+    <tbody><tr><td>P(X = x)</td><td>0.10</td><td>0.25</td><td>0.30</td><td>0.20</td><td>0.10</td><td>0.05</td></tr></tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-3-pmf.svg" alt="Bar chart of the PMF: probabilities 0.10, 0.25, 0.30, 0.20, 0.10 and 0.05 for 0 to 5 clicks, with the bar for 3 clicks highlighted" loading="lazy" width="800" height="350">
+    <figcaption><span>Chart 3</span> Each bar is the probability of exactly that value.</figcaption>
+  </figure>
+  <p><strong>How to read it:</strong> find the value on the horizontal axis and read the height of its bar. P(X = 3) = 0.20, so in about 20% of hours you would expect exactly 3 clicks. The tallest bar, 2 clicks at 0.30, is the most likely value. To get the probability of several values, add their bars: P(X ≥ 4) = 0.10 + 0.05 = 0.15.</p>
+
+  <h2>PDF: probability density function</h2>
+  <p>A continuous variable works differently. Time on the page could be 3 minutes, 3.1 minutes, 3.14159 minutes, and so on, with infinitely many possible values. If each exact value had a positive probability, the total would be far above 1. So for a continuous variable, the probability of one exact value is zero: P(X = exactly 3.000) = 0. Instead, we ask about <em>ranges</em>.</p>
+  <p>The <strong>probability density function (PDF)</strong> describes this. Two ideas are important:</p>
+  <ul class="post-points">
+    <li><strong>Density is not probability.</strong> The height of the curve shows how concentrated the values are around that point. It can even be greater than 1 for a very narrow distribution.</li>
+    <li><strong>Probability is area.</strong> The probability that X falls between two values is the area under the curve between them. The total area under the whole curve is 1.</li>
+  </ul>
+  <p>Suppose time on the page is roughly bell-shaped, centred around 3 minutes with a spread of about 1 minute. The probability that a visitor stays between 2 and 4 minutes is the shaded area:</p>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-4-pdf.svg" alt="Bell curve of time on the landing page in minutes, with the area between 2 and 4 minutes shaded, which is about 68 percent" loading="lazy" width="800" height="330">
+    <figcaption><span>Chart 4</span> The shaded area is the probability of a value between 2 and 4.</figcaption>
+  </figure>
+  <p><strong>How to interpret it:</strong> where the curve is high, values are concentrated, and where it is low, they are rare. A wide, flat curve means more spread. To answer a question, choose a range and look at the area above it, never at the height at a single point.</p>
+
+  <h2>CDF: cumulative distribution function</h2>
+  <p>The <strong>cumulative distribution function (CDF)</strong> answers a different question: how likely is it that X is <em>at most</em> a certain value?</p>
+  <p class="formula">F(x) = P(X ≤ x)</p>
+  <p>It accumulates probability, starting from the left and adding up as x grows. This works for both types of variable:</p>
+  <ul class="post-points">
+    <li><strong>Discrete:</strong> add up the PMF bars. P(X ≤ 3) = 0.10 + 0.25 + 0.30 + 0.20 = 0.85. In 85% of hours you get 3 clicks or fewer.</li>
+    <li><strong>Continuous:</strong> take the area under the PDF to the left of x. P(X ≤ 4) ≈ 0.84, so about 84% of visitors stay 4 minutes or less.</li>
+  </ul>
+  <p><strong>How to read a CDF:</strong> pick a value on the horizontal axis and read the height of the curve. It always starts at 0, ends at 1 and never goes down. Steep parts are where a lot of probability sits, and flat parts are where few values occur. To get the probability of a range, subtract: P(2 &lt; X ≤ 4) = F(4) − F(2) ≈ 0.84 − 0.16 = 0.68, which matches the shaded area from before.</p>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-5-pdf-and-cdf.svg" alt="Two stacked charts: the PDF with the area up to 4 minutes shaded at about 84 percent, and the CDF showing the same value as a height of 0.84 at 4 minutes" loading="lazy" width="800" height="540">
+    <figcaption><span>Chart 5</span> The CDF is the PDF accumulated: the area on top becomes the height below.</figcaption>
+  </figure>
+  <p>This is the <strong>relationship between PDF and CDF</strong>: the CDF is the accumulated area under the PDF, and the PDF is the slope of the CDF. For a discrete variable, the CDF is a staircase built from the PMF bars.</p>
+
+  <h2>PMF vs PDF vs CDF</h2>
+  <p>Here is how everything fits together:</p>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-6-overview.svg" alt="A random variable is either discrete or continuous; discrete variables use a PMF and continuous variables use a PDF, and both lead to the CDF" loading="lazy" width="800" height="420">
+    <figcaption><span>Chart 6</span> The big picture: which function belongs to which type of variable.</figcaption>
+  </figure>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Function</th><th>Used for</th><th>Answers</th><th>Probability comes from</th></tr></thead>
+    <tbody>
+      <tr><td>PMF</td><td>Discrete</td><td>How likely is exactly this value?</td><td>The height of the bar, P(X = x)</td></tr>
+      <tr><td>PDF</td><td>Continuous</td><td>How much probability is around this range?</td><td>The area under the curve</td></tr>
+      <tr><td>CDF</td><td>Both</td><td>How likely is this value or less?</td><td>The height of the curve, P(X ≤ x)</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-7-three-questions.svg" alt="Three panels: the PMF answers how likely exactly 3 clicks are, the PDF answers how much probability is in a range, and the CDF answers how likely 3 clicks or fewer are" loading="lazy" width="800" height="320">
+    <figcaption><span>Chart 7</span> Each function answers a different question.</figcaption>
+  </figure>
+
+  <h2>How to think about a distribution</h2>
+  <p>Instead of memorising a catalogue of distributions, ask five questions about any variable:</p>
+  <ol class="post-points">
+    <li><strong>What is the random variable?</strong> What exactly are we measuring? Example: time on the landing page, in minutes.</li>
+    <li><strong>Is it discrete or continuous?</strong> Count or measurement? Here it is a measurement, so continuous.</li>
+    <li><strong>How is probability distributed?</strong> Where are the values concentrated, how spread out are they, and is the distribution skewed? Most visitors may stay 2 to 4 minutes, while a few stay much longer, which would skew the real data to the right.</li>
+    <li><strong>What probability question am I asking?</strong> Exactly this value: PMF. Within a range: PDF, the area. Below a threshold: CDF.</li>
+    <li><strong>What does the probability tell me?</strong> Translate the result into something meaningful: "84% of visitors stay 4 minutes or less" can tell you whether the page content is too long or too short.</li>
+  </ol>
+
+  <h2>From data to distribution</h2>
+  <p>A good way to remember all this is the analytical workflow. In real work you start at the top, with something you observe, not with a formula:</p>
+  <figure class="post-fig">
+    <img src="images/random-variables-distributions/chart-8-workflow.svg" alt="Workflow from a real-world phenomenon to a random variable, discrete or continuous, a distribution, PMF PDF or CDF, a probability and an interpretation, shown with the email campaign example" loading="lazy" width="800" height="436">
+    <figcaption><span>Chart 8</span> The workflow, with the email campaign as the example.</figcaption>
+  </figure>
+  <p>The distribution is the bridge between raw data and a statement that a stakeholder can act on.</p>
+  <div class="post-callout">
+    <p class="post-callout-l">In one sentence</p>
+    <p class="post-callout-q">A distribution is a way of describing <strong>uncertainty in a variable</strong>, not just a mathematical curve.</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>A random variable turns the outcome of an experiment into a number. Discrete variables, which are counts, use a PMF, where probability is the height of a bar. Continuous variables, which are measurements, use a PDF, where probability is an area. The CDF accumulates probability up to a value for both. Always finish by translating the probability back into a plain statement about the business.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>

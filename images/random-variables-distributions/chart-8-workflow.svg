@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 436" width="800" height="436" font-family="Inter, Arial, Helvetica, sans-serif">
+  <title>From a real-world phenomenon to a random variable, a distribution, a probability and finally an interpretation</title>
+  <rect x="20" y="14" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="39" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">REAL-WORLD PHENOMENON</text>
+  <text x="340" y="39" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">An email campaign</text>
+  <line x1="165" y1="54" x2="165" y2="64" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,63 170,63 165,72" fill="#9aa0ad"/>
+  <rect x="20" y="74" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="99" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">RANDOM VARIABLE</text>
+  <text x="340" y="99" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">X = time on the landing page (minutes)</text>
+  <line x1="165" y1="114" x2="165" y2="124" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,123 170,123 165,132" fill="#9aa0ad"/>
+  <rect x="20" y="134" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="159" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">DISCRETE OR CONTINUOUS?</text>
+  <text x="340" y="159" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">Continuous: it is a measurement</text>
+  <line x1="165" y1="174" x2="165" y2="184" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,183 170,183 165,192" fill="#9aa0ad"/>
+  <rect x="20" y="194" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="219" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">DISTRIBUTION</text>
+  <text x="340" y="219" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">Values cluster around 3 minutes, spread of about 1</text>
+  <line x1="165" y1="234" x2="165" y2="244" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,243 170,243 165,252" fill="#9aa0ad"/>
+  <rect x="20" y="254" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="279" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">PMF / PDF / CDF</text>
+  <text x="340" y="279" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">PDF for the shape, CDF for “up to”</text>
+  <line x1="165" y1="294" x2="165" y2="304" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,303 170,303 165,312" fill="#9aa0ad"/>
+  <rect x="20" y="314" width="290" height="40" fill="#f4f5f8" stroke="#c9ccd6" stroke-width="1.2"/>
+  <text x="165" y="339" text-anchor="middle" font-size="13" font-weight="700" fill="#111" letter-spacing="0.8">PROBABILITY</text>
+  <text x="340" y="339" text-anchor="start" font-size="14.5" font-weight="400" fill="#111">P(X ≤ 4) ≈ 0.84</text>
+  <line x1="165" y1="354" x2="165" y2="364" stroke="#9aa0ad" stroke-width="1.8"/>
+  <polygon points="160,363 170,363 165,372" fill="#9aa0ad"/>
+  <rect x="20" y="374" width="290" height="40" fill="#0a3fb5"/>
+  <text x="165" y="399" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" letter-spacing="0.8">INTERPRETATION</text>
+  <text x="340" y="399" text-anchor="start" font-size="14.5" font-weight="600" fill="#0a3fb5">84% of visitors stay 4 minutes or less</text>
+  <line x1="322" y1="14" x2="322" y2="414" stroke="#e4e4e8" stroke-width="1"/>
+
+</svg>
