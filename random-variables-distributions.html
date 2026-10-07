@@ -72,6 +72,15 @@
     </tbody>
   </table></div>
 
+  <h2>What are PMF, PDF and CDF, and why do we need them?</h2>
+  <p>Knowing that X is the number of clicks does not yet tell us how likely each value is. Are 0 clicks common? Is 10 clicks realistic? To answer that, we need to describe how probability is spread across the possible values. This description is the <strong>probability distribution</strong>, and we write it down with three functions:</p>
+  <ul class="post-points">
+    <li><strong>PMF (probability mass function).</strong> For discrete variables. It gives the probability of each exact value.</li>
+    <li><strong>PDF (probability density function).</strong> For continuous variables. Probability is the area under the curve over a range of values.</li>
+    <li><strong>CDF (cumulative distribution function).</strong> For both types. It gives the probability of a value up to a certain point.</li>
+  </ul>
+  <p>Why do we need them? Because business questions are really probability questions: How likely is it that the campaign gets at least 4 clicks in the first hour? What share of visitors stay longer than 4 minutes? Each function is the right tool for a different kind of question, and which one you use depends on the type of variable and on what you want to know. The next sections go through them one by one.</p>
+
   <h2>PMF: probability mass function</h2>
   <p>For a discrete variable, the <strong>probability mass function (PMF)</strong> gives the probability of each exact value:</p>
   <p class="formula">P(X = x)</p>
