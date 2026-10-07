@@ -1511,7 +1511,9 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post .formula { padding: 12px 18px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-weight: 500; overflow-x: auto; }
 .post-note { margin: 20px 0 24px; padding: 14px 18px; background: var(--surface-alt); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; }
 .post-note p { margin: 0; font-size: 0.97rem; }
-.post-note .post-note-l { margin-bottom: 4px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.post-note .post-note-l { margin-bottom: 6px; display: flex; align-items: center; gap: 9px; font-style: italic; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+/* Warning-sign icon in front of the note labels (not on the Key takeaway box) */
+.post-note:not(.post-takeaway) .post-note-l::before { content: ""; flex: none; width: 20px; height: 18px; background: var(--accent); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 18'%3E%3Cpath fill-rule='evenodd' d='M10 0.8L19.4 17.2H0.6Z M9 6.6h2v5.4H9Z M9 13.2h2v2.2H9Z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 18'%3E%3Cpath fill-rule='evenodd' d='M10 0.8L19.4 17.2H0.6Z M9 6.6h2v5.4H9Z M9 13.2h2v2.2H9Z'/%3E%3C/svg%3E") center / contain no-repeat; }
 .post-takeaway { margin-top: 48px; padding: 22px 26px; border: 1px solid var(--accent); border-radius: 10px; background: #fff; }
 .post-fig { margin: 24px 0 28px; }
 .post-fig img { width: 100%; height: auto; }
