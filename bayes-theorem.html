@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bayes’ Theorem – Yuanyuan Zhang</title>
+  <meta name="description" content="Bayes’ theorem explained: prior, likelihood, evidence and posterior, the expanded formula, and a peanut allergy test that shows why a positive result is not always what it seems.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261006d">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Statistics</p>
+  <h1 class="post-title">Bayes’ Theorem</h1>
+
+  <figure class="post-cover">
+    <img src="images/bayes-theorem-cover.webp" alt="Bayes’ Theorem: a blue head for the prior, a yellow cone of evidence and a red head for the posterior, with the formula P(A | B) = P(B | A) P(A) / P(B)" width="2356" height="1562">
+  </figure>
+
+  <p>In <a href="conditional-probability.html">Conditional Probability &amp; Independence</a> we asked how likely B is once A has happened. In practice the question often points the other way: you know how a test or a filter behaves, but you want to know what a result actually means. Bayes’ theorem lets you turn one conditional probability into the other, and it is the idea behind everything from medical tests to spam filters.</p>
+
+  <h2>Prior and posterior probability</h2>
+  <p>In Bayesian statistics, the <strong>prior probability</strong> is the probability of an event before new data is collected. The <strong>posterior probability</strong> is the updated probability of the event after the new data is taken into account. Bayes’ theorem is the rule for getting from one to the other.</p>
+  <p>Say a medical condition is related to age. The prior is the probability that a person has the condition. The posterior is the probability that a person has it, given that they belong to a certain age group.</p>
+
+  <h2>The theorem</h2>
+  <p>For any two events A and B, the probability of A given B equals the probability of B given A, multiplied by the probability of A, divided by the probability of B:</p>
+  <p class="formula">P(A | B) = P(B | A) × P(A) ÷ P(B)</p>
+  <p>Each part of the formula has a name:</p>
+  <ul class="post-points">
+    <li><strong>P(A) is the prior.</strong> What you believed before the new data.</li>
+    <li><strong>P(B | A) is the likelihood.</strong> How probable the data is if A is true.</li>
+    <li><strong>P(B) is the evidence.</strong> How probable the data is overall.</li>
+    <li><strong>P(A | B) is the posterior.</strong> The updated probability you want to calculate.</li>
+  </ul>
+  <p>In words:</p>
+  <p class="formula">Posterior = Likelihood × Prior ÷ Evidence</p>
+  <p>One way to read it: you start with a prior belief, P(A), and use new data, the likelihood and the evidence, to turn it into a posterior, P(A | B). It also helps to see that the theorem links two conditional probabilities, "B given A" and "A given B". If you know one of them, Bayes’ theorem helps you find the other.</p>
+
+  <h2>The expanded formula</h2>
+  <p>Sometimes you do not know P(B), the evidence, so the basic formula cannot be used directly. The expanded version works it out from probabilities you usually do have. The evidence is the sum of all the ways B can happen: together with A, and together with "not A".</p>
+  <p class="formula">P(A | B) = P(B | A) × P(A) ÷ [ P(B | A) × P(A) + P(B | not A) × P(not A) ]</p>
+  <p>The numerator is the same as before. The denominator now spells out P(B) in two parts, so you only need the prior, the likelihood and how often B happens when A is <em>not</em> true.</p>
+
+  <h2>Why test accuracy is tricky</h2>
+  <p>No test is perfect, and it can be wrong in two ways:</p>
+  <div class="post-types">
+    <div class="post-type"><p class="post-type-l">False positive</p><p class="post-type-t">Says yes, but it is no</p><p>The test indicates something is present when it is not.</p><p class="post-type-use">Example: a healthy person is flagged</p></div>
+    <div class="post-type"><p class="post-type-l">False negative</p><p class="post-type-t">Says no, but it is yes</p><p>The test indicates something is absent when it is present.</p><p class="post-type-use">Example: a real case is missed</p></div>
+  </div>
+  <p>Spam filters make both mistakes when they flag a normal email or let spam through, and medical tests do too. The expanded theorem takes both kinds of error into account.</p>
+
+  <h2>Example: a peanut allergy test</h2>
+  <p>Suppose the following is known about a peanut allergy test:</p>
+  <ul class="post-points">
+    <li><strong>Prevalence.</strong> 1% of people have the allergy, so P(allergy) = 0.01.</li>
+    <li><strong>True positive rate.</strong> The test is positive for 95% of people who have the allergy, so P(positive | allergy) = 0.95.</li>
+    <li><strong>False positive rate.</strong> The test is also positive for 2% of people who do not have the allergy, so P(positive | no allergy) = 0.02.</li>
+  </ul>
+  <p>The question: if someone tests positive, how likely is it that they really have the allergy? We want P(allergy | positive), so A is "has the allergy" and B is "tests positive". Put the numbers into the expanded formula:</p>
+  <p class="formula">P(allergy | positive) = (0.95 × 0.01) ÷ [ (0.95 × 0.01) + (0.02 × 0.99) ]</p>
+  <p class="formula">= 0.0095 ÷ (0.0095 + 0.0198) = 0.0095 ÷ 0.0293 ≈ 0.324</p>
+  <p>So the probability that a person with a positive test has the allergy is only about <strong>32.4%</strong>.</p>
+  <p>That looks surprising for a test that finds 95% of real cases. The reason is how rare the allergy is. Picture 10,000 people: 100 have the allergy and 95 of them test positive. The other 9,900 do not have it, but 2% of them, 198 people, test positive anyway. Out of 293 positive tests, only 95 are real.</p>
+  <figure class="post-fig">
+    <img src="images/bayes-theorem/chart-1-peanut-test.svg" alt="Of 10,000 people, 100 are allergic and 95 of them test positive; of the 9,900 who are not allergic, 198 also test positive. Of 293 positive tests, 95 are real, which is about 32.4 percent" loading="lazy" width="800" height="410">
+    <figcaption><span>Chart 1</span> Illustrative numbers for 10,000 people. Because the allergy is rare, false positives from the large healthy group outnumber the true positives.</figcaption>
+  </figure>
+
+  <div class="post-note"><p class="post-note-l">Why the prior matters</p><p>A positive result moves the probability from 1% to 32.4%, which is a big update, but not the near-certainty many people expect. If the allergy were much more common, the same test would be far more convincing. The posterior always depends on both the evidence and where you started.</p></div>
+
+  <h2>Summary of the formulas</h2>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Version</th><th>Formula</th></tr></thead>
+    <tbody>
+      <tr><td>Bayes’ theorem</td><td>P(A | B) = P(B | A) × P(A) ÷ P(B)</td></tr>
+      <tr><td>In words</td><td>Posterior = Likelihood × Prior ÷ Evidence</td></tr>
+      <tr><td>Expanded (P(B) unknown)</td><td>P(A | B) = P(B | A) × P(A) ÷ [ P(B | A) × P(A) + P(B | not A) × P(not A) ]</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Bayes’ theorem updates a prior belief into a posterior using new evidence, and its expanded form works even when P(B) is not known, while accounting for false positives and false negatives. Always ask how rare the event is before trusting a positive result. It is the foundation of Bayesian statistics, which data professionals use in fields from artificial intelligence to medical testing.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
