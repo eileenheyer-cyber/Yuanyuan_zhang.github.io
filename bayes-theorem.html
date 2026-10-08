@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261007d">
+  <link rel="stylesheet" href="style.css?v=20261008v">
 </head>
 <body>
 
@@ -102,17 +102,11 @@
   <div class="post-note"><p class="post-note-l">Why the prior matters</p><p>An alert moves the probability of fraud from 1% to 31.3%. That is a big update, but it is not the near-certainty many people expect from a model that catches 90% of fraud. If fraud were more common, the same model would be far more convincing. The posterior always depends on both the evidence and where you started.</p></div>
 
   <h2>How to explain it to stakeholders</h2>
-  <p>Stakeholders rarely think in conditional probabilities. A figure like "90% detection" sounds reassuring, but the number they need is a different one: when an alert goes off, how often is it real? Here is how to bridge that gap.</p>
-  <ul class="post-points">
-    <li><strong>Start with the answer, not the formula.</strong> "About one in three alerts is real fraud." The method can follow if they ask.</li>
-    <li><strong>Use counts instead of percentages.</strong> "Out of 10,000 payments, we expect 288 alerts, and 90 of them are real" is easier to picture than a conditional probability.</li>
-    <li><strong>Name the base rate.</strong> "Fraud is rare, only 1 in 100 payments, so even a good model produces many false alarms." This is the prior, said in plain words.</li>
-    <li><strong>Tie it to a decision.</strong> Reviewing an alert costs time, and missing fraud costs money. Ask which matters more, because that decides how sensitive the model should be.</li>
-    <li><strong>Drop the jargon.</strong> Say "the chance an alert is real" instead of "posterior", and "the share of fraud we catch" instead of "true positive rate".</li>
-  </ul>
-  <div class="post-callout">
-    <p class="post-callout-l">What it could sound like in a meeting</p>
-    <p class="post-callout-q">“Our model catches 9 out of 10 fraud cases. Because fraud is rare, though, <strong>only about 1 in 3 alerts is real</strong>. The team should expect more false alarms than real cases, so the question for us is <strong>how much review time we are willing to spend to catch each fraud case</strong>.”</p>
+  <p>Stakeholders rarely think in conditional probabilities. They need the number that matters for their decision: when an alert goes off, how often is it real? Here is how it could sound in a meeting:</p>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“Our model catches 9 out of 10 fraud cases. But fraud is rare, only about 1 in 100 payments, so even a good model produces many false alarms.</p>
+    <p class="post-callout-q">To make that concrete: out of 10,000 payments, we expect about 288 alerts, and only 90 of them are real fraud. So roughly 1 in 3 alerts is real.</p>
+    <p class="post-callout-q">The question for us is therefore not ‘How accurate is the model?’ but ‘How much review time are we willing to spend to catch each fraud case?’”</p>
   </div>
   <p>One more honest point to share: the 1%, 90% and 2% come from historical data and can change over time. If the share of fraud changes, the answer changes too, so the calculation should be refreshed with current numbers.</p>
 
