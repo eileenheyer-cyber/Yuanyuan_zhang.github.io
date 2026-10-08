@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261008j">
+  <link rel="stylesheet" href="style.css?v=20261008l">
 </head>
 <body>
 
@@ -96,6 +96,32 @@
   <p>Outliers deserve a closer look because some extreme values come from errors in data collection or data processing, and these false values can skew your results. A 40-foot cherry tree has a z-score of (40 − 15) / 2 = 12.5. That is far outside the 9 to 21 foot range, so it is more likely a typo than a record-breaking tree.</p>
 
   <div class="post-note"><p class="post-note-l">Outliers are not automatically wrong</p><p>The 3 standard deviation rule tells you which values to check, not which ones to delete. An extreme value can also be real. Decide after you know where it came from.</p></div>
+
+  <h2>Z-scores in machine learning</h2>
+  <p>Z-scores are not only a tool for describing data. In machine learning, converting a feature to z-scores is a standard preprocessing step called <strong>standardization</strong>. Every feature is rescaled to a mean of 0 and a standard deviation of 1, so features measured on very different scales become comparable.</p>
+  <p>Imagine a model that predicts customer churn from two features: age (roughly 18 to 80) and yearly spend (roughly 0 to 50,000). Without scaling, the spend values are hundreds of times larger than the age values, and many models would treat spend as far more important simply because its numbers are bigger. After standardization, a value of 1.5 means "1.5 standard deviations above average" for both features, and neither one dominates because of its unit.</p>
+
+  <h3>Models where it is a good fit</h3>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model type</th><th>Why z-score scaling helps</th></tr></thead>
+    <tbody>
+      <tr><td>k-nearest neighbors, k-means</td><td>They compare points by distance. A feature with large numbers would dominate the distance calculation.</td></tr>
+      <tr><td>Support vector machines</td><td>They also rely on distances between points, so the scale of each feature changes the result.</td></tr>
+      <tr><td>Linear and logistic regression with regularization (Ridge, Lasso)</td><td>The penalty is applied to the coefficients, and coefficient size depends on the feature's scale. Standardizing makes the penalty fair across features.</td></tr>
+      <tr><td>Neural networks and other models trained with gradient descent</td><td>Features on a similar scale usually make training faster and more stable.</td></tr>
+      <tr><td>Principal component analysis (PCA)</td><td>PCA looks for directions of high variance. A feature with a large scale would take over the first components.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="post-note"><p class="post-note-l">Where it makes no difference</p><p>Tree-based models, such as decision trees, random forests and gradient boosting, split the data on thresholds within one feature at a time. They do not compare features with each other, so scaling does not change their results.</p></div>
+
+  <h3>Two things to watch</h3>
+  <ul class="post-points">
+    <li><strong>Calculate the mean and standard deviation on the training data only.</strong> Then apply those same two numbers to the test data. If you use the whole dataset, information from the test set leaks into training and your evaluation looks better than it really is.</li>
+    <li><strong>Standardizing does not make data normal.</strong> It only shifts and rescales it, and the shape stays the same. Z-scores also depend on the mean and the standard deviation, which extreme values can distort. If your data has strong outliers, check them first or consider a more robust scaling method.</li>
+  </ul>
+
+  <div class="post-note"><p class="post-note-l">Rule of thumb</p><p>If a model works with <strong>distances</strong> or learns by <strong>gradient descent</strong>, standardize your features. If it works with <strong>splits</strong>, like a decision tree, you can skip it. When you are not sure, standardizing rarely hurts.</p></div>
 
   <h2>How to explain it to stakeholders</h2>
   <p>Stakeholders rarely need the formula. They need to know what the curve means for their decision. A few habits make the normal distribution easy to explain.</p>
