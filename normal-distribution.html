@@ -102,33 +102,6 @@
 
   <div class="post-note"><p class="post-note-l">Be careful with "95%"</p><p>A 95% range describes the data you expect to see, not a guarantee. One in 20 values will still fall outside it, and that is normal. Say so, so that nobody reads a single value outside the range as proof that something is broken.</p></div>
 
-  <h2>Try it in Python</h2>
-  <p>You can check all of this yourself with <code>scipy</code>. The code below reproduces the empirical rule, the 20% interval from the cherry tree example and a simple outlier check based on z-scores. A z-score tells you how many standard deviations a value is from the mean.</p>
-<pre class="post-code"><code>import numpy as np
-from scipy.stats import norm
-
-mean, sd = 15, 2  # cherry tree heights in feet
-
-# 1) The empirical rule
-for k in (1, 2, 3):
-    share = norm.cdf(k) - norm.cdf(-k)
-    print(f"Within {k} SD: {share:.1%} ({mean - k * sd} to {mean + k * sd} feet)")
-
-# 2) Probability of an interval = area under the curve
-p = norm.cdf(15.5, mean, sd) - norm.cdf(14.5, mean, sd)
-print(f"P(14.5 &lt; height &lt; 15.5) = {p:.2f}")
-
-# 3) Flag outliers: more than 3 standard deviations from the mean
-heights = np.array([13.2, 15.0, 16.8, 14.1, 40.0, 15.9])
-z = (heights - mean) / sd
-print("Outliers:", heights[np.abs(z) &gt; 3])</code></pre>
-<pre class="post-code post-code-out"><code>Within 1 SD: 68.3% (13 to 17 feet)
-Within 2 SD: 95.4% (11 to 19 feet)
-Within 3 SD: 99.7% (9 to 21 feet)
-P(14.5 &lt; height &lt; 15.5) = 0.20
-Outliers: [40.]</code></pre>
-  <p><code>norm.cdf(x)</code> returns the area under the curve to the left of x. The area between two values is the difference of two <code>cdf</code> calls. Note that the exact shares are 68.3%, 95.4% and 99.7%. The empirical rule rounds them to 68%, 95% and 99.7%.</p>
-
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The normal distribution tells you what is typical, what is rare and when a value deserves a second look. As a data professional you will use it to find patterns in many kinds of datasets, and it is also the foundation for more advanced methods such as hypothesis testing and regression analysis.</p></div>
 
 </article>
