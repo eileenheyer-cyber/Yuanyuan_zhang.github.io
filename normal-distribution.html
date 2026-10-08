@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261008p">
+  <link rel="stylesheet" href="style.css?v=20261008q">
 </head>
 <body>
 
@@ -124,14 +124,12 @@
   <div class="post-note"><p class="post-note-l">Rule of thumb</p><p>If a model works with <strong>distances</strong> or learns by <strong>gradient descent</strong>, standardize your features. If it works with <strong>splits</strong>, like a decision tree, you can skip it. When you are not sure, standardizing rarely hurts.</p></div>
 
   <h2>How to explain it to stakeholders</h2>
-  <p>Stakeholders rarely need the formula. They need to know what the curve means for their decision. A few habits make the normal distribution easy to explain.</p>
-  <ul class="post-points">
-    <li><strong>Start with a range, not a term.</strong> Skip "standard deviation" and say what the range means for the business: "Most of our orders arrive within 3 to 5 days, and almost all of them within 1 to 7 days."</li>
-    <li><strong>Translate the rule into everyday numbers.</strong> "About 2 out of 3" for 68%, "about 19 out of 20" for 95%, and "almost everything" for 99.7%.</li>
-    <li><strong>Use a business example.</strong> Delivery times, order values or support ticket handling times work better than trees. "95% of our deliveries arrive within 2 to 6 days" is a statement a manager can act on.</li>
-    <li><strong>Show one picture.</strong> A bell curve with the three ranges shaded says more than a paragraph of numbers.</li>
-    <li><strong>Say when it does not apply.</strong> The empirical rule only works for data that is roughly bell-shaped. Check the histogram first. Skewed data, such as order values with a few very large orders, does not follow it.</li>
-  </ul>
+  <p>Stakeholders rarely need the formula. They need to know what the curve means for their decision. Here is how it could sound in a meeting:</p>
+  <div class="post-callout">
+    <p class="post-callout-q">“This curve shows us what a typical delivery time looks like. Most of our orders cluster around the average, and the further we move away from that center, the less often we see those delivery times.”</p>
+    <p class="post-callout-q">“For example, about 68% of deliveries fall within one standard deviation of the average, about 95% within two, and almost all within three. So if our average delivery time is 4 days, we can expect roughly 95% of orders to arrive within the corresponding two-standard-deviation range.”</p>
+    <p class="post-callout-q">“The business question is therefore not ‘What is the formula?’ but ‘What range of delivery times should we expect, and when does a delivery become unusual enough that we should investigate it?’”</p>
+  </div>
 
   <div class="post-note"><p class="post-note-l">Be careful with "95%"</p><p>A 95% range describes the data you expect to see, not a guarantee. One in 20 values will still fall outside it, and that is normal. Say so, so that nobody reads a single value outside the range as proof that something is broken.</p></div>
 
