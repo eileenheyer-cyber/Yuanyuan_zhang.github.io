@@ -1535,6 +1535,11 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-points { margin: 0 0 24px; padding-left: 1.2em; }
 .post-points li { margin-bottom: 12px; padding-left: 4px; line-height: 1.7; }
 .post-points li::marker { color: var(--accent); }
+.post-code { margin: 16px 0 24px; padding: 16px 18px; overflow-x: auto; background: var(--surface-alt); border: 1px solid var(--line); border-radius: 10px; }
+.post-code code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85rem; line-height: 1.65; color: var(--ink); white-space: pre; }
+.post-code-out { margin-top: -12px; }
+.post-code-out code { color: var(--muted); }
+.post p code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em; padding: 1px 6px; background: var(--surface-alt); border: 1px solid var(--line); border-radius: 5px; }
 
 /* Slide deck bar */
 .post-deck { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; margin:0 0 32px; padding:14px 18px; background:#f3f3f5; border-radius:10px; }
