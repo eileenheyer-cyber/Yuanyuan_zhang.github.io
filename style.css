@@ -1626,8 +1626,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .knowledge-page a[href="datenviz-eda.html"] .project-card-img img { object-position: left center; }
 .knowledge-page a[href="ab-testing.html"] .project-card-img { background: #f4f2ee; }
 .knowledge-page a[href="ab-testing.html"] .project-card-img img { object-fit: contain; }
-.knowledge-page a[href="normal-distribution.html"] .project-card-img { background: #f2efe5; }
-.knowledge-page a[href="normal-distribution.html"] .project-card-img img { object-fit: contain; }
 
 /* Highlighted callout (knowledge articles): the one passage to remember */
 .post-callout { position: relative; margin: 32px 0; padding: 26px 30px 28px; background: var(--surface-alt); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; }
