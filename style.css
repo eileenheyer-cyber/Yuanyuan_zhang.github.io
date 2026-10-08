@@ -1684,3 +1684,8 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
   .nd-svg .ls, .post-nd .nd-ba .nd-svg .ls { font-size: 15px; }
   .post-nd .nd-trio .nd-svg { max-width: 260px; }
 }
+/* Normal distribution post: quieter stakeholder quote box */
+.post-nd .post-callout { margin: 20px 0 24px; padding: 16px 20px 18px; }
+.post-nd .post-callout::before { font-size: 3.2rem; top: 2px; right: 16px; }
+.post-nd .post-callout .post-callout-q { font-size: 0.95rem; line-height: 1.6; font-weight: 400; }
+.post-nd .post-callout .post-callout-q + .post-callout-q { margin-top: 10px; }
