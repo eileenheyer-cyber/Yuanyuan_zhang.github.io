@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Normal Distribution – Yuanyuan Zhang</title>
+  <meta name="description" content="The normal distribution and the empirical rule (68-95-99.7): how continuous probability works, and how to use the bell curve to spot outliers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261007g">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="index.html#statistics">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Probability</p>
+  <h1 class="post-title">Normal Distribution</h1>
+
+  <figure class="post-cover">
+    <img src="images/normal-distribution-cover.webp" alt="Normal Distribution: a bell curve with the areas within 1, 2 and 3 standard deviations of the mean marked as 68%, 95% and 99.7%" width="1588" height="1578">
+  </figure>
+
+  <p>Most people have seen the bell curve before. Knowing what it looks like is not the same as knowing what it tells you. This post starts with how any continuous distribution works, then looks at the normal distribution and the empirical rule, and ends with a simple way to spot outliers. It builds on <a href="random-variables-distributions.html">Random Variables &amp; Probability Distributions</a> and <a href="discrete-distributions.html">Four Common Discrete Distributions</a>.</p>
+
+  <h2>Probability density and probability</h2>
+  <p>A probability function gives the probabilities for the possible outcomes of a random variable. There are two types:</p>
+  <ul class="post-points">
+    <li><strong>Probability mass function (PMF).</strong> Describes discrete random variables.</li>
+    <li><strong>Probability density function (PDF).</strong> Describes continuous random variables.</li>
+  </ul>
+  <p>The graph of a PDF is a curve. On it, the x-axis shows the value of the variable you measure, and the y-axis shows the <strong>probability density</strong>. Probability density is not the same as probability.</p>
+  <p>As an example, take a random sample of cherry trees. Their heights are approximately normally distributed with a mean of 15 feet and a standard deviation of 2 feet. What is the probability that a randomly chosen tree measures <em>exactly</em> 15.1 feet? Essentially zero. A continuous variable has infinitely many possible values: 15.1, 15.175, 15.175245 and so on, so no single value carries a meaningful probability.</p>
+  <p>For continuous distributions it only makes sense to talk about <strong>intervals</strong>, such as the interval between 14.5 and 15.5 feet. The probability of an interval is the <strong>area under the curve</strong> over that interval. For this interval the area is about 0.20, so there is roughly a 20% chance that a tree falls between 14.5 and 15.5 feet.</p>
+
+  <div class="post-note"><p class="post-note-l">In practice</p><p>Data professionals do not calculate these areas by hand. They use statistical software.</p></div>
+
+  <h2>The normal distribution</h2>
+  <p>The normal distribution is a continuous probability distribution that is symmetric about the mean and bell-shaped. It is also called the Gaussian distribution, after the German mathematician Carl Gauss, who first described its formula. It is the most common distribution in statistics because so many datasets follow a bell shape: height, weight, blood pressure, shoe size, test scores and more.</p>
+  <p>All normal distributions share these features:</p>
+  <ul class="post-points">
+    <li><strong>Bell shape.</strong> A peak at the center and two sides that slope downward.</li>
+    <li><strong>Mean at the center.</strong> The mean is also the peak: the most probable outcome. For the trees, that is 15 feet.</li>
+    <li><strong>Symmetry.</strong> 50% of the data lies above the mean and 50% below.</li>
+    <li><strong>Less likely further out.</strong> The further a value is from the mean, the lower its probability. The least probable outcomes are the very short and very tall trees.</li>
+    <li><strong>Total area equal to 1.</strong> The area under the curve covers 100% of the possible outcomes.</li>
+  </ul>
+
+  <h2>The empirical rule</h2>
+  <p>The values on a normal curve are spread in a regular pattern, based on their distance from the mean. This is the empirical rule, also known as the 68-95-99.7 rule:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Range</th><th>Share of values</th><th>Cherry trees (mean 15, SD 2)</th></tr></thead>
+    <tbody>
+      <tr><td>Within 1 standard deviation</td><td>68%</td><td>13 to 17 feet</td></tr>
+      <tr><td>Within 2 standard deviations</td><td>95%</td><td>11 to 19 feet</td></tr>
+      <tr><td>Within 3 standard deviations</td><td>99.7%</td><td>9 to 21 feet</td></tr>
+    </tbody>
+  </table></div>
+  <p>In other words, most trees (68%) measure between 13 and 17 feet, and almost all of them (99.7%) measure between 9 and 21 feet. The rule gives you a quick estimate of how the values in a large dataset are distributed, without any calculation. That saves time and helps you understand your data faster.</p>
+
+  <h2>Using the curve to find outliers</h2>
+  <p>Knowing where a value sits on a normal distribution also helps you detect outliers, which are values that differ significantly from the rest of the data. Data professionals typically treat values more than <strong>3 standard deviations</strong> below or above the mean as outliers.</p>
+  <p>Outliers deserve a closer look because some extreme values come from errors in data collection or data processing, and these false values can skew your results. A 40-foot cherry tree is far outside the 9 to 21 foot range, so it is more likely a typo than a record-breaking tree.</p>
+
+  <div class="post-note"><p class="post-note-l">Outliers are not automatically wrong</p><p>The 3 standard deviation rule tells you which values to check, not which ones to delete. An extreme value can also be real. Decide after you know where it came from.</p></div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The normal distribution tells you what is typical, what is rare and when a value deserves a second look. As a data professional you will use it to find patterns in many kinds of datasets, and it is also the foundation for more advanced methods such as hypothesis testing and regression analysis.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
