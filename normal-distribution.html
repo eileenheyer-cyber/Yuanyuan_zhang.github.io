@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261008q">
+  <link rel="stylesheet" href="style.css?v=20261008r">
 </head>
 <body>
 
@@ -101,8 +101,8 @@
   <p>Z-scores are not only a tool for describing data. In machine learning, converting a feature to z-scores is a standard preprocessing step called <strong>standardization</strong>. Every feature is rescaled to a mean of 0 and a standard deviation of 1, so features measured on very different scales become comparable.</p>
   <p>Imagine a model that predicts customer churn from two features: age (roughly 18 to 80) and yearly spend (roughly 0 to 50,000). Without scaling, the spend values are hundreds of times larger than the age values, and many models would treat spend as far more important simply because its numbers are bigger. After standardization, a value of 1.5 means "1.5 standard deviations above average" for both features, and neither one dominates because of its unit.</p>
 
-  <h3>Models where it is a good fit</h3>
-  <div class="post-table-wrap"><table class="post-table">
+  <h3 class="post-h3-small">Models where it is a good fit</h3>
+  <div class="post-table-wrap post-table-compact"><table class="post-table">
     <thead><tr><th>Model type</th><th>Why z-score scaling helps</th></tr></thead>
     <tbody>
       <tr><td>k-nearest neighbors, k-means</td><td>They compare points by distance. A feature with large numbers would dominate the distance calculation.</td></tr>
