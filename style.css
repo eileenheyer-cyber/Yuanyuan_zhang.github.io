@@ -1689,3 +1689,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-nd .post-callout::before, .post-callout-s::before { font-size: 3.2rem; top: 2px; right: 16px; }
 .post-nd .post-callout .post-callout-q, .post .post-callout-s .post-callout-q { font-size: 0.95rem; line-height: 1.6; font-weight: 400; }
 .post-nd .post-callout .post-callout-q + .post-callout-q, .post .post-callout-s .post-callout-q + .post-callout-q { margin-top: 10px; }
+.post-nd .nd-quad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.post-nd .nd-quad h3 { margin: 0 0 6px; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; font-style: normal; }
+@media (max-width: 640px) { .post-nd .nd-quad { grid-template-columns: 1fr 1fr; } }
