@@ -1624,7 +1624,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .knowledge-page .project-card-img { aspect-ratio: 3 / 2; }
 .knowledge-page .project-card-img img { object-position: center; }
 .knowledge-page a[href="datenviz-eda.html"] .project-card-img img { object-position: left center; }
-.knowledge-page a[href="normal-distribution.html"] .project-card-img img { object-position: left center; }
 .knowledge-page a[href="ab-testing.html"] .project-card-img { background: #f4f2ee; }
 .knowledge-page a[href="ab-testing.html"] .project-card-img img { object-fit: contain; }
 
