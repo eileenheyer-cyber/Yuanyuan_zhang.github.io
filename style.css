@@ -1698,3 +1698,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 
 /* Justified post text on wider screens: equal line lengths except the last line */
 @media (min-width: 641px) { .post p:not(.post-formula):not(.post-note-l), .post li { text-align: justify; hyphens: auto; -webkit-hyphens: auto; } }
+
+/* Space between the title and the first paragraph now that posts have no cover image */
+.post .post-title + p { margin-top: 28px; }

@@ -21,9 +21,7 @@ Copy the head, header and footer from an existing post and change only title, de
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Probability</p>              <!-- group: Describing data / Probability / Sampling / Inference & experiments -->
   <h1 class="post-title">Post title</h1>
-  <figure class="post-cover">
-    <img src="images/<slug>-cover.webp" alt="..." width="2342" height="1554">
-  </figure>
+  <!-- no cover image on the post page: the cover is used only on the Statistics card -->
   <p>Intro: what the reader will learn, link to the previous related post.</p>
   <h2>Section</h2> ... 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>...</p></div>
@@ -72,6 +70,7 @@ Copy the head, header and footer from an existing post and change only title, de
 - Max width follows the column (`post-small-figs` limits figures to 78% on desktop, 100% on mobile).
 
 ## 7. Cover image and Statistics card
+- The cover image appears **only on the Statistics card**, not at the top of the post page (the post starts directly under the title).
 - Cover: **3:2 landscape, about 2340×1554, WebP**, named `images/<slug>-cover.webp`. Flat geometric Bauhaus style on a cream background (red, yellow, blue, black), matching the other covers. Use a native 3:2 image; other ratios get cropped on the card.
 - Add a card to `statistics.html` inside the right group (`Describing data`, `Probability`, `Sampling`, `Inference & experiments`):
 ```html
