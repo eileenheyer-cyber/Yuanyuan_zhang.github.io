@@ -1695,3 +1695,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 
 /* No lone words on the last line of post text */
 .post p, .post li, .post figcaption, .post .post-callout-q { text-wrap: pretty; }
+
+/* Justified post text on wider screens: equal line lengths except the last line */
+@media (min-width: 641px) { .post p:not(.post-formula):not(.post-note-l), .post li { text-align: justify; hyphens: auto; -webkit-hyphens: auto; } }
