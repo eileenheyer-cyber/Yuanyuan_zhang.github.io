@@ -1692,3 +1692,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-nd .nd-quad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .post-nd .nd-quad h3 { margin: 0 0 6px; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; font-style: normal; }
 @media (max-width: 640px) { .post-nd .nd-quad { grid-template-columns: 1fr 1fr; } }
+
+/* Even line lengths in post text */
+.post p, .post li, .post figcaption, .post .post-callout-q { text-wrap: balance; }
