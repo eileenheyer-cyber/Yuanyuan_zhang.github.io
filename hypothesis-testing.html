@@ -44,10 +44,12 @@
   </ul>
   <p>A courtroom is a helpful way to think about it. The defendant is presumed innocent (H<sub>0</sub>) until the evidence is strong enough to convict (H<sub>a</sub>). The court never proves innocence; it either finds enough evidence or it doesn't. A test works the same way. You assume H<sub>0</sub> is true and ask how surprising your data would be. If it is very surprising, you reject H<sub>0</sub>. If it isn't, you fail to reject it.</p>
 
-  <h2>The significance level (α)</h2>
-  <p>The <strong>significance level α</strong> is the risk you are willing to take of rejecting H<sub>0</sub> when it is actually true. In other words, it is your tolerance for a false alarm. With α = 0.05, you accept a 5% chance of concluding that something changed when nothing did.</p>
-  <p>You choose α before you look at the data. The most common value is 0.05, but that is a convention, not a law of nature. A smaller α, such as 0.01, makes sense when a false alarm would be costly, for example an expensive rollout. A larger α, such as 0.10, can be fine for a cheap decision that is easy to undo. The trade-off is that a smaller α means fewer false alarms, but also a smaller chance of detecting a real effect.</p>
-  <p>Think of α as the bar the evidence has to clear. The next section shows where that bar sits on the bell curve.</p>
+  <h2>Significance level and p-value</h2>
+  <p>Two numbers drive every test decision. The <strong>significance level α</strong> is the bar you set before you look at the data. The <strong>p-value</strong> is the evidence you calculate from the data afterwards.</p>
+  <p>α is the risk you are willing to take of rejecting H<sub>0</sub> when it is actually true. In other words, it is your tolerance for a false alarm. With α = 0.05, you accept a 5% chance of concluding that something changed when nothing did. The most common value is 0.05, but that is a convention, not a law of nature. A smaller α, such as 0.01, makes sense when a false alarm would be costly, for example an expensive rollout. A larger α, such as 0.10, can be fine for a cheap decision that is easy to undo. The trade-off is that a smaller α means fewer false alarms, but also a smaller chance of detecting a real effect.</p>
+  <p>The <strong>p-value</strong> answers one question: if H<sub>0</sub> were true, how likely is a result at least this extreme? A small p-value means your data would be surprising if nothing had changed.</p>
+  <p>Putting the two together gives the decision rule. If the p-value is below α, you reject H<sub>0</sub>. If it isn't, you fail to reject H<sub>0</sub>.</p>
+  <div class="post-note"><p class="post-note-l">Don't mix them up</p><p>α is your choice, made before you see the data. The p-value comes from the data. And the p-value is not the probability that H<sub>0</sub> is true, nor does it tell you how large or important the effect is.</p></div>
 
   <h2>The rejection region</h2>
   <p>If H<sub>0</sub> is true, the test statistic (here a z-score) follows a bell curve centered on 0. Most results land near the middle, and extreme results are rare. The significance level α decides how much of the curve counts as “too extreme”. With α = 0.05, the most extreme 5% of results fall in the rejection region. In a two-tailed test, that 5% is split between the two tails, 2.5% each, and the cut-off points are called critical values.</p>
@@ -69,10 +71,6 @@
   </ol>
   <p class="post-formula"><strong>z = (x̄ − μ<sub>0</sub>) / (σ / √n)</strong><span>x̄ is the sample mean, μ<sub>0</sub> the value under H<sub>0</sub>, σ the standard deviation and n the sample size.</span></p>
   <p>Notice how close the call is: p = 0.046 against a threshold of 0.05. With a slightly smaller difference we would have ended up at “fail to reject”. The test gives you a clear rule for deciding, but it is not a guarantee.</p>
-
-  <h2>The p-value</h2>
-  <p>The <strong>p-value</strong> answers one question: if H<sub>0</sub> were true, how likely is a result at least this extreme? For z = 2.0, the two-tailed p-value is about 0.046. That is below α = 0.05, so we reject H<sub>0</sub>. It is the same decision as with the critical value, just expressed as a probability.</p>
-  <div class="post-note"><p class="post-note-l">What a p-value is not</p><p>It is not the probability that H<sub>0</sub> is true, and it doesn't tell you how large or important the effect is.</p></div>
 
   <h2>One-tailed or two-tailed?</h2>
   <p>The alternative hypothesis decides where the rejection region sits. A <strong>two-tailed test</strong> (H<sub>a</sub>: μ ≠ μ<sub>0</sub>) looks for a change in either direction, so α is split between both tails. A <strong>one-tailed test</strong> (H<sub>a</sub>: μ &gt; μ<sub>0</sub> or μ &lt; μ<sub>0</sub>) puts all of α in one tail, which makes the critical value smaller: 1.645 instead of 1.96 for α = 0.05.</p>
