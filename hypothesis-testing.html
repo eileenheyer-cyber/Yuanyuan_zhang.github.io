@@ -40,9 +40,18 @@
   <h2>Null and alternative hypothesis</h2>
   <p>Every test starts with two competing statements about the population.</p>
   <ul class="post-points">
-    <li><strong>Null hypothesis (H<sub>0</sub>).</strong> Nothing special is going on. For example, the true average is exactly the value we already know: μ = μ<sub>0</sub>.</li>
-    <li><strong>Alternative hypothesis (H<sub>a</sub>).</strong> Something has changed: μ ≠ μ<sub>0</sub>, or μ &gt; μ<sub>0</sub> / μ &lt; μ<sub>0</sub> if you only care about one direction.</li>
+    <li><strong>Null hypothesis (H<sub>0</sub>).</strong> Assumes there is no effect or change in the population, and it always contains an equality (=, ≤ or ≥). It is the status quo, and we treat it as true unless the data give strong evidence against it.</li>
+    <li><strong>Alternative hypothesis (H<sub>a</sub>).</strong> Says there is an effect or change, and it uses a strict inequality (≠, &lt; or &gt;). It only earns support when the evidence against H<sub>0</sub> is convincing.</li>
   </ul>
+  <p>Which inequality you pick depends on the question you ask. Here μ<sub>0</sub> is the value we already know:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Question</th><th>H<sub>0</sub></th><th>H<sub>a</sub></th></tr></thead>
+    <tbody>
+      <tr><td>Has it changed?</td><td>μ = μ<sub>0</sub></td><td>μ ≠ μ<sub>0</sub></td></tr>
+      <tr><td>Has it increased?</td><td>μ ≤ μ<sub>0</sub></td><td>μ &gt; μ<sub>0</sub></td></tr>
+      <tr><td>Has it decreased?</td><td>μ ≥ μ<sub>0</sub></td><td>μ &lt; μ<sub>0</sub></td></tr>
+    </tbody>
+  </table></div>
   <p>A courtroom is a helpful way to think about it. The defendant is presumed innocent (H<sub>0</sub>) until the evidence is strong enough to convict (H<sub>a</sub>). The court never proves innocence; it either finds enough evidence or it doesn't. A test works the same way. You assume H<sub>0</sub> is true and ask how surprising your data would be. If it is very surprising, you reject H<sub>0</sub>. If it isn't, you fail to reject it.</p>
 
   <h2>Significance level and p-value</h2>
