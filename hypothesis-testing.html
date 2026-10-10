@@ -61,14 +61,14 @@
   <h2>A worked example</h2>
   <p>Let's go back to the checkout redesign. Before the change, orders in the shop averaged €60, and from past data we know the standard deviation is €20. After the redesign, we look at 100 orders and the average is €64. Is that €4 difference real, or could it be chance? (The numbers are made up for illustration.)</p>
   <ol class="post-points">
-    <li><strong>Write down the hypotheses.</strong> H<sub>0</sub>: the average is still €60 (μ = 60). H<sub>a</sub>: it is no longer €60 (μ ≠ 60).</li>
-    <li><strong>Pick α.</strong> We use 0.05, which gives critical values of ±1.96.</li>
-    <li><strong>Calculate z.</strong> With 100 orders, the standard error is 20 / √100 = 2. Our average is €4 above the old one, so z = (64 − 60) / 2 = 2.0. In other words, the new average is two standard errors away from €60.</li>
-    <li><strong>Compare it with the critical value.</strong> 2.0 is just beyond 1.96, so it lands in the right-hand rejection region (the dot in Chart 1).</li>
-    <li><strong>Decide.</strong> We reject H<sub>0</sub>. The data give statistical evidence that the average order value has changed.</li>
+    <li><strong>Start with the null hypothesis.</strong> This is the idea that the redesign changed nothing: the average order value is still €60 (H<sub>0</sub>: μ = 60).</li>
+    <li><strong>Set the alternative hypothesis.</strong> This says the redesign did change something: the average is no longer €60 (H<sub>a</sub>: μ ≠ 60).</li>
+    <li><strong>Decide how sure you want to be.</strong> Before you say the redesign made a difference, you fix the significance level. We use the usual 5% (α = 0.05).</li>
+    <li><strong>Calculate the p-value.</strong> This is the probability of getting results like ours if the redesign really changed nothing. With 100 orders, the standard error is 20 / √100 = 2, so z = (64 − 60) / 2 = 2.0: our average is two standard errors above €60 (the dot in Chart 1). That gives a two-tailed p-value of about 0.046.</li>
+    <li><strong>Make the decision.</strong> If this probability is very low, below your significance level, you decide the redesign probably did change something. Here 0.046 is below 0.05, so we reject H<sub>0</sub>: the data give statistical evidence that the average order value has changed. If it had been above 0.05, we would say we don't have enough evidence.</li>
   </ol>
   <p class="post-formula"><strong>z = (x̄ − μ<sub>0</sub>) / (σ / √n)</strong><span>x̄ is the sample mean, μ<sub>0</sub> the value under H<sub>0</sub>, σ the standard deviation and n the sample size.</span></p>
-  <p>Notice how close the call is: 2.0 against a cut-off of 1.96. With a slightly smaller difference we would have ended up at “fail to reject”. The test gives you a clear rule for deciding, but it is not a guarantee.</p>
+  <p>Notice how close the call is: p = 0.046 against a threshold of 0.05. With a slightly smaller difference we would have ended up at “fail to reject”. The test gives you a clear rule for deciding, but it is not a guarantee.</p>
 
   <h2>The p-value</h2>
   <p>The <strong>p-value</strong> answers one question: if H<sub>0</sub> were true, how likely is a result at least this extreme? For z = 2.0, the two-tailed p-value is about 0.046. That is below α = 0.05, so we reject H<sub>0</sub>. It is the same decision as with the critical value, just expressed as a probability.</p>
