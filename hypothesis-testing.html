@@ -36,7 +36,7 @@
 
   <p>After a checkout redesign, the average order value seems to have increased. Did the new design make a difference, or was it just a lucky week?</p>
   <p>That is what <strong>statistical significance</strong> tells us. Hypothesis testing checks whether a difference we observe is strong enough evidence of a real effect, or whether random variation could explain it. It builds on <a href="confidence-intervals.html">Confidence Intervals</a>: they estimate a range of plausible values, while a test evaluates evidence against a specific assumption.</p>
-  <p>We’ll start with the core concepts, walk through the checkout example step by step, and then cover one- and two-tailed tests, t-tests and power. To compare two versions of something, see <a href="ab-testing.html"><strong>A/B testing</strong></a>.</p>
+  <p>We’ll start with the core concepts, walk through the checkout example step by step, and then cover one- and two-tailed tests, t-tests, one- and two-sample comparisons, and power. To compare two versions of something, see <a href="ab-testing.html"><strong>A/B testing</strong></a>.</p>
 
   <h2>Null and alternative hypothesis</h2>
   <p>Every hypothesis test starts with two competing statements about the population.</p>
@@ -119,6 +119,22 @@
   </table></div>
   <p>Here is why this matters. Imagine a small pilot of the new checkout: 25 orders with an average of €64 and a sample standard deviation of €10, against the historical average of €60. The standard error is 10 / √25 = 2, so t = (64 − 60) / 2 = 2.0, the same value as before. But with 24 degrees of freedom the critical value is 2.064, so t = 2.0 does not reach it. We fail to reject (two-tailed p ≈ 0.057). A z-test on the same numbers would have rejected (p ≈ 0.046). A small sample carries less information, and the t-test takes that into account.</p>
   <p>With large samples the two tests give almost the same answer, which is why z works as an approximation when n is large.</p>
+
+  <h2>One-sample and two-sample tests</h2>
+  <p>So far we have compared one sample with a known value. That is a <strong>one-sample test</strong>: you collect one group of data and check whether its mean is equal to a specific number. Think of the average delivery time of a food service, claimed to be 30 minutes. You time a sample of deliveries and ask whether the average is close enough to 30, or different enough to say the claim is wrong.</p>
+  <p>A <strong>two-sample test</strong> compares two groups with each other instead of with a fixed number. It asks whether the two population means are equal. This is exactly what happens in an <a href="ab-testing.html">A/B test</a>: customers are randomly split into a control group (version A) and a treatment group (version B), and the two-sample test tells you whether the difference in your metric is statistically significant. H<sub>0</sub> says the two versions perform the same, μ<sub>A</sub> = μ<sub>B</sub>. H<sub>a</sub> says they don't.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>One-sample</th><th>Two-sample</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Compares</strong></td><td>One mean with a known value</td><td>Two means with each other</td></tr>
+      <tr><td><strong>H<sub>0</sub></strong></td><td>μ = μ<sub>0</sub></td><td>μ<sub>A</sub> = μ<sub>B</sub></td></tr>
+      <tr><td><strong>Example</strong></td><td>Is the average order value still €60?</td><td>A/B test: does the new checkout (B) differ from the old one (A)?</td></tr>
+    </tbody>
+  </table></div>
+  <p>The two-sample t-test assumes that the two samples are independent (different customers in each group, which random assignment in an A/B test takes care of) and come from roughly normal populations, or that the samples are large enough for that not to matter. The population standard deviations are unknown, so the test statistic is a t-score again.</p>
+  <p class="post-formula"><strong>t = (x̄<sub>A</sub> − x̄<sub>B</sub>) / √(s<sub>A</sub>²/n<sub>A</sub> + s<sub>B</sub>²/n<sub>B</sub>)</strong><span>The difference between the two sample means, divided by its standard error. Both groups bring their own uncertainty.</span></p>
+  <p>The steps are the same as before: state the hypotheses, choose α, find the p-value, and decide. The result is read the same way, too. A p-value below α means a statistically significant difference between the groups. A p-value above α means the observed difference could well be due to chance, so you fail to reject H<sub>0</sub>.</p>
+  <p>Here is a twist on our example (illustrative numbers). Say an A/B test shows 100 orders with the old checkout (A) averaging €60 and 100 orders with the new checkout (B) averaging €64, with s = €20 in both groups. The standard error is √(20²/100 + 20²/100) ≈ 2.83, so t = 4 / 2.83 ≈ 1.41 and the two-tailed p-value is about 0.16. The same €4 gap that was significant against a fixed value of €60 is not significant here. The reason is that in an A/B test €60 is no longer a fact: it is an estimate from 100 orders, and it carries its own uncertainty. That is why A/B tests need enough orders in each group, which is the power and sample-size question we come to below.</p>
 
   <h2>Two ways to be wrong</h2>
   <p>A test is a decision under uncertainty, so it can go wrong in two ways. Think of a smoke alarm: it can go off because you burned the toast, or stay silent during a real fire.</p>
