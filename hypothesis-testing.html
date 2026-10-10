@@ -111,11 +111,20 @@
   <p>With large samples the two tests give almost the same answer, which is why z works as an approximation when n is large.</p>
 
   <h2>Two ways to be wrong</h2>
-  <p>A test is a decision under uncertainty, so it can go wrong in two ways.</p>
+  <p>A test is a decision under uncertainty, so it can go wrong in two ways. Think of a smoke alarm: it can go off because you burned the toast, or stay silent during a real fire.</p>
   <ul class="post-points">
-    <li><strong>Type I error (false alarm).</strong> You reject H<sub>0</sub> although it is true. Its probability is α. In our example: celebrating a redesign that did nothing.</li>
-    <li><strong>Type II error (missed effect).</strong> You fail to reject H<sub>0</sub> although it is false. Its probability is β. In our example: dropping a redesign that actually works.</li>
+    <li><strong>Type I error (false alarm).</strong> You reject H<sub>0</sub> although it is true. Its probability is α. Like the alarm going off for burnt toast.</li>
+    <li><strong>Type II error (missed effect).</strong> You fail to reject H<sub>0</sub> although it is false. Its probability is β. Like the alarm staying silent in a real fire.</li>
   </ul>
+  <p>Back to the checkout redesign, the four possible outcomes look like this:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Reject H<sub>0</sub> (roll out)</th><th>Fail to reject H<sub>0</sub> (drop it)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>H<sub>0</sub> true</strong> (redesign does nothing)</td><td>Type I error: wasted rollout</td><td>Correct</td></tr>
+      <tr><td><strong>H<sub>0</sub> false</strong> (redesign works)</td><td>Correct</td><td>Type II error: missed gain</td></tr>
+    </tbody>
+  </table></div>
+  <p>A wasted rollout costs the development budget. A missed winner costs about €4 on every future order. Which mistake hurts more should guide how you choose α.</p>
   <p>Lowering α reduces false alarms, but it makes missed effects more likely, unless you also collect more data.</p>
 
   <h2>Power and sample size</h2>
