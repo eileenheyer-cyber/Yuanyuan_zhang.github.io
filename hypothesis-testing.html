@@ -34,8 +34,10 @@
   <p class="overline">Inference &amp; experiments</p>
   <h1 class="post-title">Hypothesis Testing</h1>
 
-  <p>After a checkout redesign, orders seem a bit bigger. Did the new design work, or was it just a lucky week? That is the question behind <strong>statistical significance</strong>, and <strong>hypothesis testing</strong> is how you answer it: it gives you a clear rule for deciding whether a difference in your data is real or just random noise.</p>
-  <p>Hypothesis testing builds on <a href="confidence-intervals.html">Confidence Intervals</a>: both rely on the same sampling variation, but a test ends in a decision. We will first look at the building blocks, then run the full test on the checkout redesign. After that come one- and two-tailed tests, the t-test, and power. If you want to compare two groups, <a href="ab-testing.html">A/B Testing</a> picks up from there.</p>
+  <p>After a checkout redesign, the average order value seems to have increased. Did the new design actually make a difference, or was it just a lucky week?</p>
+  <p>This is where <strong>statistical significance</strong> comes in. Hypothesis testing gives us a systematic way to evaluate whether the difference we observe provides enough evidence of a real effect, or whether it could plausibly be explained by random variation.</p>
+  <p>Hypothesis testing builds on <a href="confidence-intervals.html">Confidence Intervals</a>: both help us understand uncertainty caused by sampling variation, but they approach the question from different angles. Confidence intervals estimate a range of plausible values for an effect, while hypothesis tests evaluate evidence against a specific assumption.</p>
+  <p>We’ll start with the core concepts, then walk through the checkout redesign example step by step. Along the way, we’ll explore one-tailed and two-tailed tests, t-tests, and statistical power. Finally, we’ll connect these ideas to <a href="ab-testing.html"><strong>A/B testing</strong></a>, where hypothesis testing helps us compare two versions of a product or experience.</p>
 
   <h2>Null and alternative hypothesis</h2>
   <p>Every test starts with two competing statements about the population.</p>
