@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 496" role="img" aria-label="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 586" role="img" aria-label="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test.">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0a0a0a"/></marker>
   </defs>
@@ -50,5 +50,10 @@
     <text x="685" y="388" fill="#ffffff" font-size="20" font-weight="700">Two-proportion</text>
     <text x="685" y="412" fill="#ffffff" font-size="20" font-weight="700">z-test</text>
 
+    <!-- warning note -->
+    <rect x="30" y="504" width="740" height="70" rx="6" fill="#f4f4f5"/>
+    <rect x="30" y="504" width="7" height="70" fill="#f5c548"/>
+    <text x="56" y="534" font-size="16" text-anchor="start">Both proportion tests rely on a suitable normal approximation. Other designs,</text>
+    <text x="56" y="558" font-size="16" text-anchor="start">including paired observations or very small counts, may require different tests.</text>
   </g>
 </svg>
