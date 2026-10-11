@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 496" role="img" aria-label="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test.">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0a0a0a"/></marker>
+  </defs>
+  <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="17" fill="#0a0a0a" text-anchor="middle">
+    <g stroke="#0a0a0a" stroke-width="2" fill="none" marker-end="url(#arr)">
+      <path d="M340 68 L210 108"/>
+      <path d="M460 68 L590 108"/>
+      <path d="M210 206 L210 246"/>
+      <path d="M590 206 L590 246"/>
+      <path d="M180 306 L125 352"/>
+      <path d="M240 306 L305 352"/>
+      <path d="M560 298 L495 352"/>
+      <path d="M620 298 L685 352"/>
+    </g>
+    <rect x="200" y="16" width="400" height="52" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="400" y="49" font-size="20" font-weight="700">What type of metric are you analyzing?</text>
+
+    <rect x="30" y="108" width="360" height="98" fill="#1d57b5"/>
+    <text x="210" y="142" fill="#ffffff" font-size="24" font-weight="700">Mean</text>
+    <text x="210" y="170" fill="#ffffff">Comparing numerical values,</text>
+    <text x="210" y="192" fill="#ffffff">such as revenue or delivery time</text>
+    <rect x="30" y="246" width="360" height="60" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="210" y="272" font-size="18" font-weight="700">Is the population standard</text>
+    <text x="210" y="295" font-size="18" font-weight="700">deviation known?</text>
+    <text x="132" y="336" font-weight="700" text-anchor="end">Yes</text>
+    <text x="292" y="336" font-weight="700" text-anchor="start">No</text>
+    <rect x="30" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="115" y="388" fill="#ffffff" font-size="20" font-weight="700">Z-test</text>
+    <text x="115" y="412" fill="#ffffff" font-size="20" font-weight="700">for a mean</text>
+    <text x="115" y="444" fill="#ffffff" font-size="16">if assumptions hold</text>
+    <rect x="220" y="352" width="170" height="124" fill="#1d57b5"/>
+    <text x="305" y="388" fill="#ffffff" font-size="20" font-weight="700">T-test</text>
+    <text x="305" y="420" fill="#ffffff" font-size="16">Welch's t-test is the</text>
+    <text x="305" y="440" fill="#ffffff" font-size="16">default for two</text>
+    <text x="305" y="460" fill="#ffffff" font-size="16">independent groups</text>
+
+    <rect x="410" y="108" width="360" height="98" fill="#f5c548"/>
+    <text x="590" y="142" font-size="24" font-weight="700">Proportion</text>
+    <text x="590" y="170">Comparing binary outcomes, such as</text>
+    <text x="590" y="192">conversion or click rates</text>
+    <rect x="410" y="246" width="360" height="52" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="590" y="279" font-size="19" font-weight="700">One or two groups?</text>
+    <text x="508" y="333" font-weight="700" text-anchor="end">One</text>
+    <text x="672" y="333" font-weight="700" text-anchor="start">Two</text>
+    <rect x="410" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="495" y="388" fill="#ffffff" font-size="20" font-weight="700">One-proportion</text>
+    <text x="495" y="412" fill="#ffffff" font-size="20" font-weight="700">z-test</text>
+    <rect x="600" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="685" y="388" fill="#ffffff" font-size="20" font-weight="700">Two-proportion</text>
+    <text x="685" y="412" fill="#ffffff" font-size="20" font-weight="700">z-test</text>
+
+  </g>
+</svg>

@@ -34,37 +34,31 @@
   <p class="overline">Inference &amp; experiments</p>
   <h1 class="post-title">T-Test vs. Z-Test</h1>
 
-  <p>You have two versions of something and a number for each. But is the difference meaningful, or could it be due to chance?</p>
-  <p>In business analytics, answering that question starts with choosing the right statistical test. This article explains how to choose between t-tests and z-tests by starting with the business question, using practical examples from revenue analysis and A/B testing.</p>
-  <p>This article builds on <a href="ab-testing.html">A/B Testing</a>, where we explored how to compare two versions and evaluate their results.</p>
+  <p>You have two versions of something and a number for each. But is the difference meaningful, or could it be due to chance? This article shows how to choose between a t-test and a z-test by starting with the business question, and it builds on <a href="ab-testing.html">A/B Testing</a>, where we compared two versions and evaluated the results.</p>
 
-  <p>Both the z-test and t-test are tools used in hypothesis testing to help us decide if there is a meaningful difference between groups or if a result is just due to chance. Think of them as detectives investigating data clues to find the truth.</p>
-  <p>The z-test is like a detective who works best when the case is clear and the evidence is strong. It is used when the sample size is large (usually over 30) and when we know the population’s standard deviation (a measure of spread). For example, if you want to check if the average delivery time of a food service is different from a known standard, and you have a big sample and know the population spread, you’d use a z-test.</p>
-  <p>On the other hand, the t-test is like a detective who is skilled at working with smaller or less certain cases. It is used when the sample size is small and the population standard deviation is unknown. For instance, if you want to compare the average time spent on two versions of a website but only have a small sample and don’t know the population spread, you’d use a t-test. The t-test adjusts for this uncertainty, making it more flexible for real-world situations.</p>
-  <p>In short:</p>
-  <ul class="post-points">
-    <li>Use a z-test when you have a large sample and know the population spread.</li>
-    <li>Use a t-test when you have a small sample or don’t know the population spread.</li>
-  </ul>
-
-  <h2>Start with the business question</h2>
+  <h2>01 — Start with the Business Question</h2>
   <p>Every statistical test starts with what you want to compare. In business analytics, it is usually one of two things:</p>
   <ul class="post-points">
     <li><strong>An average</strong>, such as average order value or revenue per user.</li>
     <li><strong>A proportion</strong>, such as conversion rate or click rate.</li>
   </ul>
   <p>The distinction matters because averages and proportions describe different types of data and require different statistical approaches.</p>
-  <p>A mean summarizes numerical values that vary from user to user, such as the amount spent on each order. A proportion summarizes a binary outcome, such as whether a visitor makes a purchase.</p>
+  <p>A <strong>mean</strong> summarizes numerical values that vary from user to user, such as the amount spent on each order.</p>
+  <p>A <strong>proportion</strong> summarizes a binary outcome, such as whether a visitor makes a purchase.</p>
 
-  <h2>Understand why the choice matters</h2>
+  <h2>02 — Understand Why the Choice Matters</h2>
   <p>For a proportion, variability depends on the proportion itself and the sample size. This allows us to estimate its standard error directly from the data, without separately estimating a population standard deviation as we typically do when testing means.</p>
-  <p>When testing a mean, the next question is whether the population standard deviation — the true spread of values across the population — is known.</p>
-  <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the t-distribution accounts for through its heavier tails, particularly with small samples. As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible.</p>
-  <p>These distinctions give us a practical starting point for choosing the right statistical test.</p>
+  <p>When testing a mean, the next question is whether the <strong>population standard deviation</strong> — the true spread of values across the population — is known.</p>
+  <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the <strong>t-distribution</strong> accounts for through its heavier tails, particularly with small samples.</p>
+  <p>As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible. A t-test is therefore generally appropriate for means whenever the population standard deviation is unknown, whatever the sample size.</p>
 
-  <h2>Choose the right test</h2>
-  <p>Once you know the type of metric, one follow-up question settles the choice. For a mean, ask whether the population standard deviation is known. For a proportion, ask whether you are comparing one group or two.</p>
-  <p><strong>What type of metric are you analyzing?</strong></p>
+  <h2>03 — Choose the Right Test</h2>
+  <p>Once you know the type of metric, one follow-up question settles the choice.</p>
+  <figure class="post-fig">
+    <img src="images/t-test-vs-z-test/chart-1-decision-tree.svg" alt="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test." loading="lazy" width="800" height="496">
+    <figcaption><span>Chart 1</span> Choosing the test: first the type of metric, then one follow-up question.</figcaption>
+  </figure>
+  <p>The same logic as a compact reference table:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th></th><th>Mean</th><th>Proportion</th></tr></thead>
     <tbody>
@@ -75,22 +69,42 @@
     </tbody>
   </table></div>
   <p><em>Both proportion tests rely on a suitable normal approximation. Other designs, including paired observations or very small counts, may require different tests.</em></p>
-  <div class="post-note post-note-plain"><p class="post-note-l">Welch's t-test</p><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
 
-  <h2>Apply it to business analytics</h2>
-  <h3>Average revenue between two campaigns</h3>
-  <p>Campaign A reached 1,000 customers with an average revenue of €52 and a standard deviation of €30. Campaign B reached 1,000 customers with an average revenue of €56 and a standard deviation of €32. The metric is an average and the spread is estimated from the samples, so use Welch's t-test. The result is t = 2.88 and p ≈ 0.004, so the €4 difference is unlikely to be chance.</p>
+  <h3>Welch's t-test</h3>
+  <div class="post-note post-note-plain"><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
 
-  <h3>Conversion rate between two website versions</h3>
-  <p>Version A converted 1,000 of 20,000 visitors (5.0%). Version B converted 1,120 of 20,000 (5.6%). The metric is a share, so use a two-proportion z-test. The result is z = 2.68 and p ≈ 0.007, so the 0.6-point lift is unlikely to be chance.</p>
-  <p>The numbers in both examples are illustrative.</p>
+  <h2>04 — Apply It to Business Analytics</h2>
+  <h3>Comparing Average Revenue</h3>
+  <ul class="post-points">
+    <li><strong>Business question.</strong> Does Campaign B generate more average revenue per customer than Campaign A?</li>
+    <li><strong>Data.</strong> Campaign A: 1,000 customers, average revenue €52, standard deviation €30. Campaign B: 1,000 customers, average revenue €56, standard deviation €32.</li>
+    <li><strong>Test selection.</strong> The metric is an average and the population standard deviation is unknown, so use Welch's t-test for two independent groups.</li>
+    <li><strong>Result.</strong> t = 2.88, p ≈ 0.004.</li>
+    <li><strong>Interpretation.</strong> The €4 difference is statistically significant, so it is unlikely to be due to chance. Whether it is worth the extra cost is a business decision.</li>
+  </ul>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h3>Comparing Conversion Rates</h3>
+  <ul class="post-points">
+    <li><strong>Business question.</strong> Does Version B convert more visitors than Version A?</li>
+    <li><strong>Data.</strong> Version A converted 1,000 of 20,000 visitors (5.0%). Version B converted 1,120 of 20,000 (5.6%).</li>
+    <li><strong>Test selection.</strong> The metric is a proportion, so use a two-proportion z-test. The normal approximation is appropriate because both versions have large numbers of conversions and non-conversions.</li>
+    <li><strong>Result.</strong> z = 2.68, p ≈ 0.007.</li>
+    <li><strong>Interpretation.</strong> The 0.6-point lift is statistically significant, so it is unlikely to be due to chance. Whether it justifies the change is a business decision.</li>
+  </ul>
+  <p><em>The numbers in both examples are illustrative.</em></p>
+
+  <h2>05 — Explain the Result to Stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">“Campaign B generated €4 more revenue per customer on average than Campaign A. The difference is statistically significant (p ≈ 0.004), which provides evidence that the campaigns differ in average revenue. The next question is whether the additional revenue justifies the extra campaign cost.”</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The business question determines the test. For means, a t-test is usually appropriate when the population standard deviation is unknown. For proportions, a z-test is commonly used when the normal approximation is appropriate. As the degrees of freedom increase, the t-distribution approaches the standard normal distribution.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p>
+    <ul class="post-points" style="margin:8px 0 0">
+      <li>The business question determines the test: averages and proportions call for different approaches.</li>
+      <li>For means, a t-test is usually appropriate when the population standard deviation is unknown, and Welch's t-test is the default for two independent groups. For proportions, a z-test is commonly used when the normal approximation is appropriate.</li>
+      <li>Statistical significance shows that a difference is unlikely to be chance. Business significance asks whether it is worth acting on.</li>
+    </ul>
+  </div>
 
 </article>
 </main>
