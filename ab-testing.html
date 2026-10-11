@@ -63,17 +63,31 @@
   </ul>
 
   <h2>How to design an A/B test</h2>
-  <p>This is a common interview question. A clean answer walks through four steps: hypothesis, metrics, experiment design, and analysis of the results.</p>
+  <p>This is a common interview question. A clean answer walks through five steps: variables, hypothesis, metrics, assigning users to groups, and analysis of the results. The running example below is a messaging app that wants to test group video calling.</p>
 
-  <h3>Step 1: Define the hypothesis</h3>
+  <h3>Step 1: Define your variables</h3>
+  <p>Start by naming the cause you want to test and the effect you want to measure. This keeps the experiment focused on one relationship.</p>
+  <ul class="post-points">
+    <li><strong>Independent variable.</strong> The cause, the thing you deliberately change. It is not influenced by anything else in the experiment. Here: whether a user has access to group video calling.</li>
+    <li><strong>Dependent variable.</strong> The effect, the outcome you measure. Its value is expected to change because of the independent variable. Here: the number of calls per user.</li>
+  </ul>
+  <p>A more complex test might compare several versions of the feature, or several settings of the same feature. The logic stays the same: you change the independent variable and watch what happens to the dependent variable.</p>
+
+  <h3>Step 2: Formulate your hypothesis</h3>
   <p>A good experiment starts with a clear, testable hypothesis: a statement that connects the feature to an expected outcome. A strong hypothesis has three parts:</p>
   <ul class="post-points">
     <li><strong>The change.</strong> What are you introducing?</li>
     <li><strong>The expected impact.</strong> What do you think will happen?</li>
     <li><strong>The metric.</strong> How will you measure it?</li>
   </ul>
+  <p>For the statistical test later on, the hypothesis is written as a pair of competing statements:</p>
+  <ul class="post-points">
+    <li><strong>Null hypothesis (H0).</strong> The change has no effect. Group video calling does not change the number of calls per user.</li>
+    <li><strong>Alternative hypothesis (Ha).</strong> The change does have an effect. Group video calling increases the number of calls per user.</li>
+  </ul>
+  <p>The test then asks whether the data give enough evidence to reject the null hypothesis.</p>
 
-  <h3>Step 2: Choose metrics</h3>
+  <h3>Step 3: Choose metrics</h3>
   <p>The goal is not to track activity, but to measure whether the feature is delivering real value.</p>
   <ul class="post-points">
     <li><strong>Primary metric.</strong> Directly reflects the success of your hypothesis. For example, average time spent per user or number of calls per user when the hypothesis is about increasing engagement.</li>
@@ -94,12 +108,13 @@
     </ol>
   </div>
 
-  <h3>Step 3: Design the experiment (control vs treatment)</h3>
-  <p>Split users into two groups:</p>
+  <h3>Step 4: Assign users to treatment and control groups</h3>
+  <p>An A/B test is a controlled experiment. The treatment is the change being tested, and users are split into two groups:</p>
   <ul class="post-points">
     <li><strong>Control group</strong> continues with the existing experience (1:1 video calling).</li>
     <li><strong>Treatment group</strong> gets access to the new feature (group video calling).</li>
   </ul>
+  <p>The difference in the metric between the two groups is the measured effect of the treatment. For example, if the treatment group averages 4.4 calls per user and the control group 4.0, the feature added 0.4 calls per user. This only works if exposure to the feature is the only meaningful difference between the groups. If the treatment group happened to contain mostly power users, you could not tell whether the feature or the user mix caused the gap.</p>
   <figure class="post-fig">
     <img src="images/ab-testing/chart-2-random-split.svg" alt="Eligible users are randomly assigned to group A, the control with 1:1 video calling, or group B, the treatment with group video calling" loading="lazy" width="800" height="340">
     <figcaption><span>Chart 2</span> Random assignment: every eligible user has the same chance of landing in either group.</figcaption>
@@ -121,6 +136,14 @@
       <figcaption><span>Chart 3</span> Illustrative data. If heavy users pick the new feature themselves, the groups differ before the test starts. Random assignment evens them out.</figcaption>
     </figure>
   </div>
+
+  <h3>Two ways to randomize</h3>
+  <ul class="post-points">
+    <li><strong>Completely randomized design.</strong> Every user is assigned to control or treatment by a random process, for example a random number generated for each user ID. It is simple and works well when the sample is large.</li>
+    <li><strong>Randomized block design.</strong> You first sort users into blocks of similar users, then randomize within each block. It is used to handle known nuisance factors.</li>
+  </ul>
+  <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile users make far fewer calls than desktop users. With a small sample, pure randomization could by chance put more desktop users in one group and distort the comparison. To prevent this, block by device: split users into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the feature caused it and not the device.</p>
+
   <p>Also think about how long to run the experiment. The duration should be long enough to capture typical user behavior, but not so long that it delays decision-making.</p>
   <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly state who is in control vs treatment, how users are assigned, and what you are comparing. Also consider network effects. For example, if a group of friends interacts frequently, assigning them to different groups can introduce bias. Where possible, group related users together to minimize interference.</p></div>
 
@@ -135,7 +158,7 @@
     <li>✅ Have I verified that the allocation matches the intended split?</li>
   </ul>
 
-  <h3>Step 4: Analyse results and draw conclusions</h3>
+  <h3>Step 5: Analyse results and draw conclusions</h3>
   <p>The question to ask: <em>"Did B perform better because of our change, is the improvement large enough to matter, and did it avoid causing other problems?"</em></p>
 
   <div class="post-table-wrap"><table class="post-table">
