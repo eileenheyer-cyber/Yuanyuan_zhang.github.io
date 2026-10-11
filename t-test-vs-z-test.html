@@ -44,8 +44,10 @@
   </ul>
   <p>The distinction matters because averages and proportions describe different types of data and require different statistical approaches.</p>
   <p>A mean summarizes numerical values that vary from user to user, such as the amount spent on each order. A proportion summarizes a binary outcome, such as whether a visitor makes a purchase.</p>
+
+  <h2>Understand why the choice matters</h2>
   <p>For a proportion, variability depends on the proportion itself and the sample size. This allows us to estimate its standard error directly from the data, without separately estimating a population standard deviation as we typically do when testing means.</p>
-  <p>The next question is whether the population standard deviation — the true spread of values across the population — is known.</p>
+  <p>When testing a mean, the next question is whether the population standard deviation — the true spread of values across the population — is known.</p>
   <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the t-distribution accounts for through its heavier tails, particularly with small samples. As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible.</p>
   <p>These distinctions give us a practical starting point for choosing the right statistical test.</p>
 
