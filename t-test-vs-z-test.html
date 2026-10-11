@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261011a">
+  <link rel="stylesheet" href="style.css?v=20261011b">
 </head>
 <body>
 
@@ -52,6 +52,10 @@
   <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the <strong>t-distribution</strong> accounts for through its heavier tails, particularly with small samples.</p>
   <p>As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible. A t-test is therefore generally appropriate for means whenever the population standard deviation is unknown, whatever the sample size.</p>
 
+  <h3>A simple way to remember it</h3>
+  <p>The z-test is like a detective with a clear case: the population standard deviation is known and the sample is large.</p>
+  <p>The t-test is like a detective working with less certain evidence: the population standard deviation is unknown, which is the usual case, and it matters most when the sample is small. The t-test adjusts for that uncertainty, which makes it more flexible in real-world situations.</p>
+
   <h2>03 — Choose the Right Test</h2>
   <p>Once you know the type of metric, one follow-up question settles the choice.</p>
   <figure class="post-fig">
@@ -68,10 +72,10 @@
       <tr><td><strong>Second answer</strong></td><td>No → t-test; Welch's t-test is a good default for two independent groups.</td><td>Two → two-proportion z-test.</td></tr>
     </tbody>
   </table></div>
-  <p><em>Both proportion tests rely on a suitable normal approximation. Other designs, including paired observations or very small counts, may require different tests.</em></p>
+  <div class="post-note post-note-warn"><p>Both proportion tests rely on a suitable normal approximation. Other designs, including paired observations or very small counts, may require different tests.</p></div>
 
   <h3>Welch's t-test</h3>
-  <div class="post-note post-note-plain"><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
+  <div class="post-note post-note-plain post-note-explain"><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
 
   <h2>04 — Apply It to Business Analytics</h2>
   <h3>Comparing Average Revenue</h3>
