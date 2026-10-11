@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261009e">
+  <link rel="stylesheet" href="style.css?v=20261011a">
 </head>
 <body>
 
@@ -51,11 +51,7 @@
 
   <h2>Build a decision tree</h2>
   <p>You do not need to memorize disconnected rules. Two questions are enough: what are you comparing, and is the standard deviation known?</p>
-  <figure class="post-fig">
-    <img src="images/t-test-vs-z-test/chart-1-decision-tree.svg" alt="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test." loading="lazy" width="800" height="530">
-    <figcaption><span>Chart 1</span> Choosing the test: first the type of metric, then whether the standard deviation is known.</figcaption>
-  </figure>
-  <p>When you compare the averages of two independent groups, use Welch's t-test. It does not assume that both groups have the same spread, which makes it the safe default.</p>
+  <div class="post-note post-note-plain"><p class="post-note-l">Welch's t-test</p><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
 
   <h2>Apply it to business analytics</h2>
   <h3>Average revenue between two campaigns</h3>
