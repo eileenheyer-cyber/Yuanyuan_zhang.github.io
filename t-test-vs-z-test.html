@@ -64,16 +64,6 @@
     <img src="images/t-test-vs-z-test/chart-1-decision-tree.svg" alt="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test." loading="lazy" width="800" height="586">
     <figcaption><span>Chart 1</span> Choosing the test: first the type of metric, then one follow-up question.</figcaption>
   </figure>
-  <p>The same logic as a compact reference table:</p>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th></th><th>Mean</th><th>Proportion</th></tr></thead>
-    <tbody>
-      <tr><td><strong>What you compare</strong></td><td>Comparing numerical values, such as revenue or delivery time.</td><td>Comparing binary outcomes, such as conversion or click rates.</td></tr>
-      <tr><td><strong>Question to ask</strong></td><td>Is the population standard deviation known?</td><td>One or two groups?</td></tr>
-      <tr><td><strong>First answer</strong></td><td>Yes → z-test for a mean, if assumptions hold.</td><td>One → one-proportion z-test.</td></tr>
-      <tr><td><strong>Second answer</strong></td><td>No → t-test; Welch's t-test is a good default for two independent groups.</td><td>Two → two-proportion z-test.</td></tr>
-    </tbody>
-  </table></div>
 
   <h3>Welch's t-test</h3>
   <div class="post-note post-note-plain post-note-explain"><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
