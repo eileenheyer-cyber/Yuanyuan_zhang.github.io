@@ -1,42 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Decision tree: if you compare a share, use a z-test for proportions. If you compare an average and the population standard deviation is known, use a z-test; if it is estimated from the sample, which is the usual case, use a t-test.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 530" role="img" aria-label="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test.">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0a0a0a"/></marker>
   </defs>
-  <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="19" fill="#0a0a0a" text-anchor="middle">
+  <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="17" fill="#0a0a0a" text-anchor="middle">
     <!-- connectors -->
     <g stroke="#0a0a0a" stroke-width="2" fill="none" marker-end="url(#arr)">
-      <path d="M340 84 L175 140"/>
-      <path d="M460 84 L600 140"/>
-      <path d="M175 214 L175 376"/>
-      <path d="M600 214 L600 266"/>
-      <path d="M520 330 L450 376"/>
-      <path d="M680 330 L690 376"/>
+      <path d="M340 68 L210 108"/>
+      <path d="M460 68 L590 108"/>
+      <path d="M210 206 L210 246"/>
+      <path d="M590 206 L590 246"/>
+      <path d="M180 298 L125 352"/>
+      <path d="M240 298 L305 352"/>
+      <path d="M560 298 L495 352"/>
+      <path d="M620 298 L685 352"/>
     </g>
-    <!-- start -->
-    <rect x="260" y="20" width="280" height="64" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
-    <text x="400" y="59" font-weight="700">What are you comparing?</text>
-    <!-- level 2 -->
-    <rect x="40" y="140" width="270" height="74" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
-    <text x="175" y="173" font-weight="700">A share (proportion)</text>
-    <text x="175" y="198" font-size="17">e.g. conversion rate</text>
-    <rect x="465" y="140" width="270" height="74" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
-    <text x="600" y="173" font-weight="700">An average (mean)</text>
-    <text x="600" y="198" font-size="17">e.g. revenue per user</text>
-    <!-- question -->
-    <rect x="440" y="266" width="320" height="64" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
-    <text x="600" y="293">Is the population standard</text>
-    <text x="600" y="316">deviation known?</text>
-    <text x="458" y="352" font-weight="700" text-anchor="end" font-size="17">Yes</text>
-    <text x="702" y="352" font-weight="700" text-anchor="start" font-size="17">No</text>
-    <!-- results -->
-    <rect x="40" y="376" width="270" height="94" fill="#dc452d"/>
-    <text x="175" y="413" fill="#ffffff" font-weight="700" font-size="21">Z-test</text>
-    <text x="175" y="440" fill="#ffffff" font-size="17">for proportions</text>
-    <rect x="360" y="376" width="180" height="94" fill="#dc452d"/>
-    <text x="450" y="413" fill="#ffffff" font-weight="700" font-size="21">Z-test</text>
-    <text x="450" y="440" fill="#ffffff" font-size="17">for means</text>
-    <rect x="590" y="376" width="180" height="94" fill="#1d57b5"/>
-    <text x="680" y="413" fill="#ffffff" font-weight="700" font-size="21">T-test</text>
-    <text x="680" y="440" fill="#ffffff" font-size="17">Welch's for 2 groups</text>
+
+    <!-- root question -->
+    <rect x="200" y="16" width="400" height="52" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="400" y="49" font-size="20" font-weight="700">What type of metric are you analyzing?</text>
+
+    <!-- branch: mean -->
+    <rect x="30" y="108" width="360" height="98" fill="#1d57b5"/>
+    <text x="210" y="142" fill="#ffffff" font-size="24" font-weight="700">Mean</text>
+    <text x="210" y="170" fill="#ffffff">Comparing numerical values,</text>
+    <text x="210" y="192" fill="#ffffff">such as revenue or delivery time</text>
+    <rect x="30" y="246" width="360" height="52" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="210" y="279" font-size="19" font-weight="700">Population SD known?</text>
+    <text x="150" y="333" font-weight="700" text-anchor="end">Yes</text>
+    <text x="272" y="333" font-weight="700" text-anchor="start">No</text>
+    <rect x="30" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="115" y="388" fill="#ffffff" font-size="20" font-weight="700">Z-test</text>
+    <text x="115" y="412" fill="#ffffff" font-size="20" font-weight="700">for a mean</text>
+    <text x="115" y="444" fill="#ffffff" font-size="16">if assumptions hold</text>
+    <rect x="220" y="352" width="170" height="124" fill="#1d57b5"/>
+    <text x="305" y="388" fill="#ffffff" font-size="20" font-weight="700">T-test</text>
+    <text x="305" y="420" fill="#ffffff" font-size="16">Welch's t-test is the</text>
+    <text x="305" y="440" fill="#ffffff" font-size="16">default for two</text>
+    <text x="305" y="460" fill="#ffffff" font-size="16">independent groups</text>
+
+    <!-- branch: proportion -->
+    <rect x="410" y="108" width="360" height="98" fill="#f5c548"/>
+    <text x="590" y="142" font-size="24" font-weight="700">Proportion</text>
+    <text x="590" y="170">Comparing binary outcomes, such as</text>
+    <text x="590" y="192">conversion or click rates</text>
+    <rect x="410" y="246" width="360" height="52" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/>
+    <text x="590" y="279" font-size="19" font-weight="700">One or two groups?</text>
+    <text x="530" y="333" font-weight="700" text-anchor="end">One</text>
+    <text x="652" y="333" font-weight="700" text-anchor="start">Two</text>
+    <rect x="410" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="495" y="388" fill="#ffffff" font-size="20" font-weight="700">One-proportion</text>
+    <text x="495" y="412" fill="#ffffff" font-size="20" font-weight="700">z-test</text>
+    <rect x="600" y="352" width="170" height="124" fill="#dc452d"/>
+    <text x="685" y="388" fill="#ffffff" font-size="20" font-weight="700">Two-proportion</text>
+    <text x="685" y="412" fill="#ffffff" font-size="20" font-weight="700">z-test</text>
+    <text x="685" y="444" fill="#ffffff" font-size="16">if the normal</text>
+    <text x="685" y="464" fill="#ffffff" font-size="16">approximation holds</text>
+
+    <!-- footnote -->
+    <text x="400" y="510" font-size="16" fill="#555555">Other designs, such as paired observations or very small counts, may need different tests.</text>
   </g>
 </svg>
