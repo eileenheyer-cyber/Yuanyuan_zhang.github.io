@@ -37,16 +37,17 @@
   <p>You have two versions of something and a number for each. Before you can say one is better, you need a statistical test, and the two most common are the t-test and the z-test. This post shows how to choose between them by starting from the business question and not from the formulas. It builds on <a href="ab-testing.html">A/B Testing</a>.</p>
 
   <h2>Start with the business question</h2>
-  <p>Every test starts with what you are comparing. In business analytics, it is usually one of two things:</p>
+  <p>Every statistical test starts with what you want to compare. In business analytics, it is usually one of two things:</p>
   <ul class="post-points">
-    <li><strong>An average.</strong> For example average order value or revenue per user.</li>
-    <li><strong>A share.</strong> For example conversion rate or click rate.</li>
+    <li><strong>An average</strong>, such as average order value or revenue per user.</li>
+    <li><strong>A proportion</strong>, such as conversion rate or click rate.</li>
   </ul>
-  <p>Averages and shares call for different tests, so this one question already narrows the choice.</p>
-
-  <h2>Understand the difference</h2>
-  <p>A <strong>mean</strong> summarizes a number that varies from user to user, such as the amount in each order. A <strong>proportion</strong> summarizes a yes/no outcome, such as whether a visitor bought. For a proportion, such as a conversion rate, the outcome is binary: a visitor either converts or does not. Its variability depends on the proportion and the sample size, so we can estimate its standard error directly from the data. This is why a two-proportion z-test does not require a separately estimated population standard deviation in the same way a t-test for means typically does.</p>
-  <p>The next question is whether you know the <strong>population standard deviation</strong>, the true spread of all users. In practice you almost never do, so you estimate it from your sample. Estimating the population standard deviation introduces additional uncertainty. The <strong>t-distribution</strong> accounts for this uncertainty through its heavier tails, particularly when the sample is small. As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible.</p>
+  <p>The distinction matters because averages and proportions describe different types of data and require different statistical approaches.</p>
+  <p>A mean summarizes numerical values that vary from user to user, such as the amount spent on each order. A proportion summarizes a binary outcome, such as whether a visitor makes a purchase.</p>
+  <p>For a proportion, variability depends on the proportion itself and the sample size. This allows us to estimate its standard error directly from the data, without separately estimating a population standard deviation as we typically do when testing means.</p>
+  <p>The next question is whether the population standard deviation — the true spread of values across the population — is known.</p>
+  <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the t-distribution accounts for through its heavier tails, particularly with small samples. As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible.</p>
+  <p>These distinctions give us a practical starting point for choosing the right statistical test.</p>
 
   <h2>Build a decision tree</h2>
   <p>You do not need to memorize disconnected rules. Two questions are enough: what are you comparing, and is the standard deviation known?</p>
