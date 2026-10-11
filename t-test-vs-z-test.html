@@ -36,6 +36,15 @@
 
   <p>You have two versions of something and a number for each. Before you can say one is better, you need a statistical test, and the two most common are the t-test and the z-test. This post shows how to choose between them by starting from the business question and not from the formulas. It builds on <a href="ab-testing.html">A/B Testing</a>.</p>
 
+  <p>Both the z-test and t-test are tools used in hypothesis testing to help us decide if there is a meaningful difference between groups or if a result is just due to chance. Think of them as detectives investigating data clues to find the truth.</p>
+  <p>The z-test is like a detective who works best when the case is clear and the evidence is strong. It is used when the sample size is large (usually over 30) and when we know the population’s standard deviation (a measure of spread). For example, if you want to check if the average delivery time of a food service is different from a known standard, and you have a big sample and know the population spread, you’d use a z-test.</p>
+  <p>On the other hand, the t-test is like a detective who is skilled at working with smaller or less certain cases. It is used when the sample size is small and the population standard deviation is unknown. For instance, if you want to compare the average time spent on two versions of a website but only have a small sample and don’t know the population spread, you’d use a t-test. The t-test adjusts for this uncertainty, making it more flexible for real-world situations.</p>
+  <p>In short:</p>
+  <ul class="post-points">
+    <li>Use a z-test when you have a large sample and know the population spread.</li>
+    <li>Use a t-test when you have a small sample or don’t know the population spread.</li>
+  </ul>
+
   <h2>Start with the business question</h2>
   <p>Every statistical test starts with what you want to compare. In business analytics, it is usually one of two things:</p>
   <ul class="post-points">
