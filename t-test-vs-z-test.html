@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>T-Test vs. Z-Test – Yuanyuan Zhang</title>
+  <meta name="description" content="How to choose between a t-test and a z-test: start from the business question, then use a simple decision tree for averages and conversion rates.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261009e">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Inference &amp; experiments</p>
+  <h1 class="post-title">T-Test vs. Z-Test</h1>
+
+  <p>You have two versions of something and a number for each. Before you can say one is better, you need a statistical test, and the two most common are the t-test and the z-test. This post shows how to choose between them by starting from the business question and not from the formulas. It builds on <a href="ab-testing.html">A/B Testing</a>.</p>
+
+  <h2>Start with the business question</h2>
+  <p>Every test starts with what you are comparing. In business analytics, it is usually one of two things:</p>
+  <ul class="post-points">
+    <li><strong>An average.</strong> For example average order value or revenue per user.</li>
+    <li><strong>A share.</strong> For example conversion rate or click rate.</li>
+  </ul>
+  <p>Averages and shares call for different tests, so this one question already narrows the choice.</p>
+
+  <h2>Understand the difference</h2>
+  <p>A <strong>mean</strong> summarizes a number that varies from user to user, such as the amount in each order. A <strong>proportion</strong> summarizes a yes/no outcome, such as whether a visitor bought. For a proportion, the spread is fixed by the proportion itself, so no separate standard deviation is needed.</p>
+  <p>The next question is whether you know the <strong>population standard deviation</strong>, the true spread of all users. In practice you almost never do, so you estimate it from your sample. That estimate adds uncertainty, and the <strong>t-distribution</strong> accounts for it: it has heavier tails than the <strong>z-distribution</strong> (the standard normal), so it demands stronger evidence before a result counts as significant. As the sample grows, the estimate becomes more reliable and the t-distribution becomes nearly identical to the z-distribution.</p>
+
+  <h2>Build a decision tree</h2>
+  <p>You do not need to memorize disconnected rules. Two questions are enough: what are you comparing, and is the standard deviation known?</p>
+  <figure class="post-fig">
+    <img src="images/t-test-vs-z-test/chart-1-decision-tree.svg" alt="Decision tree: a share leads to a z-test for proportions; an average with a known population standard deviation leads to a z-test; an average with an estimated standard deviation, the usual case, leads to a t-test" loading="lazy" width="800" height="500">
+    <figcaption><span>Chart 1</span> Choosing the test: first the type of metric, then whether the standard deviation is known.</figcaption>
+  </figure>
+  <p>When you compare the averages of two independent groups, use Welch's t-test. It does not assume that both groups have the same spread, which makes it the safe default.</p>
+
+  <h2>Apply it to business analytics</h2>
+  <h3>Average revenue between two campaigns</h3>
+  <p>Campaign A reached 1,000 customers with an average revenue of €52 and a standard deviation of €30. Campaign B reached 1,000 customers with an average revenue of €56 and a standard deviation of €32. The metric is an average and the spread is estimated from the samples, so use Welch's t-test. The result is t = 2.88 and p ≈ 0.004, so the €4 difference is unlikely to be chance.</p>
+
+  <h3>Conversion rate between two website versions</h3>
+  <p>Version A converted 1,000 of 20,000 visitors (5.0%). Version B converted 1,120 of 20,000 (5.6%). The metric is a share, so use a two-proportion z-test. The result is z = 2.68 and p ≈ 0.007, so the 0.6-point lift is unlikely to be chance.</p>
+  <p>The numbers in both examples are illustrative.</p>
+
+  <h2>How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“We compared the two campaigns, and campaign B brings in €4 more per customer than campaign A. With a thousand customers in each group, a gap this size would show up by chance less than 1 time in 100, so we treat it as real.”</p>
+    <p class="post-callout-q">“The statistics tell us the difference is real, not that it is worth acting on. The question for you is whether €4 more per customer justifies the extra cost of running campaign B.”</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The business question decides the test. Averages usually need a t-test, because you estimate the spread from your data. Shares use a z-test. With large samples the two give almost the same answer.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
