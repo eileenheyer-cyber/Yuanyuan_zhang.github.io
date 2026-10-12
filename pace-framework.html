@@ -9,6 +9,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20261011b">
+  <style>
+    .post .exec-report { border: 1px solid #d9d4c7; border-top: 6px solid #0a0a0a; padding: 26px 28px 22px; margin: 22px 0 26px; background: #fff; }
+    .post .exec-report-kicker { margin: 0 0 6px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .post .exec-report-title { margin: 0 0 22px; font-size: 1.4rem; font-weight: 700; line-height: 1.25; }
+    .post .exec-report-grid { display: grid; grid-template-columns: 140px 1fr; gap: 14px 18px; }
+    .post .exec-report-grid > div { font-size: 0.95rem; line-height: 1.55; }
+    .post .exec-tag { display: block; padding: 6px 8px; text-align: center; font-weight: 700; color: #fff; }
+    .post .exec-tag-plan { background: #f5c548; color: #0a0a0a; }
+    .post .exec-tag-construct { background: #dc452d; }
+    .post .exec-tag-analyze { background: #1d57b5; }
+    .post .exec-tag-execute { background: #3d8a5a; }
+    @media (max-width: 560px) {
+      .post .exec-report { padding: 20px 18px 16px; }
+      .post .exec-report-grid { grid-template-columns: 1fr; gap: 6px; }
+      .post .exec-report-grid > div:nth-child(even) { margin-bottom: 12px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -170,13 +187,22 @@
   <h3>Example: From Analysis to Executive Summary</h3>
   <p>Imagine an e-commerce analytics project investigating customer retention.</p>
   <p>A technical report might contain SQL queries, data model diagrams, cohort analyses, and detailed visualizations. An executive summary would focus on the business question and the implications of the evidence.</p>
-  <ul class="post-points">
-    <li><strong>Objective:</strong> Understand customer repeat-purchase behavior.</li>
-    <li><strong>Approach:</strong> Analyze order history and compare purchasing patterns across customer cohorts.</li>
-    <li><strong>Key finding:</strong> Identify which customer groups show lower repeat-purchase rates, based on the observed data.</li>
-    <li><strong>Business implication:</strong> Certain customer groups may require further investigation to understand why they return less frequently.</li>
-    <li><strong>Next step:</strong> Examine purchase intervals, product categories, and customer acquisition channels before recommending targeted retention measures.</li>
-  </ul>
+  <div class="exec-report" role="group" aria-label="Example executive summary: customer retention analysis">
+    <p class="exec-report-kicker">Executive summary · Illustrative example</p>
+    <p class="exec-report-title">Customer retention analysis</p>
+    <div class="exec-report-grid">
+      <div><span class="exec-tag exec-tag-plan">Objective</span></div>
+      <div>Understand customer repeat-purchase behavior.</div>
+      <div><span class="exec-tag exec-tag-construct">Approach</span></div>
+      <div>Analyze order history and compare purchasing patterns across customer cohorts.</div>
+      <div><span class="exec-tag exec-tag-analyze">Key finding</span></div>
+      <div>Identify which customer groups show lower repeat-purchase rates, based on the observed data.</div>
+      <div><span class="exec-tag exec-tag-analyze">Business implication</span></div>
+      <div>Certain customer groups may require further investigation to understand why they return less frequently.</div>
+      <div><span class="exec-tag exec-tag-execute">Next step</span></div>
+      <div>Examine purchase intervals, product categories, and customer acquisition channels before recommending targeted retention measures.</div>
+    </div>
+  </div>
   <p>This example illustrates the structure rather than a real analytical result. Actual findings and recommendations must be based on the project's data.</p>
   <p>The distinction matters: an executive summary should simplify the communication, not oversimplify the evidence.</p>
 
