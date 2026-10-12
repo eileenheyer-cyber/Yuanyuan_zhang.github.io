@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Question to Decision: The PACE Framework – Yuanyuan Zhang</title>
+  <meta name="description" content="How the PACE framework (Plan, Analyze, Construct, Execute) structures a data project, from the business question to an executive summary that supports a decision.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261011b">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Describing data</p>
+  <h1 class="post-title">From Question to Decision: How the PACE Framework Structures a Data Project</h1>
+
+  <p>A data analytics project involves much more than writing SQL queries, cleaning datasets, or building dashboards. Before the first visualization is created, there is a business problem to understand. After the analysis is complete, there is still the challenge of turning findings into decisions.</p>
+  <p>Without a clear structure, it is easy to focus on individual technical tasks while losing sight of the bigger picture.</p>
+  <p>The <strong>PACE framework — Plan, Analyze, Construct, Execute —</strong> provides a structured approach to navigating this process. It connects the initial business question with data exploration, solution development, and the communication of results.</p>
+
+  <figure class="post-fig">
+    <svg viewBox="0 0 600 306" role="img" aria-label="The four PACE stages as colored circles in a row: Plan, Analyze, Construct, Execute, joined by arrows. A line below loops from Execute back to Plan, labeled: revisit when new information arrives. A black bar underneath reads: communication at every stage." font-family="Inter, Helvetica, Arial, sans-serif">
+      <circle cx="75" cy="70" r="44" fill="#f5c548"/>
+      <rect x="57" y="48" width="36" height="44" fill="#f4efe3"/>
+      <line x1="63" y1="60" x2="87" y2="60" stroke="#0a0a0a" stroke-width="3.5"/>
+      <line x1="63" y1="70" x2="87" y2="70" stroke="#0a0a0a" stroke-width="3.5"/>
+      <line x1="63" y1="80" x2="87" y2="80" stroke="#0a0a0a" stroke-width="3.5"/>
+      <circle cx="225" cy="70" r="44" fill="#1d57b5"/>
+      <circle cx="220" cy="65" r="15" fill="#f4efe3"/>
+      <line x1="231" y1="76" x2="245" y2="90" stroke="#0a0a0a" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="375" cy="70" r="44" fill="#dc452d"/>
+      <rect x="355" y="70" width="11" height="22" fill="#0a0a0a"/>
+      <rect x="369" y="59" width="11" height="33" fill="#0a0a0a"/>
+      <rect x="383" y="48" width="11" height="44" fill="#0a0a0a"/>
+      <circle cx="525" cy="70" r="44" fill="#3d8a5a"/>
+      <polygon points="510,48 544,70 510,92" fill="#f4efe3"/>
+      <polygon points="143,60 143,80 158,70" fill="#0a0a0a"/>
+      <polygon points="293,60 293,80 308,70" fill="#0a0a0a"/>
+      <polygon points="443,60 443,80 458,70" fill="#0a0a0a"/>
+      <text x="75" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#0a0a0a">Plan</text>
+      <text x="225" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#0a0a0a">Analyze</text>
+      <text x="375" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#0a0a0a">Construct</text>
+      <text x="525" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#0a0a0a">Execute</text>
+      <path d="M525 168 V200 H75 V180" fill="none" stroke="#0a0a0a" stroke-width="3"/>
+      <polygon points="66,182 84,182 75,166" fill="#0a0a0a"/>
+      <text x="300" y="232" text-anchor="middle" font-size="20" fill="#0a0a0a">Revisit when new information arrives</text>
+      <rect x="20" y="252" width="560" height="46" fill="#0a0a0a"/>
+      <text x="300" y="275" text-anchor="middle" dominant-baseline="central" font-size="20" font-weight="700" fill="#f4efe3">Communication at every stage</text>
+    </svg>
+    <figcaption><span>Chart 1</span> The four PACE stages, the loop back to earlier stages, and communication running through all of them.</figcaption>
+  </figure>
+
+  <h2>01 — Plan: Start with the Business Question</h2>
+  <p>Every analytics project should begin with a clear understanding of the problem it aims to solve.</p>
+  <p>Before working with data, it is important to establish the project's objectives and understand the decisions the analysis should support.</p>
+  <p>Some questions to consider:</p>
+  <ul class="post-points">
+    <li>What business problem are we trying to understand?</li>
+    <li>Which decisions should the analysis support?</li>
+    <li>Who will use the results?</li>
+    <li>What information do we need to answer the key questions?</li>
+    <li>Which data sources and resources are available?</li>
+  </ul>
+  <p>These questions help define the project's scope and prevent unnecessary analysis.</p>
+  <p>For example, an e-commerce business might want to understand why revenue is growing while profitability remains unchanged. Simply building a sales dashboard would not necessarily answer that question. The project might also require an investigation of product margins, discounts, customer behavior, and order composition.</p>
+  <p>Planning establishes the direction of the project and provides a reference point for evaluating whether the analysis is useful.</p>
+
+  <h2>02 — Analyze: Understand the Data</h2>
+  <p>Once the business questions are defined, the next step is to understand the available data.</p>
+  <p>This involves collecting data from relevant sources, assessing its quality, and exploring its structure and characteristics.</p>
+  <p>Typical activities include:</p>
+  <ul class="post-points">
+    <li>Extracting data from databases, APIs, or external sources</li>
+    <li>Cleaning inconsistent formats and handling missing values</li>
+    <li>Identifying duplicates and potential data quality issues</li>
+    <li>Exploring distributions, patterns, and relationships</li>
+    <li>Validating whether the data can answer the original questions</li>
+  </ul>
+  <p>Exploratory data analysis (EDA) is particularly important at this stage; see <a href="datenviz-eda.html">Exploratory Data Analysis</a> for a worked example. It helps reveal patterns that were not obvious at the beginning and exposes limitations that could affect the conclusions.</p>
+  <p>Data quality is not simply a technical concern. Incorrect product prices, missing customer identifiers, or inconsistent order records can lead to misleading business metrics.</p>
+  <p>The objective is therefore not just to make data usable, but to understand how reliable it is and what conclusions can reasonably be drawn from it.</p>
+  <p>Sometimes, the analysis also reveals that the original business question needs to be refined. This is a natural part of the process: understanding the data often improves our understanding of the problem itself.</p>
+
+  <h2>03 — Construct: Build the Analytical Solution</h2>
+  <p>With a better understanding of the data, the project moves into the construction phase.</p>
+  <p>Depending on the business problem, this might involve building a data model, defining KPIs, conducting statistical analysis, developing a dashboard, or creating a machine learning model.</p>
+  <p>For an e-commerce analytics project, the work could include:</p>
+  <ul class="post-points">
+    <li>Designing a data model that connects customers, orders, products, and dates</li>
+    <li>Defining metrics such as average order value, repeat purchase rate, and revenue growth</li>
+    <li>Developing SQL queries or analytical calculations</li>
+    <li>Building visualizations that make important patterns visible</li>
+    <li>Testing whether the results are accurate and consistent</li>
+  </ul>
+  <p>The choice of tools should follow the problem, rather than the other way around.</p>
+  <p>A complex machine learning model is not automatically better than a straightforward analysis. Sometimes, a well-defined KPI and a carefully designed dashboard provide more value than a sophisticated model.</p>
+  <p>The goal is to build a solution that answers the business question clearly and reliably.</p>
+  <p>Validation remains important throughout this stage. If a metric produces unexpected results, the analyst may need to revisit its definition, review the data model, or investigate the underlying data before proceeding.</p>
+
+  <h2>04 — Execute: Turn Findings into Decisions</h2>
+  <p>Analysis creates value when its results can inform action.</p>
+  <p>In the Execute phase, findings are communicated to stakeholders through dashboards, reports, presentations, or executive summaries. The emphasis shifts from explaining what was analyzed to communicating what the results mean.</p>
+  <p>An effective presentation should help stakeholders understand three things:</p>
+  <ul class="post-points">
+    <li><strong>What happened?</strong> Present the key findings and relevant evidence.</li>
+    <li><strong>Why does it matter?</strong> Explain the potential business implications and distinguish observed patterns from assumptions.</li>
+    <li><strong>What should happen next?</strong> Recommend practical next steps, further investigation, or changes to the business strategy.</li>
+  </ul>
+  <p>For example, an analysis might reveal that a small group of products generates a large share of revenue but has unusually high return rates. The next step would not necessarily be to discontinue those products. Instead, the business might investigate product descriptions, customer expectations, quality issues, or return reasons before deciding what action to take.</p>
+  <p>Communication also creates an opportunity for feedback. Stakeholders may raise new questions, challenge assumptions, or identify information that was missing from the original analysis.</p>
+  <p>This feedback can shape the next iteration of the project.</p>
+
+  <h2>PACE Is a Cycle, Not a Straight Line</h2>
+  <p>Although PACE presents four stages in a logical order, real-world data projects rarely follow a perfectly linear process.</p>
+  <p>During data validation, you might discover that a key metric cannot be calculated reliably. While developing a dashboard, you might realize that the original data model does not support the analysis you need. A stakeholder might introduce a new business question after reviewing the initial findings.</p>
+  <p>In each case, returning to an earlier stage is part of the process.</p>
+  <p><strong>Plan → Analyze → Construct → Execute → Revisit</strong></p>
+  <p>This iterative approach is particularly important because data projects involve uncertainty. You often learn more about the problem as you investigate it.</p>
+  <p>Communication connects the stages. Questions, progress updates, and feedback help keep the technical work aligned with the needs of the business.</p>
+  <p>Smaller tasks can follow a similar cycle. Even when cleaning a dataset or creating an individual visualization, it helps to define the objective, investigate the available information, build the solution, and validate or communicate the result.</p>
+  <p>The framework is therefore not a rigid checklist. It is a way to maintain direction while adapting to new information.</p>
+
+  <h2>Executive Summaries: Turning Analysis into a Business Story</h2>
+  <p>A data project can involve extensive data cleaning, complex queries, data modeling, and detailed visualizations. However, decision-makers rarely have the time to review every technical detail.</p>
+  <p>An <strong>executive summary</strong> bridges this gap. It provides a concise overview of the project's purpose, key findings, and recommended next steps, helping stakeholders understand what matters and what decisions may be required.</p>
+  <p>Executive summaries are commonly presented as a one-page document or a single presentation slide. Their format may vary, but the objective remains the same: communicate the most important information clearly and efficiently.</p>
+
+  <h3>What Should an Executive Summary Include?</h3>
+  <p>A useful executive summary typically covers five elements.</p>
+  <ul class="post-points">
+    <li><strong>1. Project objective.</strong> What business problem is the project addressing? State the question or hypothesis that guided the analysis.</li>
+    <li><strong>2. Problem context.</strong> Why does the problem matter? Briefly explain the business situation and the information needed to understand it.</li>
+    <li><strong>3. Approach or solution.</strong> Summarize how the problem was investigated and what analytical approach was used. Include only the methodological details that help the audience interpret the results.</li>
+    <li><strong>4. Key findings.</strong> Highlight the most relevant insights supported by the data. Prioritize findings that have meaningful business implications rather than listing every result.</li>
+    <li><strong>5. Recommendations and next steps.</strong> Explain what the findings suggest the organization should do next. Recommendations should be actionable, proportionate to the evidence, and clear about any remaining uncertainty.</li>
+  </ul>
+  <p>The amount of detail depends on the audience. A technical team may need additional context about data quality or methodology, while an executive audience will usually prioritize business impact, risks, and decisions.</p>
+
+  <h3>How PACE Supports Executive Summaries</h3>
+  <p>The PACE framework provides a useful foundation for creating an executive summary because each stage contributes a different part of the final narrative.</p>
+
+  <figure class="post-fig">
+    <svg viewBox="0 0 600 316" role="img" aria-label="The five elements of an executive summary and the PACE stage each one draws from. Project objective: Plan. Problem context: Plan. Approach: Construct. Key findings: Analyze and Construct. Recommendations: Execute." font-family="Inter, Helvetica, Arial, sans-serif">
+      <circle cx="20" cy="40" r="16" fill="#f5c548"/>
+      <text x="100" y="40" dominant-baseline="central" font-size="20" font-weight="700" fill="#0a0a0a">Project objective</text>
+      <text x="600" y="40" text-anchor="end" dominant-baseline="central" font-size="20" fill="#0a0a0a">Plan</text>
+      <line x1="0" y1="70" x2="600" y2="70" stroke="#0a0a0a" stroke-width="1.5"/>
+      <circle cx="20" cy="100" r="16" fill="#f5c548"/>
+      <text x="100" y="100" dominant-baseline="central" font-size="20" font-weight="700" fill="#0a0a0a">Problem context</text>
+      <text x="600" y="100" text-anchor="end" dominant-baseline="central" font-size="20" fill="#0a0a0a">Plan</text>
+      <line x1="0" y1="130" x2="600" y2="130" stroke="#0a0a0a" stroke-width="1.5"/>
+      <circle cx="20" cy="160" r="16" fill="#dc452d"/>
+      <text x="100" y="160" dominant-baseline="central" font-size="20" font-weight="700" fill="#0a0a0a">Approach</text>
+      <text x="600" y="160" text-anchor="end" dominant-baseline="central" font-size="20" fill="#0a0a0a">Construct</text>
+      <line x1="0" y1="190" x2="600" y2="190" stroke="#0a0a0a" stroke-width="1.5"/>
+      <circle cx="20" cy="220" r="16" fill="#1d57b5"/>
+      <circle cx="56" cy="220" r="16" fill="#dc452d"/>
+      <text x="100" y="220" dominant-baseline="central" font-size="20" font-weight="700" fill="#0a0a0a">Key findings</text>
+      <text x="600" y="220" text-anchor="end" dominant-baseline="central" font-size="20" fill="#0a0a0a">Analyze + Construct</text>
+      <line x1="0" y1="250" x2="600" y2="250" stroke="#0a0a0a" stroke-width="1.5"/>
+      <circle cx="20" cy="280" r="16" fill="#3d8a5a"/>
+      <text x="100" y="280" dominant-baseline="central" font-size="20" font-weight="700" fill="#0a0a0a">Recommendations</text>
+      <text x="600" y="280" text-anchor="end" dominant-baseline="central" font-size="20" fill="#0a0a0a">Execute</text>
+    </svg>
+    <figcaption><span>Chart 2</span> The five parts of an executive summary, each tagged with the PACE stage it draws from.</figcaption>
+  </figure>
+
+  <div class="post-table-wrap">
+    <table class="post-table">
+      <thead>
+        <tr><th>PACE stage</th><th>Contribution to the summary</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Plan</strong></td><td>Defines the business problem, project objectives, and key questions.</td></tr>
+        <tr><td><strong>Analyze</strong></td><td>Provides the evidence, context, and data quality considerations.</td></tr>
+        <tr><td><strong>Construct</strong></td><td>Establishes the analytical approach, metrics, and resulting insights.</td></tr>
+        <tr><td><strong>Execute</strong></td><td>Communicates the findings and translates them into recommendations and next steps.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A PACE strategy document can serve as a working reference throughout the project. It records the questions being investigated, the decisions made, and the findings that emerge. By the end of the project, much of the information needed for an executive summary is already available.</p>
+  <p>The summary should not simply reproduce the project documentation. Instead, it should select the information most relevant to the audience and the decision at hand.</p>
+
+  <h3>Example: From Analysis to Executive Summary</h3>
+  <p>Imagine an e-commerce analytics project investigating customer retention.</p>
+  <p>A technical report might contain SQL queries, data model diagrams, cohort analyses, and detailed visualizations. An executive summary would focus on the business question and the implications of the evidence.</p>
+  <ul class="post-points">
+    <li><strong>Objective:</strong> Understand customer repeat-purchase behavior.</li>
+    <li><strong>Approach:</strong> Analyze order history and compare purchasing patterns across customer cohorts.</li>
+    <li><strong>Key finding:</strong> Identify which customer groups show lower repeat-purchase rates, based on the observed data.</li>
+    <li><strong>Business implication:</strong> Certain customer groups may require further investigation to understand why they return less frequently.</li>
+    <li><strong>Next step:</strong> Examine purchase intervals, product categories, and customer acquisition channels before recommending targeted retention measures.</li>
+  </ul>
+  <p>This example illustrates the structure rather than a real analytical result. Actual findings and recommendations must be based on the project's data.</p>
+  <p>The distinction matters: an executive summary should simplify the communication, not oversimplify the evidence.</p>
+
+  <h3>The Goal Is Clarity, Not Completeness</h3>
+  <p>An effective executive summary does not attempt to include everything the analyst has done. It identifies what the audience needs to know, why it matters, and what should happen next.</p>
+  <p>This requires more than writing skills. It requires an understanding of the business context, the ability to distinguish meaningful findings from supporting details, and the judgment to communicate uncertainty responsibly.</p>
+  <p>Ultimately, the value of an analysis depends not only on the quality of the work behind it, but also on whether the people responsible for making decisions can understand and act on its results.</p>
+
+  <h2>Documenting the Process</h2>
+  <p>A PACE strategy document can support this workflow by recording the project's goals, key questions, tasks, decisions, and outstanding issues.</p>
+  <p>It can also help explain why particular analytical approaches were chosen and how the project evolved as new information became available.</p>
+  <p>This documentation has value beyond project management. It makes the analytical process easier to communicate, supports collaboration, and provides a record of the reasoning behind the final solution.</p>
+  <p>For a data analyst, documenting not only the result but also the decisions made along the way can be particularly useful when presenting project work to colleagues, stakeholders, or potential employers.</p>
+  <p>It can also provide the foundation for an executive summary, a project presentation, or a portfolio case study.</p>
+
+  <h2>Final Thoughts</h2>
+  <p>The PACE framework offers a useful reminder that data analytics is not simply a sequence of technical tasks.</p>
+  <p>It starts with understanding a business problem, continues through the investigation and construction of an analytical solution, and reaches its purpose when the findings can support better decisions.</p>
+  <p>For me, the most valuable idea behind PACE is the connection between these stages. Data quality influences analysis. Analysis influences the solution. And communication determines whether the results are understood and used.</p>
+  <p>An executive summary brings this connection into focus by translating the work behind a project into a concise, decision-oriented narrative.</p>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p>
+    <p><strong>The objective is not just to produce an analysis. It is to turn a business question into evidence, and evidence into a decision.</strong></p>
+  </div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
