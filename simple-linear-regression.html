@@ -55,36 +55,23 @@
     <figcaption><span>Chart 1</span> NordHome's five past months: sales rise with advertising spend. The dashed line marks the €6k the manager is considering. Illustrative data.</figcaption>
   </figure>
 
-  <h2>What is linear regression?</h2>
-  <p>Linear regression is a model that describes how one variable changes with another using a straight line. It has two jobs:</p>
+  <h2>Linear Regression Basics</h2>
+  <p>Linear regression models a relationship that can be drawn as a line on a graph. The line shows how a <strong>dependent variable (y)</strong> changes as an <strong>independent variable (x)</strong> changes. It has two jobs: to <strong>predict</strong> (estimate sales for a spend we have not tried) and to <strong>explain</strong> (quantify how much sales tend to change when spend changes).</p>
   <ul class="post-points">
-    <li><strong>Predict.</strong> Estimate sales for a spend we have not tried.</li>
-    <li><strong>Explain.</strong> Quantify how much sales tend to change when spend changes.</li>
+    <li><strong>Dependent variable (y).</strong> The continuous outcome we want to estimate. Here, sales.</li>
+    <li><strong>Independent variable (x).</strong> The predictor, or explanatory factor, we use to make the estimate. Here, advertising spend.</li>
   </ul>
 
-  <h2>Independent vs. dependent variables</h2>
-  <ul class="post-points">
-    <li><strong>Independent variable (x).</strong> Also called the predictor: the thing we use to predict. Here, advertising spend.</li>
-    <li><strong>Dependent variable (y).</strong> Also called the outcome: the thing we want to predict. Here, sales.</li>
-  </ul>
-  <p>In this example, advertising spend is the predictor (<em>x</em>), and sales are the outcome (<em>y</em>). We use advertising spend to estimate sales, but that does not automatically mean advertising causes the observed change in sales.</p>
-
-  <h2>The regression equation</h2>
+  <h2>Key Terms and Examples</h2>
+  <p>The model describes the line with one equation:</p>
   <p class="post-formula"><strong>ŷ = b₀ + b₁x</strong>
-    <span>ŷ is the predicted value, b₀ is the intercept and b₁ is the slope.</span></p>
-  <ul class="post-points">
-    <li><strong>ŷ (“y-hat”).</strong> The predicted value, not the observed one.</li>
-    <li><strong>b₀.</strong> The intercept.</li>
-    <li><strong>b₁.</strong> The slope.</li>
-  </ul>
+    <span>ŷ (“y-hat”) is the predicted value, not the observed one. b₀ is the intercept and b₁ is the slope.</span></p>
   <p>For NordHome's data, the best-fitting line is:</p>
   <p class="post-formula"><strong>ŷ = 19.684 + 4.868x</strong>
     <span>x is advertising spend and ŷ is predicted sales, both in €k.</span></p>
-
-  <h2>Intercept, slope, and fitted line</h2>
-  <p><strong>Slope (b₁ = 4.87).</strong> Each additional €1k of advertising goes with about <strong>€4.87k more sales</strong>, on average. This is the number the manager cares about most.</p>
-  <p><strong>Intercept (b₀ = 19.68).</strong> The model's predicted sales when advertising spend is zero. Since our observations start at €2k, this is an extrapolation. The intercept is mathematically necessary, but we cannot conclude from these data that NordHome would generate €19.68k in baseline sales.</p>
-  <p><strong>Fitted line.</strong> The line that minimises the total squared vertical distance between the points and the line. The distance for each point is its <strong>residual</strong>: actual − predicted. For the month with €7k spend, the line predicts about 53.8 and the actual value was 52:</p>
+  <p><strong>Slope (b₁ = 4.87).</strong> How much the dependent variable changes for each one-unit increase in the independent variable. Each additional €1k of advertising goes with about <strong>€4.87k more sales</strong>, on average. This is the number the manager cares about most.</p>
+  <p><strong>Intercept (b₀ = 19.68).</strong> The predicted value of y when x is zero. Since our observations start at €2k, this is an extrapolation. The intercept is mathematically necessary, but we cannot conclude from these data that NordHome would generate €19.68k in baseline sales.</p>
+  <p><strong>Fitted line and residuals.</strong> The fitted line minimises the total squared vertical distance between the points and the line. The distance for each point is its <strong>residual</strong>: actual − predicted. For the month with €7k spend, the line predicts about 53.8 and the actual value was 52:</p>
   <p class="post-formula"><strong>52 − 53.8 = −1.8</strong>
     <span>The residual for the €7k month: the actual value is 1.8 below the line.</span></p>
   <p>But how does the model decide which line fits best? That is where the method of least squares comes in, and we will explore it in the <a href="least-squares.html">next article</a>.</p>
@@ -100,15 +87,20 @@
   <p class="post-formula"><strong>b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</strong>
     <strong>b₀ = ȳ − b₁x̄</strong>
     <span>Where the numbers come from: x̄ = 5.2 and ȳ = 45 are the averages, so b₁ = 111 / 22.8 ≈ 4.868. In practice, software computes this for you.</span></p>
+  <p><strong>The same logic works elsewhere.</strong> A café could model cake sales from coffee sales: more coffees, more cakes, so the slope is positive. A retailer could model product sales from price: a higher price, fewer units sold, so the slope is negative.</p>
 
-  <h2>What the model does and doesn't tell you</h2>
+  <h2>Correlation and Interpretation</h2>
+  <p><strong>Correlation</strong> measures the strength and direction of a linear relationship, on a scale from −1 to +1. A <strong>positive</strong> correlation means the variables rise or fall together, as with advertising and sales. A <strong>negative</strong> correlation means one rises while the other falls, as with price and units sold. For NordHome's five months, the correlation is r ≈ 0.99: a very strong positive relationship.</p>
+  <p class="post-formula"><strong>r = Σ(x − x̄)(y − ȳ) / √( Σ(x − x̄)² · Σ(y − ȳ)² )</strong>
+    <span>For NordHome: r = 111 / √(22.8 × 548) ≈ 0.99. The correlation has no unit and does not depend on whether sales are measured in euros or thousands of euros.</span></p>
+  <p><strong>Correlation does not imply causation.</strong> A relationship between two variables does not mean one causes the other. NordHome's sales could have risen because of advertising, or because of a seasonal peak that also pushed the advertising budget up. The model cannot tell these apart.</p>
+  <p>Two more limits to keep in mind:</p>
   <ul class="post-points">
-    <li><strong>Association, not proof of cause.</strong> The model describes how the two variables move together. A seasonal peak could drive both advertising and sales.</li>
     <li><strong>Stay inside the data.</strong> Predictions are only trustworthy within the range of the data (€2k to €8k). Predicting for €50k is extrapolation.</li>
     <li><strong>An average, not a promise.</strong> Individual months will sit above or below the line.</li>
   </ul>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Linear regression fits a line ŷ = b₀ + b₁x to data. The slope tells you how much y changes per unit of x, the intercept is the model's prediction when x = 0, and the line lets you predict, as long as you stay within the data and do not confuse association with causation.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Linear regression fits a line ŷ = b₀ + b₁x to data. The slope tells you how much y changes per unit of x, and the intercept is the model's prediction when x = 0. The line lets you predict, as long as you stay within the data and remember that correlation does not imply causation.</p></div>
 
   <h2>Related posts</h2>
   <ul class="post-points">
