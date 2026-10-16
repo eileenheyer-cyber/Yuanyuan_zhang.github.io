@@ -1728,3 +1728,5 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post .post-qq-item h3 { margin: 0 0 6px; font-size: 1.15rem; font-style: normal; }
 .post .post-qq-item p { margin: 0; }
 @media (max-width: 640px) { .post .post-qq-item { grid-template-columns: 1fr; gap: 12px; } }
+.post .post-qq-item ul { margin: 8px 0; }
+.post .post-qq-item p + p { margin-top: 8px; }

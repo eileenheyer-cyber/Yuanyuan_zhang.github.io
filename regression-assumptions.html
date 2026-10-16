@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261016g">
+  <link rel="stylesheet" href="style.css?v=20261016h">
 </head>
 <body>
 
@@ -79,6 +79,11 @@ plt.show()</code></pre>
     <img src="images/regression/assumptions-chart-time.svg?v=4" alt="Two lag plots of each month&#8217;s residual against the previous month&#8217;s residual, with a dashed trend line. Left, independent errors: a shapeless cloud with a flat line. Right, dependent errors: the points rise along a diagonal." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> Each month&#8217;s residual plotted against the previous month&#8217;s. Left: a shapeless cloud, so no carry-over from month to month. Right: the points tend to rise together, a sign of positive autocorrelation. Illustrative data.</figcaption>
   </figure>
+  <h3>How to Read the Two Plots</h3>
+  <div class="post-qq">
+    <div class="post-qq-item"><img src="images/regression/assumptions-lag-indep.svg?v=1" alt="Lag plot of independent errors: a scattered cloud with a flat dashed line." loading="lazy"><div><h3>Left: Independent errors</h3><p>The dots form a scattered cloud with no clear direction, and the dashed line is flat.</p><ul class="post-points post-points-color"><li>A high residual can be followed by a high or a low one.</li><li>A low residual can be followed by a high or a low one.</li><li>Knowing last month's residual tells us almost nothing about this month's.</li></ul><p><strong>This is consistent with independence.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-lag-dep.svg?v=1" alt="Lag plot of dependent errors: the dots rise along an upward dashed line." loading="lazy"><div><h3>Right: Dependent errors</h3><p>The dots rise from bottom left to top right, and the dashed line slopes upward.</p><ul class="post-points post-points-color"><li>A positive residual tends to be followed by a positive one.</li><li>A negative residual tends to be followed by a negative one.</li><li>Knowing last month's residual gives us a useful hint about this month's.</li></ul><p><strong>This suggests positive autocorrelation.</strong></p></div></div>
+  </div>
   <p>The pattern is a warning sign rather than definitive proof of dependence. A formal test, such as the Durbin–Watson test, can help assess autocorrelation in regression residuals.</p>
   <div class="post-note"><p class="post-note-l">What is autocorrelation?</p><p>Autocorrelation means that a series is correlated with its own past values. Here, a month's residual is related to the residual of the month before. If the model underestimates March, it tends to underestimate April too. Positive autocorrelation, where high follows high, is the common case. It matters because the months partly repeat each other, so the model has less real information than it thinks.</p></div>
 
