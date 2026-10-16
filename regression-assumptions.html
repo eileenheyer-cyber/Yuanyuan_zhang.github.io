@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Assumptions of Linear Regression – Yuanyuan Zhang</title>
-  <meta name="description" content="The assumptions behind linear regression and how to check whether a model is suitable for drawing conclusions from data.">
+  <title>The Four Assumptions of Simple Linear Regression – Yuanyuan Zhang</title>
+  <meta name="description" content="Linearity, independence, normality and constant variance: what the four assumptions of simple linear regression mean, why they matter and how to check them in Python.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,11 +32,130 @@
 
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Regression analysis</p>
-  <h1 class="post-title">Assumptions of Linear Regression</h1>
+  <h1 class="post-title">The Four Assumptions of Simple Linear Regression</h1>
 
-  <p>This post is in progress. It follows <a href="least-squares.html">OLS: How Does Linear Regression Find the Best-Fit Line?</a> and explains the assumptions behind linear regression and how to evaluate whether a model is suitable for drawing conclusions from data.</p>
+  <p>A regression model can calculate a line that best fits your data. But does that automatically mean the model is reliable?</p>
+  <p>Not necessarily. Before interpreting a regression model, we need to check whether the data satisfy certain assumptions. These assumptions help us determine whether a linear model is appropriate and whether we can trust the statistical conclusions drawn from it.</p>
+  <p>In <a href="least-squares.html">the previous post</a>, OLS found the best-fit line for NordHome's advertising spend and sales. We will keep using that same example here, so each assumption is about one familiar question: can we trust what the NordHome line tells us?</p>
+  <p>There are four main assumptions to check:</p>
+  <ul class="post-points">
+    <li><strong>Linearity.</strong> The relationship between X and Y is linear.</li>
+    <li><strong>Independent observations.</strong> Observations are independent of one another.</li>
+    <li><strong>Normality.</strong> The errors are normally distributed.</li>
+    <li><strong>Homoscedasticity.</strong> The variance of the errors is approximately constant.</li>
+  </ul>
+  <p>Let's explore what each assumption means, why it matters, and how to check it. The Python code comes last in each section, after the pattern it is meant to reveal.</p>
 
-  <div class="post-note"><p class="post-note-l">Coming soon</p><p>Check back soon for the full article. Next: <a href="regression-evaluation.html">Evaluating a Regression Model</a>.</p></div>
+  <h2>1. Linearity: Is a straight line appropriate?</h2>
+  <p>Simple linear regression assumes that the relationship between the independent variable (X, advertising spend) and the dependent variable (Y, sales) can be reasonably represented by a straight line.</p>
+  <p>As advertising spend increases, sales might also increase. But how do they increase? If sales tend to rise at a roughly constant rate, a straight line may describe the relationship well. If sales rise rapidly at first and then level off, the relationship is curved instead.</p>
+  <p><strong>Why does it matter?</strong> If the actual relationship is curved but we fit a straight line, the model may systematically overestimate or underestimate values in different parts of the data. Its predictions and interpretation may therefore be misleading.</p>
+  <p><strong>How can we check it?</strong> Start with a scatterplot, with X on the horizontal axis and Y on the vertical axis. Look for an approximately linear pattern rather than a clear curve. Chart 1 shows the difference.</p>
+  <figure class="post-fig">
+    <svg class="nd-svg" viewBox="0 0 640 260" role="img" aria-label="Two scatter plots of advertising spend against sales. In the left plot the points follow a straight line closely. In the right plot sales rise quickly at first and then level off, so a straight line sits above the first point, below the middle points and above the last ones."><path d="M20,40 V220 H280" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M30,199 L250,58" fill="none" stroke="#0a0a0a" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="190" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="80" cy="172" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="120" cy="140" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="160" cy="116" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="200" cy="90" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="240" cy="64" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><text x="20" y="22" class="l b" text-anchor="start">Roughly linear</text><path d="M340,40 V220 H600" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M350,170 L570,29" fill="none" stroke="#0a0a0a" stroke-width="4" stroke-linecap="round"/><circle cx="360" cy="200" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="400" cy="120" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="440" cy="86" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="480" cy="70" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="520" cy="62" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="560" cy="58" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><text x="340" y="22" class="l b" text-anchor="start">Curved: a line misses</text><text x="150" y="250" class="l m" text-anchor="middle">Advertising spend →</text><text x="470" y="250" class="l m" text-anchor="middle">Advertising spend →</text></svg>
+    <figcaption><span>Chart 1</span> Left: the points follow a line. Right: sales level off, so the straight line misses in a systematic way. Illustrative data.</figcaption>
+  </figure>
+  <p>This check should happen before building the regression model. In Python, it takes a few lines:</p>
+  <pre class="post-code"><code>import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.scatterplot(data=df, x="advertising_spend", y="sales")
+plt.show()</code></pre>
+  <p>If the relationship is not sufficiently linear, one possible approach is to transform a variable, for example by taking its logarithm, and then check the relationship again.</p>
+
+  <h2>2. Independent Observations: Are the observations independent?</h2>
+  <p>The independence assumption means that one observation should not depend on another observation in the dataset.</p>
+  <p>NordHome's data are monthly observations. If a big campaign in March keeps lifting sales in April, the two months are not independent: both reflect the same campaign. The same is true if one row repeats the same store, or if neighbouring months share the same season. In these cases, the observations may be correlated rather than independent.</p>
+  <p><strong>Why does it matter?</strong> When observations are dependent, the model's statistical conclusions may be unreliable if that dependence is ignored. We therefore need to understand how the data were collected and whether observations are connected.</p>
+  <p><strong>How can we check it?</strong> Unlike the other assumptions, independence cannot generally be confirmed by looking at a simple scatterplot alone. We need to understand the data collection process. Ask yourself:</p>
+  <ul class="post-points">
+    <li>What does each observation represent?</li>
+    <li>How were the data collected?</li>
+    <li>Could one observation be related to another?</li>
+    <li>Are observations repeated measurements of the same person, store, or time period?</li>
+  </ul>
+  <p>For time-series data like NordHome's months, examine whether observations close together in time may be related. If dependence exists, possible next steps include changing the sampling approach or using a model that accounts for the dependence. Simply removing observations is not always the best solution.</p>
+
+  <h2>3. Normality: Are the errors approximately normally distributed?</h2>
+  <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
+  <ul class="post-points">
+    <li><strong>Errors</strong> are the differences between the true underlying relationship and the observed values that the model aims to describe. They represent the model's natural, unobserved noise.</li>
+    <li><strong>Residuals</strong> are the differences between the observed values and the values predicted by the fitted regression model, like the −3, +2, +4, −2 and −1 from the previous post.</li>
+  </ul>
+  <p>We cannot directly observe the true errors, so we use residuals to assess whether the normality assumption is reasonable.</p>
+  <p><strong>Why does it matter?</strong> Normality is particularly important when we want to make statistical inferences, such as constructing confidence intervals or conducting hypothesis tests under the usual regression assumptions. A regression model can still calculate a line when residuals are not normally distributed. However, the usual inferential procedures may not be reliable, particularly in smaller samples.</p>
+  <p><strong>How can we check it?</strong> Two common visual tools are a histogram and a quantile-quantile plot (Q-Q plot).</p>
+  <ul class="post-points">
+    <li>A <strong>histogram</strong> shows the distribution of the residuals. We look for a roughly bell-shaped pattern centered around zero.</li>
+    <li>A <strong>Q-Q plot</strong> compares the observed residual quantiles with the quantiles expected under a normal distribution. If the residuals are approximately normally distributed, the points should follow a roughly straight line.</li>
+  </ul>
+  <p>The Q-Q plot is often particularly useful because deviations from a straight line can reveal departures from normality. With only five months, neither plot tells us much, so in practice you would run these checks on a longer history. In Python, <code>model.resid</code> retrieves the residuals from a fitted regression model:</p>
+  <pre class="post-code"><code>import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+model = smf.ols("sales ~ advertising_spend", data=df).fit()
+residuals = model.resid
+
+sm.qqplot(residuals, line="s")
+plt.show()</code></pre>
+  <p>If the residuals deviate substantially from the expected pattern, investigate the distribution and consider whether a transformation, such as taking the logarithm of a right-skewed outcome variable, is appropriate. Then refit the model and check again.</p>
+
+  <h2>4. Homoscedasticity: Is the spread of errors consistent?</h2>
+  <p>Homoscedasticity sounds complicated, but the underlying idea is straightforward. It means that the variance of the errors remains approximately constant across the range of the model's predictions.</p>
+  <p>For NordHome, imagine that in low-spend months the predictions miss by only a couple of thousand euros, while in high-spend months they miss by ten thousand or more. If the spread of the errors systematically increases or decreases, the data may exhibit heteroscedasticity, which violates the homoscedasticity assumption.</p>
+  <p><strong>Why does it matter?</strong> When the variance of the errors is not constant, the usual standard errors and statistical inferences may be unreliable if the issue is ignored. The regression line can still be fitted, but we need to be careful when interpreting confidence intervals and hypothesis tests.</p>
+  <p><strong>How can we check it?</strong> After fitting the regression model, create a residuals-versus-fitted-values plot. The horizontal axis shows the predicted values, the vertical axis shows the residuals, and the horizontal reference line represents a residual of zero.</p>
+  <p>Ideally, the points form a relatively random cloud around zero, with a similar vertical spread across the range of fitted values. A funnel-shaped pattern, where the spread becomes wider or narrower, may indicate heteroscedasticity (Chart 2).</p>
+  <figure class="post-fig">
+    <svg class="nd-svg" viewBox="0 0 640 260" role="img" aria-label="Two residuals-versus-fitted plots with a dashed line at zero. In the left plot the points form an even band around zero. In the right plot the points start close to zero and spread out into a funnel as the fitted values increase."><path d="M20,40 V220 H280" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M20,130 H280" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><circle cx="45" cy="120" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="65" cy="142" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="85" cy="112" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="105" cy="148" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="125" cy="126" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="145" cy="108" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="165" cy="150" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="185" cy="118" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="205" cy="140" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="225" cy="114" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="245" cy="146" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="265" cy="124" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="20" y="22" class="l b" text-anchor="start">Even spread: good</text><path d="M340,40 V220 H600" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M340,130 H600" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/><circle cx="365" cy="128" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="385" cy="134" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="405" cy="122" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="425" cy="140" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="445" cy="112" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="465" cy="150" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="485" cy="100" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="505" cy="162" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="525" cy="84" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="545" cy="176" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="565" cy="68" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="585" cy="190" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="340" y="22" class="l b" text-anchor="start">Funnel: spread grows</text><text x="150" y="250" class="l m" text-anchor="middle">Fitted values →</text><text x="470" y="250" class="l m" text-anchor="middle">Fitted values →</text></svg>
+    <figcaption><span>Chart 2</span> Residuals against fitted values. Left: an even band around zero. Right: a funnel, where the errors grow with the predicted sales. Illustrative data.</figcaption>
+  </figure>
+  <p>The plot takes a few lines, using the model fitted above:</p>
+  <pre class="post-code"><code>import seaborn as sns
+import matplotlib.pyplot as plt
+
+fitted_values = model.fittedvalues
+residuals = model.resid
+
+sns.scatterplot(x=fitted_values, y=residuals)
+plt.axhline(0)
+plt.xlabel("Fitted Values")
+plt.ylabel("Residuals")
+plt.show()</code></pre>
+  <p>If the assumption is violated, possible approaches include transforming the outcome variable or using statistical methods that account for non-constant variance.</p>
+
+  <h2>When should you check the assumptions?</h2>
+  <p>Not every assumption can be assessed at the same stage.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Assumption</th><th>When to check</th><th>Main method</th></tr></thead>
+    <tbody>
+      <tr><td>Linearity</td><td>Before fitting</td><td>Scatterplot of X against Y</td></tr>
+      <tr><td>Independence</td><td>Before fitting</td><td>Review how the data were collected</td></tr>
+      <tr><td>Normality</td><td>After fitting</td><td>Q-Q plot or histogram of residuals</td></tr>
+      <tr><td>Homoscedasticity</td><td>After fitting</td><td>Residuals versus fitted values</td></tr>
+    </tbody>
+  </table></div>
+  <p>This is why exploratory data analysis (EDA) matters. It helps us understand the data before modeling, while diagnostic plots help us evaluate the fitted model afterward.</p>
+
+  <h2>What if an assumption is violated?</h2>
+  <p>A violation does not automatically mean that the entire analysis is useless. It means that we need to understand the problem before deciding how to proceed. Depending on the situation, possible next steps include:</p>
+  <ul class="post-points">
+    <li><strong>Non-linearity.</strong> Transform a variable or consider a different model form.</li>
+    <li><strong>Non-normal residuals.</strong> Investigate unusual observations or skewness and consider an appropriate transformation.</li>
+    <li><strong>Dependent observations.</strong> Review the sampling process or use a model that accounts for dependence.</li>
+    <li><strong>Non-constant variance.</strong> Consider transforming the outcome or using methods that account for heteroscedasticity.</li>
+  </ul>
+  <p>There is no single solution that works for every dataset. Transformations also change how we interpret the variables and coefficients, so we should always reassess the model after making changes. If the assumptions remain seriously violated, a different modeling approach may be more appropriate.</p>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Fitting a line is only the first step: the four assumptions (linearity, independent observations, normal errors and constant variance) tell us whether the model's results can be interpreted with confidence. Check linearity and independence before fitting, and use residual plots for the other two afterward. The goal is not to make the data perfect, but to understand the limitations of the model and decide how to use it.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="least-squares.html">OLS: How Does Linear Regression Find the Best-Fit Line?</a> How the best-fit line, residuals and SSR work.</li>
+    <li><a href="regression-evaluation.html">Evaluating a Regression Model</a> How to judge whether a model is suitable for drawing conclusions.</li>
+    <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> Look at your data before you model it.</li>
+  </ul>
 
 </article>
 </main>
