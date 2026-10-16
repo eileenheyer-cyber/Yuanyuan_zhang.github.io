@@ -58,7 +58,7 @@
   <p>GLMs are generally fitted using maximum likelihood estimation. For a Gaussian model with an identity link, this produces the same coefficient estimates as ordinary least squares.</p>
 
   <h2>Three link functions</h2>
-  <p>Imagine a retailer that wants to understand what drives its performance. It cares about three outcomes:</p>
+  <p>Imagine NordHome Retail, an online home-goods retailer that wants to understand what drives its performance. It cares about three outcomes:</p>
   <ul class="post-points">
     <li><strong>Order value in euros</strong> (continuous)</li>
     <li><strong>Whether a customer churns</strong> (yes/no)</li>
@@ -84,7 +84,7 @@
     <figcaption><span>Chart 1</span> Identity link: the prediction can take any value. Illustrative example.</figcaption>
   </figure>
 
-  <p><strong>Example.</strong> The retailer wants to predict the expected order value, for example from the number of items in the basket. If a customer's linear predictor comes out as 60, the model predicts an order value of €60. If X is the number of items and β = 12, each extra item adds €12 to the predicted order value.</p>
+  <p><strong>Example.</strong> NordHome wants to predict the expected order value, for example from the number of items in the basket. If a customer's linear predictor comes out as 60, the model predicts an order value of €60. If X is the number of items and β = 12, each extra item adds €12 to the predicted order value.</p>
 
   <h3>Logistic regression: logit link</h3>
   <p>For a yes/no outcome, logistic regression models the <strong>log-odds</strong> of the event rather than the probability directly. Applying the inverse link converts the linear predictor into a probability between 0 and 1.</p>
@@ -97,7 +97,7 @@
     <figcaption><span>Chart 2</span> Logit link: the prediction always stays between 0 and 1. Illustrative example.</figcaption>
   </figure>
 
-  <p><strong>Example.</strong> Now the retailer wants to know which customers are likely to churn. If a customer's linear predictor is −1.39, the model gives p = 1 / (1 + e<sup>1.39</sup>) ≈ 0.20, a 20% churn probability. If the coefficient for support tickets is 0.405, then e<sup>0.405</sup> ≈ 1.5, so each extra ticket multiplies the odds of churn by 1.5. A customer at 20% (odds of 0.25) moves to odds of 0.375, which is about 27%, not 30%.</p>
+  <p><strong>Example.</strong> Now NordHome wants to know which customers are likely to churn. If a customer's linear predictor is −1.39, the model gives p = 1 / (1 + e<sup>1.39</sup>) ≈ 0.20, a 20% churn probability. If the coefficient for support tickets is 0.405, then e<sup>0.405</sup> ≈ 1.5, so each extra ticket multiplies the odds of churn by 1.5. A customer at 20% (odds of 0.25) moves to odds of 0.375, which is about 27%, not 30%.</p>
 
   <h3>Poisson regression: log link</h3>
   <p>For count outcomes, Poisson regression models the logarithm of the expected count. The inverse link gives a positive prediction.</p>
@@ -110,12 +110,12 @@
     <figcaption><span>Chart 3</span> Log link: the prediction is always above 0 and rises faster as η grows. Illustrative example.</figcaption>
   </figure>
 
-  <p><strong>Example.</strong> Finally, the retailer wants to forecast daily orders. If the linear predictor for a given day is 5.01, the model predicts e<sup>5.01</sup> ≈ 150 orders. If the coefficient for a promotion day is 0.18, then e<sup>0.18</sup> ≈ 1.20: a promotion day has about 20% more expected orders, so 150 becomes roughly 180.</p>
+  <p><strong>Example.</strong> Finally, NordHome wants to forecast daily orders. If the linear predictor for a given day is 5.01, the model predicts e<sup>5.01</sup> ≈ 150 orders. If the coefficient for a promotion day is 0.18, then e<sup>0.18</sup> ≈ 1.20: a promotion day has about 20% more expected orders, so 150 becomes roughly 180.</p>
 
   <div class="post-note"><p class="post-note-l">A note on assumptions</p><p>Poisson regression assumes that the conditional variance equals the conditional mean. If the data show substantial overdispersion, a negative binomial model may be more appropriate. If observations have different exposure periods, an offset can account for differences in exposure.</p></div>
 
   <h2>Business application</h2>
-  <p>Back to the retailer: one framework covers three typical questions.</p>
+  <p>Back to NordHome: one framework covers three typical questions.</p>
   <ul class="post-points">
     <li><strong>Predict sales (linear).</strong> What is the expected order value, given customer segment, discount and season? Each coefficient is an effect in euros.</li>
     <li><strong>Predict customer churn (logistic).</strong> Which customers are likely to stop buying, based on days since the last order, order frequency and support contacts? Each coefficient is an odds ratio.</li>
