@@ -68,18 +68,11 @@ plt.show()</code></pre>
   <p>If the relationship is not sufficiently linear, one possible approach is to transform a variable, for example by taking its logarithm, and then check the relationship again.</p>
 
   <h2>2. Independence: Are the Observations Independent?</h2>
-  <p>The independence assumption means that one observation should not depend on another observation in the dataset.</p>
-  <p>NordHome's data are monthly observations. If a big campaign in March keeps lifting sales in April, the two months are not independent: both reflect the same campaign. The same is true if one row repeats the same store, or if neighbouring months share the same season. In these cases, the observations may be correlated rather than independent.</p>
-  <p><strong>Why does it matter?</strong> When observations are dependent, the model's statistical conclusions may be unreliable if that dependence is ignored. We therefore need to understand how the data were collected and whether observations are connected.</p>
-  <p><strong>How can we check it?</strong> Unlike the other assumptions, independence cannot generally be confirmed by looking at a simple scatterplot alone. We need to understand the data collection process. Ask yourself:</p>
-  <ul class="post-points post-points-color">
-    <li>What does each observation represent?</li>
-    <li>How were the data collected?</li>
-    <li>Could one observation be related to another?</li>
-    <li>Are observations repeated measurements of the same person, store, or time period?</li>
-  </ul>
-  <p>For time-series data like NordHome's months, examine whether observations close together in time may be related. If dependence exists, possible next steps include changing the sampling approach or using a model that accounts for the dependence. Simply removing observations is not always the best solution.</p>
-
+  <p>The independence assumption means that the error for one observation should not depend on the error for another. In other words, once we account for the relationship described by our regression model, the remaining errors should not show a systematic connection.</p>
+  <p>Consider NordHome's monthly advertising spend and sales. Suppose a major campaign in March continues to influence sales in April. If the model underestimates March's sales, it might also underestimate April's sales because both months are affected by the same underlying factor. The errors are then related rather than independent.</p>
+  <p><strong>Why does it matter?</strong> When errors are correlated, the model may underestimate uncertainty. This can make standard errors too small and confidence intervals too narrow, leading us to believe that a relationship is more statistically convincing than it really is.</p>
+  <p><strong>How can we check it?</strong> Start by understanding how the data were collected. With monthly observations, plot the residuals over time and look for patterns. If positive or negative residuals tend to occur in consecutive months, this may indicate autocorrelation. A formal test, such as the Durbin–Watson test, can help assess autocorrelation in regression residuals.</p>
+  <p>If dependence is present, we may need a model that accounts for it or standard errors that are robust to the dependence structure.</p>
   <h2>3. Normality: Are the Errors Normally Distributed?</h2>
   <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
   <ul class="post-points post-points-color">
