@@ -57,7 +57,7 @@
   <p>GLMs are generally fitted using maximum likelihood estimation. For a Gaussian model with an identity link, this produces the same coefficient estimates as ordinary least squares.</p>
 
   <h2>Three examples</h2>
-  <p>Continuous, binary and count outcomes each call for a different distribution and link function. The inverse of the link function turns the linear predictor η back into the expected outcome.</p>
+  <p>Different outcomes require different distributions and link functions. The inverse link transforms the linear predictor η back into the expected outcome.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Model</th><th>Link function</th><th>Expected outcome</th></tr></thead>
     <tbody>
@@ -68,17 +68,20 @@
   </table></div>
 
   <h3 class="post-h3-small">Linear regression: identity link</h3>
-  <p>The identity link changes nothing: the prediction is the linear predictor itself. A one-unit increase in X changes the predicted conditional mean by β, holding the other predictors constant. If the outcome is order value, β is a change in euros.</p>
+  <p>The identity link leaves the linear predictor unchanged. The predicted conditional mean is simply the weighted sum of the predictors.</p>
+  <p>A one-unit increase in X changes the predicted mean by β, holding other predictors constant. If the outcome is order value, this coefficient represents a change in euros.</p>
 
   <h3 class="post-h3-small">Logistic regression: logit link</h3>
-  <p>For a yes/no outcome, the model works with the odds of the event, p / (1 − p), and takes the logarithm. Solving for p always gives a value between 0 and 1.</p>
-  <p class="post-formula"><strong>log( p / (1 − p) ) = η, so p = 1 / (1 + e<sup>−η</sup>)</strong><span>p is the probability of the event, for example that a customer churns.</span></p>
-  <p>Raising e to the power of a coefficient gives an <strong>odds ratio</strong>: e<sup>β</sup> is the multiplicative change in the odds associated with a one-unit increase in X, holding the other predictors constant.</p>
+  <p>For a yes/no outcome, logistic regression models the <strong>log-odds</strong> of the event rather than the probability directly. Applying the inverse link converts the linear predictor into a probability between 0 and 1.</p>
+  <p class="post-formula"><strong>log( p / (1 − p) ) = η</strong><strong>p = 1 / (1 + e<sup>−η</sup>)</strong><span>p is the probability of the event, for example that a customer churns.</span></p>
+  <p>Exponentiating a coefficient, e<sup>β</sup>, gives the <strong>odds ratio</strong>: the factor by which the odds change with a one-unit increase in a predictor, holding other predictors constant.</p>
 
   <h3 class="post-h3-small">Poisson regression: log link</h3>
-  <p>For counts, the model takes the logarithm of the expected count. Reversing it gives μ = e<sup>η</sup>, which is always above zero. Raising e to the power of a coefficient gives a <strong>multiplicative effect on the expected count</strong>: e<sup>β</sup> is the factor by which the expected count changes with a one-unit increase in X, holding the other predictors constant. A factor of 1.10 means 10% more events.</p>
+  <p>For count outcomes, Poisson regression models the logarithm of the expected count. The inverse link gives a positive prediction:</p>
+  <p class="post-formula"><strong>log(μ) = η, so μ = e<sup>η</sup></strong><span>μ is the expected count, for example the number of orders per day.</span></p>
+  <p>Exponentiating a coefficient gives a <strong>multiplicative effect on the expected count</strong>. For example, if e<sup>β</sup> = 1.10, a one-unit increase in X is associated with a 10% increase in the expected count, holding other predictors constant.</p>
 
-  <div class="post-note"><p class="post-note-l">Watch the spread of the counts</p><p>Poisson regression assumes that the variance of the counts is about equal to their mean. If your counts vary much more than that, the model understates the uncertainty, and a negative binomial model is a common alternative. If the counts cover different exposure periods, such as stores that are open for different numbers of days, the model also needs an offset for the exposure.</p></div>
+  <div class="post-note"><p class="post-note-l">A note on assumptions</p><p>Poisson regression assumes that the conditional variance equals the conditional mean. If the data show substantial overdispersion, a negative binomial model may be more appropriate. If observations have different exposure periods, an offset can account for differences in exposure.</p></div>
 
   <h2>Comparing the link functions</h2>
   <p>The linear predictor is the same in all three models. What changes is how it is translated into a valid prediction.</p>
