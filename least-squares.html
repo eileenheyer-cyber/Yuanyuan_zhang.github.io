@@ -95,20 +95,20 @@
   <p>The first line sits below every point, so all five residuals are positive and the SSR is large. The second line's residuals nearly cancel out, with a sum of only +1, yet its SSR is still 57. That is exactly why we square the residuals before adding them. The OLS line balances the errors and has the smallest SSR of any straight line: 34. You could keep adjusting the slope and the intercept and watch the SSR change, but you would never get below 34. OLS does that search for you, with a formula instead of trial and error.</p>
 
   <h2>Estimating the Coefficients</h2>
-  <p>We know that OLS finds the line with the smallest sum of squared residuals. But how does it actually find that line?</p>
-  <p>Instead of testing countless possible lines, OLS uses two formulas to calculate the optimal slope and intercept directly from the observed data.</p>
+  <p>OLS finds the line with the smallest sum of squared residuals. But how does it determine the best slope and intercept?</p>
+  <p>Rather than testing countless possible lines, OLS uses mathematical formulas to calculate both coefficients directly from the observed data.</p>
 
-  <h3>What is correlation?</h3>
-  <p>Before calculating the slope, it helps to know how closely the points follow a straight line. Correlation measures how two variables move together linearly, and the <strong>correlation coefficient (r)</strong> quantifies the strength and direction of this relationship, ranging from −1 to 1.</p>
+  <h3>A quick note on correlation</h3>
+  <p>Before calculating the slope, it helps to understand how two variables move together. The <strong>correlation coefficient (r)</strong> measures the strength and direction of their linear relationship, ranging from −1 to +1.</p>
   <ul class="post-points">
-    <li>A <strong>positive</strong> r indicates that the variables increase together.</li>
-    <li>A <strong>negative</strong> r indicates that one variable increases as the other decreases.</li>
-    <li>r = <strong>0</strong> means there is no linear correlation.</li>
+    <li><strong>Positive correlation:</strong> the variables tend to increase together.</li>
+    <li><strong>Negative correlation:</strong> one tends to decrease as the other increases.</li>
+    <li><strong>Zero correlation:</strong> there is no linear relationship.</li>
   </ul>
-  <p>For NordHome, r ≈ 0.97: advertising spend and sales rise together, and the points sit very close to a straight line.</p>
+  <p>For NordHome, r ≈ 0.97 indicates a strong positive linear relationship between advertising spend and sales in our five observations. However, correlation alone does not tell us the exact slope or prove that advertising causes sales to increase.</p>
 
   <h3>Step 1: Calculate the slope</h3>
-  <p>The slope describes how much the predicted value of y changes when x increases by one unit.</p>
+  <p>The slope tells us how much the model's predicted sales change when advertising spend increases by one unit. OLS calculates it using the deviations of advertising spend and sales from their respective means.</p>
   <p class="post-formula"><strong>β̂₁ = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²</strong>
     <span>The numerator measures how x and y vary together. The denominator measures how much x varies around its mean.</span></p>
   <p>For NordHome, the calculation gives:</p>
