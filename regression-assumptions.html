@@ -34,17 +34,7 @@
   <p class="overline">Regression analysis</p>
   <h1 class="post-title">The Four Assumptions of Simple Linear Regression</h1>
 
-  <p>A regression model can calculate a line that best fits your data. But does that automatically mean the model is reliable?</p>
-  <p>Not necessarily. Before interpreting a regression model, we need to check whether the data satisfy certain assumptions. These assumptions help us determine whether a linear model is appropriate and whether we can trust the statistical conclusions drawn from it.</p>
-  <p>In <a href="least-squares.html">the previous post</a>, OLS found the best-fit line for NordHome's advertising spend and sales. We will keep using that same example here, so each assumption is about one familiar question: can we trust what the NordHome line tells us?</p>
-  <p>There are four main assumptions to check:</p>
-  <ul class="post-points">
-    <li><strong>Linearity.</strong> The relationship between X and Y is linear.</li>
-    <li><strong>Independent observations.</strong> Observations are independent of one another.</li>
-    <li><strong>Normality.</strong> The errors are normally distributed.</li>
-    <li><strong>Homoscedasticity.</strong> The variance of the errors is approximately constant.</li>
-  </ul>
-  <p>Let's explore what each assumption means, why it matters, and how to check it. The Python code comes last in each section, after the pattern it is meant to reveal.</p>
+  <p>A regression model can find the best-fit line, but how do we know whether we can trust its results? The four assumptions of simple linear regression help us answer this question. They allow us to check whether a linear model is appropriate for our data and whether its statistical conclusions are reliable. In this article, we will explore why each assumption matters, what can go wrong when it is violated, and how to check it using visualizations and Python.</p>
 
   <h2>1. Linearity: Is a straight line appropriate?</h2>
   <p>Simple linear regression assumes that the relationship between the independent variable (X, advertising spend) and the dependent variable (Y, sales) can be reasonably represented by a straight line.</p>
