@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Linear Regression – Yuanyuan Zhang</title>
+  <meta name="description" content="Simple linear regression explained with a business example: how to predict sales from advertising spend, and what the intercept and slope really mean.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261016a">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Regression analysis</p>
+  <h1 class="post-title">Simple Linear Regression: Finding the Relationship in Data</h1>
+
+  <p>Start with the simplest question: can we use one variable to predict another? Simple linear regression answers it with a straight line. This post explains what the model predicts and what its coefficients mean, using an advertising example from NordHome Retail. The next post shows how the best line is found, and <a href="glm.html">Generalized Linear Models</a> extends the idea to other types of outcomes.</p>
+
+  <h2>Start with a business question</h2>
+  <p>NordHome's marketing manager has next month's budget in front of her. She asks: <em>“If we spend €6k on advertising, how much will we sell?”</em></p>
+  <p>She has five past months of data:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Advertising spend (€k)</th><th>Sales (€k)</th></tr></thead>
+    <tbody>
+      <tr><td>2</td><td>30</td></tr>
+      <tr><td>4</td><td>38</td></tr>
+      <tr><td>5</td><td>45</td></tr>
+      <tr><td>7</td><td>52</td></tr>
+      <tr><td>8</td><td>60</td></tr>
+    </tbody>
+  </table></div>
+  <p>Plot these points and you see a pattern: more advertising goes with more sales, and the points sit roughly along a straight line. <strong>Linear regression finds the one straight line that fits them best</strong>, and then lets us use it to answer questions like hers.</p>
+
+  <h2>What is linear regression?</h2>
+  <p>Linear regression is a model that describes how one variable changes with another using a straight line. It has two jobs:</p>
+  <ul class="post-points">
+    <li><strong>Predict.</strong> Estimate sales for a spend we have not tried.</li>
+    <li><strong>Explain.</strong> Quantify how much sales tend to change when spend changes.</li>
+  </ul>
+
+  <h2>Independent vs. dependent variables</h2>
+  <ul class="post-points">
+    <li><strong>Independent variable (x).</strong> Also called the predictor: the thing we use to predict. Here, advertising spend.</li>
+    <li><strong>Dependent variable (y).</strong> Also called the outcome: the thing we want to predict. Here, sales.</li>
+  </ul>
+  <p>In this example, advertising spend is the predictor (<em>x</em>), and sales are the outcome (<em>y</em>). We use advertising spend to estimate sales, but that does not automatically mean advertising causes the observed change in sales.</p>
+
+  <h2>The regression equation</h2>
+  <p class="post-formula"><strong>ŷ = b₀ + b₁x</strong>
+    <span>ŷ is the predicted value, b₀ is the intercept and b₁ is the slope.</span></p>
+  <ul class="post-points">
+    <li><strong>ŷ (“y-hat”).</strong> The predicted value, not the observed one.</li>
+    <li><strong>b₀.</strong> The intercept.</li>
+    <li><strong>b₁.</strong> The slope.</li>
+  </ul>
+  <p>For NordHome's data, the best-fitting line is:</p>
+  <p class="post-formula"><strong>ŷ = 19.684 + 4.868x</strong>
+    <span>x is advertising spend and ŷ is predicted sales, both in €k.</span></p>
+
+  <h2>Intercept, slope, and fitted line</h2>
+  <p><strong>Slope (b₁ = 4.87).</strong> Each additional €1k of advertising goes with about <strong>€4.87k more sales</strong>, on average. This is the number the manager cares about most.</p>
+  <p><strong>Intercept (b₀ = 19.68).</strong> The model's predicted sales when advertising spend is zero. Since our observations start at €2k, this is an extrapolation. The intercept is mathematically necessary, but we cannot conclude from these data that NordHome would generate €19.68k in baseline sales.</p>
+  <p><strong>Fitted line.</strong> The line that minimises the total squared vertical distance between the points and the line. The distance for each point is its <strong>residual</strong>: actual − predicted. For the month with €7k spend, the line predicts about 53.8 and the actual value was 52:</p>
+  <p class="post-formula"><strong>52 − 53.8 = −1.8</strong>
+    <span>The residual for the €7k month: the actual value is 1.8 below the line.</span></p>
+  <p>But how does the model decide which line fits best? That is where the method of least squares comes in, and we will explore it in the <a href="least-squares.html">next article</a>.</p>
+
+  <h3 class="post-h3-small">Answering the manager's question</h3>
+  <p>For advertising spend of €6k:</p>
+  <p class="post-formula"><strong>ŷ = 19.684 + 4.868 × 6 ≈ 48.9</strong>
+    <span>The expected sales are about €48.9k.</span></p>
+  <figure class="post-fig">
+    <svg class="nd-svg" viewBox="0 0 640 356" role="img" aria-label="Scatter plot of five months of advertising spend against sales with the fitted line. The line starts at about 19.7 on the sales axis and rises to about 58.6 at 8 thousand euros of spend. A yellow marker shows the prediction of 48.9 thousand euros of sales for 6 thousand euros of spend, and a short red segment shows the residual of minus 1.8 for the month with 7 thousand euros of spend."><path d="M70,60 H610 M70,140 H610 M70,220 H610" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="2 6" stroke-linecap="round" opacity="0.35"/><path d="M70,20 V300 H610" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><text x="70" y="14" class="l m" text-anchor="start">Sales (€k)</text><text x="610" y="348" class="l m" text-anchor="end">Advertising spend (€k)</text><text x="62" y="306" class="l m" text-anchor="end">0</text><text x="62" y="226" class="l m" text-anchor="end">20</text><text x="62" y="146" class="l m" text-anchor="end">40</text><text x="62" y="66" class="l m" text-anchor="end">60</text><text x="70" y="324" class="l m" text-anchor="middle">0</text><text x="190" y="324" class="l m" text-anchor="middle">2</text><text x="310" y="324" class="l m" text-anchor="middle">4</text><text x="430" y="324" class="l m" text-anchor="middle">6</text><text x="550" y="324" class="l m" text-anchor="middle">8</text><path d="M70,221.3 L190,182.3" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-dasharray="4 6" stroke-linecap="round"/><path d="M190,182.3 L550,65.5" fill="none" stroke="#0a0a0a" stroke-width="4.5" stroke-linecap="round"/><path d="M430,104.4 V300 M430,104.4 H70" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="4 4" stroke-linecap="round"/><circle cx="190" cy="180" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="310" cy="148" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="370" cy="120" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="490" cy="92" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="550" cy="60" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><path d="M504,85 V92 M498,85 H510 M498,92 H510" fill="none" stroke="#dc452d" stroke-width="3.5" stroke-linecap="butt"/><circle cx="70" cy="221.3" r="8" fill="#ffffff" stroke="#0a0a0a" stroke-width="3"/><circle cx="430" cy="104.4" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="3"/><text x="86" y="250" class="l b" text-anchor="start">b₀ ≈ 19.7</text><text x="418" y="86" class="l b" text-anchor="end">€6k → €48.9k</text><text x="514" y="124" class="l b" text-anchor="start">residual</text><text x="514" y="152" class="l b" text-anchor="start">−1.8</text></svg>
+    <figcaption><span>Chart 1</span> The fitted line through NordHome's five months (blue dots). The yellow dot is the prediction for €6k, the red bracket is the residual of the €7k month, and the hollow dot is the intercept, outside the observed range. Illustrative data.</figcaption>
+  </figure>
+  <p class="post-formula"><strong>b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</strong>
+    <strong>b₀ = ȳ − b₁x̄</strong>
+    <span>Where the numbers come from: x̄ = 5.2 and ȳ = 45 are the averages, so b₁ = 111 / 22.8 ≈ 4.868. In practice, software computes this for you.</span></p>
+
+  <h2>What the model does and doesn't tell you</h2>
+  <ul class="post-points">
+    <li><strong>Association, not proof of cause.</strong> The model describes how the two variables move together. A seasonal peak could drive both advertising and sales.</li>
+    <li><strong>Stay inside the data.</strong> Predictions are only trustworthy within the range of the data (€2k to €8k). Predicting for €50k is extrapolation.</li>
+    <li><strong>An average, not a promise.</strong> Individual months will sit above or below the line.</li>
+  </ul>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Linear regression fits a line ŷ = b₀ + b₁x to data. The slope tells you how much y changes per unit of x, the intercept is the model's prediction when x = 0, and the line lets you predict, as long as you stay within the data and do not confuse association with causation.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="least-squares.html">Least Squares</a> How the model decides which line fits best (coming soon).</li>
+    <li><a href="glm.html">Generalized Linear Models</a> How regression extends to yes/no and count outcomes.</li>
+    <li><a href="descriptive-statistics.html">Descriptive Statistics</a> Means and spread, the building blocks behind the slope and intercept.</li>
+    <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> How to look at relationships in retail data before you model them.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
