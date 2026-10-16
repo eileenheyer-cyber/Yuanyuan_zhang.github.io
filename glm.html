@@ -46,14 +46,15 @@
   <p>You can force a straight line through such data, but you will get impossible predictions and misleading error estimates. We need a model that respects the nature of the outcome.</p>
 
   <h2>The big idea: three components</h2>
-  <p>A generalized linear model (GLM) keeps the part of linear regression that works, a weighted sum of predictors, and makes the rest flexible. Every GLM is built from three components:</p>
+  <p>A GLM keeps the basic idea of linear regression, combining predictors to make a prediction, but adapts it to different types of outcomes. It has three components:</p>
   <ul class="post-points">
-    <li><strong>Random component.</strong> The distribution of the outcome Y: normal, binomial or Poisson.</li>
-    <li><strong>Systematic component.</strong> The linear predictor η = β₀ + β₁X₁ + … + βₚXₚ, the same weighted sum you know from linear regression.</li>
-    <li><strong>Link function g.</strong> It connects the two by transforming the expected outcome so that it can be written as the linear predictor.</li>
+    <li><strong>Random component.</strong> What kind of outcome are we predicting? For example, a continuous value, a yes/no outcome, or a count.</li>
+    <li><strong>Systematic component.</strong> How do our predictors contribute to the prediction? Just as in linear regression, they are combined into a weighted sum.</li>
+    <li><strong>Link function.</strong> How do we translate that weighted sum into a meaningful prediction, such as a probability between 0 and 1 or a positive expected count?</li>
   </ul>
   <p class="post-formula"><strong>g( E[Y | X] ) = β₀ + β₁X₁ + … + βₚXₚ</strong><span>E[Y | X] is the expected outcome given the predictors, g is the link function and the right side is the linear predictor η.</span></p>
-  <p>The link function maps the expected outcome onto the scale of the linear predictor. This allows the model to use a linear combination of predictors while respecting the constraints imposed by the chosen outcome distribution. A GLM is fitted by maximum likelihood. For the normal case this gives the same result as ordinary least squares.</p>
+  <p>The link function connects the expected outcome to the linear predictor. It allows the model to make appropriate predictions for different types of outcomes, such as probabilities between 0 and 1 or positive expected counts.</p>
+  <p>GLMs are generally fitted using maximum likelihood estimation. For a Gaussian model with an identity link, this produces the same coefficient estimates as ordinary least squares.</p>
 
   <h2>Three examples</h2>
   <p>Continuous, binary and count outcomes each call for a different distribution and link function. The inverse of the link function turns the linear predictor η back into the expected outcome.</p>
