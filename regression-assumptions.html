@@ -77,6 +77,8 @@ plt.show()</code></pre>
     <figcaption><span>Chart 3</span> Each month&#8217;s residual plotted against the previous month&#8217;s. Left: a shapeless cloud, so no carry-over. Right: the points line up along a rising diagonal, a sign of autocorrelation. Illustrative data.</figcaption>
   </figure>
   <p>If dependence is present, we may need a model that accounts for it or standard errors that are robust to the dependence structure.</p>
+  <div class="post-note"><p class="post-note-l">What is autocorrelation?</p><p>Autocorrelation means that a series is correlated with its own past values. Here, a month's residual is related to the residual of the month before. If the model underestimates March, it tends to underestimate April too. Positive autocorrelation, where high follows high, is the common case. It matters because the months partly repeat each other, so the model has less real information than it thinks.</p></div>
+
   <h2>3. Normality: Are the Errors Normally Distributed?</h2>
   <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
   <ul class="post-points post-points-color">
