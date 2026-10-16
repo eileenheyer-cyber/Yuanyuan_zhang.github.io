@@ -98,15 +98,6 @@
   <p>OLS finds the line with the smallest sum of squared residuals. But how does it determine the best slope and intercept?</p>
   <p>Rather than testing countless possible lines, OLS uses mathematical formulas to calculate both coefficients directly from the observed data.</p>
 
-  <h3>A quick note on correlation</h3>
-  <p>Before calculating the slope, it helps to understand how two variables move together. The <strong>correlation coefficient (r)</strong> measures the strength and direction of their linear relationship, ranging from −1 to +1.</p>
-  <ul class="post-points">
-    <li><strong>Positive correlation:</strong> the variables tend to increase together.</li>
-    <li><strong>Negative correlation:</strong> one tends to decrease as the other increases.</li>
-    <li><strong>Zero correlation:</strong> there is no linear relationship.</li>
-  </ul>
-  <p>For NordHome, r ≈ 0.97 indicates a strong positive linear relationship between advertising spend and sales in our five observations. However, correlation alone does not tell us the exact slope or prove that advertising causes sales to increase.</p>
-
   <h3>Step 1: Calculate the slope</h3>
   <p>The slope tells us how much the model's predicted sales change when advertising spend increases by one unit. OLS calculates it using the deviations of advertising spend and sales from their respective means.</p>
   <p class="post-formula"><strong>β̂₁ = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²</strong>
@@ -128,6 +119,15 @@
   <p class="post-formula"><strong>ŷ = 20 + 5x</strong></p>
   <p>This is the line used in our NordHome charts. OLS calculates these coefficients to minimize the sum of squared residuals for the observed data.</p>
   <p>In practice, statistical software performs these calculations almost instantly. Understanding the formulas helps us interpret the coefficients and understand how the model arrives at its predictions.</p>
+
+  <h3>A quick note on correlation</h3>
+  <p>Once we have the fitted line, it helps to ask how closely the two variables move together. The <strong>correlation coefficient (r)</strong> measures the strength and direction of their linear relationship, ranging from −1 to +1.</p>
+  <ul class="post-points">
+    <li><strong>Positive correlation:</strong> the variables tend to increase together.</li>
+    <li><strong>Negative correlation:</strong> one tends to decrease as the other increases.</li>
+    <li><strong>Zero correlation:</strong> there is no linear relationship.</li>
+  </ul>
+  <p>For NordHome, r ≈ 0.97 indicates a strong positive linear relationship between advertising spend and sales in our five observations. However, correlation alone does not tell us the exact slope or prove that advertising causes sales to increase.</p>
 
   <h2>What Comes Next?</h2>
   <p>We’ve seen how ordinary least squares finds the best-fitting line by minimising the sum of squared residuals. But a line that fits our data best is not necessarily a model we can fully trust.</p>
