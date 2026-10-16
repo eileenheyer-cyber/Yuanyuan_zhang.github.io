@@ -96,8 +96,8 @@ plt.show()</code></pre>
     <li>A <strong>Q-Q plot</strong> compares the observed residual quantiles with the quantiles expected under a normal distribution. If the residuals are approximately normally distributed, the points should follow a roughly straight line.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/assumptions-chart-qq.svg?v=1" alt="Two Q-Q plots with a dashed reference line. Left, approximately normal residuals: the points follow the line. Right, right-skewed residuals: the points curve away from the line in the upper tail." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 4</span> Q-Q plots of residuals. Left: the points follow the reference line, so the residuals are approximately normal. Right: the points bend away from the line, a sign of right-skewed residuals. Illustrative data.</figcaption>
+    <img src="images/regression/assumptions-chart-qq.svg?v=2" alt="Three Q-Q plots with a dashed reference line. Normal residuals follow the line. Exponential, right-skewed residuals bend upward in the upper tail. Uniform residuals form an S-shape around the line." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 4</span> Q-Q plots for three kinds of residuals. Normal: the points follow the line. Exponential (right-skewed): the upper tail bends away from the line. Uniform: the points form an S-shape because the tails are lighter than normal. Illustrative data.</figcaption>
   </figure>
   <p>The Q-Q plot is often particularly useful because deviations from a straight line can reveal departures from normality. With only five months, neither plot tells us much, so in practice you would run these checks on a longer history. In Python, <code>model.resid</code> retrieves the residuals from a fitted regression model:</p>
   <pre class="post-code"><code>import statsmodels.api as sm
