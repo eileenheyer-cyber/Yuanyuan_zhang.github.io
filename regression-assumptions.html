@@ -62,10 +62,11 @@ sns.scatterplot(data=df, x="advertising_spend", y="sales")
 plt.show()</code></pre>
   <p>When the data is very scattered, a curve can be hard to see in the raw scatterplot. A second view helps: after fitting the line, plot the residuals against the fitted values. If the relationship is linear, the residuals scatter randomly around zero. If it is curved, they form a systematic arch, because the line is too low in some regions and too high in others.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/assumptions-chart-linres.svg?v=4" alt="Two residuals-versus-fitted plots with a dashed line at zero. Left, a linear relationship: the residuals scatter randomly around zero. Right, a curved relationship: the residuals form an arch." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 2</span> Residuals against fitted values for the linear and the curved data. A clear arch means a straight line is not appropriate. Illustrative data.</figcaption>
+    <img src="images/regression/assumptions-chart-linres.svg?v=5" alt="Two residuals-versus-fitted plots with a thick red zero line. Left, a linear relationship: the residuals scatter evenly above and below zero. Right, a nonlinear relationship: the residuals form an inverted U, positive in the middle and negative at both ends." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 2</span> Residuals against fitted values. Left: no pattern, so a straight line is appropriate. Right: an inverted U, positive in the middle and negative at both ends, so the line underpredicts in the middle and overpredicts at the extremes. Illustrative data.</figcaption>
   </figure>
-  <p>If the relationship is not sufficiently linear, one possible approach is to transform a variable, for example by taking its logarithm, and then check the relationship again.</p>
+  <p>Points above the red zero line mean the model predicted too little, and points below it mean it predicted too much. A random scatter means the model is not missing anything systematic. A curved shape means part of the relationship is missing from the straight-line model.</p>
+  <p>If a clear curve appears, possible remedies are to transform a variable, for example by taking its logarithm, or to add a squared term, and then check the plots again.</p>
 
   <h2>2. Independence: Are the Observations Independent?</h2>
   <p>The independence assumption means that the error for one observation should not depend on the error for another. After accounting for the relationship described by our regression model, the remaining errors should not show a systematic connection.</p>
