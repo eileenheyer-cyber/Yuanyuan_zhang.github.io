@@ -1720,13 +1720,15 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 /* Space between the title and the first paragraph now that posts have no cover image */
 .post .post-title + p { margin-top: 28px; }
 
-/* Q-Q plot examples: thumbnail beside title and description */
+/* Q-Q plot examples: thumbnail beside title and description (same height) */
 .post .post-qq { margin: 24px 0; }
-.post .post-qq-item { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.post .post-qq-item { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: stretch; padding: 18px 0; border-bottom: 1px solid var(--line); }
 .post .post-qq-item:first-child { border-top: 1px solid var(--line); }
-.post .post-qq-item img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
-.post .post-qq-item h3 { margin: 0 0 6px; font-size: 1.15rem; font-style: normal; }
-.post .post-qq-item p { margin: 0; }
-@media (max-width: 640px) { .post .post-qq-item { grid-template-columns: 1fr; gap: 12px; } }
-.post .post-qq-item ul { margin: 8px 0; }
-.post .post-qq-item p + p { margin-top: 8px; }
+.post .post-qq-item img { width: 100%; height: 100%; min-height: 0; object-fit: contain; display: block; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.post .post-qq-item > div { display: flex; flex-direction: column; justify-content: center; text-align: left; }
+.post .post-qq-item h3 { margin: 0 0 4px; font-size: 1.15rem; font-style: normal; line-height: 1.3; }
+.post .post-qq-item p { margin: 0; line-height: 1.45; text-align: left !important; hyphens: none !important; }
+.post .post-qq-item p + p { margin-top: 6px; }
+.post .post-qq-item ul { margin: 6px 0; padding-left: 1.2em; }
+.post .post-qq-item li { margin: 0 0 2px; line-height: 1.4; text-align: left !important; hyphens: none !important; }
+@media (max-width: 640px) { .post .post-qq-item { grid-template-columns: 1fr; gap: 12px; } .post .post-qq-item img { height: auto; } }
