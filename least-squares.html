@@ -34,11 +34,7 @@
   <p class="overline">Regression analysis</p>
   <h1 class="post-title">OLS: How Does Linear Regression Find the Best-Fit Line?</h1>
 
-  <p>Many different straight lines can be drawn through the same cloud of points, and most of them look reasonable. So how does regression decide which one is the best? It uses a simple rule: measure how far the line misses each point, add up those misses, and pick the line with the smallest total. This rule is called <strong>ordinary least squares (OLS)</strong>. This post explains how it works and builds on <a href="simple-linear-regression.html">Simple Linear Regression</a>.</p>
-
-  <h2>The question: which line is best?</h2>
-  <p>Think of laying a ruler across a scatter of points. You can tilt it and shift it, and dozens of positions seem fine to the eye. To choose between them you need a rule that turns “fits well” into a number, so lines can be compared fairly. That number is built from the errors each line makes.</p>
-  <p>Take NordHome's five months from the last post: two people could draw two slightly different lines through them, and the eye alone cannot say who is right. The errors can.</p>
+  <p>Think of laying a ruler across a scatter of points: you can tilt it and shift it, and dozens of positions seem fine to the eye. So how does regression decide which one is the best? It needs a rule that turns “fits well” into a number, so lines can be compared fairly. That number is built from the errors each line makes: measure how far the line misses each point, add up those misses, and pick the line with the smallest total. This rule is called <strong>ordinary least squares (OLS)</strong>. This post explains how it works, using the five NordHome months from <a href="simple-linear-regression.html">Simple Linear Regression</a>.</p>
 
   <h2>Error Measurement and Residuals</h2>
   <p>A line makes an error at every point: the gap between what actually happened and what the line predicted. This gap is called the <strong>residual</strong>.</p>
