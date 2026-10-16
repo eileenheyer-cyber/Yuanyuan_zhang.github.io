@@ -51,7 +51,7 @@
   </table></div>
   <p>Plot these points and you see a pattern: more advertising goes with more sales, and the points sit roughly along a straight line. <strong>Linear regression finds the one straight line that fits them best</strong>, and then lets us use it to answer questions like hers.</p>
   <figure class="post-fig">
-    <img src="images/regression/slr-chart1.svg" alt="Scatter plot of five months of NordHome data: advertising spend in thousand euros on the horizontal axis and sales in thousand euros on the vertical axis. The points are (2, 27), (4, 42), (5, 49), (7, 53) and (8, 59) and rise from left to right roughly along a straight line. A dashed vertical line marks the planned spend of 6 thousand euros." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/slr-chart1.svg?v=2" alt="Scatter plot of five months of NordHome data: advertising spend in thousand euros on the horizontal axis and sales in thousand euros on the vertical axis. The points are (2, 27), (4, 42), (5, 49), (7, 53) and (8, 59) and rise from left to right roughly along a straight line. A dashed vertical line marks the planned spend of 6 thousand euros." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 1</span> NordHome's five past months: sales rise with advertising spend. The dashed line marks the €6k the manager is considering. Illustrative data.</figcaption>
   </figure>
 
@@ -81,7 +81,7 @@
   <p class="post-formula"><strong>ŷ = 20 + 5 × 6 = 50</strong>
     <span>The expected sales are €50k.</span></p>
   <figure class="post-fig">
-    <img src="images/regression/slr-chart2.svg" alt="Scatter plot of five months of advertising spend against sales with the fitted line. The line starts at 20 on the sales axis and rises to 60 at 8 thousand euros of spend. A yellow marker shows the prediction of 50 thousand euros of sales for 6 thousand euros of spend, and a short red segment shows the residual of minus 2 for the month with 7 thousand euros of spend." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/slr-chart2.svg?v=2" alt="Scatter plot of five months of advertising spend against sales with the fitted line. The line starts at 20 on the sales axis and rises to 60 at 8 thousand euros of spend. A yellow marker shows the prediction of 50 thousand euros of sales for 6 thousand euros of spend, and a short red segment shows the residual of minus 2 for the month with 7 thousand euros of spend." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The fitted line through NordHome's five months (blue dots). The yellow dot is the prediction for €6k, the red bracket is the residual of the €7k month, and the hollow dot is the intercept, outside the observed range. Illustrative data.</figcaption>
   </figure>
   <p class="post-formula"><strong>b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</strong>

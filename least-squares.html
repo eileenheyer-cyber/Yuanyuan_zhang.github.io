@@ -56,7 +56,7 @@
   <p class="post-formula"><strong>−3 + 2 + 4 − 2 − 1 = 0</strong></p>
   <p>Positive and negative errors cancel each other out. As a result, simply adding the residuals does not tell us how well the line fits the data.</p>
   <figure class="post-fig">
-    <img src="images/regression/ols-chart1.svg" alt="Scatter plot of NordHome's five months with the fitted line. A red vertical segment connects each point to the line and is labelled with its residual in thousand euros: minus 3, plus 2, plus 4, minus 2 and minus 1." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/ols-chart1.svg?v=2" alt="Scatter plot of NordHome's five months with the fitted line. A red vertical segment connects each point to the line and is labelled with its residual in thousand euros: minus 3, plus 2, plus 4, minus 2 and minus 1." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 1</span> NordHome's fitted line with its five residuals in red, labelled in €k as actual minus predicted. Illustrative data.</figcaption>
   </figure>
 
@@ -89,7 +89,7 @@
     </tbody>
   </table></div>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/ols-chart2.svg" alt="Three small scatter plots of the same five points, each with a different line and red residual segments. The first line, 15 plus 5x, has SSR 159 and sits below every point. The second, 25 plus 4x, has SSR 57. The third, the OLS line 20 plus 5x, has SSR 34 and the shortest red segments overall." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/ols-chart2.svg?v=2" alt="Three small scatter plots of the same five points, each with a different line and red residual segments. The first line, 15 plus 5x, has SSR 159 and sits below every point. The second, 25 plus 4x, has SSR 57. The third, the OLS line 20 plus 5x, has SSR 34 and the shortest red segments overall." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The same five points with three different lines. The shorter the red residual segments overall, the smaller the SSR. Illustrative data.</figcaption>
   </figure>
   <p>The first line sits below every point, so all five residuals are positive and the SSR is large. The second line's residuals nearly cancel out, with a sum of only +1, yet its SSR is still 57. That is exactly why we square the residuals before adding them. The OLS line balances the errors and has the smallest SSR of any straight line: 34. You could keep adjusting the slope and the intercept and watch the SSR change, but you would never get below 34. OLS does that search for you, with a formula instead of trial and error.</p>
