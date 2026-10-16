@@ -73,8 +73,8 @@ plt.show()</code></pre>
   <p><strong>Why does it matter?</strong> When errors are correlated, the model may underestimate uncertainty. This can make standard errors too small and confidence intervals too narrow, leading us to believe that a relationship is more statistically convincing than it really is.</p>
   <p><strong>How can we check it?</strong> Start by understanding how the data were collected. With monthly observations, plot the residuals over time and look for patterns. If positive or negative residuals tend to occur in consecutive months, this may indicate autocorrelation. A formal test, such as the Durbin–Watson test, can help assess autocorrelation in regression residuals.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/assumptions-chart-time.svg?v=1" alt="Two plots of residuals over time with a dashed line at zero. Left, independent errors: the residuals jump randomly above and below zero. Right, dependent errors: the residuals stay above or below zero for several months in a row." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 3</span> Residuals in month order. Left: no pattern. Right: long runs of positive and negative residuals, a sign of autocorrelation. Illustrative data.</figcaption>
+    <img src="images/regression/assumptions-chart-time.svg?v=2" alt="Two lag plots of each month&#8217;s residual against the previous month&#8217;s residual, with a dashed trend line. Left, independent errors: a shapeless cloud with a flat line. Right, dependent errors: the points rise along a diagonal." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 3</span> Each month&#8217;s residual plotted against the previous month&#8217;s. Left: a shapeless cloud, so no carry-over. Right: the points line up along a rising diagonal, a sign of autocorrelation. Illustrative data.</figcaption>
   </figure>
   <p>If dependence is present, we may need a model that accounts for it or standard errors that are robust to the dependence structure.</p>
   <h2>3. Normality: Are the Errors Normally Distributed?</h2>
