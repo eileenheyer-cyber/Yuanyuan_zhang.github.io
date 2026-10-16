@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Least Squares – Yuanyuan Zhang</title>
-  <meta name="description" content="Least squares explained: how a regression model decides which straight line fits the data best. This post is in progress.">
+  <title>OLS: How Does Linear Regression Find the Best-Fit Line? – Yuanyuan Zhang</title>
+  <meta name="description" content="Ordinary least squares explained: how residuals and the sum of squared residuals turn 'fits well' into a number, and how OLS finds the best-fit line.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,11 +32,68 @@
 
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Regression analysis</p>
-  <h1 class="post-title">Least Squares: How the Best Line Is Found</h1>
+  <h1 class="post-title">OLS: How Does Linear Regression Find the Best-Fit Line?</h1>
 
-  <p>This post is in progress. It follows <a href="simple-linear-regression.html">Simple Linear Regression</a> and explains how the model decides which straight line fits the data best.</p>
+  <p>Many different straight lines can be drawn through the same cloud of points, and most of them look reasonable. So how does regression decide which one is the best? It uses a simple rule: measure how far the line misses each point, add up those misses, and pick the line with the smallest total. This rule is called <strong>ordinary least squares (OLS)</strong>. This post explains how it works and builds on <a href="simple-linear-regression.html">Simple Linear Regression</a>.</p>
 
-  <div class="post-note"><p class="post-note-l">Coming soon</p><p>Check back soon for the full article.</p></div>
+  <h2>The question: which line is best?</h2>
+  <p>Think of laying a ruler across a scatter of points. You can tilt it and shift it, and dozens of positions seem fine to the eye. To choose between them you need a rule that turns “fits well” into a number, so lines can be compared fairly. That number is built from the errors each line makes.</p>
+  <p>Take NordHome's five months from the last post: two people could draw two slightly different lines through them, and the eye alone cannot say who is right. The errors can.</p>
+
+  <h2>Error Measurement and Residuals</h2>
+  <p>A line makes an error at every point: the gap between what actually happened and what the line predicted. This gap is called the <strong>residual</strong>.</p>
+  <p class="post-formula"><strong>residual = observed value − predicted value = y − ŷ</strong>
+    <span>A positive residual means the point sits above the line, a negative one means it sits below.</span></p>
+  <p>For the €7k month, the line predicts 53.8 and the actual sales were 52, so the residual is −1.8. Chart 1 shows all five residuals of NordHome's fitted line as red segments.</p>
+  <figure class="post-fig">
+    <svg class="nd-svg" viewBox="0 0 640 420" role="img" aria-label="Scatter plot of NordHome's five months with the fitted line. A short red vertical segment connects each point to the line: the residuals are plus 0.58, minus 1.16, plus 0.97, minus 1.76 and plus 1.37 thousand euros. The residual of minus 1.76 for the month with 7 thousand euros of spend is labelled."><path d="M70,50 H610 M70,150 H610 M70,250 H610 M70,350 H610" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="2 6" stroke-linecap="round" opacity="0.35"/><path d="M70,30 V370 H610" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><text x="70" y="20" class="l m" text-anchor="start">Sales (€k)</text><text x="610" y="414" class="l m" text-anchor="end">Advertising spend (€k)</text><text x="62" y="56" class="l m" text-anchor="end">60</text><text x="62" y="156" class="l m" text-anchor="end">50</text><text x="62" y="256" class="l m" text-anchor="end">40</text><text x="62" y="356" class="l m" text-anchor="end">30</text><text x="137.5" y="394" class="l m" text-anchor="middle">2</text><text x="272.5" y="394" class="l m" text-anchor="middle">4</text><text x="407.5" y="394" class="l m" text-anchor="middle">6</text><text x="542.5" y="394" class="l m" text-anchor="middle">8</text><path d="M137.5,355.8 L542.5,63.7" fill="none" stroke="#0a0a0a" stroke-width="4.5" stroke-linecap="round"/><circle cx="137.5" cy="350" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="272.5" cy="270" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="340" cy="200" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="475" cy="130" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="542.5" cy="50" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><path d="M137.5,350 V355.8 M272.5,270 V258.4 M340,200 V209.7 M475,130 V112.4 M542.5,50 V63.7" fill="none" stroke="#dc452d" stroke-width="5" stroke-linecap="butt"/><text x="492" y="166" class="l b" text-anchor="start">residual</text><text x="492" y="194" class="l b" text-anchor="start">−1.8</text></svg>
+    <figcaption><span>Chart 1</span> NordHome's fitted line with its five residuals (red segments). The labelled one is the €7k month. Illustrative data.</figcaption>
+  </figure>
+  <p>The five residuals are +0.58, −1.16, +0.97, −1.76 and +1.37. They add up to zero. This is not luck: for OLS with an intercept, the residuals always sum to zero, because the line balances the points above and below it. It also means we cannot judge a line by the plain sum of its errors, since even a poor line can have errors that cancel out. So we square each residual first, which makes every error positive and punishes large misses more, and then add them up:</p>
+  <p class="post-formula"><strong>SSR = Σ(yᵢ − ŷᵢ)²</strong>
+    <span>SSR is the sum of squared residuals. The smaller it is, the closer the line sits to the data. For NordHome's line, SSR ≈ 7.61.</span></p>
+
+  <h2>Ordinary Least Squares (OLS) Estimation</h2>
+  <p>OLS finds the intercept and slope that make the SSR as small as possible. In other words, it finds the line with the <em>least</em> squared error, hence the name.</p>
+  <p>The coefficients are <strong>estimates</strong> calculated from a sample of data, here five months. The true relationship in the whole population is unknown, so we mark the estimates with a hat: <strong>β̂₀</strong> and <strong>β̂₁</strong>. The previous post wrote them as b₀ and b₁; they are the same thing.</p>
+  <p class="post-formula"><strong>ŷ = β̂₀ + β̂₁x</strong>
+    <span>β̂₀ is the estimated intercept and β̂₁ is the estimated slope.</span></p>
+
+  <h2>Practical example: trying different lines</h2>
+  <p>Before using a formula, test it by hand. Here are three lines for NordHome's data:</p>
+  <div class="post-table-wrap post-table-narrow" style="max-width: 460px;"><table class="post-table">
+    <thead><tr><th>Line</th><th>Sum of residuals</th><th>SSR</th></tr></thead>
+    <tbody>
+      <tr><td>ŷ = 15 + 5x</td><td>+20</td><td>88</td></tr>
+      <tr><td>ŷ = 20 + 4.5x</td><td>+8</td><td>23.5</td></tr>
+      <tr><td>ŷ = 19.684 + 4.868x (OLS)</td><td>0</td><td>7.61</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <svg class="nd-svg" viewBox="0 0 640 250" role="img" aria-label="Three small scatter plots of the same five points, each with a different line and red residual segments. The first line, 15 plus 5x, has SSR 88 and sits below every point. The second, 20 plus 4.5x, has SSR 23.5. The third, the OLS line 19.68 plus 4.87x, has SSR 7.61 and the shortest red segments."><path d="M10,50 V200 H190" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M32.5,183.3 L167.5,83.3" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M32.5,166.7 V183.3 M77.5,140 V150 M100,116.7 V133.3 M145,93.3 V100 M167.5,66.7 V83.3" fill="none" stroke="#dc452d" stroke-width="4" stroke-linecap="butt"/><circle cx="32.5" cy="166.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="77.5" cy="140" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="100" cy="116.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="145" cy="93.3" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="167.5" cy="66.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="10" y="30" class="l b" text-anchor="start">SSR = 88</text><text x="10" y="232" class="l m" text-anchor="start">15 + 5x</text><path d="M225,50 V200 H405" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M247.5,170 L382.5,80" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M247.5,166.7 V170 M292.5,140 V140 M315,116.7 V125 M360,93.3 V95 M382.5,66.7 V80" fill="none" stroke="#dc452d" stroke-width="4" stroke-linecap="butt"/><circle cx="247.5" cy="166.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="292.5" cy="140" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="315" cy="116.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="360" cy="93.3" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="382.5" cy="66.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="225" y="30" class="l b" text-anchor="start">SSR = 23.5</text><text x="225" y="232" class="l m" text-anchor="start">20 + 4.5x</text><path d="M440,50 V200 H620" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><path d="M462.5,168.6 L597.5,71.2" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linecap="round"/><path d="M462.5,166.7 V168.6 M507.5,140 V136.1 M530,116.7 V119.9 M575,93.3 V87.5 M597.5,66.7 V71.2" fill="none" stroke="#dc452d" stroke-width="4" stroke-linecap="butt"/><circle cx="462.5" cy="166.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="507.5" cy="140" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="530" cy="116.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="575" cy="93.3" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><circle cx="597.5" cy="66.7" r="5" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="440" y="30" class="l b" text-anchor="start">SSR = 7.61</text><text x="440" y="232" class="l m" text-anchor="start">19.68 + 4.87x</text></svg>
+    <figcaption><span>Chart 2</span> The same five points with three different lines. The shorter the red residual segments, the smaller the SSR. Illustrative data.</figcaption>
+  </figure>
+  <p>The first line sits below every point, so all five residuals are positive and the SSR is large. The second is much closer, but its residuals are still mostly positive. The OLS line balances the errors and has the smallest SSR of any straight line. You could keep adjusting the slope and the intercept and watch the SSR change, but you would never get below 7.61. OLS does that search for you, with a formula instead of trial and error.</p>
+
+  <h2>Estimating the coefficients</h2>
+  <p>Trial and error works, but it is slow and never certain. The OLS formulas calculate the best intercept and slope directly from the means and sums of the observed values. With x̄ = 5.2 and ȳ = 45:</p>
+  <p class="post-formula"><strong>β̂₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</strong>
+    <strong>β̂₀ = ȳ − β̂₁x̄</strong>
+    <span>For NordHome: β̂₁ = 111 / 22.8 ≈ 4.868 and β̂₀ = 45 − 4.868 × 5.2 ≈ 19.684.</span></p>
+  <p>The slope compares how x and y move together with how much x varies on its own. The line also always passes through the point (x̄, ȳ). In practice, software does all of this in a split second, but knowing what sits behind the numbers helps you read the output.</p>
+
+  <h2>What comes next</h2>
+  <p>OLS gives the best line for our sample, but the result is only trustworthy if certain model assumptions hold. The next posts cover those assumptions, and how to read the results with p-values and confidence intervals, which show how uncertain the estimates are.</p>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>A residual is the observed value minus the predicted value. OLS finds the intercept and slope that minimise the sum of squared residuals, so no other straight line fits the sample better. The coefficients are estimates from a sample, written with hats, and software calculates them for you.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="simple-linear-regression.html">Simple Linear Regression</a> What the line predicts and what its slope and intercept mean.</li>
+    <li><a href="glm.html">Generalized Linear Models</a> How regression extends to yes/no and count outcomes.</li>
+    <li><a href="descriptive-statistics.html">Descriptive Statistics</a> Means and spread, the building blocks of the OLS formulas.</li>
+    <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> How to look at relationships in retail data before you model them.</li>
+  </ul>
 
 </article>
 </main>
