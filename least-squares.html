@@ -39,23 +39,44 @@
   <p>In this post, we’ll explore how this works using the five months of NordHome data introduced in <a href="simple-linear-regression.html">Simple Linear Regression</a>.</p>
 
   <h2>Error Measurement and Residuals</h2>
-  <p>A line makes an error at every point: the gap between what actually happened and what the line predicted. This gap is called the <strong>residual</strong>.</p>
-  <p class="post-formula"><strong>residual = observed value − predicted value = y − ŷ</strong>
-    <span>A positive residual means the point sits above the line, a negative one means it sits below.</span></p>
-  <p>For the €7k month, the line predicts 55 and the actual sales were 53, so the residual is −2. Chart 1 shows all five residuals of NordHome's fitted line, each labelled with its value.</p>
+  <p>A regression line rarely passes through every data point. The vertical distance between an observed value and the value predicted by the line is called a <strong>residual</strong>.</p>
+  <p class="post-formula"><strong>eᵢ = yᵢ − ŷᵢ</strong>
+    <span>Here, yᵢ is the actual value and ŷᵢ is the predicted value.</span></p>
+  <ul class="post-points">
+    <li>A <strong>positive</strong> residual means the actual value is above the line.</li>
+    <li>A <strong>negative</strong> residual means the actual value is below the line.</li>
+    <li>A <strong>zero</strong> residual means the prediction matches the actual value exactly.</li>
+  </ul>
+  <p>For NordHome, consider the month with €7k in advertising spend. The regression line predicts sales of €55k, while actual sales are €53k. The residual is therefore:</p>
+  <p class="post-formula"><strong>eᵢ = 53 − 55 = −2</strong>
+    <span>The model overestimated sales by €2k.</span></p>
+
+  <h3 class="post-h3-small">Why Can't We Simply Add the Residuals?</h3>
+  <p>In an ordinary least squares regression with an intercept, the residuals sum to zero. For NordHome, the five residuals are −3, +2, +4, −2 and −1 (Chart 1):</p>
+  <p class="post-formula"><strong>−3 + 2 + 4 − 2 − 1 = 0</strong></p>
+  <p>Positive and negative errors cancel each other out. As a result, simply adding the residuals does not tell us how well the line fits the data.</p>
   <figure class="post-fig">
     <svg class="nd-svg" viewBox="0 0 640 420" role="img" aria-label="Scatter plot of NordHome's five months with the fitted line. A red vertical segment connects each point to the line and is labelled with its residual in thousand euros: minus 3, plus 2, plus 4, minus 2 and minus 1."><path d="M70,72.5 H610 M70,157.5 H610 M70,242.5 H610 M70,327.5 H610" fill="none" stroke="#0a0a0a" stroke-width="1.5" stroke-dasharray="2 6" stroke-linecap="round" opacity="0.35"/><path d="M70,30 V370 H610" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linejoin="round"/><text x="70" y="20" class="l m" text-anchor="start">Sales (€k)</text><text x="610" y="414" class="l m" text-anchor="end">Advertising spend (€k)</text><text x="62" y="78" class="l m" text-anchor="end">60</text><text x="62" y="163" class="l m" text-anchor="end">50</text><text x="62" y="248" class="l m" text-anchor="end">40</text><text x="62" y="333" class="l m" text-anchor="end">30</text><text x="137.5" y="394" class="l m" text-anchor="middle">2</text><text x="272.5" y="394" class="l m" text-anchor="middle">4</text><text x="407.5" y="394" class="l m" text-anchor="middle">6</text><text x="542.5" y="394" class="l m" text-anchor="middle">8</text><path d="M137.5,327.5 L542.5,72.5" fill="none" stroke="#0a0a0a" stroke-width="4.5" stroke-linecap="round"/><circle cx="137.5" cy="353" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="272.5" cy="225.5" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="340" cy="166" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="475" cy="132" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><circle cx="542.5" cy="81" r="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="3"/><path d="M137.5,353 V327.5 M272.5,225.5 V242.5 M340,166 V200 M475,132 V115 M542.5,81 V72.5" fill="none" stroke="#dc452d" stroke-width="5" stroke-linecap="butt"/><text x="150" y="346" class="l b" style="fill:#dc452d" text-anchor="start">−3</text><text x="260" y="237" class="l b" style="fill:#dc452d" text-anchor="end">+2</text><text x="328" y="189" class="l b" style="fill:#dc452d" text-anchor="end">+4</text><text x="487" y="130" class="l b" style="fill:#dc452d" text-anchor="start">−2</text><text x="555" y="83" class="l b" style="fill:#dc452d" text-anchor="start">−1</text></svg>
     <figcaption><span>Chart 1</span> NordHome's fitted line with its five residuals in red, labelled in €k as actual minus predicted. Illustrative data.</figcaption>
   </figure>
-  <p>The five residuals are −3, +2, +4, −2 and −1, and they add up to zero: −3 + 2 + 4 − 2 − 1 = 0. This is not luck: for OLS with an intercept, the residuals always sum to zero, because the line balances the points above and below it. It also means we cannot judge a line by the plain sum of its errors, since even a poor line can have errors that cancel out. So we square each residual first, which makes every error positive and punishes large misses more, and then add them up:</p>
-  <p class="post-formula"><strong>SSR = Σ(yᵢ − ŷᵢ)²</strong>
-    <span>SSR is the sum of squared residuals. The smaller it is, the closer the line sits to the data. For NordHome's line: SSR = 9 + 4 + 16 + 4 + 1 = 34.</span></p>
+
+  <h3 class="post-h3-small">The Solution: Square the Residuals</h3>
+  <p>OLS squares every residual before adding them together. Squaring removes negative signs and gives larger errors more weight. The resulting measure is called the <strong>sum of squared residuals (SSR)</strong>:</p>
+  <p class="post-formula"><strong>SSR = Σᵢ₌₁ⁿ (yᵢ − ŷᵢ)²</strong></p>
+  <p>For NordHome's fitted line:</p>
+  <p class="post-formula"><strong>SSR = 9 + 4 + 16 + 4 + 1 = 34</strong>
+    <span>A smaller SSR indicates a closer fit for the same dataset. OLS finds the intercept and slope that minimize this sum.</span></p>
 
   <h2>Ordinary Least Squares (OLS) Estimation</h2>
-  <p>OLS finds the intercept and slope that make the SSR as small as possible. In other words, it finds the line with the <em>least</em> squared error, hence the name.</p>
-  <p>The coefficients are <strong>estimates</strong> calculated from a sample of data, here five months. The true relationship in the whole population is unknown, so we mark the estimates with a hat: <strong>β̂₀</strong> and <strong>β̂₁</strong>. The previous post wrote them as b₀ and b₁; they are the same thing.</p>
-  <p class="post-formula"><strong>ŷ = β̂₀ + β̂₁x</strong>
-    <span>β̂₀ is the estimated intercept and β̂₁ is the estimated slope.</span></p>
+  <p>A straight regression line is defined by two coefficients:</p>
+  <ul class="post-points">
+    <li><strong>Intercept (β̂₀):</strong> the predicted value of y when x = 0.</li>
+    <li><strong>Slope (β̂₁):</strong> the expected change in predicted y for a one-unit increase in x.</li>
+  </ul>
+  <p>The fitted regression equation is:</p>
+  <p class="post-formula"><strong>ŷ = β̂₀ + β̂₁x</strong></p>
+  <p>The hats indicate that these are estimates calculated from the observed data, rather than the unknown true population parameters.</p>
+  <p>OLS chooses the intercept and slope that produce the smallest possible SSR. This is how it identifies the best-fit line for the given data.</p>
 
   <h2>Practical example: trying different lines</h2>
   <p>Before using a formula, test it by hand. Here are three lines for NordHome's data:</p>
