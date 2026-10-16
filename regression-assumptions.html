@@ -121,9 +121,14 @@ plt.show()</code></pre>
   <p><strong>How can we check it?</strong> Plot the residuals against the fitted (predicted) values. The horizontal axis shows predicted sales, and the vertical axis shows residuals—the differences between actual and predicted sales.</p>
   <p>Ideally, the points form a random cloud around zero with a similar vertical spread across the plot. If the cloud widens or narrows as predicted sales increase, creating a funnel-like shape, this may indicate heteroscedasticity.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/assumptions-chart2.svg?v=4" alt="Two residuals-versus-fitted plots with a dashed line at zero. In the left plot the points form an even band around zero. In the right plot the points start close to zero and spread out into a funnel as the fitted values increase." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/assumptions-chart2.svg?v=6" alt="Two residuals-versus-fitted plots with a dashed line at zero. In the left plot the points form an even band around zero. In the right plot the points start close to zero and spread out into a funnel as the fitted values increase." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> Residuals against fitted values. Left: an even band around zero. Right: a funnel, where the errors grow with the predicted sales. Illustrative data.</figcaption>
   </figure>
+  <h3>How to Read the Two Plots</h3>
+  <div class="post-qq">
+    <div class="post-qq-item"><img src="images/regression/assumptions-homo-const.svg?v=2" alt="Residuals plot with an even band of points around the zero line." loading="lazy"><div><h3>Left: Constant variance</h3><p>The points form an even band around the zero line.</p><ul class="post-points post-points-color"><li>The spread is similar for low and high predicted sales.</li><li>The model's errors are about equally large in every month.</li><li>Standard errors and confidence intervals can be trusted more.</li></ul><p><strong>This is consistent with homoscedasticity.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-homo-funnel.svg?v=2" alt="Residuals plot where the points fan out into a funnel as fitted values increase." loading="lazy"><div><h3>Right: Changing variance</h3><p>The points fan out as predicted sales increase, forming a funnel.</p><ul class="post-points post-points-color"><li>Errors are small when predicted sales are low.</li><li>Errors grow much larger when predicted sales are high.</li><li>Standard errors and confidence intervals may be misleading.</li></ul><p><strong>This suggests heteroscedasticity.</strong></p></div></div>
+  </div>
   <p>The plot takes a few lines, using the model fitted above:</p>
   <pre class="post-code"><code>import seaborn as sns
 import matplotlib.pyplot as plt
