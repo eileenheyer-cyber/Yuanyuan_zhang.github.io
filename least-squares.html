@@ -98,6 +98,15 @@
   <p>We know that OLS finds the line with the smallest sum of squared residuals. But how does it actually find that line?</p>
   <p>Instead of testing countless possible lines, OLS uses two formulas to calculate the optimal slope and intercept directly from the observed data.</p>
 
+  <h3>What is correlation?</h3>
+  <p>Before calculating the slope, it helps to know how closely the points follow a straight line. Correlation measures how two variables move together linearly, and the <strong>correlation coefficient (r)</strong> quantifies the strength and direction of this relationship, ranging from −1 to 1.</p>
+  <ul class="post-points">
+    <li>A <strong>positive</strong> r indicates that the variables increase together.</li>
+    <li>A <strong>negative</strong> r indicates that one variable increases as the other decreases.</li>
+    <li>r = <strong>0</strong> means there is no linear correlation.</li>
+  </ul>
+  <p>For NordHome, r ≈ 0.97: advertising spend and sales rise together, and the points sit very close to a straight line.</p>
+
   <h3>Step 1: Calculate the slope</h3>
   <p>The slope describes how much the predicted value of y changes when x increases by one unit.</p>
   <p class="post-formula"><strong>β̂₁ = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²</strong>
@@ -105,15 +114,6 @@
   <p>For NordHome, the calculation gives:</p>
   <p class="post-formula"><strong>β̂₁ = 114 / 22.8 = 5</strong></p>
   <p>This means that for every additional €1k spent on advertising, the model predicts an increase of €5k in sales. This is the relationship estimated from our five-month sample, not necessarily a causal effect.</p>
-
-  <h3>What is correlation?</h3>
-  <p>The slope tells us how much y changes with x. Correlation tells us how closely the points follow a straight line. It measures how two variables move together linearly, and the <strong>correlation coefficient (r)</strong> quantifies the strength and direction of this relationship, ranging from −1 to 1.</p>
-  <ul class="post-points">
-    <li>A <strong>positive</strong> r indicates that the variables increase together.</li>
-    <li>A <strong>negative</strong> r indicates that one variable increases as the other decreases.</li>
-    <li>r = <strong>0</strong> means there is no linear correlation.</li>
-  </ul>
-  <p>For NordHome, r ≈ 0.97: advertising spend and sales rise together, and the points sit very close to a straight line.</p>
 
   <h3>Step 2: Calculate the intercept</h3>
   <p>Once we know the slope, we can calculate the intercept:</p>
