@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261016b">
+  <link rel="stylesheet" href="style.css?v=20261016e">
 </head>
 <body>
 
@@ -42,7 +42,7 @@
   <p>A regression line rarely passes through every data point. The vertical distance between an observed value and the value predicted by the line is called a <strong>residual</strong>.</p>
   <p class="post-formula"><strong>eᵢ = yᵢ − ŷᵢ</strong>
     <span>Here, yᵢ is the actual value and ŷᵢ is the predicted value.</span></p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li>A <strong>positive</strong> residual means the actual value is above the line.</li>
     <li>A <strong>negative</strong> residual means the actual value is below the line.</li>
     <li>A <strong>zero</strong> residual means the prediction matches the actual value exactly.</li>
@@ -69,7 +69,7 @@
 
   <h2>Ordinary Least Squares (OLS) Estimation</h2>
   <p>A straight regression line is defined by two coefficients:</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><strong>Intercept (β̂₀):</strong> the predicted value of y when x = 0.</li>
     <li><strong>Slope (β̂₁):</strong> the expected change in predicted y for a one-unit increase in x.</li>
   </ul>
@@ -122,7 +122,7 @@
 
   <h3>A quick note on correlation</h3>
   <p>Once we have the fitted line, it helps to ask how closely the two variables move together. The <strong>correlation coefficient (r)</strong> measures the strength and direction of their linear relationship, ranging from −1 to +1.</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><strong>Positive correlation:</strong> the variables tend to increase together.</li>
     <li><strong>Negative correlation:</strong> one tends to decrease as the other increases.</li>
     <li><strong>Zero correlation:</strong> there is no linear relationship.</li>
@@ -135,7 +135,7 @@
   <p>In the next posts, we’ll explore the <a href="regression-assumptions.html">assumptions behind linear regression</a> and <a href="regression-evaluation.html">how to evaluate whether a model is suitable for drawing conclusions from data</a>.</p>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
-    <ul class="post-points">
+    <ul class="post-points post-points-color">
       <li>A <strong>residual</strong> is the gap between an observed value and the value the line predicts.</li>
       <li>OLS finds the line that <strong>minimises the sum of squared residuals</strong>, so no other straight line fits the sample better.</li>
       <li>The regression line estimates the <strong>average y value for each x value</strong>.</li>
@@ -145,7 +145,7 @@
   </div>
 
   <h2>Related posts</h2>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><a href="simple-linear-regression.html">Simple Linear Regression</a> What the line predicts and what its slope and intercept mean.</li>
     <li><a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> When you can trust a fitted line, and how to check it.</li>
     <li><a href="regression-evaluation.html">Evaluating a Regression Model</a> How to judge whether a model is suitable for drawing conclusions.</li>

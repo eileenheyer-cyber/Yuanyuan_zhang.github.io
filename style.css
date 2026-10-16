@@ -1538,6 +1538,11 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-points { margin: 0 0 24px; padding-left: 1.2em; }
 .post-points li { margin-bottom: 12px; padding-left: 4px; line-height: 1.7; }
 .post-points li::marker { color: var(--accent); }
+.post-points-color li::marker { font-size: 1.3em; }
+.post-points-color li:nth-child(4n+1)::marker { color: #dc452d; }
+.post-points-color li:nth-child(4n+2)::marker { color: #1d57b5; }
+.post-points-color li:nth-child(4n+3)::marker { color: #f5c548; }
+.post-points-color li:nth-child(4n+4)::marker { color: #0a0a0a; }
 .post-code { margin: 16px 0 24px; padding: 16px 18px; overflow-x: auto; background: var(--surface-alt); border: 1px solid var(--line); border-radius: 10px; }
 .post-code code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85rem; line-height: 1.65; color: var(--ink); white-space: pre; }
 .post-code-out { margin-top: -12px; }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261016b">
+  <link rel="stylesheet" href="style.css?v=20261016e">
 </head>
 <body>
 
@@ -38,7 +38,7 @@
 
   <h2>The Four Assumptions at a Glance</h2>
   <p>The four assumptions of simple linear regression help us identify potential problems before we interpret the results:</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><strong>Linearity:</strong> Is a straight line an appropriate way to describe the relationship?</li>
     <li><strong>Independence:</strong> Can we treat the observations as independent?</li>
     <li><strong>Normality:</strong> Are the errors approximately normally distributed, as required for conventional statistical inference?</li>
@@ -67,7 +67,7 @@ plt.show()</code></pre>
   <p>NordHome's data are monthly observations. If a big campaign in March keeps lifting sales in April, the two months are not independent: both reflect the same campaign. The same is true if one row repeats the same store, or if neighbouring months share the same season. In these cases, the observations may be correlated rather than independent.</p>
   <p><strong>Why does it matter?</strong> When observations are dependent, the model's statistical conclusions may be unreliable if that dependence is ignored. We therefore need to understand how the data were collected and whether observations are connected.</p>
   <p><strong>How can we check it?</strong> Unlike the other assumptions, independence cannot generally be confirmed by looking at a simple scatterplot alone. We need to understand the data collection process. Ask yourself:</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li>What does each observation represent?</li>
     <li>How were the data collected?</li>
     <li>Could one observation be related to another?</li>
@@ -77,14 +77,14 @@ plt.show()</code></pre>
 
   <h2>3. Normality: Are the Errors Normally Distributed?</h2>
   <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><strong>Errors</strong> are the differences between the true underlying relationship and the observed values that the model aims to describe. They represent the model's natural, unobserved noise.</li>
     <li><strong>Residuals</strong> are the differences between the observed values and the values predicted by the fitted regression model, like the −3, +2, +4, −2 and −1 from the previous post.</li>
   </ul>
   <p>We cannot directly observe the true errors, so we use residuals to assess whether the normality assumption is reasonable.</p>
   <p><strong>Why does it matter?</strong> Normality is particularly important when we want to make statistical inferences, such as constructing confidence intervals or conducting hypothesis tests under the usual regression assumptions. A regression model can still calculate a line when residuals are not normally distributed. However, the usual inferential procedures may not be reliable, particularly in smaller samples.</p>
   <p><strong>How can we check it?</strong> Two common visual tools are a histogram and a quantile-quantile plot (Q-Q plot).</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li>A <strong>histogram</strong> shows the distribution of the residuals. We look for a roughly bell-shaped pattern centered around zero.</li>
     <li>A <strong>Q-Q plot</strong> compares the observed residual quantiles with the quantiles expected under a normal distribution. If the residuals are approximately normally distributed, the points should follow a roughly straight line.</li>
   </ul>
@@ -126,7 +126,7 @@ plt.show()</code></pre>
 
   <h2>What if an assumption is violated?</h2>
   <p>A violation does not automatically mean that the entire analysis is useless. It means that we need to understand the problem before deciding how to proceed. Depending on the situation, possible next steps include:</p>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><strong>Non-linearity.</strong> Transform a variable or consider a different model form.</li>
     <li><strong>Non-normal residuals.</strong> Investigate unusual observations or skewness and consider an appropriate transformation.</li>
     <li><strong>Dependent observations.</strong> Review the sampling process or use a model that accounts for dependence.</li>
@@ -137,7 +137,7 @@ plt.show()</code></pre>
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Fitting a line is only the first step: the four assumptions (linearity, independent observations, normal errors and constant variance) tell us whether the model's results can be interpreted with confidence. Check linearity and independence before fitting, and use residual plots for the other two afterward. The goal is not to make the data perfect, but to understand the limitations of the model and decide how to use it.</p></div>
 
   <h2>Related posts</h2>
-  <ul class="post-points">
+  <ul class="post-points post-points-color">
     <li><a href="least-squares.html">OLS: How Does Linear Regression Find the Best-Fit Line?</a> How the best-fit line, residuals and SSR work.</li>
     <li><a href="regression-evaluation.html">Evaluating a Regression Model</a> How to judge whether a model is suitable for drawing conclusions.</li>
     <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> Look at your data before you model it.</li>
