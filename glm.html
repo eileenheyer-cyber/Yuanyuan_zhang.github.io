@@ -72,7 +72,7 @@
     </tbody>
   </table></div>
 
-  <h3 class="post-h3-small">Linear regression: identity link</h3>
+  <h3>Linear regression: identity link</h3>
   <p>The identity link leaves the linear predictor unchanged. The predicted conditional mean is simply the weighted sum of the predictors.</p>
   <p>A one-unit increase in X changes the predicted mean by β, holding other predictors constant. If the outcome is order value, this coefficient represents a change in euros.</p>
   <figure class="post-fig">
@@ -80,7 +80,7 @@
     <figcaption><span>Chart 1</span> Identity link: the prediction can take any value. Illustrative example.</figcaption>
   </figure>
 
-  <h3 class="post-h3-small">Logistic regression: logit link</h3>
+  <h3>Logistic regression: logit link</h3>
   <p>For a yes/no outcome, logistic regression models the <strong>log-odds</strong> of the event rather than the probability directly. Applying the inverse link converts the linear predictor into a probability between 0 and 1.</p>
   <p class="post-formula"><strong>log( p / (1 − p) ) = η</strong><strong>p = 1 / (1 + e<sup>−η</sup>)</strong><span>p is the probability of the event, for example that a customer churns.</span></p>
   <p>Exponentiating a coefficient, e<sup>β</sup>, gives the <strong>odds ratio</strong>: the factor by which the odds change with a one-unit increase in a predictor, holding other predictors constant.</p>
@@ -89,7 +89,7 @@
     <figcaption><span>Chart 2</span> Logit link: the prediction always stays between 0 and 1. Illustrative example.</figcaption>
   </figure>
 
-  <h3 class="post-h3-small">Poisson regression: log link</h3>
+  <h3>Poisson regression: log link</h3>
   <p>For count outcomes, Poisson regression models the logarithm of the expected count. The inverse link gives a positive prediction:</p>
   <p class="post-formula"><strong>log(μ) = η</strong><strong>μ = e<sup>η</sup></strong><span>μ is the expected count, for example the number of orders per day.</span></p>
   <p>Exponentiating a coefficient gives a <strong>multiplicative effect on the expected count</strong>. For example, if e<sup>β</sup> = 1.10, a one-unit increase in X is associated with a 10% increase in the expected count, holding other predictors constant.</p>
