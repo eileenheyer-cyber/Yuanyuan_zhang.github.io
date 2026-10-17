@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261016j">
+  <link rel="stylesheet" href="style.css?v=20261017a">
 </head>
 <body>
 
@@ -95,17 +95,19 @@ plt.show()</code></pre>
   <p><strong>How can we check it?</strong> Two common visual tools are a histogram and a quantile-quantile plot (Q-Q plot).</p>
   <ul class="post-points post-points-color">
     <li>A <strong>histogram</strong> shows the distribution of the residuals. We look for a roughly bell-shaped pattern centered around zero.</li>
+  </ul>
+  <div class="post-trio">
+    <figure><img src="images/regression/assumptions-hist-normal.svg?v=1" alt="Histogram of residuals with a symmetric bell shape and a closely fitting normal curve." loading="lazy"><h3>Histogram 1: A bell shape centred on zero</h3><p>The bars form a symmetric bell around zero and the dashed normal curve fits them closely. This supports the normality assumption.</p></figure>
+    <figure><img src="images/regression/assumptions-hist-heavy.svg?v=1" alt="Histogram of residuals with a tall narrow middle and extra bars far out on both sides." loading="lazy"><h3>Histogram 2: Heavy tails</h3><p>The middle is tall and narrow, and a few bars sit far out on both sides. The model produces more extreme errors than a normal curve would allow.</p></figure>
+    <figure><img src="images/regression/assumptions-hist-skew.svg?v=1" alt="Histogram of residuals with the peak on the left and a long tail to the right." loading="lazy"><h3>Histogram 3: A long tail to one side</h3><p>The peak sits to the left and a long tail stretches out to the right. A few very large positive errors suggest right-skewness.</p></figure>
+  </div>
+  <ul class="post-points post-points-color">
     <li>A <strong>Q-Q plot</strong> compares the observed residual quantiles with the quantiles expected under a normal distribution. If the residuals are approximately normally distributed, the points should follow a roughly straight line.</li>
   </ul>
-  <div class="post-qq">
-    <div class="post-qq-item"><img src="images/regression/assumptions-hist-normal.svg?v=1" alt="Histogram of residuals with a symmetric bell shape and a closely fitting normal curve." loading="lazy"><div><h3>Histogram 1: A bell shape centred on zero</h3><p>The bars form a symmetric bell around zero and the dashed normal curve fits them closely. This supports the normality assumption.</p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-hist-heavy.svg?v=1" alt="Histogram of residuals with a tall narrow middle and extra bars far out on both sides." loading="lazy"><div><h3>Histogram 2: Heavy tails</h3><p>The middle is tall and narrow, and a few bars sit far out on both sides. The model produces more extreme errors than a normal curve would allow.</p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-hist-skew.svg?v=1" alt="Histogram of residuals with the peak on the left and a long tail to the right." loading="lazy"><div><h3>Histogram 3: A long tail to one side</h3><p>The peak sits to the left and a long tail stretches out to the right. A few very large positive errors suggest right-skewness.</p></div></div>
-  </div>
-  <div class="post-qq">
-    <div class="post-qq-item"><img src="images/regression/assumptions-qq-normal.svg?v=5" alt="Q-Q plot where the points follow the diagonal reference line closely." loading="lazy"><div><h3>1. Residuals that look normal</h3><p>The points hug the dashed line from end to end. A few small wiggles are normal. This is what we hope to see, and it supports the normality assumption.</p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-qq-heavy.svg?v=5" alt="Q-Q plot where the points bend away from the line at both ends." loading="lazy"><div><h3>2. Heavy tails: too many extreme months</h3><p>The middle follows the line, but the points at both ends pull away from it. The model produces more unusually large and unusually small errors than a normal distribution would, for example a few months far above or below the prediction.</p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-qq-skew.svg?v=5" alt="Q-Q plot where the points curve upward away from the line in the upper tail." loading="lazy"><div><h3>3. Right-skewed: a long tail of big misses</h3><p>The points curve upward at the right end. Most errors are small, but a few are very large and positive, such as a month where sales far exceed the prediction. A log transformation often helps here.</p></div></div>
+  <div class="post-trio">
+    <figure><img src="images/regression/assumptions-qq-normal.svg?v=5" alt="Q-Q plot where the points follow the diagonal reference line closely." loading="lazy"><h3>1. Residuals that look normal</h3><p>The points hug the dashed line from end to end. A few small wiggles are normal. This is what we hope to see, and it supports the normality assumption.</p></figure>
+    <figure><img src="images/regression/assumptions-qq-heavy.svg?v=5" alt="Q-Q plot where the points bend away from the line at both ends." loading="lazy"><h3>2. Heavy tails: too many extreme months</h3><p>The middle follows the line, but the points at both ends pull away from it. The model produces more unusually large and unusually small errors than a normal distribution would, for example a few months far above or below the prediction.</p></figure>
+    <figure><img src="images/regression/assumptions-qq-skew.svg?v=5" alt="Q-Q plot where the points curve upward away from the line in the upper tail." loading="lazy"><h3>3. Right-skewed: a long tail of big misses</h3><p>The points curve upward at the right end. Most errors are small, but a few are very large and positive, such as a month where sales far exceed the prediction. A log transformation often helps here.</p></figure>
   </div>
   <p>The Q-Q plot is often particularly useful because deviations from a straight line can reveal departures from normality. With only five months, neither plot tells us much, so in practice you would run these checks on a longer history. In Python, <code>model.resid</code> retrieves the residuals from a fitted regression model:</p>
   <pre class="post-code"><code>import statsmodels.api as sm
