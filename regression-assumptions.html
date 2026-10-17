@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261017b">
+  <link rel="stylesheet" href="style.css?v=20261017c">
 </head>
 <body>
 
@@ -96,19 +96,11 @@ plt.show()</code></pre>
   <ul class="post-points post-points-color">
     <li>A <strong>histogram</strong> shows the distribution of the residuals. We look for a roughly bell-shaped pattern centered around zero.</li>
   </ul>
-  <div class="post-trio">
-    <figure><img src="images/regression/assumptions-hist-normal.svg?v=1" alt="Histogram of residuals with a symmetric bell shape and a closely fitting normal curve." loading="lazy"><h3>1. Normal</h3><p>Errors are balanced and typical. Normality looks fine.</p></figure>
-    <figure><img src="images/regression/assumptions-hist-heavy.svg?v=1" alt="Histogram of residuals with a tall narrow middle and extra bars far out on both sides." loading="lazy"><h3>2. Heavy tails</h3><p>Too many extreme errors, both too high and too low.</p></figure>
-    <figure><img src="images/regression/assumptions-hist-skew.svg?v=1" alt="Histogram of residuals with the peak on the left and a long tail to the right." loading="lazy"><h3>3. Right-skewed</h3><p>A few very large over-shoots. The model misses badly in one direction.</p></figure>
-  </div>
+  <div class="post-row"><img src="images/regression/assumptions-hist-row.svg?v=1" alt="Three histograms of residuals on a shared vertical axis: a symmetric bell, heavy tails, and a long right tail, each with a dashed normal curve." loading="lazy"><div class="post-row-caps"><div><strong>Normal</strong><p>Errors are balanced and typical. Normality looks fine.</p></div><div><strong>Heavy tails</strong><p>Too many extreme errors, both too high and too low.</p></div><div><strong>Right-skewed</strong><p>A few very large over-shoots. The model misses badly in one direction.</p></div></div></div>
   <ul class="post-points post-points-color">
     <li>A <strong>Q-Q plot</strong> compares the observed residual quantiles with the quantiles expected under a normal distribution. If the residuals are approximately normally distributed, the points should follow a roughly straight line.</li>
   </ul>
-  <div class="post-trio">
-    <figure><img src="images/regression/assumptions-qq-normal.svg?v=5" alt="Q-Q plot where the points follow the diagonal reference line closely." loading="lazy"><h3>1. Normal</h3><p>Errors behave as a normal distribution would. Normality looks fine.</p></figure>
-    <figure><img src="images/regression/assumptions-qq-heavy.svg?v=5" alt="Q-Q plot where the points bend away from the line at both ends." loading="lazy"><h3>2. Heavy tails</h3><p>Too many extreme errors, both too high and too low.</p></figure>
-    <figure><img src="images/regression/assumptions-qq-skew.svg?v=5" alt="Q-Q plot where the points curve upward away from the line in the upper tail." loading="lazy"><h3>3. Right-skewed</h3><p>A few very large over-shoots. The model misses badly in one direction.</p></figure>
-  </div>
+  <div class="post-row"><img src="images/regression/assumptions-qq-row.svg?v=1" alt="Three Q-Q plots on a shared vertical axis: points on the line, points bending away at both ends, and points curving upward on the right." loading="lazy"><div class="post-row-caps"><div><strong>Normal</strong><p>Errors behave as a normal distribution would. Normality looks fine.</p></div><div><strong>Heavy tails</strong><p>Too many extreme errors, both too high and too low.</p></div><div><strong>Right-skewed</strong><p>A few very large over-shoots. The model misses badly in one direction.</p></div></div></div>
   <p>The Q-Q plot is often particularly useful because deviations from a straight line can reveal departures from normality. With only five months, neither plot tells us much, so in practice you would run these checks on a longer history. In Python, <code>model.resid</code> retrieves the residuals from a fitted regression model:</p>
   <pre class="post-code"><code>import statsmodels.api as sm
 import statsmodels.formula.api as smf
