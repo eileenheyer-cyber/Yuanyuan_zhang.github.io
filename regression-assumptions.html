@@ -67,6 +67,7 @@ plt.show()</code></pre>
   </figure>
   <p>Points above the red zero line mean the model predicted too little, and points below it mean it predicted too much. A random scatter means the model is not missing anything systematic. A curved shape means part of the relationship is missing from the straight-line model.</p>
   <p>If a clear curve appears, possible remedies are to transform a variable, for example by taking its logarithm, or to add a squared term, and then check the plots again.</p>
+  <div class="post-note"><p class="post-note-l">With several predictors</p><p>A single scatterplot is not enough when the model has more than one X. A scatterplot matrix plots every variable against every other, so you can check linearity for each predictor at once and also see whether predictors overlap. We cover this in Multiple Linear Regression.</p></div>
 
   <h2>2. Independence: Are the Observations Independent?</h2>
   <p>The independence assumption means that the error for one observation should not depend on the error for another. After accounting for the relationship described by our regression model, the remaining errors should not show a systematic connection.</p>
