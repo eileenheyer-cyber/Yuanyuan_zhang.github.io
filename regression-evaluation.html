@@ -129,17 +129,29 @@
     <figcaption><span>Chart 3</span> NordHome&#8217;s 24 monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
 
-  <h3 class="post-h3-num post-h3-num-blue" data-n="3">Adjusted R²</h3>
-  <p>Adjusted R² accounts for the number of predictors in a regression model. Unlike ordinary R², it can decrease when an additional predictor does not improve the model enough to justify the added complexity.</p>
-  <p>For simple linear regression with one predictor, ordinary R² is generally sufficient. Adjusted R² becomes more useful when comparing models with different numbers of predictors.</p>
+  <h3 class="post-h3-num post-h3-num-blue" data-n="3">Adjusted R²: Does Adding More Predictors Improve the Model?</h3>
+  <p>Imagine NordHome Retail wants to predict monthly sales. It starts with a simple regression model using advertising spend as its only predictor.</p>
+  <p>The model has an R² of 0.85, meaning it accounts for 85% of the variation in historical monthly sales.</p>
+  <p>But what happens if the analyst adds six more predictors, such as website traffic, discount rate and store footfall?</p>
+  <p>The model&#8217;s R² increases to 0.87. At first glance, this looks like an improvement. However, adding predictors can help a model fit historical data even when some of those variables contribute little useful information. They may capture random patterns that will not hold in new data.</p>
+  <p><strong>This is where adjusted R² becomes useful.</strong></p>
+  <p>Unlike ordinary R², adjusted R² accounts for the number of predictors in the model. It increases when the improvement in fit is sufficient to justify the additional complexity, and decreases when it is not.</p>
+  <p>Consider NordHome&#8217;s two models:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Metric</th><th>Model A</th><th>Model B</th></tr></thead>
+    <tbody>
+      <tr><td>Predictors</td><td>1</td><td>7</td></tr>
+      <tr><td>R²</td><td>0.85</td><td>0.87</td></tr>
+      <tr><td>Adjusted R²</td><td>0.843</td><td>0.810</td></tr>
+    </tbody>
+  </table></div>
+  <p>Both models use the same 24 months of data. Although Model B has a higher R², its adjusted R² is lower. The additional predictors improve the fit, but not enough to compensate for the added complexity.</p>
   <figure class="post-fig">
-    <img src="images/regression/evaluation-adjr2.svg?v=4" alt="Line chart of R squared rising and adjusted R squared falling as unhelpful predictors are added." loading="lazy">
+    <img src="images/regression/evaluation-adjr2.svg?v=6" alt="Line chart of R squared rising and adjusted R squared falling as unhelpful predictors are added." loading="lazy">
     <figcaption><span>Chart 4</span> Adding predictors to an ordinary least-squares model with an intercept cannot decrease R² on the same dataset. Adjusted R² accounts for the number of predictors and can decrease when an additional predictor does not improve the fit enough. Illustrative data.</figcaption>
   </figure>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>R²</th><th>Adjusted R²</th></tr></thead>
-    <tbody><tr><td>Measures the variation accounted for by the model. It cannot decrease when predictors are added to the same data.</td><td>Balances fit against the number of predictors. It can decrease when an added predictor does not improve the fit enough.</td></tr></tbody>
-  </table></div>
+  <p>Adjusted R² does not prove that the extra predictors are useless. It signals that the improvement in fit may not justify including them.</p>
+  <p><strong>The takeaway:</strong> R² measures how much variation the model accounts for. Adjusted R² also accounts for the number of predictors. When comparing models, look beyond R²&#8212;and validate predictions on data the model has not seen.</p>
 
   <div class="post-note"><p class="post-note-l">Do not rely on R&sup2; alone</p><p><strong>A high R&sup2; does not guarantee accurate predictions on new data, confirm that the model assumptions hold, or prove that advertising causes sales.</strong></p><p>R&sup2; measures explained variation, while MAE and MSE measure prediction errors. AIC and BIC can help compare candidate models fitted to the same response data; lower values are generally preferred.</p></div>
 
