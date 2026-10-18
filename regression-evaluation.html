@@ -119,10 +119,11 @@
   <p>In the summary table, the p-value (P&gt;|t|) is 0.000, meaning below 0.001. If advertising really had no relationship with sales, a result like this would almost never happen by chance. So we reject H₀ and conclude that the relationship in NordHome&#8217;s data is very unlikely to be a coincidence (read <a href="hypothesis-testing.html">Hypothesis Testing</a> for more).</p>
   <p>The p-value comes from a t-test on the slope, which is why the summary table also shows a t value.</p>
 
-  <h3>Confidence Interval</h3>
-  <p>Suppose the estimated slope is 5.0, with a 95% confidence interval of [4.1, 5.9].</p>
-  <p>Because both variables are measured in thousands of euros, the interval corresponds to an estimated increase of €4,100 to €5,900 in sales for each additional €1,000 in advertising spend.</p>
-  <p>A 95% confidence interval is produced by a method that, under its assumptions, would contain the true population slope in approximately 95% of repeated samples. The interval communicates the precision of the estimate; it does not guarantee that the true value lies within these particular bounds.</p>
+  <h3>Confidence Interval: How large might the slope be?</h3>
+  <p>The 95% confidence interval for the slope is approximately [4.071, 5.929].</p>
+  <p>In business terms, the estimated increase in monthly sales is between approximately €4,071 and €5,929 for each additional €1,000 in advertising spend.</p>
+  <p>The interval excludes zero, which is consistent with the statistically significant result. It also communicates the uncertainty around the estimated slope: the point estimate is 5.0, but the true population slope is not known exactly.</p>
+  <p>A 95% confidence interval is produced by a method that would contain the true slope in approximately 95% of repeated samples under the model assumptions. It does not mean there is a 95% probability that the true slope lies within this particular interval.</p>
 
   <h2>Visualizing Uncertainty</h2>
   <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
