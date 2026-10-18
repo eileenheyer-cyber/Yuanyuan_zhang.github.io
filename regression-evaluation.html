@@ -103,13 +103,19 @@
     <figcaption><span>Summary</span> Regression summary for NordHome, in the format of Python&#8217;s statsmodels. Sales and advertising spend are both in €k. Illustrative data.</figcaption>
   </figure>
   <h3>Coefficient</h3>
-  <p>The estimated relationship. A slope of 5 means that, in our data, each additional €1k of advertising goes with about €5k more sales.</p>
-  <h3>Standard error</h3>
-  <p>The estimated uncertainty of the coefficient. The smaller it is relative to the coefficient, the more precise the estimate.</p>
+  <p>NordHome&#8217;s estimated slope is 5. This means each additional €1,000 in advertising spend is associated with an estimated €5,000 increase in monthly sales.</p>
+  <p>This is an association, not proof of causation. Other factors, such as seasonality, pricing and promotions, may also influence sales.</p>
+  <h3>Standard Error</h3>
+  <p>The standard error measures the estimated uncertainty of the slope. A smaller standard error relative to the coefficient generally indicates a more precise estimate.</p>
+  <p>For illustration, suppose NordHome&#8217;s slope has a standard error of 0.45. Relative to the estimated slope of 5, this suggests the slope is estimated with reasonable precision.</p>
   <h3>P-value</h3>
-  <p>It measures how incompatible the data are with a true slope of zero, assuming the model and its assumptions hold. Below 0.05 is commonly called statistically significant, but this says nothing about the size or business importance of the effect.</p>
-  <h3>Confidence interval</h3>
-  <p>A 95% interval of [4.1, 5.9] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</p>
+  <p>The p-value tests the null hypothesis that the true population slope is zero.</p>
+  <p>Suppose NordHome&#8217;s slope has a p-value below 0.001. Under the null hypothesis and the model assumptions, this indicates that a test statistic at least as extreme as the observed one would be very unlikely.</p>
+  <p>The result is statistically significant, but the p-value does not measure the business importance of the relationship or prove causation.</p>
+  <h3>Confidence Interval</h3>
+  <p>Suppose the estimated slope is 5.0, with a 95% confidence interval of [4.1, 5.9].</p>
+  <p>Because both variables are measured in thousands of euros, the interval corresponds to an estimated increase of €4,100 to €5,900 in sales for each additional €1,000 in advertising spend.</p>
+  <p>A 95% confidence interval is produced by a method that, under its assumptions, would contain the true population slope in approximately 95% of repeated samples. The interval communicates the precision of the estimate; it does not guarantee that the true value lies within these particular bounds.</p>
 
   <h2>Visualizing Uncertainty</h2>
   <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
