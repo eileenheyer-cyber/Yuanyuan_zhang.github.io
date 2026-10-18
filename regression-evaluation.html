@@ -151,8 +151,6 @@
     <figcaption><span>Chart 4</span> Adding predictors to an ordinary least-squares model with an intercept cannot decrease R² on the same dataset. Adjusted R² accounts for the number of predictors and can decrease when an additional predictor does not improve the fit enough. Illustrative data.</figcaption>
   </figure>
   <p>Adjusted R² does not prove that the extra predictors are useless. It signals that the improvement in fit may not justify including them.</p>
-  <p><strong>The takeaway:</strong> R² measures how much variation the model accounts for. Adjusted R² also accounts for the number of predictors. When comparing models, look beyond R²&#8212;and validate predictions on data the model has not seen.</p>
-
   <div class="post-note"><p class="post-note-l">Do not rely on R&sup2; alone</p><p><strong>A high R&sup2; does not guarantee accurate predictions on new data, confirm that the model assumptions hold, or prove that advertising causes sales.</strong></p><p>R&sup2; measures explained variation, while MAE and MSE measure prediction errors. AIC and BIC can help compare candidate models fitted to the same response data; lower values are generally preferred.</p></div>
 
   <h2>Avoid Misinterpretation: Does Advertising Cause Sales?</h2>
