@@ -107,21 +107,22 @@ print(encoder.get_feature_names_out())
 
   <h2>Three things that can go wrong</h2>
   <ul class="post-points post-points-color">
-    <li><strong>The dummy variable trap.</strong> If you have three categories, two columns are enough: when both are 0, it must be the third. Keeping all three makes the columns perfectly correlated, which can cause problems for linear and logistic regression. Fix it with <code>drop_first=True</code> in pandas or <code>drop="first"</code> in scikit-learn. Tree-based models don't care much.</li>
-    <li><strong>High cardinality.</strong> A column like <code>postal_code</code> or <code>product_id</code> can have thousands of unique values. One-hot encoding turns that into thousands of columns, most of them zeros. This is slow, memory-hungry and can lead to overfitting. In that case, consider grouping rare categories into "Other", frequency encoding, or target encoding.</li>
-    <li><strong>Encoding before splitting your data.</strong> Fit the encoder on the <strong>training set only</strong>, then apply it to the test set. Fitting on the full dataset leaks information about the test data into your preparation step.</li>
+    <li><strong>The dummy variable trap.</strong> With three categories, two dummy columns are sufficient when a regression model includes an intercept. Keeping all three creates perfect multicollinearity. Use <code>drop_first=True</code> in pandas or <code>drop="first"</code> in scikit-learn to leave one category as the reference.</li>
+    <li><strong>High cardinality.</strong> Variables such as postal codes or product IDs can contain thousands of unique values. One-hot encoding would create thousands of columns. Consider grouping rare categories into "Other" or using frequency encoding instead.</li>
+    <li><strong>Data leakage.</strong> Split your data before fitting the encoder. Fit it on the training set, then transform the test set using the same encoder. This keeps preprocessing consistent and avoids information leaking from the test set.</li>
   </ul>
 
   <h2>When should you use it?</h2>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Situation</th><th>Recommendation</th></tr></thead>
     <tbody>
-      <tr><td>Categories with no natural order (region, color, payment method)</td><td>One-hot encoding</td></tr>
-      <tr><td>Categories with a real order (small &lt; medium &lt; large)</td><td>Ordinal encoding</td></tr>
-      <tr><td>Very many unique values</td><td>Frequency or target encoding</td></tr>
-      <tr><td>Tree-based models with few categories</td><td>One-hot is fine, label encoding can also work</td></tr>
+      <tr><td>Categories without a natural order</td><td>One-hot encoding</td></tr>
+      <tr><td>Categories with a meaningful order</td><td>Ordinal encoding</td></tr>
+      <tr><td>Thousands of unique categories</td><td>Consider alternative encoding methods</td></tr>
+      <tr><td>Tree-based models with few categories</td><td>One-hot encoding is often suitable</td></tr>
     </tbody>
   </table></div>
+  <p><strong>Rule of thumb:</strong> One-hot encoding is a strong default for nominal categorical variables, but the best method depends on your data and model.</p>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>One-hot encoding is a small step in data preparation, but it shows a bigger principle: how you represent your data decides what your model can learn. Turning text into numbers is easy. Turning it into numbers that don't lie is the actual skill.</p></div>
 
