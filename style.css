@@ -1747,3 +1747,8 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-formula .frac > span:first-child { border-bottom: 1.5px solid currentColor; padding-bottom: .1em; }
 .post-formula .frac > span:last-child { padding-top: .1em; }
 .post-formula .frac .frac > span { font-size: .85em; }
+
+/* Continue the bullet colour sequence when a list is split by a chart */
+.post-points-color.pc-2 li:nth-child(1)::marker { color: #1d57b5; }
+.post-points-color.pc-3 li:nth-child(1)::marker { color: #f5c548; }
+.post-points-color.pc-4 li:nth-child(1)::marker { color: #0a0a0a; }
