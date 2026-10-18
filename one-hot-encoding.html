@@ -63,12 +63,8 @@
   </ul>
   <p>For linear regression, representing a nominal category with a single numerical code forces the model to estimate one coefficient for that code. This imposes a particular numerical relationship between the categories instead of allowing each category to have its own effect. Distance-based algorithms, such as k-nearest neighbors, can also interpret the arbitrary distances as meaningful.</p>
 
-  <h3 class="post-h3-small">The solution: One-hot encoding</h3>
+  <h2>The solution: One-hot encoding</h2>
   <p>Instead of assigning each category a single number, we create a separate binary column for each category. A value of 1 indicates that an observation belongs to that category; 0 indicates that it does not.</p>
-  <p>This allows a model to distinguish between categories without imposing an artificial numerical order or distance between them.</p>
-
-  <h2>The idea: one column per category</h2>
-  <p>One-hot encoding avoids this by creating a separate yes/no column for every category:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>order_id</th><th>category_Furniture</th><th>category_Lighting</th><th>category_Textiles</th><th>revenue</th></tr></thead>
     <tbody>
@@ -78,7 +74,7 @@
       <tr><td>4</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
     </tbody>
   </table></div>
-  <p>Each row has exactly one "hot" (1) value and the rest are 0, hence the name. No category is bigger than another. They are simply different.</p>
+  <p>Each row has exactly one "hot" (1) value and the rest are 0, hence the name. No category is bigger than another. They are simply different. This allows a model to distinguish between categories without imposing an artificial numerical order or distance between them.</p>
 
   <h2>How to do it in Python</h2>
   <h3 class="post-h3-small">Option 1: pandas (quick and good for exploration)</h3>
