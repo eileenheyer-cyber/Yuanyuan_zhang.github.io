@@ -39,8 +39,8 @@
   <p>One-hot encoding solves this problem by turning each category into its own binary column. Each row receives a 1 for the category it belongs to and a 0 for all other categories.</p>
   <p>Let's see how this works — and why the way we encode categorical data matters for our model.</p>
 
-  <h2>The problem with simply counting</h2>
-  <p>Take a small order list from a home-goods retailer:</p>
+  <h2>Why assigning numbers to categories can mislead a model</h2>
+  <p>Consider a small order dataset from a home-goods retailer:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Order</th><th>Category</th><th>Revenue (€)</th></tr></thead>
     <tbody>
@@ -50,12 +50,23 @@
       <tr><td>4</td><td>Furniture</td><td>310</td></tr>
     </tbody>
   </table></div>
-  <p>The obvious fix is to number the categories: Furniture = 1, Lighting = 2, Textiles = 3. This is called <strong>label encoding</strong>. It sneaks in two claims that are not true:</p>
+  <p>Suppose we want to predict revenue using product category as one of our features. The challenge is that a machine-learning model cannot directly use category names such as <em>Furniture</em>, <em>Lighting</em>, and <em>Textiles</em> as numerical inputs.</p>
+  <p>One simple approach is to assign each category a number:</p>
   <ul class="post-points post-points-color">
-    <li><strong>An order.</strong> Textiles (3) looks “bigger” than Furniture (1).</li>
-    <li><strong>A distance.</strong> Furniture to Lighting looks as far apart as Lighting to Textiles.</li>
+    <li>Furniture = 1</li>
+    <li>Lighting = 2</li>
+    <li>Textiles = 3</li>
   </ul>
-  <p>A regression or distance-based model takes these numbers literally. Lighting is not “twice Furniture”, but a model that sees 1 and 2 will treat it that way.</p>
+  <p>This is called <strong>label encoding</strong>. Although the transformation looks harmless, it introduces numerical relationships that do not exist in the original data.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>It creates an artificial order.</strong> Textiles (3) is numerically greater than Furniture (1). However, product categories have no natural ranking. Neither category is inherently greater than another.</li>
+    <li><strong>It creates artificial distances.</strong> The numerical distance between Furniture (1) and Lighting (2) is the same as the distance between Lighting (2) and Textiles (3). These numbers suggest a relationship between categories that has no real meaning.</li>
+  </ul>
+  <p>For linear regression, representing a nominal category with a single numerical code forces the model to estimate one coefficient for that code. This imposes a particular numerical relationship between the categories instead of allowing each category to have its own effect. Distance-based algorithms, such as k-nearest neighbors, can also interpret the arbitrary distances as meaningful.</p>
+
+  <h3 class="post-h3-small">The solution: One-hot encoding</h3>
+  <p>Instead of assigning each category a single number, we create a separate binary column for each category. A value of 1 indicates that an observation belongs to that category; 0 indicates that it does not.</p>
+  <p>This allows a model to distinguish between categories without imposing an artificial numerical order or distance between them.</p>
 
   <h2>The idea: one column per category</h2>
   <p>One-hot encoding avoids this by creating a separate yes/no column for every category:</p>
