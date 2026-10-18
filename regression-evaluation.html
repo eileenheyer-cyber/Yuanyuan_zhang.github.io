@@ -57,8 +57,8 @@
     <li><strong>MSE (Mean Squared Error).</strong> Measures the average squared prediction error. Because errors are squared, large mistakes receive much more weight. MSE is useful when large prediction errors are particularly costly, but its squared units make it harder to interpret directly.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/evaluation-mae-mse.svg?v=2" alt="Two bar charts of ten months of prediction errors: absolute errors with an average of 4 thousand euros, and squared errors with an average of 30, where one large miss dominates." loading="lazy">
-    <figcaption><span>Chart 2</span> The same ten monthly errors in both panels. One large miss (red) adds 15 to the MAE sum but 225 to the MSE sum. Illustrative data.</figcaption>
+    <img src="images/regression/evaluation-mae-mse.svg?v=3" alt="Two bar charts of ten months of prediction errors: absolute errors with an average of 4 thousand euros, and squared errors with an average of 30, where one large miss dominates." loading="lazy">
+    <figcaption><span>Chart 2</span> The same ten monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
   <ul class="post-points post-points-color pc-4">
     <li><strong>Adjusted R².</strong> Adjusts R² for the number of predictors in the model. It is especially useful when comparing regression models with different numbers of predictors. For simple linear regression with one predictor, ordinary R² is usually sufficient.</li>
