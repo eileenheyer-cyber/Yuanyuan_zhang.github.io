@@ -36,10 +36,10 @@
 
   <p>How do you explain the word “Lighting” to a calculator? It can add, multiply and compare numbers, but a category like a product group, a city or a payment method means nothing to it. Before a model can use such a column, we have to translate it. How we translate it decides what the model believes about our data.</p>
 
-  <h2>The problem: categories are not numbers</h2>
-  <p>Imagine a small retail dataset:</p>
+  <h2>The problem with simply counting</h2>
+  <p>Take a small order list from a home-goods retailer:</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>order_id</th><th>category</th><th>revenue</th></tr></thead>
+    <thead><tr><th>Order</th><th>Category</th><th>Revenue (€)</th></tr></thead>
     <tbody>
       <tr><td>1</td><td>Furniture</td><td>240</td></tr>
       <tr><td>2</td><td>Lighting</td><td>85</td></tr>
@@ -47,13 +47,12 @@
       <tr><td>4</td><td>Furniture</td><td>310</td></tr>
     </tbody>
   </table></div>
-  <p>The obvious quick fix is to give every category a number:</p>
+  <p>The obvious fix is to number the categories: Furniture = 1, Lighting = 2, Textiles = 3. This is called <strong>label encoding</strong>. It sneaks in two claims that are not true:</p>
   <ul class="post-points post-points-color">
-    <li>Furniture = 1</li>
-    <li>Lighting = 2</li>
-    <li>Textiles = 3</li>
+    <li><strong>An order.</strong> Textiles (3) looks “bigger” than Furniture (1).</li>
+    <li><strong>A distance.</strong> Furniture to Lighting looks as far apart as Lighting to Textiles.</li>
   </ul>
-  <p>This is called <strong>label encoding</strong>, and it has a hidden problem. The numbers imply an order and a distance: Textiles (3) looks "bigger" than Furniture (1), and the gap between Furniture and Lighting looks the same as between Lighting and Textiles. A linear model or a distance-based model will treat this as real information. But "Lighting" is not twice "Furniture". The categories have no natural order.</p>
+  <p>A regression or distance-based model takes these numbers literally. Lighting is not “twice Furniture”, but a model that sees 1 and 2 will treat it that way.</p>
 
   <h2>The idea: one column per category</h2>
   <p>One-hot encoding avoids this by creating a separate yes/no column for every category:</p>
