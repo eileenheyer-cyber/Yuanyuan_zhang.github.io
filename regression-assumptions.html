@@ -89,7 +89,7 @@ plt.show()</code></pre>
   <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
   <ul class="post-points post-points-color">
     <li><strong>Errors</strong> are the differences between the true underlying relationship and the observed values that the model aims to describe. They represent the model's natural, unobserved noise.</li>
-    <li><strong>Residuals</strong> are the differences between the observed values and the values predicted by the fitted regression model, like the −3, +2, +4, −2 and −1 from the previous post.</li>
+    <li><strong>Residuals</strong> are the differences between the observed values and the values predicted by the fitted regression model, like the −3, +2, +4, −2 and −1 in <a href="least-squares.html">OLS: How Does Linear Regression Find the Best-Fit Line?</a>.</li>
   </ul>
   <p>We cannot directly observe the true errors, so we use residuals to assess whether the normality assumption is reasonable.</p>
   <p><strong>Why does it matter?</strong> Normality is particularly important when we want to make statistical inferences, such as constructing confidence intervals or conducting hypothesis tests under the usual regression assumptions. A regression model can still calculate a line when residuals are not normally distributed. However, the usual inferential procedures may not be reliable, particularly in smaller samples.</p>
