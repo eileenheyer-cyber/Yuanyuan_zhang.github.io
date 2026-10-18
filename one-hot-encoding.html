@@ -77,7 +77,7 @@
   </table></div>
   <p>Each row has exactly one active category, represented by a value of 1, while the remaining category columns contain 0. This is where the name <em>one-hot encoding</em> comes from. Unlike assigning arbitrary numerical labels, this representation does not impose an order or distance between categories.</p>
 
-  <h3 class="post-h3-small">What does this mean for a regression model?</h3>
+  <h3>What does this mean for a regression model?</h3>
   <p>The model can now learn a separate coefficient for each category, rather than treating category codes as a single numerical variable.</p>
   <p>For example, a regression model can estimate how revenue differs between Furniture, Lighting, and Textiles. If we include an intercept, we typically leave one category out as the reference category to avoid perfect multicollinearity.</p>
   <p>One-hot encoding does not guarantee better predictions. It simply gives the model a more appropriate representation of nominal categorical data.</p>
