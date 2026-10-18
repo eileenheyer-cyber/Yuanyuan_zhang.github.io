@@ -1768,5 +1768,6 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-summary .ps-coef .ps-hl { background: rgba(106, 79, 160, 0.08); }
 
 /* Numbered subheading with circle badge */
-.post-h3-num { display: flex; align-items: center; gap: 12px; }
-.post-h3-num::before { content: attr(data-n); flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.post-h3-num { display: flex; align-items: center; gap: 10px; }
+.post-h3-num::before { content: attr(data-n); flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.post-h3-num-blue::before { background: #3f6fd0; }

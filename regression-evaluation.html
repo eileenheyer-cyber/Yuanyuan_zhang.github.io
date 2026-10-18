@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018g">
+  <link rel="stylesheet" href="style.css?v=20261018h">
 </head>
 <body>
 
@@ -43,7 +43,7 @@
   <h2>Model Evaluation Metrics: How Well Does the Model Fit?</h2>
   <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
   <p>Throughout this post, we use one example: NordHome Retail fitted a simple linear regression on 24 months of data to predict monthly sales from advertising spend, both in thousands of euros (€k). The fitted line is sales = 20 + 5 × advertising spend.</p>
-  <h3>R² — Coefficient of Determination</h3>
+  <h3 class="post-h3-num post-h3-num-blue" data-n="1">R² — Coefficient of Determination</h3>
   <p>R² measures how much of the variation in observed sales the fitted model accounts for.</p>
   <p>For NordHome, an R² of 0.85 means the model accounts for approximately 85% of the variation in monthly sales across the 24 months used to fit it. The remaining variation is not accounted for by the model.</p>
   <figure class="post-fig post-fig-wide">
@@ -54,7 +54,7 @@
   <p class="post-formula"><strong>R² = 1 − <span class="frac"><span>Σ(yᵢ − ŷᵢ)²</span><span>Σ(yᵢ − ȳ)²</span></span></strong><span>yᵢ is observed sales, ŷᵢ is predicted sales, and ȳ is average sales. R² compares the model&#8217;s squared prediction errors with those of a baseline that always predicts average sales.</span></p>
   <p>A high R² does not guarantee accurate predictions on new data or prove that advertising causes sales to increase.</p>
 
-  <h3>MAE and MSE</h3>
+  <h3 class="post-h3-num post-h3-num-blue" data-n="2">MAE and MSE</h3>
   <p><strong>MAE — Mean Absolute Error.</strong> MAE measures the average absolute difference between predicted and actual sales.</p>
   <p>For NordHome, an MAE of €4k means the model&#8217;s predictions differ from actual monthly sales by €4,000 on average in absolute terms. Because MAE uses the original sales units, it is relatively easy to interpret.</p>
   <p class="post-formula"><strong>MAE = <span class="frac"><span>Σ|yᵢ − ŷᵢ|</span><span>n</span></span></strong><span>n is the number of months, yᵢ is observed sales, and ŷᵢ is predicted sales. MAE averages the absolute prediction errors.</span></p>
@@ -67,7 +67,7 @@
     <figcaption><span>Chart 2</span> NordHome&#8217;s 24 monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Adjusted R²</h3>
+  <h3 class="post-h3-num post-h3-num-blue" data-n="3">Adjusted R²</h3>
   <p>Adjusted R² accounts for the number of predictors in a regression model. Unlike ordinary R², it can decrease when an additional predictor does not improve the model enough to justify the added complexity.</p>
   <p>For simple linear regression with one predictor, ordinary R² is generally sufficient. Adjusted R² becomes more useful when comparing models with different numbers of predictors.</p>
   <figure class="post-fig">
