@@ -1752,3 +1752,17 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-points-color.pc-2 li:nth-child(1)::marker { color: #1d57b5; }
 .post-points-color.pc-3 li:nth-child(1)::marker { color: #f5c548; }
 .post-points-color.pc-4 li:nth-child(1)::marker { color: #0a0a0a; }
+
+/* Regression summary output (statsmodels-style) */
+.post-summary { margin: 20px 0 28px; border: 1px solid var(--line); border-radius: 8px; background: #fff; overflow-x: auto; }
+.post-summary-t { text-align: center; font-weight: 600; padding: 12px 16px 8px; font-size: 0.95rem; }
+.post-summary table { width: 100%; border-collapse: collapse; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+.post-summary td, .post-summary th { padding: 2px 14px; line-height: 1.35; border: 0; text-align: left; white-space: nowrap; }
+@media (max-width: 600px) { .post-summary td, .post-summary th { padding: 2px 8px; font-size: 0.8rem; } }
+.post-summary th { font-weight: 600; }
+.post-summary .ps-block { border-top: 1px solid var(--line); }
+.post-summary .ps-coef th { font-size: 0.78rem; color: var(--muted); font-weight: 500; text-align: right; }
+.post-summary .ps-coef th:first-child, .post-summary .ps-coef td:first-child { text-align: left; }
+.post-summary .ps-coef td { text-align: right; }
+.post-summary .ps-coef td:first-child { font-weight: 600; }
+.post-summary .ps-coef .ps-hl { background: rgba(106, 79, 160, 0.08); }
