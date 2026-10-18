@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018f">
+  <link rel="stylesheet" href="style.css?v=20261018g">
 </head>
 <body>
 
@@ -102,14 +102,14 @@
     </div>
     <figcaption><span>Summary</span> Regression summary for NordHome, in the format of Python&#8217;s statsmodels. Sales and advertising spend are both in €k. Illustrative data.</figcaption>
   </figure>
-  <h3>Coefficient: How much do sales change?</h3>
+  <h3 class="post-h3-num" data-n="1">Coefficient: How much do sales change?</h3>
   <p>NordHome&#8217;s estimated slope is 5.0. Since both advertising spend and sales are measured in thousands of euros (€k), this means that every additional €1,000 in advertising spend is associated with an estimated €5,000 increase in monthly sales.</p>
   <p>The intercept is 20, meaning the model predicts €20,000 in sales when advertising spend is zero. This interpretation is useful only if zero advertising spend is meaningful in the business context.</p>
   <p>These are estimates of a relationship, not proof that advertising causes sales to increase.</p>
-  <h3>Standard Error: How precise is the estimate?</h3>
+  <h3 class="post-h3-num" data-n="2">Standard Error: How precise is the estimate?</h3>
   <p>The slope is estimated at 5.0, with a standard error of 0.448. Think of the standard error as an indicator of how much the estimated slope would tend to vary across comparable samples.</p>
   <p>Here, the standard error is relatively small compared with the estimated slope. This suggests that the relationship has been estimated with reasonable precision, although the standard error alone does not tell us whether the model is appropriate or whether the relationship is causal.</p>
-  <h3>P-value</h3>
+  <h3 class="post-h3-num" data-n="3">P-value</h3>
   <p>Regression asks a yes-or-no question about the slope: is there really a relationship between advertising and sales? To answer it, we set up two competing hypotheses.</p>
   <ul class="post-points post-points-color">
     <li><strong>H₀ (null hypothesis):</strong> the true slope is 0. Advertising has no relationship with sales.</li>
@@ -119,7 +119,7 @@
   <p>In the summary table, the p-value (P&gt;|t|) is 0.000, meaning below 0.001. If advertising really had no relationship with sales, a result like this would almost never happen by chance. So we reject H₀ and conclude that the relationship in NordHome&#8217;s data is very unlikely to be a coincidence (read <a href="hypothesis-testing.html">Hypothesis Testing</a> for more).</p>
   <p>The p-value comes from a t-test on the slope, which is why the summary table also shows a t value.</p>
 
-  <h3>Confidence Interval: How large might the slope be?</h3>
+  <h3 class="post-h3-num" data-n="4">Confidence Interval: How large might the slope be?</h3>
   <p>The 95% confidence interval for the slope is approximately [4.071, 5.929].</p>
   <p>In business terms, the estimated increase in monthly sales is between approximately €4,071 and €5,929 for each additional €1,000 in advertising spend.</p>
   <p>The interval excludes zero, which is consistent with the statistically significant result. It also communicates the uncertainty around the estimated slope: the point estimate is 5.0, but the true population slope is not known exactly.</p>
