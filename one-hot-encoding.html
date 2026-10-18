@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One-Hot Encoding: How to Make Categories Readable for Machine Learning – Yuanyuan Zhang</title>
+  <meta name="description" content="Models can't read words like Furniture or Lighting. One-hot encoding turns categories into numbers without inventing an order that isn't there.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261018j">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Data fundamentals</p>
+  <h1 class="post-title">One-Hot Encoding: How to Make Categories Readable for Machine Learning</h1>
+
+  <p>Most machine learning models only understand numbers. But real business data is full of text: product categories, regions, payment methods, customer segments.</p>
+  <p>Before a model can use any of this, the text has to be converted into numbers. How you do that matters more than most beginners expect. <strong>One-hot encoding</strong> is the most common way to do it, and it is one of those techniques that looks trivial until it quietly breaks your model.</p>
+
+  <h2>The problem: categories are not numbers</h2>
+  <p>Imagine a small retail dataset:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>order_id</th><th>category</th><th>revenue</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Furniture</td><td>240</td></tr>
+      <tr><td>2</td><td>Lighting</td><td>85</td></tr>
+      <tr><td>3</td><td>Textiles</td><td>60</td></tr>
+      <tr><td>4</td><td>Furniture</td><td>310</td></tr>
+    </tbody>
+  </table></div>
+  <p>The obvious quick fix is to give every category a number:</p>
+  <ul class="post-points post-points-color">
+    <li>Furniture = 1</li>
+    <li>Lighting = 2</li>
+    <li>Textiles = 3</li>
+  </ul>
+  <p>This is called <strong>label encoding</strong>, and it has a hidden problem. The numbers imply an order and a distance: Textiles (3) looks "bigger" than Furniture (1), and the gap between Furniture and Lighting looks the same as between Lighting and Textiles. A linear model or a distance-based model will treat this as real information. But "Lighting" is not twice "Furniture". The categories have no natural order.</p>
+
+  <h2>The idea: one column per category</h2>
+  <p>One-hot encoding avoids this by creating a separate yes/no column for every category:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>order_id</th><th>category_Furniture</th><th>category_Lighting</th><th>category_Textiles</th><th>revenue</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>240</td></tr>
+      <tr><td>2</td><td>0</td><td>1</td><td>0</td><td>85</td></tr>
+      <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
+      <tr><td>4</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
+    </tbody>
+  </table></div>
+  <p>Each row has exactly one "hot" (1) value and the rest are 0, hence the name. No category is bigger than another. They are simply different.</p>
+
+  <h2>How to do it in Python</h2>
+  <h3 class="post-h3-small">Option 1: pandas (quick and good for exploration)</h3>
+  <pre class="post-code"><code>import pandas as pd
+
+df = pd.DataFrame({
+    "order_id": [1, 2, 3, 4],
+    "category": ["Furniture", "Lighting", "Textiles", "Furniture"],
+    "revenue": [240, 85, 60, 310],
+})
+
+df_encoded = pd.get_dummies(df, columns=["category"], dtype=int)
+print(df_encoded)</code></pre>
+
+  <h3 class="post-h3-small">Option 2: scikit-learn (better for real ML pipelines)</h3>
+  <pre class="post-code"><code>from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+encoded = encoder.fit_transform(df[["category"]])
+
+print(encoder.get_feature_names_out())
+# ['category_Furniture' 'category_Lighting' 'category_Textiles']</code></pre>
+  <p>Why prefer scikit-learn for modeling? The encoder <strong>remembers</strong> which categories it saw during training. When new data arrives with a category the model has never seen, <code>handle_unknown="ignore"</code> encodes it as all zeros instead of crashing. With <code>pd.get_dummies</code>, train and test data can end up with different columns, which is a classic source of confusing errors.</p>
+
+  <h2>Three things that can go wrong</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>The dummy variable trap.</strong> If you have three categories, two columns are enough: when both are 0, it must be the third. Keeping all three makes the columns perfectly correlated, which can cause problems for linear and logistic regression. Fix it with <code>drop_first=True</code> in pandas or <code>drop="first"</code> in scikit-learn. Tree-based models don't care much.</li>
+    <li><strong>High cardinality.</strong> A column like <code>postal_code</code> or <code>product_id</code> can have thousands of unique values. One-hot encoding turns that into thousands of columns, most of them zeros. This is slow, memory-hungry and can lead to overfitting. In that case, consider grouping rare categories into "Other", frequency encoding, or target encoding.</li>
+    <li><strong>Encoding before splitting your data.</strong> Fit the encoder on the <strong>training set only</strong>, then apply it to the test set. Fitting on the full dataset leaks information about the test data into your preparation step.</li>
+  </ul>
+
+  <h2>When should you use it?</h2>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Situation</th><th>Recommendation</th></tr></thead>
+    <tbody>
+      <tr><td>Categories with no natural order (region, color, payment method)</td><td>One-hot encoding</td></tr>
+      <tr><td>Categories with a real order (small &lt; medium &lt; large)</td><td>Ordinal encoding</td></tr>
+      <tr><td>Very many unique values</td><td>Frequency or target encoding</td></tr>
+      <tr><td>Tree-based models with few categories</td><td>One-hot is fine, label encoding can also work</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>One-hot encoding is a small step in data preparation, but it shows a bigger principle: how you represent your data decides what your model can learn. Turning text into numbers is easy. Turning it into numbers that don't lie is the actual skill.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> Look at your categories and distributions before you encode and model them.</li>
+    <li><a href="multiple-linear-regression.html">Multiple Linear Regression</a> Where one-hot encoded categories become predictors in a model.</li>
+    <li><a href="glm.html">Generalized Linear Models</a> How regression extends to yes/no and count outcomes.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
