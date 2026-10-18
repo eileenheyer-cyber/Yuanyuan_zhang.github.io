@@ -42,7 +42,7 @@
 
   <h2>How Well Does the Model Fit?</h2>
   <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
-  <h3 class="post-h3-small">R² (Coefficient of Determination)</h3>
+  <h3>R² (Coefficient of Determination)</h3>
   <p>Measures how much of the variation in observed sales the model accounts for. An R² of 0.85 means the model accounts for 85% of the variation in the data used to fit it.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/regression/evaluation-r2.svg?v=5" alt="Two scatter plots of sales against advertising spend: the left shows errors around the average line, the right shows much smaller errors around the fitted line, with R squared of 0.85." loading="lazy">
@@ -51,7 +51,7 @@
   <p>The regression model reduces the sum of squared errors by approximately 85% compared with always predicting average sales.</p>
   <p class="post-formula"><strong>R² = 1 − <span class="frac"><span>Σ(yᵢ − ŷᵢ)²</span><span>Σ(yᵢ − ȳ)²</span></span></strong><span>yᵢ is observed sales, ŷᵢ is predicted sales, and ȳ is average sales. R² compares the model&#8217;s squared prediction errors with those of a baseline that always predicts average sales.</span></p>
 
-  <h3 class="post-h3-small">MAE and MSE</h3>
+  <h3>MAE and MSE</h3>
   <p><strong>MAE (Mean Absolute Error).</strong> Measures the average absolute difference between predicted and actual sales. If MAE is €4,000, predictions differ from actual sales by €4,000 on average in absolute terms.</p>
   <p><strong>MSE (Mean Squared Error).</strong> Measures the average squared prediction error. Because errors are squared, large mistakes receive much more weight. MSE is useful when large prediction errors are particularly costly, but its squared units make it harder to interpret directly.</p>
   <figure class="post-fig post-fig-wide">
@@ -59,7 +59,7 @@
     <figcaption><span>Chart 2</span> The same ten monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
 
-  <h3 class="post-h3-small">Adjusted R²</h3>
+  <h3>Adjusted R²</h3>
   <p>Adjusts R² for the number of predictors in the model. It is especially useful when comparing regression models with different numbers of predictors. For simple linear regression with one predictor, ordinary R² is usually sufficient.</p>
   <figure class="post-fig">
     <img src="images/regression/evaluation-adjr2.svg?v=3" alt="Line chart of R squared rising and adjusted R squared falling as unhelpful predictors are added." loading="lazy">
@@ -92,13 +92,13 @@
 
   <h2>Correlation and Causation</h2>
 
-  <h3 class="post-h3-small">Understanding Correlation</h3>
+  <h3>Understanding Correlation</h3>
   <p>Correlation measures how two variables tend to change together, either positively (both increase or decrease together) or negatively (one increases while the other decreases). The Pearson correlation coefficient quantifies this relationship on a scale from −1 to 1, as shown in <a href="simple-linear-regression.html">Simple Linear Regression</a>. But correlation alone does not imply that one variable causes the other to change.</p>
 
-  <h3 class="post-h3-small">Challenges of Claiming Causation</h3>
+  <h3>Challenges of Claiming Causation</h3>
   <p>Causation means one variable directly causes changes in another. This requires rigorous conditions to prove, typically through randomized controlled experiments. Such experiments need control and treatment groups, control of all other factors, and measurable differences, which makes them complex and often impractical in real-world business settings.</p>
 
-  <h3 class="post-h3-small">Value of Correlational Research</h3>
+  <h3>Value of Correlational Research</h3>
   <p>Even without proving causation, correlation analysis can provide valuable insights and guide decision-making. For example, athletes can improve performance by observing patterns in factors like hydration and rest. You can claim a correlation, such as more water going with better stamina, but you cannot claim direct causation without proper experimental evidence.</p>
 
   <h2>What Can Go Wrong?</h2>
