@@ -1740,3 +1740,10 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post .post-row-caps strong { display: block; font-size: .92rem; }
 .post .post-row-caps p { margin: 3px 0 0; font-size: .8rem; line-height: 1.4; color: #3a3a3a; text-align: center !important; hyphens: none !important; }
 @media (max-width: 640px) { .post .post-row-caps { grid-template-columns: 1fr; gap: 12px; } }
+
+/* Stacked fractions in formulas */
+.post-formula .frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .15em; line-height: 1.25; font-size: 1em; color: inherit; }
+.post-formula .frac > span { display: block; margin: 0; padding: 0 .3em; font-size: inherit; color: inherit; }
+.post-formula .frac > span:first-child { border-bottom: 1.5px solid currentColor; padding-bottom: .1em; }
+.post-formula .frac > span:last-child { padding-top: .1em; }
+.post-formula .frac .frac > span { font-size: .85em; }

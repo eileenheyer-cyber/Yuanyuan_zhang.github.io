@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018a">
+  <link rel="stylesheet" href="style.css?v=20261018c">
 </head>
 <body>
 
@@ -84,14 +84,14 @@
     <img src="images/regression/slr-chart2.svg?v=2" alt="Scatter plot of five months of advertising spend against sales with the fitted line. The line starts at 20 on the sales axis and rises to 60 at 8 thousand euros of spend. A yellow marker shows the prediction of 50 thousand euros of sales for 6 thousand euros of spend, and a short red segment shows the residual of minus 2 for the month with 7 thousand euros of spend." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The fitted line through NordHome's five months (blue dots). The yellow dot is the prediction for €6k, the red bracket is the residual of the €7k month, and the hollow dot is the intercept, outside the observed range. Illustrative data.</figcaption>
   </figure>
-  <p class="post-formula"><strong>b₁ = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)²</strong>
+  <p class="post-formula"><strong>b₁ = <span class="frac"><span>Σ(x − x̄)(y − ȳ)</span><span>Σ(x − x̄)²</span></span></strong>
     <strong>b₀ = ȳ − b₁x̄</strong>
     <span>Where the numbers come from: x̄ = 5.2 and ȳ = 46 are the averages, so b₁ = 114 / 22.8 = 5 and b₀ = 46 − 5 × 5.2 = 20. In practice, software computes this for you.</span></p>
   <p><strong>The same logic works elsewhere.</strong> A café could model cake sales from coffee sales: more coffees, more cakes, so the slope is positive. A retailer could model product sales from price: a higher price, fewer units sold, so the slope is negative.</p>
 
   <h2>Correlation and Interpretation</h2>
   <p><strong>Correlation</strong> measures the strength and direction of a linear relationship, on a scale from −1 to +1. A <strong>positive</strong> correlation means the variables rise or fall together, as with advertising and sales. A <strong>negative</strong> correlation means one rises while the other falls, as with price and units sold. For NordHome's five months, the correlation is r ≈ 0.97: a very strong positive relationship.</p>
-  <p class="post-formula"><strong>r = Σ(x − x̄)(y − ȳ) / √( Σ(x − x̄)² · Σ(y − ȳ)² )</strong>
+  <p class="post-formula"><strong>r = <span class="frac"><span>Σ(x − x̄)(y − ȳ)</span><span>√( Σ(x − x̄)² · Σ(y − ȳ)² )</span></span></strong>
     <span>For NordHome: r = 114 / √(22.8 × 604) ≈ 0.97. The correlation has no unit and does not depend on whether sales are measured in euros or thousands of euros.</span></p>
   <p><strong>Correlation does not imply causation.</strong> A relationship between two variables does not mean one causes the other. NordHome's sales could have risen because of advertising, or because of a seasonal peak that also pushed the advertising budget up. The model cannot tell these apart.</p>
   <p>Two more limits to keep in mind:</p>

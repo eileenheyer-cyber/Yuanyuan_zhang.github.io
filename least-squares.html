@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018a">
+  <link rel="stylesheet" href="style.css?v=20261018c">
 </head>
 <body>
 
@@ -100,10 +100,10 @@
 
   <h3>Step 1: Calculate the slope</h3>
   <p>The slope tells us how much the model's predicted sales change when advertising spend increases by one unit. OLS calculates it using the deviations of advertising spend and sales from their respective means.</p>
-  <p class="post-formula"><strong>β̂₁ = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²</strong>
+  <p class="post-formula"><strong>β̂₁ = <span class="frac"><span>Σ(xᵢ − x̄)(yᵢ − ȳ)</span><span>Σ(xᵢ − x̄)²</span></span></strong>
     <span>The numerator measures how x and y vary together. The denominator measures how much x varies around its mean.</span></p>
   <p>For NordHome, the calculation gives:</p>
-  <p class="post-formula"><strong>β̂₁ = 114 / 22.8 = 5</strong></p>
+  <p class="post-formula"><strong>β̂₁ = <span class="frac"><span>114</span><span>22.8</span></span> = 5</strong></p>
   <p>This means that for every additional €1k spent on advertising, the model predicts an increase of €5k in sales. This is the relationship estimated from our five-month sample, not necessarily a causal effect.</p>
 
   <h3>Step 2: Calculate the intercept</h3>
