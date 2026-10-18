@@ -109,9 +109,16 @@
   <p>The standard error measures the estimated uncertainty of the slope. A smaller standard error relative to the coefficient generally indicates a more precise estimate.</p>
   <p>For illustration, suppose NordHome&#8217;s slope has a standard error of 0.45. Relative to the estimated slope of 5, this suggests the slope is estimated with reasonable precision.</p>
   <h3>P-value</h3>
-  <p>The p-value tests the null hypothesis that the true population slope is zero.</p>
-  <p>Suppose NordHome&#8217;s slope has a p-value below 0.001. Under the null hypothesis and the model assumptions, this indicates that a test statistic at least as extreme as the observed one would be very unlikely.</p>
-  <p>The result is statistically significant, but the p-value does not measure the business importance of the relationship or prove causation.</p>
+  <p>Regression asks a yes-or-no question about the slope: is there really a relationship between advertising and sales? To answer it, we set up two competing hypotheses.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>H₀ (null hypothesis):</strong> the true slope is 0. Advertising has no relationship with sales.</li>
+    <li><strong>H₁ (alternative hypothesis):</strong> the true slope is not 0. Advertising and sales are related.</li>
+  </ul>
+  <p>We start by assuming H₀ is true. The p-value then tells us how likely it is to see a slope as far from 0 as ours (5.0), or further, just by chance.</p>
+  <p>In the summary table, the p-value (P&gt;|t|) is 0.000, meaning below 0.001. If advertising really had no relationship with sales, a result like this would almost never happen by chance. So we reject H₀ and conclude that the relationship in NordHome&#8217;s data is very unlikely to be a coincidence.</p>
+  <p>A common rule is to reject H₀ when the p-value is below 0.05. This is called statistically significant. A small p-value does not tell us how large or valuable the effect is, and it does not prove that advertising causes sales.</p>
+  <p>The test behind this is explained in <a href="hypothesis-testing.html">Hypothesis Testing</a>.</p>
+
   <h3>Confidence Interval</h3>
   <p>Suppose the estimated slope is 5.0, with a 95% confidence interval of [4.1, 5.9].</p>
   <p>Because both variables are measured in thousands of euros, the interval corresponds to an estimated increase of €4,100 to €5,900 in sales for each additional €1,000 in advertising spend.</p>
