@@ -65,16 +65,23 @@
 
   <h2>The solution: One-hot encoding</h2>
   <p>Instead of assigning each category a single number, we create a separate binary column for each category. A value of 1 indicates that an observation belongs to that category; 0 indicates that it does not.</p>
+  <p>Let's apply this to our retail example:</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>order_id</th><th>category_Furniture</th><th>category_Lighting</th><th>category_Textiles</th><th>revenue</th></tr></thead>
+    <thead><tr><th>Category</th><th>Category_Furniture</th><th>Category_Lighting</th><th>Category_Textiles</th><th>Revenue (€)</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>240</td></tr>
-      <tr><td>2</td><td>0</td><td>1</td><td>0</td><td>85</td></tr>
-      <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
-      <tr><td>4</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
+      <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>240</td></tr>
+      <tr><td>Lighting</td><td>0</td><td>1</td><td>0</td><td>85</td></tr>
+      <tr><td>Textiles</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
+      <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
     </tbody>
   </table></div>
-  <p>Each row has exactly one "hot" (1) value and the rest are 0, hence the name. No category is bigger than another. They are simply different. This allows a model to distinguish between categories without imposing an artificial numerical order or distance between them.</p>
+  <p>Each row has exactly one active category, represented by a value of 1, while the remaining category columns contain 0. This is where the name <em>one-hot encoding</em> comes from.</p>
+  <p>Unlike assigning arbitrary numerical labels, this representation does not impose an order or distance between categories.</p>
+
+  <h3 class="post-h3-small">What does this mean for a regression model?</h3>
+  <p>The model can now learn a separate coefficient for each category, rather than treating category codes as a single numerical variable.</p>
+  <p>For example, a regression model can estimate how revenue differs between Furniture, Lighting, and Textiles. If we include an intercept, we typically leave one category out as the reference category to avoid perfect multicollinearity.</p>
+  <p>One-hot encoding does not guarantee better predictions. It simply gives the model a more appropriate representation of nominal categorical data.</p>
 
   <h2>How to do it in Python</h2>
   <h3 class="post-h3-small">Option 1: pandas (quick and good for exploration)</h3>
