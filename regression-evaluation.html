@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Evaluating a Regression Model – Yuanyuan Zhang</title>
-  <meta name="description" content="How to evaluate whether a linear regression model is suitable for drawing conclusions from data.">
+  <title>Evaluating and Interpreting a Regression Model – Yuanyuan Zhang</title>
+  <meta name="description" content="How to judge a regression model: fit metrics such as R², MSE and MAE, and uncertainty through p-values, confidence intervals and confidence bands.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,11 +32,55 @@
 
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Regression analysis</p>
-  <h1 class="post-title">Evaluating a Regression Model</h1>
+  <h1 class="post-title">Evaluating and Interpreting a Regression Model</h1>
 
-  <p>This post is in progress. It follows <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> and explains how to evaluate whether a model is suitable for drawing conclusions from data.</p>
+  <p>The four assumptions tell us whether a regression model can be trusted. This post asks the next two questions: how well does the model fit, and how reliable are its estimates? It follows <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>.</p>
 
-  <div class="post-note"><p class="post-note-l">Coming soon</p><p>Check back soon for the full article.</p></div>
+  <h2>How Well Does the Model Fit?</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>R².</strong> The share of the variation in observed sales that the fitted model accounts for. An R² of 0.85 means the model accounts for about 85% of that variation.</li>
+    <li><strong>MSE.</strong> The average squared prediction error, in squared sales units, which makes it harder to read directly. Large errors count much more.</li>
+    <li><strong>MAE.</strong> The average absolute prediction error, in the original sales units. It is less sensitive to large errors than MSE, but outliers can still affect it.</li>
+    <li><strong>Adjusted R².</strong> R² adjusted for the number of predictors. It matters once a model has several; with one predictor, ordinary R² is usually enough.</li>
+  </ul>
+
+  <p class="post-formula"><strong>R² = 1 − Σ(yᵢ − ŷᵢ)² / Σ(yᵢ − ȳ)²</strong><span>yᵢ is observed sales, ŷᵢ is predicted sales and ȳ is average sales. R² compares the model&#8217;s squared errors with a baseline that always predicts the average.</span></p>
+
+  <div class="post-note"><p class="post-note-l">Do not rely on R&sup2; alone</p><p>A high R² does not mean the model predicts new data well, that its assumptions hold, or that advertising causes sales. MSE and MAE describe prediction error, while R² describes explained variation, so they answer different questions. AIC and BIC are used to compare candidate models fitted to the same data; lower values are better.</p></div>
+
+  <h2>How Reliable Are the Estimates?</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>Coefficient.</strong> The estimated relationship. A slope of 5 means that, in our data, each additional €1k of advertising goes with about €5k more sales.</li>
+    <li><strong>Standard error.</strong> The estimated uncertainty of the coefficient. The smaller it is relative to the coefficient, the more precise the estimate.</li>
+    <li><strong>P-value.</strong> It measures how incompatible the data are with a true slope of zero, assuming the model and its assumptions hold. Below 0.05 is commonly called statistically significant, but this says nothing about the size or business importance of the effect.</li>
+    <li><strong>Confidence interval.</strong> A 95% interval of [4.0, 6.0] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</li>
+  </ul>
+
+  <h2>Visualizing Uncertainty</h2>
+  <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
+
+  <figure class="post-fig">
+    <img src="images/regression/evaluation-chart1.svg?v=2" alt="Scatter plot of advertising spend and sales with a regression line, a shaded 95 percent confidence band and wider dashed prediction interval lines." loading="lazy">
+    <figcaption><span>Chart 1</span> The shaded band shows the uncertainty about average sales at each spend level. The dashed lines show the wider range for a single month&#8217;s sales. Illustrative data.</figcaption>
+  </figure>
+
+  <p>The band is about the line, the average relationship. A prediction interval is about one future month. It is wider because individual months also fluctuate around the average.</p>
+
+  <h2>What Can Go Wrong?</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>Patterns in the residuals.</strong> A curve or a funnel means the model is missing something, whatever R² says.</li>
+    <li><strong>Influential months.</strong> One unusual month can pull the slope noticeably.</li>
+    <li><strong>Extrapolation.</strong> A model fitted on €5k to €20k of spend should not be trusted at €100k.</li>
+    <li><strong>Association versus cause.</strong> The model shows that spend and sales move together, not why.</li>
+  </ul>
+  <p>Good fit does not guarantee good predictions, so validate the model on data it has not seen.</p>
+
+  <h2>How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">&#8220;In our historical data, every additional €1,000 in advertising was associated with about €5,000 more in sales. The estimate is reasonably precise: the plausible range is €4,000 to €6,000 per extra €1,000. The model accounts for 82% of the variation in monthly sales. That does not prove advertising caused the increase, and we should validate the model before using it for forecasts.&#8221;</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>R² tells us how well the model fits, and the confidence interval tells us how precisely it estimates the effect. Neither alone says whether the model is useful for decisions, so report both and state the limits.</p></div>
 
 </article>
 </main>
