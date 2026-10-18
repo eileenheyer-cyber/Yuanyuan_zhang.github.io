@@ -102,12 +102,13 @@
     </div>
     <figcaption><span>Summary</span> Regression summary for NordHome, in the format of Python&#8217;s statsmodels. Sales and advertising spend are both in €k. Illustrative data.</figcaption>
   </figure>
-  <h3>Coefficient</h3>
-  <p>NordHome&#8217;s estimated slope is 5. This means each additional €1,000 in advertising spend is associated with an estimated €5,000 increase in monthly sales.</p>
-  <p>This is an association, not proof of causation. Other factors, such as seasonality, pricing and promotions, may also influence sales.</p>
-  <h3>Standard Error</h3>
-  <p>The standard error measures the estimated uncertainty of the slope. A smaller standard error relative to the coefficient generally indicates a more precise estimate.</p>
-  <p>For illustration, suppose NordHome&#8217;s slope has a standard error of 0.45. Relative to the estimated slope of 5, this suggests the slope is estimated with reasonable precision.</p>
+  <h3>Coefficient: How much do sales change?</h3>
+  <p>NordHome&#8217;s estimated slope is 5.0. Since both advertising spend and sales are measured in thousands of euros (€k), this means that every additional €1,000 in advertising spend is associated with an estimated €5,000 increase in monthly sales.</p>
+  <p>The intercept is 20, meaning the model predicts €20,000 in sales when advertising spend is zero. This interpretation is useful only if zero advertising spend is meaningful in the business context.</p>
+  <p>These are estimates of a relationship, not proof that advertising causes sales to increase.</p>
+  <h3>Standard Error: How precise is the estimate?</h3>
+  <p>The slope is estimated at 5.0, with a standard error of 0.448. Think of the standard error as an indicator of how much the estimated slope would tend to vary across comparable samples.</p>
+  <p>Here, the standard error is relatively small compared with the estimated slope. This suggests that the relationship has been estimated with reasonable precision, although the standard error alone does not tell us whether the model is appropriate or whether the relationship is causal.</p>
   <h3>P-value</h3>
   <p>Regression asks a yes-or-no question about the slope: is there really a relationship between advertising and sales? To answer it, we set up two competing hypotheses.</p>
   <ul class="post-points post-points-color">
