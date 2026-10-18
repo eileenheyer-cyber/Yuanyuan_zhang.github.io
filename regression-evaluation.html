@@ -158,10 +158,10 @@
 
   <h2>What Can Go Wrong?</h2>
   <ul class="post-points post-points-color">
-    <li><strong>Patterns in the residuals.</strong> A curve or a funnel means the model is missing something, whatever R² says.</li>
-    <li><strong>Influential months.</strong> One unusual month can pull the slope noticeably.</li>
-    <li><strong>Extrapolation.</strong> A model fitted on €5k to €20k of spend should not be trusted at €100k.</li>
-    <li><strong>Association versus cause.</strong> The model shows that spend and sales move together, not why.</li>
+    <li><strong>Patterns in the residuals.</strong> A curve or a funnel means the model is missing something, whatever R² says. See <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>.</li>
+    <li><strong>Influential months.</strong> One unusual month can pull the slope noticeably. NordHome&#8217;s one €15k miss alone contributes 225 of the total squared error of 720.</li>
+    <li><strong>Extrapolation.</strong> NordHome&#8217;s model was fitted on advertising spend of roughly €1.5k to €10.5k. It should not be trusted at €50k.</li>
+    <li><strong>Overfitting.</strong> Adding predictors raises R² even when they add nothing, so check adjusted R² and validate the model on data it has not seen.</li>
   </ul>
   <p>Good fit does not guarantee good predictions, so validate the model on data it has not seen.</p>
 
