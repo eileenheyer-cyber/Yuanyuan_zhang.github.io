@@ -82,12 +82,14 @@
   <div class="post-note"><p class="post-note-l">Do not rely on R&sup2; alone</p><p><strong>A high R&sup2; does not guarantee accurate predictions on new data, confirm that the model assumptions hold, or prove that advertising causes sales.</strong></p><p>R&sup2; measures explained variation, while MAE and MSE measure prediction errors. AIC and BIC can help compare candidate models fitted to the same response data; lower values are generally preferred.</p></div>
 
   <h2>Interpret Uncertainty: How Reliable Are the Estimates?</h2>
-  <ul class="post-points post-points-color">
-    <li><strong>Coefficient.</strong> The estimated relationship. A slope of 5 means that, in our data, each additional €1k of advertising goes with about €5k more sales.</li>
-    <li><strong>Standard error.</strong> The estimated uncertainty of the coefficient. The smaller it is relative to the coefficient, the more precise the estimate.</li>
-    <li><strong>P-value.</strong> It measures how incompatible the data are with a true slope of zero, assuming the model and its assumptions hold. Below 0.05 is commonly called statistically significant, but this says nothing about the size or business importance of the effect.</li>
-    <li><strong>Confidence interval.</strong> A 95% interval of [4.1, 5.9] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</li>
-  </ul>
+  <h3>Coefficient</h3>
+  <p>The estimated relationship. A slope of 5 means that, in our data, each additional €1k of advertising goes with about €5k more sales.</p>
+  <h3>Standard error</h3>
+  <p>The estimated uncertainty of the coefficient. The smaller it is relative to the coefficient, the more precise the estimate.</p>
+  <h3>P-value</h3>
+  <p>It measures how incompatible the data are with a true slope of zero, assuming the model and its assumptions hold. Below 0.05 is commonly called statistically significant, but this says nothing about the size or business importance of the effect.</p>
+  <h3>Confidence interval</h3>
+  <p>A 95% interval of [4.1, 5.9] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</p>
 
   <h2>Visualizing Uncertainty</h2>
   <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
