@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018h">
+  <link rel="stylesheet" href="style.css?v=20261018j">
 </head>
 <body>
 
@@ -43,13 +43,13 @@
   <p>Throughout this post, we use one example: NordHome Retail fitted a simple linear regression on 24 months of data to predict monthly sales from advertising spend, both in thousands of euros (€k). The fitted line is sales = 20 + 5 × advertising spend.</p>
 
   <h2>Interpret Uncertainty: How Reliable Are the Estimates?</h2>
-  <p>Statistical software reports a fitted regression in one summary table. Here is the summary for NordHome&#8217;s model of monthly sales on advertising spend, in the format of Python&#8217;s statsmodels. Four columns matter most: <code>coef</code> shows the estimated relationship, <code>std err</code> shows how precise it is, <code>P&gt;|t|</code> gives the result of the hypothesis test, and the last two columns give the 95% confidence interval. These are the shaded columns, and the sections below explain them one by one.</p>
+  <p>Statistical software reports a fitted regression in one summary table. Here is the summary for NordHome&#8217;s model of monthly sales on advertising spend, in the format of Python&#8217;s statsmodels. Four columns matter most: <code>coef</code> shows the estimated relationship, <code>std err</code> shows how precise it is, <code>P&gt;|t|</code> gives the result of the hypothesis test, and the last two columns give the 95% confidence interval. These are the purple columns, and the sections below explain them one by one. The blue R-squared values at the top measure the model&#8217;s fit and are explained in Model Evaluation Metrics.</p>
   <figure class="post-fig post-fig-wide">
     <div class="post-summary">
       <div class="post-summary-t">OLS Regression Results</div>
       <table>
-        <tr><th>Dep. Variable:</th><td>sales_k</td><th>R-squared:</th><td>0.850</td></tr>
-        <tr><th>Model:</th><td>OLS</td><th>Adj. R-squared:</th><td>0.843</td></tr>
+        <tr><th>Dep. Variable:</th><td>sales_k</td><th class="ps-hl2">R-squared:</th><td class="ps-hl2">0.850</td></tr>
+        <tr><th>Model:</th><td>OLS</td><th class="ps-hl2">Adj. R-squared:</th><td class="ps-hl2">0.843</td></tr>
         <tr><th>Method:</th><td>Least Squares</td><th>F-statistic:</th><td>124.7</td></tr>
         <tr><th>No. Observations:</th><td>24</td><th>Prob (F-statistic):</th><td>1.57e-10</td></tr>
         <tr><th>Df Residuals:</th><td>22</td><th>AIC:</th><td>153.7</td></tr>
@@ -58,7 +58,7 @@
       <table class="ps-block ps-coef">
         <tr><th></th><th class="ps-hl">coef</th><th class="ps-hl">std err</th><th>t</th><th class="ps-hl">P&gt;|t|</th><th class="ps-hl">[0.025</th><th class="ps-hl">0.975]</th></tr>
         <tr><td>Intercept</td><td class="ps-hl">20.000</td><td class="ps-hl">2.930</td><td>6.827</td><td class="ps-hl">0.000</td><td class="ps-hl">13.924</td><td class="ps-hl">26.076</td></tr>
-        <tr><td>advertising_spend_k</td><td class="ps-hl">5.000</td><td class="ps-hl">0.448</td><td>11.165</td><td class="ps-hl">0.000</td><td class="ps-hl">4.071</td><td class="ps-hl">5.929</td></tr>
+        <tr class="ps-key"><td>advertising_spend_k</td><td class="ps-hl">5.000</td><td class="ps-hl">0.448</td><td>11.165</td><td class="ps-hl">0.000</td><td class="ps-hl">4.071</td><td class="ps-hl">5.929</td></tr>
       </table>
     </div>
     <figcaption><span>Summary</span> Regression summary for NordHome, in the format of Python&#8217;s statsmodels. Sales and advertising spend are both in €k. Illustrative data.</figcaption>
