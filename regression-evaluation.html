@@ -41,11 +41,12 @@
   <p>Because a model that fits the data well does not automatically provide reliable predictions or prove cause and effect.</p>
 
   <h2>How Well Does the Model Fit?</h2>
+  <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
   <ul class="post-points post-points-color">
-    <li><strong>R².</strong> The share of the variation in observed sales that the fitted model accounts for. An R² of 0.85 means the model accounts for about 85% of that variation.</li>
-    <li><strong>MSE.</strong> The average squared prediction error, in squared sales units, which makes it harder to read directly. Large errors count much more.</li>
-    <li><strong>MAE.</strong> The average absolute prediction error, in the original sales units. It is less sensitive to large errors than MSE, but outliers can still affect it.</li>
-    <li><strong>Adjusted R².</strong> R² adjusted for the number of predictors. It matters once a model has several; with one predictor, ordinary R² is usually enough.</li>
+    <li><strong>R² (Coefficient of Determination).</strong> Measures how much of the variation in observed sales the model accounts for. An R² of 0.85 means the model accounts for 85% of the variation in the data used to fit it.</li>
+    <li><strong>MAE (Mean Absolute Error).</strong> Measures the average absolute difference between predicted and actual sales. If MAE is €4,000, predictions differ from actual sales by €4,000 on average in absolute terms.</li>
+    <li><strong>MSE (Mean Squared Error).</strong> Measures the average squared prediction error. Because errors are squared, large mistakes receive much more weight. MSE is useful when large prediction errors are particularly costly, but its squared units make it harder to interpret directly.</li>
+    <li><strong>Adjusted R².</strong> Adjusts R² for the number of predictors in the model. It is especially useful when comparing regression models with different numbers of predictors. For simple linear regression with one predictor, ordinary R² is usually sufficient.</li>
   </ul>
 
   <p class="post-formula"><strong>R² = 1 − Σ(yᵢ − ŷᵢ)² / Σ(yᵢ − ȳ)²</strong><span>yᵢ is observed sales, ŷᵢ is predicted sales and ȳ is average sales. R² compares the model&#8217;s squared errors with a baseline that always predicts the average.</span></p>
