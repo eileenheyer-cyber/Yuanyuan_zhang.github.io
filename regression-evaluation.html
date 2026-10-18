@@ -57,8 +57,10 @@
   <h3>MAE and MSE</h3>
   <p><strong>MAE — Mean Absolute Error.</strong> MAE measures the average absolute difference between predicted and actual sales.</p>
   <p>For NordHome, an MAE of €4k means the model&#8217;s predictions differ from actual monthly sales by €4,000 on average in absolute terms. Because MAE uses the original sales units, it is relatively easy to interpret.</p>
+  <p class="post-formula"><strong>MAE = <span class="frac"><span>Σ|yᵢ − ŷᵢ|</span><span>n</span></span></strong><span>n is the number of months, yᵢ is observed sales, and ŷᵢ is predicted sales. MAE averages the absolute prediction errors.</span></p>
   <p><strong>MSE — Mean Squared Error.</strong> MSE measures the average squared prediction error. Squaring the errors gives larger mistakes disproportionately more influence.</p>
   <p>For NordHome, an illustrative MSE of 30 (€k)² means the average squared prediction error is 30 in squared-thousand-euro units. A month with a €15k prediction error contributes 225 to the sum of squared errors, compared with just 16 for a €4k error.</p>
+  <p class="post-formula"><strong>MSE = <span class="frac"><span>Σ(yᵢ − ŷᵢ)²</span><span>n</span></span></strong><span>MSE averages the squared prediction errors, so its unit is the square of the sales unit, here (€k)².</span></p>
   <p>MSE is useful when large prediction errors are particularly costly, although its squared units make it harder to interpret directly.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/regression/evaluation-mae-mse.svg?v=5" alt="Two bar charts of 24 months of prediction errors: absolute errors with an average of 4 thousand euros, and squared errors with an average of 30, where one large miss dominates." loading="lazy">
