@@ -46,9 +46,10 @@
     <li><strong>R² (Coefficient of Determination).</strong> Measures how much of the variation in observed sales the model accounts for. An R² of 0.85 means the model accounts for 85% of the variation in the data used to fit it.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/evaluation-r2.svg?v=2" alt="Two scatter plots of sales against advertising spend: the left shows errors around the average line, the right shows much smaller errors around the fitted line, with R squared of 0.85." loading="lazy">
-    <figcaption><span>Chart 1</span> Left: errors if we always predict the average. Right: errors around the fitted line. R² is the share of the squared errors the model removes. Illustrative data.</figcaption>
+    <img src="images/regression/evaluation-r2.svg?v=5" alt="Two scatter plots of sales against advertising spend: the left shows errors around the average line, the right shows much smaller errors around the fitted line, with R squared of 0.85." loading="lazy">
+    <figcaption><span>Chart 1</span> Left: prediction errors when we always predict average sales. Right: prediction errors around the fitted regression line. R² measures the reduction in the sum of squared errors compared with the mean-only baseline. Illustrative data.</figcaption>
   </figure>
+  <p>The regression model reduces the sum of squared errors by approximately 85% compared with always predicting average sales.</p>
   <ul class="post-points post-points-color pc-2">
     <li><strong>MAE (Mean Absolute Error).</strong> Measures the average absolute difference between predicted and actual sales. If MAE is €4,000, predictions differ from actual sales by €4,000 on average in absolute terms.</li>
   </ul>
