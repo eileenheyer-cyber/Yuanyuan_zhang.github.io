@@ -87,14 +87,21 @@
   <p>A 95% confidence interval is produced by a method that would contain the true slope in approximately 95% of repeated samples under the model assumptions. It does not mean there is a 95% probability that the true slope lies within this particular interval.</p>
 
   <h3>Visualizing Uncertainty</h3>
-  <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
+  <p>The regression line shows the estimated relationship between advertising spend and sales. But the line is only an estimate based on 24 months of data. How certain are we about the average relationship, and how much might sales vary in an individual month?</p>
+  <p>A confidence band and a prediction interval answer these two different questions.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>The shaded band: uncertainty about the average.</strong> If NordHome spends €8,000 on advertising, what is the average sales level we would expect across comparable months? The confidence band shows the uncertainty around that estimated average. It generally widens as advertising spend moves away from its mean.</li>
+    <li><strong>The dashed lines: uncertainty about one month.</strong> Even if average sales are estimated at €60,000, an individual month might be higher or lower. The prediction interval captures this additional month-to-month variation, so it is wider.</li>
+  </ul>
 
   <figure class="post-fig">
     <img src="images/regression/evaluation-chart1.svg?v=3" alt="Scatter plot of advertising spend and sales with a regression line, a shaded 95 percent confidence band and wider dashed prediction interval lines." loading="lazy">
-    <figcaption><span>Chart 1</span> The shaded band shows the uncertainty about average sales at each spend level. The dashed lines show the wider range for a single month&#8217;s sales. Illustrative data.</figcaption>
+    <figcaption><span>Chart 1</span> The blue shaded band shows uncertainty around the estimated average sales at each advertising spend level. The dashed lines show a wider prediction interval for an individual month&#8217;s sales. Both intervals are 95% intervals. Illustrative data.</figcaption>
   </figure>
 
-  <p>The band is about the line, the average relationship. A prediction interval is about one future month. It is wider because individual months also fluctuate around the average.</p>
+  <p><strong>Why does this distinction matter?</strong></p>
+  <p>NordHome might use the confidence band to understand the estimated average relationship between advertising spend and sales. But if the company wants to forecast sales for a particular month, the prediction interval is more relevant because actual sales also fluctuate around the average.</p>
+  <p>The confidence band describes uncertainty in the estimated mean. The prediction interval describes uncertainty in an individual outcome.</p>
 
   <h2>Model Evaluation Metrics: How Well Does the Model Fit?</h2>
   <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
