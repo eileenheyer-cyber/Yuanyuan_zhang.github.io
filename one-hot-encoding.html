@@ -45,21 +45,21 @@
     <tbody>
       <tr><td>1</td><td>Furniture</td><td>240</td></tr>
       <tr><td>2</td><td>Lighting</td><td>85</td></tr>
-      <tr><td>3</td><td>Textiles</td><td>60</td></tr>
+      <tr><td>3</td><td>Home Decor</td><td>60</td></tr>
       <tr><td>4</td><td>Furniture</td><td>310</td></tr>
     </tbody>
   </table></div>
-  <p>Suppose we want to predict revenue using product category as one of our features. The challenge is that a machine-learning model cannot directly use category names such as <em>Furniture</em>, <em>Lighting</em>, and <em>Textiles</em> as numerical inputs.</p>
+  <p>Suppose we want to predict revenue using product category as one of our features. The challenge is that a machine-learning model cannot directly use category names such as <em>Furniture</em>, <em>Lighting</em>, and <em>Home Decor</em> as numerical inputs.</p>
   <p>One simple approach is to assign each category a number:</p>
   <ul class="post-points post-points-color">
     <li>Furniture = 1</li>
     <li>Lighting = 2</li>
-    <li>Textiles = 3</li>
+    <li>Home Decor = 3</li>
   </ul>
   <p>This is called <strong>label encoding</strong>. Although the transformation looks harmless, it introduces numerical relationships that do not exist in the original data.</p>
   <ul class="post-points post-points-color">
-    <li><strong>It creates an artificial order.</strong> Textiles (3) is numerically greater than Furniture (1). However, product categories have no natural ranking. Neither category is inherently greater than another.</li>
-    <li><strong>It creates artificial distances.</strong> The numerical distance between Furniture (1) and Lighting (2) is the same as the distance between Lighting (2) and Textiles (3). These numbers suggest a relationship between categories that has no real meaning.</li>
+    <li><strong>It creates an artificial order.</strong> Home Decor (3) is numerically greater than Furniture (1). However, product categories have no natural ranking. Neither category is inherently greater than another.</li>
+    <li><strong>It creates artificial distances.</strong> The numerical distance between Furniture (1) and Lighting (2) is the same as the distance between Lighting (2) and Home Decor (3). These numbers suggest a relationship between categories that has no real meaning.</li>
   </ul>
   <p>For linear regression, representing a nominal category with a single numerical code forces the model to estimate one coefficient for that code. This imposes a particular numerical relationship between the categories instead of allowing each category to have its own effect. Distance-based algorithms, such as k-nearest neighbors, can also interpret the arbitrary distances as meaningful.</p>
 
@@ -67,11 +67,11 @@
   <p>Instead of assigning each category a single number, we create a separate binary column for each category. A value of 1 indicates that an observation belongs to that category; 0 indicates that it does not.</p>
   <p>Let's apply this to our retail example:</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Category</th><th>Category_Furniture</th><th>Category_Lighting</th><th>Category_Textiles</th><th>Revenue (€)</th></tr></thead>
+    <thead><tr><th>Category</th><th>Category_Furniture</th><th>Category_Lighting</th><th>Category_Home Decor</th><th>Revenue (€)</th></tr></thead>
     <tbody>
       <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>240</td></tr>
       <tr><td>Lighting</td><td>0</td><td>1</td><td>0</td><td>85</td></tr>
-      <tr><td>Textiles</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
+      <tr><td>Home Decor</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
       <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
     </tbody>
   </table></div>
@@ -79,7 +79,7 @@
 
   <h3>What does this mean for a regression model?</h3>
   <p>The model can now learn a separate coefficient for each category, rather than treating category codes as a single numerical variable.</p>
-  <p>For example, a regression model can estimate how revenue differs between Furniture, Lighting, and Textiles. If we include an intercept, we typically leave one category out as the reference category to avoid perfect multicollinearity.</p>
+  <p>For example, a regression model can estimate how revenue differs between Furniture, Lighting, and Home Decor. If we include an intercept, we typically leave one category out as the reference category to avoid perfect multicollinearity.</p>
   <p>One-hot encoding does not guarantee better predictions. It simply gives the model a more appropriate representation of nominal categorical data.</p>
 
   <h2>How to do it in Python</h2>
@@ -88,7 +88,7 @@
 
 df = pd.DataFrame({
     "order_id": [1, 2, 3, 4],
-    "category": ["Furniture", "Lighting", "Textiles", "Furniture"],
+    "category": ["Furniture", "Lighting", "Home Decor", "Furniture"],
     "revenue": [240, 85, 60, 310],
 })
 
@@ -102,7 +102,7 @@ encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
 encoded = encoder.fit_transform(df[["category"]])
 
 print(encoder.get_feature_names_out())
-# ['category_Furniture' 'category_Lighting' 'category_Textiles']</code></pre>
+# ['category_Furniture' 'category_Home Decor' 'category_Lighting']</code></pre>
   <p>Why prefer scikit-learn for modeling? The encoder <strong>remembers</strong> which categories it saw during training. When new data arrives with a category the model has never seen, <code>handle_unknown="ignore"</code> encodes it as all zeros instead of crashing. With <code>pd.get_dummies</code>, train and test data can end up with different columns, which is a classic source of confusing errors.</p>
 
   <h2>Three things that can go wrong</h2>
