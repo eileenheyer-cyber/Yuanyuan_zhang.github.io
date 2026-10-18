@@ -158,12 +158,12 @@
 
   <h2>What Can Go Wrong?</h2>
   <ul class="post-points post-points-color">
-    <li><strong>Patterns in the residuals.</strong> A curve or a funnel means the model is missing something, whatever R² says. See <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>.</li>
-    <li><strong>Influential months.</strong> One unusual month can pull the slope noticeably. NordHome&#8217;s one €15k miss alone contributes 225 of the total squared error of 720.</li>
-    <li><strong>Extrapolation.</strong> NordHome&#8217;s model was fitted on advertising spend of roughly €1.5k to €10.5k. It should not be trusted at €50k.</li>
-    <li><strong>Overfitting.</strong> Adding predictors raises R² even when they add nothing, so check adjusted R² and validate the model on data it has not seen.</li>
+    <li><strong>Patterns in the residuals.</strong> A curve may indicate that a straight line misses part of the relationship. A funnel shape may indicate that prediction errors become more variable at higher sales or advertising levels.</li>
+    <li><strong>Influential months.</strong> One unusual month can substantially change the fitted slope, especially if its advertising spend is far from the others.</li>
+    <li><strong>Extrapolation.</strong> NordHome&#8217;s model was fitted using advertising spend between €5k and €20k. Predictions at €100k go far beyond the observed range and may be unreliable.</li>
+    <li><strong>Association versus causation.</strong> The model shows that advertising spend and sales move together. It does not establish that higher advertising spend causes sales to increase.</li>
   </ul>
-  <p>Good fit does not guarantee good predictions, so validate the model on data it has not seen.</p>
+  <p><strong>The takeaway:</strong> A good fit does not guarantee reliable predictions. Check residuals, investigate influential observations, and validate the model on data it has not seen.</p>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
