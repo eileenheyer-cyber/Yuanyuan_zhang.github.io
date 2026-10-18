@@ -42,27 +42,34 @@
 
   <h2>How Well Does the Model Fit?</h2>
   <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
-  <h3>R² (Coefficient of Determination)</h3>
-  <p>Measures how much of the variation in observed sales the model accounts for. An R² of 0.85 means the model accounts for 85% of the variation in the data used to fit it.</p>
+  <p>Throughout this post, we use one example: NordHome Retail fitted a simple linear regression on 24 months of data to predict monthly sales from advertising spend, both in thousands of euros (€k). The fitted line is sales = 20 + 5 × advertising spend.</p>
+  <h3>R² — Coefficient of Determination</h3>
+  <p>R² measures how much of the variation in observed sales the fitted model accounts for.</p>
+  <p>For NordHome, an R² of 0.85 means the model accounts for approximately 85% of the variation in monthly sales across the 24 months used to fit it. The remaining variation is not accounted for by the model.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/evaluation-r2.svg?v=5" alt="Two scatter plots of sales against advertising spend: the left shows errors around the average line, the right shows much smaller errors around the fitted line, with R squared of 0.85." loading="lazy">
+    <img src="images/regression/evaluation-r2.svg?v=6" alt="Two scatter plots of sales against advertising spend: the left shows errors around the average line, the right shows much smaller errors around the fitted line, with R squared of 0.85." loading="lazy">
     <figcaption><span>Chart 1</span> Left: prediction errors when we always predict average sales. Right: prediction errors around the fitted regression line. R² measures the reduction in the sum of squared errors compared with the mean-only baseline. Illustrative data.</figcaption>
   </figure>
   <p>The regression model reduces the sum of squared errors by approximately 85% compared with always predicting average sales.</p>
   <p class="post-formula"><strong>R² = 1 − <span class="frac"><span>Σ(yᵢ − ŷᵢ)²</span><span>Σ(yᵢ − ȳ)²</span></span></strong><span>yᵢ is observed sales, ŷᵢ is predicted sales, and ȳ is average sales. R² compares the model&#8217;s squared prediction errors with those of a baseline that always predicts average sales.</span></p>
+  <p>A high R² does not guarantee accurate predictions on new data or prove that advertising causes sales to increase.</p>
 
   <h3>MAE and MSE</h3>
-  <p><strong>MAE (Mean Absolute Error).</strong> Measures the average absolute difference between predicted and actual sales. If MAE is €4,000, predictions differ from actual sales by €4,000 on average in absolute terms.</p>
-  <p><strong>MSE (Mean Squared Error).</strong> Measures the average squared prediction error. Because errors are squared, large mistakes receive much more weight. MSE is useful when large prediction errors are particularly costly, but its squared units make it harder to interpret directly.</p>
+  <p><strong>MAE — Mean Absolute Error.</strong> MAE measures the average absolute difference between predicted and actual sales.</p>
+  <p>For NordHome, an MAE of €4k means the model&#8217;s predictions differ from actual monthly sales by €4,000 on average in absolute terms. Because MAE uses the original sales units, it is relatively easy to interpret.</p>
+  <p><strong>MSE — Mean Squared Error.</strong> MSE measures the average squared prediction error. Squaring the errors gives larger mistakes disproportionately more influence.</p>
+  <p>For NordHome, an illustrative MSE of 30 (€k)² means the average squared prediction error is 30 in squared-thousand-euro units. A month with a €15k prediction error contributes 225 to the sum of squared errors, compared with just 16 for a €4k error.</p>
+  <p>MSE is useful when large prediction errors are particularly costly, although its squared units make it harder to interpret directly.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/evaluation-mae-mse.svg?v=3" alt="Two bar charts of ten months of prediction errors: absolute errors with an average of 4 thousand euros, and squared errors with an average of 30, where one large miss dominates." loading="lazy">
-    <figcaption><span>Chart 2</span> The same ten monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
+    <img src="images/regression/evaluation-mae-mse.svg?v=5" alt="Two bar charts of 24 months of prediction errors: absolute errors with an average of 4 thousand euros, and squared errors with an average of 30, where one large miss dominates." loading="lazy">
+    <figcaption><span>Chart 2</span> NordHome&#8217;s 24 monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
 
   <h3>Adjusted R²</h3>
-  <p>Adjusts R² for the number of predictors in the model. It is especially useful when comparing regression models with different numbers of predictors. For simple linear regression with one predictor, ordinary R² is usually sufficient.</p>
+  <p>Adjusted R² accounts for the number of predictors in a regression model. Unlike ordinary R², it can decrease when an additional predictor does not improve the model enough to justify the added complexity.</p>
+  <p>For simple linear regression with one predictor, ordinary R² is generally sufficient. Adjusted R² becomes more useful when comparing models with different numbers of predictors.</p>
   <figure class="post-fig">
-    <img src="images/regression/evaluation-adjr2.svg?v=3" alt="Line chart of R squared rising and adjusted R squared falling as unhelpful predictors are added." loading="lazy">
+    <img src="images/regression/evaluation-adjr2.svg?v=4" alt="Line chart of R squared rising and adjusted R squared falling as unhelpful predictors are added." loading="lazy">
     <figcaption><span>Chart 3</span> Adding predictors to an ordinary least-squares model with an intercept cannot decrease R² on the same dataset. Adjusted R² accounts for the number of predictors and can decrease when an additional predictor does not improve the fit enough. Illustrative data.</figcaption>
   </figure>
   <div class="post-table-wrap"><table class="post-table">
@@ -77,14 +84,14 @@
     <li><strong>Coefficient.</strong> The estimated relationship. A slope of 5 means that, in our data, each additional €1k of advertising goes with about €5k more sales.</li>
     <li><strong>Standard error.</strong> The estimated uncertainty of the coefficient. The smaller it is relative to the coefficient, the more precise the estimate.</li>
     <li><strong>P-value.</strong> It measures how incompatible the data are with a true slope of zero, assuming the model and its assumptions hold. Below 0.05 is commonly called statistically significant, but this says nothing about the size or business importance of the effect.</li>
-    <li><strong>Confidence interval.</strong> A 95% interval of [4.0, 6.0] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</li>
+    <li><strong>Confidence interval.</strong> A 95% interval of [4.1, 5.9] is the plausible range for the true slope. If we repeated the study many times, about 95% of such intervals would contain the true value.</li>
   </ul>
 
   <h2>Visualizing Uncertainty</h2>
   <p>A confidence band draws this uncertainty around the whole line. It is narrowest near the average advertising spend and widest at the extremes, where there is less information.</p>
 
   <figure class="post-fig">
-    <img src="images/regression/evaluation-chart1.svg?v=2" alt="Scatter plot of advertising spend and sales with a regression line, a shaded 95 percent confidence band and wider dashed prediction interval lines." loading="lazy">
+    <img src="images/regression/evaluation-chart1.svg?v=3" alt="Scatter plot of advertising spend and sales with a regression line, a shaded 95 percent confidence band and wider dashed prediction interval lines." loading="lazy">
     <figcaption><span>Chart 4</span> The shaded band shows the uncertainty about average sales at each spend level. The dashed lines show the wider range for a single month&#8217;s sales. Illustrative data.</figcaption>
   </figure>
 
@@ -112,7 +119,7 @@
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&#8220;In our historical data, every additional €1,000 in advertising was associated with about €5,000 more in sales. The estimate is reasonably precise: the plausible range is €4,000 to €6,000 per extra €1,000. The model accounts for 82% of the variation in monthly sales. That does not prove advertising caused the increase, and we should validate the model before using it for forecasts.&#8221;</p>
+    <p class="post-callout-q">&#8220;In our historical data, every additional €1,000 in advertising was associated with about €5,000 more in sales. The estimate is reasonably precise: the plausible range is €4,100 to €5,900 per extra €1,000. The model accounts for 85% of the variation in monthly sales. That does not prove advertising caused the increase, and we should validate the model before using it for forecasts.&#8221;</p>
   </div>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>R² tells us how well the model fits, and the confidence interval tells us how precisely it estimates the effect. Neither alone says whether the model is useful for decisions, so report both and state the limits.</p></div>
