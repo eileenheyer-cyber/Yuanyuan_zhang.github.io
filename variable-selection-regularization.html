@@ -103,11 +103,13 @@
     <figcaption><span>Chart 4</span> Standardizing shifts each predictor to a mean of 0 and rescales it to a standard deviation of 1. The shape of the data does not change; only the units do. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Ridge (L2)</h3>
+  <h3>Ridge vs. Lasso: Two Types of Penalties</h3>
+
+  <h4>Ridge (L2)</h4>
   <p class="post-formula"><strong>Loss = <span style="display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 .15em;font-size:1em;color:inherit"><span style="display:block;margin:0;font-size:.55em;color:inherit">n</span><span style="display:block;margin:0;font-size:1.15em;color:inherit">&Sigma;</span><span style="display:block;margin:0;font-size:.55em;color:inherit"><em>i</em>=1</span></span> (<em>y</em><sub><em>i</em></sub> &minus; <span class="post-hat">y</span><sub><em>i</em></sub>)<sup>2</sup> + &lambda; &times; &Sigma; b<sub>j</sub><sup>2</sup></strong><span>The penalty is the sum of the squared coefficients.</span></p>
   <p>Squaring punishes large coefficients heavily and small ones hardly at all. Ridge therefore shrinks every coefficient toward zero, but does not set any of them exactly to zero. All predictors stay in the model. It is especially useful when predictors are correlated, because it spreads weight across them instead of letting one coefficient blow up. In our data, Ridge shrinks purchase frequency from &euro;45.5 to &euro;35.3 and customer ID from &euro;16.9 to &euro;10.8.</p>
 
-  <h3>Lasso (L1)</h3>
+  <h4>Lasso (L1)</h4>
   <p class="post-formula"><strong>Loss = <span style="display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 .15em;font-size:1em;color:inherit"><span style="display:block;margin:0;font-size:.55em;color:inherit">n</span><span style="display:block;margin:0;font-size:1.15em;color:inherit">&Sigma;</span><span style="display:block;margin:0;font-size:.55em;color:inherit"><em>i</em>=1</span></span> (<em>y</em><sub><em>i</em></sub> &minus; <span class="post-hat">y</span><sub><em>i</em></sub>)<sup>2</sup> + &lambda; &times; &Sigma; |b<sub>j</sub>|</strong><span>The penalty is the sum of the absolute values of the coefficients.</span></p>
   <p>The absolute-value penalty pushes every coefficient toward zero with the same force, however small it already is. A weak predictor can therefore reach exactly zero and drop out of the model. In our data, Lasso sets 9 of the 20 coefficients to exactly zero, including age. It is not perfect: customer ID keeps a small coefficient (&euro;4.7).</p>
   <figure class="post-fig post-fig-wide">
