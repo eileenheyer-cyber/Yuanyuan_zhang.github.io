@@ -55,16 +55,16 @@
   <p>Both approaches can help reduce overfitting by trading some bias for lower variance, connecting to the bias&ndash;variance trade-off discussed in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>. Whether they improve predictions depends on the data and how the methods are applied.</p>
 
   <h2>Variable Selection: Choosing Which Predictors to Keep</h2>
-  <p>Imagine an analyst building a revenue forecast from a long list of candidate drivers. For each one she asks: does it earn its place? Purchase frequency clearly does. A customer ID number should not, because it only labels the customer.</p>
-  <p>Variable selection automates that question. It compares models using a criterion that rewards predictive performance rather than training fit, such as cross-validated error, adjusted R&sup2; or AIC/BIC, and keeps the subset that scores best. Two common strategies do this step by step.</p>
+  <p>Imagine an analyst building a revenue forecast from a long list of candidate predictors. For each one, she asks: does it improve the model enough to justify including it? Purchase frequency may provide useful information about customer spending. Customer ID, by contrast, is usually just an identifier and should not be treated as a meaningful predictor.</p>
+  <p>Variable selection automates the process of choosing a subset of predictors. It compares candidate models using a defined criterion, such as cross-validated prediction error, adjusted R&sup2;, AIC or BIC, and selects predictors according to that criterion. Two common approaches build the model step by step.</p>
 
   <h3>Forward selection</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Start empty.</strong> The model begins with no predictors and simply predicts the average revenue.</li>
-    <li><strong>Add the best one.</strong> Each remaining predictor is tried in turn, and the one that improves the model most is added.</li>
-    <li><strong>Repeat.</strong> Stop when no remaining predictor improves the model.</li>
+    <li><strong>Start empty.</strong> The model contains no predictors and, with an intercept, predicts the average revenue for every customer.</li>
+    <li><strong>Add the best predictor.</strong> Each remaining predictor is tested, and the one that improves the chosen selection criterion the most is added.</li>
+    <li><strong>Repeat.</strong> Continue until no remaining predictor provides sufficient improvement, according to the chosen stopping rule.</li>
   </ul>
-  <p>In our data, forward selection (scored by 5-fold cross-validation on the 60 training customers) picks purchase frequency first, then site visits, average order value and loyalty member. It stops at 8 predictors. Age and customer ID never enter.</p>
+  <p>In our example, forward selection uses 5-fold cross-validation on the 60 training customers to compare candidate models. It selects purchase frequency first, followed by site visits, average order value and loyalty membership. The procedure stops at eight predictors. Age and customer ID are not selected.</p>
 
   <h3>Backward elimination</h3>
   <p>Backward elimination works in the opposite direction. It starts with all 20 predictors and removes the least useful one at each step, stopping when every removal would make the model worse. In our data it ends at the same eight predictors. It needs more customers than predictors to fit its starting model.</p>
