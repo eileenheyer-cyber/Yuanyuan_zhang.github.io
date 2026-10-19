@@ -40,6 +40,18 @@
 
   <p>This is the problem of <strong>generalization</strong>. A model that is too simple may miss important patterns (<strong>underfitting</strong>). A model that learns the training data too closely may fail to generalize (<strong>overfitting</strong>). Throughout this post, we use customer revenue as an illustrative example. All data is illustrative.</p>
 
+  <h2>Training Data and Test Data</h2>
+  <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Training data</strong> is used to build the model.</li>
+    <li><strong>Test data</strong> (also called holdout or validation data) is kept back and only used to check how the model performs on customers it has never seen.</li>
+  </ul>
+  <p>Every record goes into exactly one of the two parts. In NordHome&#8217;s case, 80 of 100 customers train the model and 20 are held back.</p>
+  <figure class="post-fig">
+    <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
+    <figcaption><span>Chart 1</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
+  </figure>
+
   <h2>Two Ways a Model Can Fail</h2>
 
   <h3>Underfitting</h3>
@@ -48,7 +60,7 @@
   <p>In this example, the model has not learned enough about what drives customer spending. Its R² is 0.03, meaning it explains only 3% of the variation in revenue in the data used to fit the model.</p>
   <figure class="post-fig">
     <img src="images/overfitting-underfitting/chart-1-underfit.svg" alt="Scatter plot of actual against predicted net revenue per customer. Actual revenue ranges from about 40 to 190 euros, but predictions stay in a narrow band around 113 euros, shown by a dashed horizontal line, far from the diagonal line of perfect predictions." loading="lazy">
-    <figcaption><span>Chart 1</span> The model predicts almost the same revenue for every customer, so it cannot tell high-value customers from low-value ones. Illustrative data.</figcaption>
+    <figcaption><span>Chart 2</span> The model predicts almost the same revenue for every customer, so it cannot tell high-value customers from low-value ones. Illustrative data.</figcaption>
   </figure>
   <p>Typical causes of underfitting:</p>
   <ul class="post-points post-points-color">
@@ -69,22 +81,10 @@
   <p>An overfitting model learns both the signal and some of the noise. As a result, it fits its training data closely but struggles to generalize to the wider population.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/overfitting-underfitting/chart-2-signal-noise.svg" alt="Two scatter plots with identical axes. Left: a smooth blue curve shows the signal, gray vertical lines show each customer's distance from it as noise, and one flash-sale customer far above the curve is circled in red. Right: a red curve passes through every training customer, including a sharp spike at the flash-sale customer, while hollow dots for new customers sit close to the smooth dashed signal curve instead." loading="lazy">
-    <figcaption><span>Chart 2</span> Each customer&#8217;s revenue is the smooth signal plus random noise. The overfitting model passes through every training customer, noise included, so it spikes at the flash-sale customer. New customers follow the smooth signal, not the spikes. Illustrative data.</figcaption>
+    <figcaption><span>Chart 3</span> Each customer&#8217;s revenue is the smooth signal plus random noise. The overfitting model passes through every training customer, noise included, so it spikes at the flash-sale customer. New customers follow the smooth signal, not the spikes. Illustrative data.</figcaption>
   </figure>
 
-  <h2>Training Data and Test Data</h2>
-  <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Training data</strong> is used to build the model.</li>
-    <li><strong>Test data</strong> (also called holdout or validation data) is kept back and only used to check how the model performs on customers it has never seen.</li>
-  </ul>
-  <p>Every record goes into exactly one of the two parts. In NordHome&#8217;s case, 80 of 100 customers train the model and 20 are held back.</p>
-  <figure class="post-fig">
-    <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
-    <figcaption><span>Chart 3</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
-  </figure>
-
-  <h3>How to Tell Them Apart</h3>
+  <h2>How to Tell Them Apart</h2>
   <p>To tell the three situations apart, compare the error on the training data with the error on the test data:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Training error</th><th>Test error</th><th>Diagnosis</th></tr></thead>
