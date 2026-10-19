@@ -137,6 +137,17 @@ Test customers: 20</code></pre>
     <figcaption><span>Chart 4</span> The wiggly curve is close to every past customer, but between and beyond those points it swings wildly. One new customer would be badly mispredicted. Illustrative data.</figcaption>
   </figure>
 
+  <p>The errors behind these three fits, measured on the 24 training customers and on 200 new customers, tell the same story in numbers:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model</th><th>Training error</th><th>Test error</th></tr></thead>
+    <tbody>
+      <tr><td>Degree 1 (underfitting)</td><td>&euro;26</td><td>&euro;31</td></tr>
+      <tr><td>Degree 2 (good fit)</td><td>&euro;13</td><td>&euro;17</td></tr>
+      <tr><td>Degree 12 (overfitting)</td><td>&euro;12</td><td>&euro;54</td></tr>
+    </tbody>
+  </table></div>
+  <p>Underfitting shows up as a high error on both sets. Overfitting shows up as a low training error but a much higher test error. Errors are RMSE (root mean squared error) in euros per customer.</p>
+
   <p>Adding predictors also makes overfitting easier, because R² never falls when a predictor is added, even a useless one. That is why adjusted R² is used to compare models; see <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
 
   <h2>Bias and Variance</h2>
@@ -148,10 +159,10 @@ Test customers: 20</code></pre>
   <h3>The Bias&#8211;Variance Trade-off</h3>
   <p>A very simple model may miss important relationships, even when trained on different samples. A very complex model may fit one training sample extremely well but produce very different results when trained on another.</p>
   <p>The goal is to find a balance: a model complex enough to capture meaningful patterns, but not so complex that it starts learning random noise.</p>
-  <p>We can see this balance by comparing training error with test error as model complexity increases.</p>
-  <figure class="post-fig post-fig-wide">
-    <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg?v=3" alt="Two charts side by side. Left: training error falls steadily as model complexity grows, while test error is lowest at degree 2 and rises sharply after degree 10. Right: a conceptual chart with bias squared falling, variance rising and total error forming a U shape whose lowest point marks the optimal model complexity." loading="lazy">
-    <figcaption><span>Chart 5</span> Left: training error keeps falling as complexity grows, but test error turns upward once the model starts memorizing noise. Polynomial degree is just one way to increase complexity. Right: a conceptual sketch. Bias² falls and variance rises with complexity, so total error is lowest in between. Total error also includes irreducible noise, and the exact curve shapes depend on the problem and the model.</figcaption>
+  <p>The chart below shows how the two errors trade off as the model becomes more complex.</p>
+  <figure class="post-fig">
+    <img src="images/overfitting-underfitting/chart-5-bias-variance.svg" alt="Conceptual chart of error against model complexity. Bias squared falls as complexity grows, variance rises, and total error forms a U shape whose lowest point, marked by a dashed line, is the optimal model complexity." loading="lazy">
+    <figcaption><span>Chart 5</span> As complexity grows, bias² falls and variance rises, so total error is lowest in between. Total error also includes irreducible noise, and the exact curve shapes depend on the problem and the model. Conceptual sketch.</figcaption>
   </figure>
 
   <h2>How to Reduce Each Problem</h2>
