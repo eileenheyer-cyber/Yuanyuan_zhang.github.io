@@ -170,7 +170,7 @@ print(vifs.drop("const").round(1))</code></pre>
   <p>Three questions decide whether the model can be trusted:</p>
   <ul class="post-points post-points-color">
     <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.85 and adjusted R&sup2; is 0.85, so about 85% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
-    <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line, so the assumptions above hold.</li>
+    <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line, so the linearity, normality and constant-variance assumptions look satisfied.</li>
     <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
