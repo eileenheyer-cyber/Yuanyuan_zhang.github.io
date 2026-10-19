@@ -74,7 +74,8 @@
   <p>Multiple Linear Regression can combine numeric and categorical predictors. Categorical variables must first be encoded numerically so the model can use them.</p>
 
   <h3>Turning Categories into Numbers: Dummy Variables</h3>
-  <p>Region and channel are words, not numbers. Each category becomes a 0/1 column called a dummy variable:</p>
+  <p>Region and acquisition channel are categorical variables. We represent their categories using binary (0/1) dummy variables.</p>
+  <p>For acquisition channel, Organic is the reference category:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Channel</th><th>Paid Search</th><th>Referral</th></tr></thead>
     <tbody>
@@ -83,8 +84,10 @@
       <tr><td>Referral</td><td>0</td><td>1</td></tr>
     </tbody>
   </table></div>
-  <p>Organic has no column of its own. It becomes the <strong>reference category</strong>, the group every other category is compared with. The full encoding is covered in <a href="one-hot-encoding.html">One-Hot Encoding</a>.</p>
-  <p>This matters for reading results: the Paid Search coefficient is not a revenue level. It is the estimated difference between Paid Search and Organic customers, with the other predictors held constant. Region works the same way, with Central as the reference.</p>
+  <p>Organic has no separate dummy column because it is the <strong>reference category</strong>. Its effect is represented by the intercept and the other model terms.</p>
+  <h3 class="post-h3-small">How to interpret the coefficients</h3>
+  <p>The Paid Search coefficient estimates the difference in predicted annual net revenue between Paid Search and Organic customers, holding the other predictors constant. The Referral coefficient is interpreted in the same way, using Organic as the reference.</p>
+  <p>Region works similarly, with Central as the reference category. With three regions, this requires two dummy variables. For more on this encoding, see <a href="one-hot-encoding.html">One-Hot Encoding</a>.</p>
 
   <h2>Reading the Coefficients: What Each Number Means in Euros per Customer</h2>
   <pre class="post-code"><code>import statsmodels.formula.api as smf
