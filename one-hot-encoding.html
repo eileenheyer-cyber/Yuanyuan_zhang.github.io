@@ -46,7 +46,6 @@
       <tr><td>1</td><td>Furniture</td><td>240</td></tr>
       <tr><td>2</td><td>Lighting</td><td>85</td></tr>
       <tr><td>3</td><td>Home Decor</td><td>60</td></tr>
-      <tr><td>4</td><td>Furniture</td><td>310</td></tr>
     </tbody>
   </table></div>
   <p>Suppose we want to predict revenue using product category as one of our features. The challenge is that a machine-learning model cannot directly use category names such as <em>Furniture</em>, <em>Lighting</em>, and <em>Home Decor</em> as numerical inputs.</p>
@@ -72,7 +71,6 @@
       <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>240</td></tr>
       <tr><td>Lighting</td><td>0</td><td>1</td><td>0</td><td>85</td></tr>
       <tr><td>Home Decor</td><td>0</td><td>0</td><td>1</td><td>60</td></tr>
-      <tr><td>Furniture</td><td>1</td><td>0</td><td>0</td><td>310</td></tr>
     </tbody>
   </table></div>
   <p>Each row has exactly one active category, represented by a value of 1, while the remaining category columns contain 0. This is where the name <em>one-hot encoding</em> comes from. Unlike assigning arbitrary numerical labels, this representation does not impose an order or distance between categories.</p>
@@ -87,9 +85,9 @@
   <pre class="post-code"><code>import pandas as pd
 
 df = pd.DataFrame({
-    "order_id": [1, 2, 3, 4],
-    "category": ["Furniture", "Lighting", "Home Decor", "Furniture"],
-    "revenue": [240, 85, 60, 310],
+    "order_id": [1, 2, 3],
+    "category": ["Furniture", "Lighting", "Home Decor"],
+    "revenue": [240, 85, 60],
 })
 
 df_encoded = pd.get_dummies(df, columns=["category"], dtype=int)
