@@ -141,12 +141,26 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
   </figure>
   <ul class="post-points post-points-color pc-2">
-    <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor. A VIF of 1 indicates no linear relationship with the other predictors; values above 5 or 10 are often treated as warning signs, depending on the context. In the model containing both orders and items, each has a VIF of about 12.</li>
+    <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor.</li>
   </ul>
-  <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-5-vif.svg" alt="Bar chart of Variance Inflation Factors. Orders and items are both about 11.7, above the warning lines at 5 and 10. Basket size and tenure are both about 1." loading="lazy">
-    <figcaption><span>Chart 5</span> Orders and items both exceed the common VIF warning thresholds at about 12, while basket size and tenure stay near 1. Illustrative data.</figcaption>
-  </figure>
+  <p>To get it, fit a regression of that predictor on all the other predictors and take its R&sup2;. Then:</p>
+  <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
+  <p>For orders per year, the other predictors explain 91.5% of its variation (R&sup2; = 0.915), so VIF = 1 / (1 &minus; 0.915) &asymp; 11.7. In Python, <code>statsmodels</code> does this in one call:</p>
+  <pre class="post-code"><code>from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+vifs = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]</code></pre>
+  <p>Here <code>X</code> holds the predictors, including the constant column.</p>
+  <p>To interpret it, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model A, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>The predictor is uncorrelated with the others</td></tr>
+      <tr><td>1 to 5</td><td>Moderate; usually no action needed</td></tr>
+      <tr><td>5 to 10</td><td>High; investigate</td></tr>
+      <tr><td>Above 10</td><td>Severe; coefficient estimates are unreliable</td></tr>
+    </tbody>
+  </table></div>
+  <p>In our model, orders and items both have a VIF of about 12; basket size and tenure are about 1.</p>
   <ul class="post-points post-points-color pc-3">
     <li><strong>Possible remedies:</strong> Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</li>
   </ul>
@@ -161,8 +175,8 @@ print(model.summary())</code></pre>
     <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/multiple-linear-regression/chart-6-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
-    <figcaption><span>Chart 6</span> Residuals scatter evenly around zero and the Q-Q points follow the line, so the errors behave as the assumptions require. Illustrative data, training customers.</figcaption>
+    <img src="images/multiple-linear-regression/chart-5-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
+    <figcaption><span>Chart 5</span> Residuals scatter evenly around zero and the Q-Q points follow the line, so the errors behave as the assumptions require. Illustrative data, training customers.</figcaption>
   </figure>
 
   <h2>How to explain it to stakeholders</h2>
