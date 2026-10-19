@@ -160,12 +160,20 @@ print(model.summary())</code></pre>
   <p>The estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.5. However, its standard error increases considerably.</p>
   <p><strong>What does this mean?</strong> The coefficient represents the estimated change in revenue associated with one additional order, holding the other predictors constant. The standard error describes the uncertainty in that estimate. A larger standard error means the coefficient has been estimated less precisely.</p>
   <p>When predictors overlap in the information they provide, the model has difficulty separating their individual effects. As a result, the estimated coefficients can become less precise and more sensitive to changes in the data.</p>
-  <p>For example, the coefficient for items bought is &minus;&euro;1.3. However, its confidence interval includes zero, meaning the data do not provide sufficiently strong evidence that its individual coefficient differs from zero at the corresponding significance level. This does not prove that items bought has no relationship with revenue.</p>
   <figure class="post-fig post-fig-wide post-fig-pair">
     <img src="images/multiple-linear-regression/chart-3a-predictors.svg" alt="Scatter plot of items bought per year against orders per year for 900 customers. The points follow a tight rising line, with a correlation of 0.96." loading="lazy">
     <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46.4 euros with a short interval. Orders in Model B, orders and items: plus 49.5 euros with an interval more than three times as wide. Items in Model B: minus 1.3 euros, with an interval that crosses the zero line." loading="lazy">
-    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.5, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
+    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A strong relationship between orders and items bought makes their individual effects harder to estimate precisely. Illustrative data.</figcaption>
   </figure>
+  <p><strong>Panel A: The predictors move together.</strong> The correlation <em>r</em> = 0.96 shows a very strong positive relationship between orders and items bought. Customers who place more orders tend to buy more items. The predictors therefore contain overlapping information.</p>
+  <p><strong>Panel B: The estimates become less precise.</strong> This is the most important part of the chart:</p>
+  <ul class="post-points">
+    <li><strong>Model A: Orders alone</strong> &mdash; estimate &euro;46.4, with a relatively narrow confidence interval.</li>
+    <li><strong>Model B: Orders and items</strong> &mdash; estimate &euro;49.5, with a much wider confidence interval.</li>
+    <li><strong>Items</strong> &mdash; estimate &minus;&euro;1.3, with a confidence interval that crosses zero.</li>
+  </ul>
+  <p>When items bought is added to the model, the estimated effect of orders changes only slightly, but its confidence interval becomes much wider. The model is less certain about the individual effect of orders because the two predictors contain similar information.</p>
+  <p>The confidence interval for items bought crosses zero, so the model cannot establish a clear individual effect at the 5% significance level. This does not prove that items bought has no relationship with revenue.</p>
 
   <h3>Does Multicollinearity Make the Model Useless?</h3>
   <p>Not necessarily.</p>
