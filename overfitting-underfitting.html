@@ -41,16 +41,58 @@
   <p>This is the problem of <strong>generalization</strong>. A model that is too simple may miss important patterns (<strong>underfitting</strong>). A model that learns the training data too closely may fail to generalize (<strong>overfitting</strong>). Throughout this post, we use customer revenue as an illustrative example. All data is illustrative.</p>
 
   <h2>Training Data and Test Data</h2>
-  <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
+  <p>A model can perform well on the data it was trained on and still fail on new customers. To find out whether it has learned a useful pattern, we need to evaluate it on data it has never seen.</p>
+  <p>We do this by splitting our dataset into separate parts:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Training data</strong> is used to build the model.</li>
-    <li><strong>Test data</strong> (also called holdout or validation data) is kept back and only used to check how the model performs on customers it has never seen.</li>
+    <li><strong>Training data</strong> is used to teach the model which patterns connect the predictors to customer revenue.</li>
+    <li><strong>Test data</strong> is held back during training. After the model is built, we use it to evaluate how well the model predicts outcomes for unseen customers.</li>
   </ul>
-  <p>Every record goes into exactly one of the two parts. In our customer example, 80 of 100 customers train the model and 20 are held back.</p>
+  <p>Imagine we have data from 100 customers. We use 80 customers to train the model and reserve the remaining 20 for testing. The model learns from the 80 training customers, then makes predictions for the 20 test customers without using their revenue values during training.</p>
+  <p>This gives us a more realistic estimate of how the model might perform on new customers. If it performs very well on the training data but much worse on the test data, that is a warning sign of overfitting.</p>
+
+  <h3>Splitting the Data with Python</h3>
+  <pre class="post-code"><code>from sklearn.model_selection import train_test_split
+
+# Separate predictors from the target
+X = df.drop(columns="net_revenue")
+y = df["net_revenue"]
+
+# Split the data: 80% training, 20% testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("Training customers:", len(X_train))
+print("Test customers:", len(X_test))</code></pre>
+  <pre class="post-code post-code-out"><code>Training customers: 80
+Test customers: 20</code></pre>
+  <p>What the code does:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>X</strong> contains the predictors used to estimate revenue.</li>
+    <li><strong>y</strong> contains the actual revenue values we want to predict.</li>
+    <li><strong>test_size=0.2</strong> reserves 20% of the rows for testing.</li>
+    <li><strong>random_state=42</strong> makes the random split reproducible, so you get the same split when you run the code again on the same data.</li>
+  </ul>
+  <p>The result is 80 training observations and 20 test observations, assuming the dataset contains 100 rows. The code assumes <code>df</code> is your prepared pandas DataFrame and that <code>net_revenue</code> is your target column.</p>
   <figure class="post-fig">
     <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
-    <figcaption><span>Chart 1</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
+    <figcaption><span>Chart 1</span> The model learns from the training data (80 customers). The test data (20 customers) remains unseen until evaluation, giving us a way to assess performance on new customers. Illustrative data.</figcaption>
   </figure>
+
+  <p>Comparing performance on both datasets shows why we need both:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model behavior</th><th>Training performance</th><th>Test performance</th></tr></thead>
+    <tbody>
+      <tr><td>Underfitting</td><td>Poor</td><td>Poor</td></tr>
+      <tr><td>Good generalization</td><td>Good</td><td>Good</td></tr>
+      <tr><td>Overfitting</td><td>Very good</td><td>Much worse</td></tr>
+    </tbody>
+  </table></div>
+  <p>This is the central lesson: training performance alone cannot tell us whether a model will generalize well.</p>
+  <div class="post-note"><p class="post-note-l">A random split is not always the right split</p><p>A random split is appropriate for many independent customer records, but not every dataset. Time-dependent data may require a chronological split, and repeated observations from the same customer may require a customer-level split to avoid data leakage.</p></div>
 
   <h2>Two Ways a Model Can Fail</h2>
 
@@ -85,15 +127,7 @@
   </figure>
 
   <h3>How to Spot Underfitting and Overfitting</h3>
-  <p>To tell the three situations apart, compare the error on the training data with the error on the test data:</p>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Training error</th><th>Test error</th><th>Diagnosis</th></tr></thead>
-    <tbody>
-      <tr><td>High</td><td>High</td><td>Underfitting</td></tr>
-      <tr><td>Low</td><td>Low, similar</td><td>Good fit</td></tr>
-      <tr><td>Very low</td><td>Much higher</td><td>Overfitting</td></tr>
-    </tbody>
-  </table></div>
+  <p>Comparing the error on the training data with the error on the test data tells the three situations apart.</p>
   <p>Chart 4 shows the same 24 customers fitted three ways: a straight line (degree 1), a smooth curve (degree 2) and a very flexible curve (degree 12).</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/overfitting-underfitting/chart-3-three-fits.svg" alt="Three scatter plots of the same 24 customers with identical axes. The first has a nearly flat straight line, the second a smooth hump-shaped curve following the points, and the third a wildly oscillating curve that passes close to the points and shoots off the chart at the right edge." loading="lazy">
