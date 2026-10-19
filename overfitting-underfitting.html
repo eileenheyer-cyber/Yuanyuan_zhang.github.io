@@ -185,9 +185,10 @@ Test customers: 20</code></pre>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&#8220;We compared three regression models for predicting revenue per customer. The most complex model had a training RMSE of about &euro;12, but its test RMSE was about &euro;54. This suggests that it fits the training data closely but struggles to predict new customers.&#8221;</p>
-    <p class="post-callout-q">&#8220;The simpler model had a training RMSE of about &euro;13 and a test RMSE of about &euro;17. Although its training fit was slightly worse, its predictions generalized better to unseen data.&#8221;</p>
-    <p class="post-callout-q">&#8220;Based on these results, we would prefer the simpler model, provided the test results are reliable and the model meets the business requirements.&#8221;</p>
+    <p class="post-callout-q">&#8220;We compared three regression models to predict revenue per customer. The most complex model made predictions that were typically close to the actual values in its training data. However, when tested on new customers, its prediction errors became much larger.&#8221;</p>
+    <p class="post-callout-q">&#8220;The simpler model performed slightly worse on the training data but made much more reliable predictions for new customers.&#8221;</p>
+    <p class="post-callout-q">&#8220;This suggests that the complex model may have learned details specific to its training data rather than general patterns that apply to other customers.&#8221;</p>
+    <p class="post-callout-q">&#8220;Based on these results, we would prefer the simpler model, provided its predictions are sufficiently accurate for the business.&#8221;</p>
   </div>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Underfitting occurs when a model fails to capture important patterns, resulting in poor training performance. Overfitting occurs when a model fits the training data too closely and performs substantially worse on unseen data.</p>
