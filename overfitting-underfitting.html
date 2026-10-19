@@ -150,8 +150,8 @@ Test customers: 20</code></pre>
   <p>The goal is to find a balance: a model complex enough to capture meaningful patterns, but not so complex that it starts learning random noise.</p>
   <p>We can see this balance by comparing training error with test error as model complexity increases.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg" alt="Two charts side by side. Left: training error falls steadily as model complexity grows while test error is lowest at degree 2 and rises sharply after degree 10. Right: a schematic showing bias falling, variance rising and total error forming a U shape with its minimum in the middle." loading="lazy">
-    <figcaption><span>Chart 5</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
+    <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg?v=2" alt="Two charts side by side. Left: training error falls steadily as model complexity grows, while test error is lowest at degree 2 and rises sharply after degree 10. Right: a conceptual chart in which bias falls and variance rises as model complexity increases, with a balance point where they meet." loading="lazy">
+    <figcaption><span>Chart 5</span> Left: training error keeps falling as complexity grows, but test error turns upward once the model starts memorizing noise. Polynomial degree is just one way to increase complexity. Right: a conceptual sketch, as bias falls variance rises, and the best model lies in between. Exact curve shapes depend on the problem and the model.</figcaption>
   </figure>
 
   <h2>How to Reduce Each Problem</h2>
