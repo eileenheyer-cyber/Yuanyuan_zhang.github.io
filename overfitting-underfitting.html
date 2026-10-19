@@ -148,7 +148,7 @@ Test customers: 20</code></pre>
   </table></div>
   <p>Underfitting shows up as a high error on both sets. Overfitting shows up as a low training error but a much higher test error. Errors are RMSE (root mean squared error) in euros per customer.</p>
 
-  <p>Adding predictors also makes overfitting easier, because R² never falls when a predictor is added, even a useless one. That is why adjusted R² is used to compare models; see <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
+  <p>Adding predictors also makes overfitting easier. In ordinary least squares regression with an intercept, R² on the training data never falls when a predictor is added, even a useless one, while R² on a test set can fall. Adjusted R² accounts for the number of predictors, but it does not replace testing on unseen data; see <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
 
   <h2>Bias and Variance</h2>
   <p>Underfitting and overfitting describe what goes wrong with a model. Bias and variance help explain why.</p>
@@ -169,13 +169,13 @@ Test customers: 20</code></pre>
   <h3>If the model underfits</h3>
   <ul class="post-points post-points-color">
     <li>Add relevant predictors that have a meaningful relationship with the outcome variable.</li>
-    <li>Increase the sample size to provide the model with more information to learn patterns.</li>
+    <li>Choose a more appropriate model that can represent the pattern, for example by adding a squared term when the relationship is curved.</li>
     <li>Use feature engineering to create better variables that capture the underlying relationships.</li>
   </ul>
   <h3>If the model overfits</h3>
   <ul class="post-points post-points-color">
-    <li>Use adjusted R-squared to select models, avoiding unnecessary predictors that inflate R-squared.</li>
-    <li>Split data into training and test sets to evaluate model performance on unseen data.</li>
+    <li>Use adjusted R-squared to compare models, avoiding unnecessary predictors that inflate R-squared.</li>
+    <li>Evaluate on unseen data: a test set shows whether the model overfits, and cross-validation helps choose the right model complexity.</li>
     <li>Apply regularization techniques (if applicable) to penalize overly complex models.</li>
     <li>Simplify the model by removing irrelevant or redundant predictors.</li>
   </ul>
@@ -187,7 +187,7 @@ Test customers: 20</code></pre>
     <p class="post-callout-q">&#8220;The simple model was off by about €13 on the customers it was built on and about €17 on new ones. It is less impressive on paper, but it behaves the same way on data it has not seen. We recommend the simple one. Which customers do we need to be able to predict well?&#8221;</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Underfitting shows up in poor training performance, but overfitting only shows up when you compare training performance with test performance. R² always rises with more predictors, so use adjusted R² to compare models.</p>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Underfitting shows up in poor training performance, but overfitting only shows up when you compare training performance with test performance. Training R² never falls when predictors are added, so use adjusted R² to compare models, and confirm the choice on unseen data.</p>
   <p>You cannot remove both problems completely because of the bias-variance tradeoff, but you can keep them small once you know how to spot them.</p></div>
 
   <h2>Related posts</h2>
