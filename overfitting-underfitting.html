@@ -168,18 +168,20 @@ Test customers: 20</code></pre>
   <h2>Strategies to Reduce Underfitting and Overfitting</h2>
   <h3>If the model underfits</h3>
   <ul class="post-points post-points-color">
-    <li>Add relevant predictors that have a meaningful relationship with the outcome variable.</li>
-    <li>Choose a more appropriate model that can represent the pattern, for example by adding a squared term when the relationship is curved.</li>
-    <li>Use feature engineering to create better variables that capture the underlying relationships.</li>
+    <li>Choose a more flexible model. A straight-line model may be unable to capture a curved relationship.</li>
+    <li>Add relevant predictors. Include variables that contain useful information about the outcome.</li>
+    <li>Improve feature engineering. Transform existing variables or create new features that better represent the underlying relationships.</li>
   </ul>
   <h3>If the model overfits</h3>
   <ul class="post-points post-points-color">
-    <li>Use adjusted R-squared to compare models, avoiding unnecessary predictors that inflate R-squared.</li>
-    <li>Evaluate on unseen data: a test set shows whether the model overfits, and cross-validation helps choose the right model complexity.</li>
-    <li>Apply regularization techniques (if applicable) to penalize overly complex models.</li>
-    <li>Simplify the model by removing irrelevant or redundant predictors.</li>
+    <li>Reduce model complexity. Remove unnecessary predictors or choose a simpler model.</li>
+    <li>Use regularization. Penalize excessive model complexity to reduce sensitivity to the training data.</li>
+    <li>Use cross-validation. Compare candidate models on different training/validation splits to find a model that generalizes well.</li>
   </ul>
   <p>Several of these strategies come down to the same question: which predictors belong in the model? Too few lead to underfitting, too many to overfitting. Deciding which ones to keep is called variable selection, and it is covered in <a href="multiple-linear-regression.html">Multiple Linear Regression</a>.</p>
+  <h3>How do we know if the changes work?</h3>
+  <p>Evaluate the selected model on a separate test set that was not used for model selection. This provides an estimate of how well the model predicts unseen observations.</p>
+  <p>The goal is not to build the most complicated model or the model with the smallest training error. It is to find a model that captures meaningful patterns and performs reliably on new data.</p>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
