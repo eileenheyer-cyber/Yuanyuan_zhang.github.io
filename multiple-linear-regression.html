@@ -97,13 +97,16 @@ model = smf.ols(
     data=train
 ).fit()
 print(model.summary())</code></pre>
+  <p>The fitted model gives this equation, with one coefficient for each predictor:</p>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;61.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;2.9&nbsp;&times;&nbsp;BasketSize +&nbsp;10.8&nbsp;&times;&nbsp;Tenure &minus;&nbsp;37.7&nbsp;&times;&nbsp;PaidSearch +&nbsp;17.3&nbsp;&times;&nbsp;Referral +&nbsp;5.5&nbsp;&times;&nbsp;North &minus;&nbsp;6.7&nbsp;&times;&nbsp;South</strong></div>
+  <p>Channel and region enter as 0/1 dummy variables, so PaidSearch is 1 for a Paid Search customer and 0 otherwise. Each coefficient is read the same way. For every additional order per year, while holding basket size, tenure, channel and region constant, we expect annual net revenue per customer to increase by &euro;46.4.</p>
   <p>The summary table lists one coefficient per predictor, with its confidence interval. Two of them, read in business language:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Orders:</strong> +&euro;46 per additional order per year, with basket size, tenure, channel and region held constant (95% interval: &euro;45 to &euro;48).</li>
-    <li><strong>Paid Search:</strong> &minus;&euro;38 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;45 to &minus;&euro;30).</li>
+    <li><strong>Orders:</strong> +&euro;46.4 per additional order per year, with basket size, tenure, channel and region held constant (95% interval: &euro;45.0 to &euro;47.8).</li>
+    <li><strong>Paid Search:</strong> &minus;&euro;37.7 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;44.8 to &minus;&euro;30.5).</li>
   </ul>
   <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46 euros, basket size per 10 euros plus 29, tenure per year plus 11, Paid Search minus 38 and Referral plus 17 compared with Organic, all with intervals that do not reach zero. North plus 5 and South minus 7 compared with Central have intervals that cross zero." loading="lazy">
+    <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46.4 euros, basket size per 10 euros plus 29.4, tenure per year plus 10.8, Paid Search minus 37.7 and Referral plus 17.3 compared with Organic, all with intervals that do not reach zero. North plus 5.5 and South minus 6.7 compared with Central have intervals that cross zero." loading="lazy">
     <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
@@ -134,18 +137,18 @@ print(model.summary())</code></pre>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Model A: Orders only</th><th>Model B: Both predictors</th></tr></thead>
     <tbody>
-      <tr><td>Coefficient for orders</td><td>&euro;46</td><td>&euro;49</td></tr>
-      <tr><td>Standard error</td><td>&euro;0.70</td><td>&euro;2.50</td></tr>
+      <tr><td>Coefficient for orders</td><td>&euro;46.4</td><td>&euro;49.3</td></tr>
+      <tr><td>Standard error</td><td>&euro;0.7</td><td>&euro;2.5</td></tr>
     </tbody>
   </table></div>
-  <p>The estimated coefficient for orders changes only slightly, from &euro;46 to &euro;49. However, its standard error increases considerably.</p>
+  <p>The estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.3. However, its standard error increases considerably.</p>
   <p><strong>What does this mean?</strong> The coefficient represents the estimated change in revenue associated with one additional order, holding the other predictors constant. The standard error describes the uncertainty in that estimate. A larger standard error means the coefficient has been estimated less precisely.</p>
   <p>When predictors overlap in the information they provide, the model has difficulty separating their individual effects. As a result, the estimated coefficients can become less precise and more sensitive to changes in the data.</p>
-  <p>For example, the coefficient for items bought is &minus;&euro;1.20. However, its confidence interval includes zero, meaning the data do not provide sufficiently strong evidence that its individual coefficient differs from zero at the corresponding significance level. This does not prove that items bought has no relationship with revenue.</p>
+  <p>For example, the coefficient for items bought is &minus;&euro;1.2. However, its confidence interval includes zero, meaning the data do not provide sufficiently strong evidence that its individual coefficient differs from zero at the corresponding significance level. This does not prove that items bought has no relationship with revenue.</p>
   <figure class="post-fig post-fig-wide post-fig-pair">
     <img src="images/multiple-linear-regression/chart-3a-predictors.svg" alt="Scatter plot of items bought per year against orders per year for 900 customers. The points follow a tight rising line, with a correlation of 0.96." loading="lazy">
-    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46 euros with a short interval. Orders in Model B, orders and items: plus 49 euros with an interval more than three times as wide. Items in Model B: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
-    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
+    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46.4 euros with a short interval. Orders in Model B, orders and items: plus 49.3 euros with an interval more than three times as wide. Items in Model B: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
+    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.3, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
   </figure>
 
   <h3>Does Multicollinearity Make the Model Useless?</h3>
@@ -185,7 +188,7 @@ vifs = pd.Series(
 )
 print(vifs.drop("const").round(1))</code></pre>
   <p><code>X</code> contains the predictor columns, with categorical variables encoded as dummy variables. The constant column is needed for the calculation, but its own VIF is not reported.</p>
-  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.70 to &euro;2.50.</p>
+  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
     <tbody>
@@ -207,7 +210,7 @@ print(vifs.drop("const").round(1))</code></pre>
   <ul class="post-points post-points-color">
     <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.85 and adjusted R&sup2; is 0.85, so about 85% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
     <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line, so the linearity, normality and constant-variance assumptions look satisfied.</li>
-    <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
+    <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46.4, against &euro;48.2 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
     <img src="images/multiple-linear-regression/chart-5-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
@@ -216,7 +219,7 @@ print(vifs.drop("const").round(1))</code></pre>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&ldquo;Each additional order per year goes with about &euro;46 more net revenue per customer, when basket size, tenure, channel and region are the same. Customers acquired through Paid Search bring about &euro;38 less per year than organic customers who otherwise look alike, and referral customers about &euro;17 more.&rdquo;</p>
+    <p class="post-callout-q">&ldquo;Each additional order per year goes with &euro;46.4 more net revenue per customer, when basket size, tenure, channel and region are the same. Customers acquired through Paid Search bring &euro;37.7 less per year than organic customers who otherwise look alike, and referral customers &euro;17.3 more.&rdquo;</p>
     <p class="post-callout-q">&ldquo;Together these factors explain about 85% of the differences between customers, and the model works just as well on 300 customers it had not seen. It shows association, not proof that switching channels would change revenue.&rdquo;</p>
     <p class="post-callout-q">&ldquo;So the question for the next budget meeting is: which channel brings customers who order more often and stay longer, and is Paid Search still worth its cost?&rdquo;</p>
   </div>
