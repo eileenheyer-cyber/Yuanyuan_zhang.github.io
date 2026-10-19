@@ -232,9 +232,9 @@ print(vifs.drop("const").round(1))</code></pre>
 
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
 
-  <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
+  <h2>Does the Model Hold Up?</h2>
   <p>Three questions decide whether the model can be trusted:</p>
-  <h3>How Much Variation Does the Model Explain?</h3>
+  <h3>Adjusted R&sup2;: How Much Variation Does the Model Explain?</h3>
   <p>The model has an R&sup2; of 0.82, meaning it explains 82% of the variation in revenue in the training data. The adjusted R&sup2; is also 0.82, suggesting that accounting for the number of predictors makes little difference to the overall fit. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
   <h3>Do the Errors Behave as Expected?</h3>
   <p>The residuals appear randomly scattered around zero, with no obvious curve or funnel shape. The Q&ndash;Q plot also follows the reference line closely. These patterns support the linearity, constant-variance and approximate-normality assumptions, although the plots alone cannot prove that all assumptions are satisfied.</p>
