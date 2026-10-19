@@ -115,6 +115,17 @@ print(model.summary())</code></pre>
     <li>Interaction terms capture how the effect of one independent variable on the dependent variable changes depending on the value of another independent variable.</li>
     <li>Represented as the product of two variables, allowing the model to account for combined effects, such as how temperature and distance to transportation together impact sales differently than individually.</li>
   </ul>
+  <p>Take a shop whose daily sales depend on the <strong>temperature</strong> and on the <strong>distance to public transport</strong>. Without an interaction, the model simply adds the two effects:</p>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Sales</span> = b<sub>0</sub> + b<sub>1</sub> &times; Temperature + b<sub>2</sub> &times; Distance</strong></div>
+  <p>Here one more degree adds the same <em>b</em><sub>1</sub> to sales, whether the shop is next to a station or far from one. In reality this is unlikely: a warm day only brings more customers if they can easily reach the shop. To let the effect of temperature depend on distance, we add the product of the two variables as a third predictor:</p>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Sales</span> = b<sub>0</sub> + b<sub>1</sub> &times; Temperature + b<sub>2</sub> &times; Distance + b<sub>3</sub> &times; (Temperature &times; Distance)</strong>
+    <p class="post-formula-lead">Rearranged, the effect of one more degree is now:</p>
+    <p class="post-formula-lead"><strong>Effect of Temperature = b<sub>1</sub> + b<sub>3</sub> &times; Distance</strong></p>
+  </div>
+  <p>The coefficient <em>b</em><sub>3</sub> tells us how much the effect of temperature changes when the distance grows by one unit. If <em>b</em><sub>3</sub> is 0, there is no interaction and we are back to the first model. If <em>b</em><sub>3</sub> is clearly different from 0, the two variables work together.</p>
+  <p>For example (illustrative numbers): with <em>b</em><sub>1</sub> = 20 and <em>b</em><sub>3</sub> = &minus;2, one more degree adds &euro;18 in sales at 1 km from public transport, but only &euro;10 at 5 km. The further away the shop, the less the warm weather helps.</p>
+  <p>In Python, a <code>*</code> in the formula adds both variables and their product:</p>
+  <pre class="post-code"><code>model = smf.ols("sales ~ temperature * distance", data=df).fit()</code></pre>
 
   <h2>Multicollinearity: When Predictors Tell the Same Story</h2>
   <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
