@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261019g">
+  <link rel="stylesheet" href="style.css?v=20261019h">
 </head>
 <body>
 
@@ -119,9 +119,10 @@ print(model.summary())</code></pre>
   <p>The estimated coefficient for orders changes only slightly, from &euro;46 in Model B to &euro;49 in Model A. However, its standard error increases from &euro;0.7 to &euro;2.5.</p>
   <p>Why? Orders per year and items bought per year are highly correlated. When both predictors enter the model, it becomes harder to estimate their individual relationships with revenue precisely. The coefficient for items bought is &minus;&euro;1.2, but its confidence interval crosses zero, so its individual association with revenue is uncertain.</p>
   <p><strong>The key lesson:</strong> Multicollinearity does not automatically make a regression model useless. Predictions within the observed data range may remain reasonably accurate, while individual coefficients become less precise and more sensitive to changes in the data or model specification.</p>
-  <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
-    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider when the highly correlated predictor is added. The interval for items bought crosses zero. Illustrative data.</figcaption>
+  <figure class="post-fig post-fig-wide post-fig-pair">
+    <img src="images/multiple-linear-regression/chart-3a-predictors.svg" alt="Scatter plot of items bought per year against orders per year for 900 customers. The points follow a tight rising line, with a correlation of 0.96." loading="lazy">
+    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model B, without items: plus 46 euros with a short interval. Orders in Model A, with items: plus 49 euros with an interval more than three times as wide. Items in Model A: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
+    <figcaption><span>Chart 3</span> A: orders and items rise together almost in a straight line (r = 0.96), so they carry very similar information. B: with both in the model, the interval for orders becomes more than three times wider, and the interval for items crosses zero. Lines show 95% confidence intervals. Illustrative data.</figcaption>
   </figure>
 
   <h3>How to Detect and Address It</h3>
