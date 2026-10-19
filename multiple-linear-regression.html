@@ -122,7 +122,7 @@ print(model.summary())</code></pre>
     <li><strong>Paid Search</strong> (PaidSearch = 1): effect of one additional order = 46.4 + <em>b</em><sub>int</sub></li>
   </ul>
   <p>The interaction coefficient <em>b</em><sub>int</sub> tells us how much the effect of an additional order differs for Paid Search customers compared with all other customers. If <em>b</em><sub>int</sub> is 0, there is no interaction.</p>
-  <p>For example (illustrative numbers, our model does not include this interaction): with <em>b</em><sub>int</sub> = &minus;6, one more order adds &euro;46.4 for all other customers but only &euro;40.4 for Paid Search customers.</p>
+  <p>For example, if <em>b</em><sub>int</sub> = &minus;6, one more order adds &euro;46.4 for all other customers but only &euro;40.4 for Paid Search customers.</p>
   <p>In Python, a <code>*</code> in the formula adds both variables and their product:</p>
   <pre class="post-code"><code>model = smf.ols("net_revenue ~ orders * paid_search", data=train).fit()</code></pre>
 
