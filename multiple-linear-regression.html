@@ -243,7 +243,7 @@ print(vifs.drop("const").round(1))</code></pre>
     <figcaption><span>Chart 5</span> Residuals scatter evenly around zero and the Q-Q points follow the line, which supports the model assumptions. Illustrative data, training customers.</figcaption>
   </figure>
   <h3>Does it work on customers it has not seen?</h3>
-  <p>The Root Mean Squared Error (RMSE, a measure of prediction error that gives larger mistakes more weight) is &euro;52.8 on the training data and &euro;51.6 on the held-out test data. The similar error levels suggest that the model generalizes well to this test set, with no obvious sign of overfitting. The test error being slightly lower is not unusual, but it doesn&rsquo;t prove that overfitting is absent. See <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
+  <p>The Root Mean Squared Error (RMSE, a measure of prediction error that gives larger mistakes more weight) is &euro;52.8 on the training data and &euro;51.6 on the held-out test data. The similar error levels suggest that the model generalizes well to unseen customers, with no obvious sign of overfitting. The test error being slightly lower is not unusual, but it doesn&rsquo;t prove that overfitting is absent. See <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
