@@ -115,9 +115,8 @@ print(model.summary())</code></pre>
     <li><strong>Model A:</strong> Includes both orders per year and items bought per year.</li>
     <li><strong>Model B:</strong> Includes orders per year only.</li>
   </ul>
-  <p>The estimated coefficient for orders changes only slightly, from &euro;46 in Model B to &euro;49 in Model A. However, its standard error increases from &euro;0.7 to &euro;2.5, more than threefold.</p>
-  <p>Meanwhile, the estimated coefficient for items bought is &minus;&euro;1.2, with a confidence interval that includes both negative and positive values.</p>
-  <p>Because the two predictors are highly correlated, the model has difficulty estimating their individual contributions precisely. The coefficient for items bought is not necessarily zero; the data simply do not provide a precise estimate of its relationship with revenue after accounting for orders.</p>
+  <p>The estimated coefficient for orders changes only slightly, from &euro;46 in Model B to &euro;49 in Model A. However, its standard error increases from &euro;0.7 to &euro;2.5.</p>
+  <p>Why? Orders per year and items bought per year are highly correlated. When both predictors enter the model, it becomes harder to estimate their individual relationships with revenue precisely. The coefficient for items bought is &minus;&euro;1.2, but its confidence interval crosses zero, so its individual association with revenue is uncertain.</p>
   <p><strong>The key lesson:</strong> Multicollinearity does not automatically make a regression model useless. Predictions within the observed data range may remain reasonably accurate, while individual coefficients become less precise and more sensitive to changes in the data or model specification.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
