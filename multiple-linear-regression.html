@@ -190,11 +190,11 @@ print(model.summary())</code></pre>
   <h4>Correlation matrix or scatterplot matrix</h4>
   <p>A correlation matrix shows the strength of the linear relationships between pairs of predictors. A scatterplot matrix makes these relationships visible.</p>
   <p>Look for pairs of predictors that move together closely. In this example, Orders and Items show a strong positive relationship: customers who place more orders tend to buy more items. Basket size, by contrast, shows no similarly clear linear relationship with either predictor.</p>
-  <p>However, pairwise correlations do not reveal every case of multicollinearity. A predictor may also be strongly explained by a combination of several other predictors. This is why we can use the Variance Inflation Factor (VIF) for further investigation.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items and basket size, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; the other pairs show shapeless clouds." loading="lazy">
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while the other pairs of predictors form shapeless clouds. Illustrative data.</figcaption>
   </figure>
+  <p>However, pairwise correlations do not reveal every case of multicollinearity. A predictor may also be strongly explained by a combination of several other predictors. This is why we can use the Variance Inflation Factor (VIF) for further investigation.</p>
   <h4>Variance Inflation Factor (VIF)</h4>
   <p><strong>What does VIF measure?</strong></p>
   <p>VIF measures how much the uncertainty in a regression coefficient increases because a predictor is linearly related to the other predictors.</p>
