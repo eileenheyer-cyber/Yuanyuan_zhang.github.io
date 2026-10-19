@@ -41,7 +41,11 @@
   <h2>From One Predictor to Several</h2>
   <h3 class="post-h3-small">The multiple regression equation</h3>
   <p>In simple regression, revenue is explained by one variable. In multiple regression, every additional driver gets its own term:</p>
-  <p class="post-formula post-formula-sm"><strong>Net revenue = b<sub>0</sub> + b<sub>1</sub> &middot; Orders + b<sub>2</sub> &middot; Basket size + b<sub>3</sub> &middot; Tenure + &hellip; + error</strong><span>Each b is the predicted change in revenue when that predictor goes up by one unit and all other predictors stay the same.</span></p>
+  <p class="post-formula post-formula-sm"><strong>Net revenue = b<sub>0</sub> + b<sub>1</sub> &middot; Orders + b<sub>2</sub> &middot; Basket size + b<sub>3</sub> &middot; Tenure + &hellip; + error</strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>b<sub>0</sub> &mdash; Intercept:</strong> The model&rsquo;s predicted revenue when all numeric predictors are zero and categorical predictors are at their reference values.</li>
+    <li><strong>b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub> &hellip; &mdash; Coefficients:</strong> Each coefficient estimates how much predicted net revenue changes when its predictor increases by one unit, while the other predictors remain constant.</li>
+  </ul>
   <p>&ldquo;All other predictors stay the same&rdquo; is the key idea. It lets us compare two customers who differ in only one thing. If they have the same basket size and tenure, b<sub>1</sub> tells us what one extra order is worth. The coefficients are still found with <a href="least-squares.html">Least Squares</a>: the model picks the values that make the squared gaps between actual and predicted revenue as small as possible.</p>
 
   <h2>The Data: Net Revenue per Customer and Its Possible Drivers</h2>
