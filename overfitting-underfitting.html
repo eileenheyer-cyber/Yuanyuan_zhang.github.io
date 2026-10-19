@@ -185,8 +185,9 @@ Test customers: 20</code></pre>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&#8220;We compared a simple and a very complex model for predicting revenue per customer. The complex one looked almost perfect on the customers it was built on, with an average error of about €12. On new customers its average error was about €54, more than four times as large.&#8221;</p>
-    <p class="post-callout-q">&#8220;The simple model was off by about €13 on the customers it was built on and about €17 on new ones. It is less impressive on paper, but it behaves the same way on data it has not seen. We recommend the simple one. Which customers do we need to be able to predict well?&#8221;</p>
+    <p class="post-callout-q">&#8220;We compared three regression models for predicting revenue per customer. The most complex model had a training RMSE of about &euro;12, but its test RMSE was about &euro;54. This suggests that it fits the training data closely but struggles to predict new customers.&#8221;</p>
+    <p class="post-callout-q">&#8220;The simpler model had a training RMSE of about &euro;13 and a test RMSE of about &euro;17. Although its training fit was slightly worse, its predictions generalized better to unseen data.&#8221;</p>
+    <p class="post-callout-q">&#8220;Based on these results, we would prefer the simpler model, provided the test results are reliable and the model meets the business requirements.&#8221;</p>
   </div>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Underfitting shows up in poor training performance, but overfitting only shows up when you compare training performance with test performance. Training R² never falls when predictors are added, so use adjusted R² to compare models, and confirm the choice on unseen data.</p>
