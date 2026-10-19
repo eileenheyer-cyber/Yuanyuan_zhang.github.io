@@ -110,7 +110,7 @@ print(model.summary())</code></pre>
   <h2>Multicollinearity: When Predictors Are Highly Correlated</h2>
   <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
   <h3>What Is Multicollinearity and Why Is It a Problem?</h3>
-  <p>Multicollinearity occurs when two or more predictors are highly correlated with each other. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation of about 0.96 in this illustrative example).</p>
+  <p>Multicollinearity occurs when predictors are highly correlated, making it difficult for a regression model to separate their individual effects on the target variable. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation of about 0.96 in this illustrative example).</p>
   <p>Compare two models:</p>
   <ul class="post-points post-points-color">
     <li><strong>Model A:</strong> Includes both orders per year and items bought per year.</li>
