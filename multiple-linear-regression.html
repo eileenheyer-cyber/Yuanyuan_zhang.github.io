@@ -108,34 +108,37 @@ print(model.summary())</code></pre>
   </figure>
 
   <h2>Assumptions of Multiple Linear Regression</h2>
-  <p>Multiple Linear Regression keeps the four assumptions from <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> and adds one more.</p>
+  <p>Multiple Linear Regression builds on the four assumptions introduced in <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>. It also requires attention to multicollinearity when interpreting individual coefficients.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Linearity:</strong> Each predictor has a straight-line relationship with revenue, holding the other predictors constant.</li>
-    <li><strong>Independent observations:</strong> One customer&rsquo;s revenue does not influence another&rsquo;s.</li>
-    <li><strong>Normality:</strong> The residuals are roughly normally distributed.</li>
-    <li><strong>Homoscedasticity:</strong> The spread of the residuals is constant across the fitted values.</li>
+    <li><strong>Linearity:</strong> The expected revenue has a linear relationship with each numeric predictor, holding the other predictors constant.</li>
+    <li><strong>Independent observations:</strong> Observations are independent, meaning one customer&rsquo;s outcome does not systematically depend on another&rsquo;s.</li>
+    <li><strong>Normality of residuals:</strong> The residuals are approximately normally distributed, particularly important for conventional confidence intervals and significance tests in smaller samples.</li>
+    <li><strong>Homoscedasticity:</strong> The variance of the residuals is approximately constant across fitted values.</li>
   </ul>
 
-  <h3>The new assumption: no severe multicollinearity</h3>
-  <p>Predictors should not be highly correlated with one another. Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two are strongly correlated (correlation 0.96 here).</p>
+  <h3>An additional concern: Multicollinearity</h3>
+  <p>Multicollinearity occurs when two or more predictors are highly correlated with each other. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation = 0.96 in this illustrative example).</p>
+  <p>Compare two models:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Model A</strong> includes both orders and items.</li>
-    <li><strong>Model B</strong> keeps only orders.</li>
+    <li><strong>Model A:</strong> Includes both orders per year and items bought per year.</li>
+    <li><strong>Model B:</strong> Includes orders per year only.</li>
   </ul>
-  <p>The coefficient for orders hardly moves (&euro;49 in Model A, &euro;46 in Model B), but its standard error is more than three times larger in Model A (&euro;2.5 vs. &euro;0.7). The items coefficient is about zero (&minus;&euro;1.2), with an interval that covers both positive and negative values. Because the two predictors are highly correlated, the model cannot separate their individual effects.</p>
-  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors are highly correlated, the standard errors of the individual coefficients inflate and the estimates become unstable.</p>
+  <p>The estimated coefficient for orders changes only slightly, from &euro;46 in Model B to &euro;49 in Model A. However, its standard error increases from &euro;0.7 to &euro;2.5, more than threefold.</p>
+  <p>Meanwhile, the estimated coefficient for items bought is &minus;&euro;1.2, with a confidence interval that includes both negative and positive values.</p>
+  <p>Because the two predictors are highly correlated, the model has difficulty estimating their individual contributions precisely. The coefficient for items bought is not necessarily zero; the data simply do not provide a precise estimate of its relationship with revenue after accounting for orders.</p>
+  <p><strong>The key lesson:</strong> Multicollinearity does not automatically make a regression model useless. Predictions within the observed data range may remain reasonably accurate, while individual coefficients become less precise and more sensitive to changes in the data or model specification.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
-    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its uncertainty grows more than threefold once a highly correlated predictor enters the model. Lines show 95% intervals. Illustrative data.</figcaption>
+    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider when the highly correlated predictor is added. The interval for items bought crosses zero. Illustrative data.</figcaption>
   </figure>
-
 
   <h3>Detecting and addressing multicollinearity</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Correlation matrix or scatter plot matrix:</strong> shows which pairs of predictors move together.</li>
-    <li><strong>Variance Inflation Factor (VIF):</strong> values near 1 mean a predictor is almost uncorrelated with the others; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</li>
-    <li><strong>Fix:</strong> remove one of the highly correlated predictors, or combine them into one (for example an average or an index), then check the VIF again.</li>
+    <li><strong>Correlation matrix or scatterplot matrix:</strong> Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</li>
+    <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor. A VIF of 1 indicates no linear relationship with the other predictors; values above 5 or 10 are often treated as warning signs, depending on the context. In the model containing both orders and items, each has a VIF of about 12.</li>
+    <li><strong>Possible remedies:</strong> Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</li>
   </ul>
+  <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
 
   <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
   <p>Three questions decide whether the model can be trusted:</p>
