@@ -97,10 +97,10 @@ print(model.summary())</code></pre>
   <p>The fitted model gives this equation, with one coefficient for each predictor:</p>
   <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;32.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;3.0&nbsp;&times;&nbsp;BasketSize &minus;&nbsp;35.9&nbsp;&times;&nbsp;PaidSearch +&nbsp;18.4&nbsp;&times;&nbsp;Referral</strong></div>
   <p>Channel enters as 0/1 dummy variables, so PaidSearch is 1 for a Paid Search customer and 0 otherwise. Each coefficient is read the same way. For every additional order per year, while holding basket size and channel constant, we expect annual net revenue per customer to increase by &euro;46.4.</p>
-  <p>The summary table lists one coefficient per predictor, with its confidence interval. Two of them, read in business language:</p>
+  <p>The summary table shows each predictor&rsquo;s estimated coefficient and its 95% confidence interval. Two examples in business terms:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Orders:</strong> +&euro;46.4 per additional order per year, with basket size and channel held constant (95% interval: &euro;44.9 to &euro;47.9).</li>
-    <li><strong>Paid Search:</strong> &minus;&euro;35.9 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;43.7 to &minus;&euro;28.1).</li>
+    <li><strong>Orders:</strong> One additional order per year is associated with &euro;46.4 higher predicted revenue, holding basket size and acquisition channel constant (95% confidence interval: &euro;44.9&ndash;&euro;47.9).</li>
+    <li><strong>Paid Search:</strong> Paid Search customers have &euro;35.9 lower predicted revenue than otherwise comparable Organic Search customers (95% confidence interval: &minus;&euro;43.7 to &minus;&euro;28.1).</li>
   </ul>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46.4 euros, basket size per 10 euros plus 29.9, Paid Search minus 35.9 and Referral plus 18.4 compared with Organic, all with intervals that do not reach zero." loading="lazy">
