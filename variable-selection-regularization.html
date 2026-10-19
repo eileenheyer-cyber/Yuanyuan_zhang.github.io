@@ -116,7 +116,9 @@
     <img src="images/variable-selection-regularization/chart-5-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
     <figcaption><span>Chart 5</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
   </figure>
-  <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect.</p></div>
+  <h4 style="font-size:1.2rem">Elastic Net</h4>
+  <p>Elastic Net is a third option that combines the Ridge (L2) and Lasso (L1) penalties. A mixing parameter sets the balance between the two: more weight on L1 behaves more like Lasso, more weight on L2 behaves more like Ridge. Like Lasso, it can set coefficients exactly to zero. Like Ridge, it handles correlated predictors more gracefully, because it tends to keep a group of related predictors together instead of arbitrarily picking one. In scikit-learn, <code>ElasticNetCV</code> chooses both the penalty strength and the mixing ratio by cross-validation.</p>
+  <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect; Elastic Net combines the two.</p></div>
 
   <h2>Variable Selection vs. Regularization: Two Approaches, Different Mechanisms</h2>
   <p>Variable selection removes predictors from the chosen model. Ridge keeps all predictors and shrinks their coefficients. Lasso can do both.</p>
@@ -224,8 +226,8 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
     <li><strong>Forward or backward selection</strong> gives a short, readable list of predictors, but it is unstable and optimistic about its own results (see the limitations below).</li>
     <li><strong>Ridge</strong> gives stable coefficients, especially when predictors are correlated, but it keeps every predictor, so the model is no simpler to explain.</li>
     <li><strong>Lasso</strong> shrinks coefficients and drops weak predictors in one step. With a group of correlated predictors, it tends to keep one and drop the others, and which one it keeps can change with the data.</li>
+    <li><strong>Elastic Net</strong> blends both penalties, so it can drop weak predictors and still keep groups of correlated predictors together. It is a good choice when you want both behaviors.</li>
   </ul>
-  <p>Methods such as Elastic Net combine the Ridge and Lasso penalties when both behaviors are wanted.</p>
 
   <h3>Choosing the Penalty Strength with Cross-Validation</h3>
   <p>The model cannot learn &lambda; from the training data, because the training error would always prefer &lambda; = 0. We choose it by cross-validation. The training data is split into five parts. For each candidate &lambda;, the model is fitted on four parts and scored on the fifth, and this is repeated so that every part is used once for scoring. The &lambda; with the lowest average error wins.</p>
