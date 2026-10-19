@@ -134,6 +134,7 @@
   <p>The model&#8217;s R² increases to 0.87. At first glance, this looks like an improvement. However, adding predictors can help a model fit historical data even when some of those variables contribute little useful information. They may capture random patterns that will not hold in new data.</p>
   <p><strong>This is where adjusted R² becomes useful.</strong></p>
   <p>Unlike ordinary R², adjusted R² accounts for the number of predictors in the model. It increases when the improvement in fit is sufficient to justify the additional complexity, and decreases when it is not.</p>
+  <p class="post-formula"><strong>Adjusted R² = 1 − <span class="frac"><span>(1 − R²)(n − 1)</span><span>n − k − 1</span></span></strong><span>n is the number of observations and k is the number of predictors. The more predictors a model has, the smaller the denominator becomes and the larger the penalty. When you compare models with different numbers of predictors, choose the one with the higher adjusted R², not the higher R².</span></p>
   <p>Consider NordHome&#8217;s two models:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Model A</th><th>Model B</th></tr></thead>
