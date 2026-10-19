@@ -186,12 +186,25 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while the other pairs of predictors form shapeless clouds. Illustrative data.</figcaption>
   </figure>
   <h4>Variance Inflation Factor (VIF)</h4>
-  <p>VIF measures how much the variance of a coefficient estimate is inflated because a predictor is linearly related to the other predictors.</p>
-  <p>To calculate it, regress one predictor on all the remaining predictors and obtain the resulting R&sup2;:</p>
-  <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
-  <p>A high R&sup2; means the other predictors can explain much of that predictor&rsquo;s variation. This makes it harder to separate their individual relationships with the outcome.</p>
-  <p>For orders per year, the other predictors explain about 91% of its variation (R&sup2; = 0.9144), so VIF = 1 / (1 &minus; 0.9144) &asymp; 11.7. This matches Chart 4: the correlation between orders and items is 0.956 (0.96 rounded), so they alone already give a VIF of about 11.7, and basket size adds almost nothing. Items has the same VIF for the same reason.</p>
-  <p>In Python, <code>statsmodels</code> calculates it in a few lines:</p>
+  <p><strong>What does VIF measure?</strong></p>
+  <p>VIF measures how much the uncertainty in a regression coefficient increases because a predictor is linearly related to the other predictors.</p>
+  <p><strong>The formula</strong></p>
+  <p class="post-formula"><strong>VIF<sub>j</sub> = <span class="frac"><span>1</span><span>1 &minus; R<sub>j</sub><sup>2</sup></span></span></strong><span>R<sub>j</sub><sup>2</sup> comes from a separate regression in which one predictor is explained by all the other predictors.</span></p>
+  <p><strong>The intuition:</strong> If the other predictors can explain most of a predictor&rsquo;s variation, it becomes harder for the model to isolate that predictor&rsquo;s individual effect.</p>
+  <p><strong>Example</strong></p>
+  <p>Suppose the other predictors explain 91.44% of the variation in orders per year.</p>
+  <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; 0.9144</span></span> &asymp; 11.7</strong></p>
+  <p>A VIF of 11.7 indicates substantial multicollinearity concerns for this predictor.</p>
+  <p>In this example, orders per year and items bought per year have a correlation of 0.956. This strong relationship largely explains the high VIF for orders. Items bought will also have a high VIF for the same reason.</p>
+  <p><strong>How should we interpret VIF?</strong></p>
+  <ul class="post-points">
+    <li><strong>VIF = 1:</strong> No linear relationship between this predictor and the other predictors.</li>
+    <li><strong>VIF between 1 and 5:</strong> Some correlation may be present; the level of concern depends on the context.</li>
+    <li><strong>VIF above 5:</strong> Potentially concerning multicollinearity.</li>
+    <li><strong>VIF above 10:</strong> Often considered a strong warning signal.</li>
+  </ul>
+  <p>These are guidelines, not universal cutoffs.</p>
+  <p><strong>Calculate VIF in Python</strong></p>
   <pre class="post-code"><code>import pandas as pd
 import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
@@ -204,17 +217,6 @@ vifs = pd.Series(
 )
 print(vifs.drop("const").round(1))</code></pre>
   <p><code>X</code> contains the predictor columns, with categorical variables encoded as dummy variables. The constant column is needed for the calculation, but its own VIF is not reported.</p>
-  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.8 to &euro;2.7.</p>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>No linear relationship with the other predictors</td></tr>
-      <tr><td>1 to 5</td><td>Moderate; usually no action needed</td></tr>
-      <tr><td>5 to 10</td><td>Often treated as a warning</td></tr>
-      <tr><td>Above 10</td><td>Can indicate substantial multicollinearity</td></tr>
-    </tbody>
-  </table></div>
-  <p>These thresholds are rules of thumb, not strict decision boundaries. In our model, orders and items both have a VIF of about 12, while basket size is about 1.</p>
 
   <h4>Possible remedies</h4>
   <p>Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</p>
