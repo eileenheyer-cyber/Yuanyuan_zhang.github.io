@@ -108,13 +108,7 @@ print(model.summary())</code></pre>
   </figure>
 
   <h2>Assumptions of Multiple Linear Regression</h2>
-  <p>Multiple Linear Regression builds on the four assumptions introduced in <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>. It also requires attention to multicollinearity when interpreting individual coefficients.</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Linearity:</strong> The expected revenue has a linear relationship with each numeric predictor, holding the other predictors constant.</li>
-    <li><strong>Independent observations:</strong> Observations are independent, meaning one customer&rsquo;s outcome does not systematically depend on another&rsquo;s.</li>
-    <li><strong>Normality of residuals:</strong> The residuals are approximately normally distributed, particularly important for conventional confidence intervals and significance tests in smaller samples.</li>
-    <li><strong>Homoscedasticity:</strong> The variance of the residuals is approximately constant across fitted values.</li>
-  </ul>
+  <p>Multiple Linear Regression relies on the same four assumptions as simple linear regression: linearity, independent observations, normally distributed residuals, and constant residual variance (homoscedasticity). They are explained in <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>. With several predictors, one more concern matters: multicollinearity.</p>
 
   <h3>An additional concern: Multicollinearity</h3>
   <p>Multicollinearity occurs when two or more predictors are highly correlated with each other. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation = 0.96 in this illustrative example).</p>
@@ -132,7 +126,6 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider when the highly correlated predictor is added. The interval for items bought crosses zero. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Detecting and addressing multicollinearity</h3>
   <h3>Correlation matrix or scatterplot matrix</h3>
   <p>Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</p>
   <figure class="post-fig">
