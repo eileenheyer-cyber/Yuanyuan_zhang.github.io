@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overfitting and Underfitting – Yuanyuan Zhang</title>
+  <meta name="description" content="Why a regression model can be unreliable in two opposite ways: too simple to capture the pattern, or so flexible that it memorizes noise. How to spot both and what to do about them.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261018j">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Regression analysis</p>
+  <h1 class="post-title">Overfitting and Underfitting</h1>
+
+  <p>NordHome Retail wants to predict net revenue per customer. One model barely beats a guess. Another predicts the customers it was built on almost perfectly, then falls apart on the next batch. Both models are unreliable, but for opposite reasons.</p>
+
+  <p>In <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>, we looked at how well a model fits. Now we ask a harder question: will it still work on customers it has never seen? Throughout this post we use NordHome&#8217;s revenue per customer as the example. All data is illustrative.</p>
+
+  <h2>Two Ways a Model Can Fail</h2>
+
+  <h3 class="post-h3-small">Underfitting</h3>
+  <p>An underfitting model is too simple to pick up the real pattern. It misses the signal even in the data it was built on, so its R² is low.</p>
+  <p>Suppose NordHome predicts net revenue per customer from the weekday of the customer&#8217;s first order. That variable says very little about how much a customer spends, so the model explains almost nothing. Its R² is 0.03, and it predicts roughly the same amount for every customer.</p>
+  <figure class="post-fig">
+    <img src="images/overfitting-underfitting/chart-1-underfit.svg" alt="Scatter plot of predicted against actual net revenue per customer. The predictions are almost all near 110 euros while actual revenue ranges from 40 to 190 euros, far from the diagonal line of perfect prediction." loading="lazy">
+    <figcaption><span>Chart 1</span> The model predicts almost the same amount for everyone, so it cannot tell high-value customers from low-value ones. Illustrative data.</figcaption>
+  </figure>
+  <p>Typical causes of underfitting:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Weak predictors.</strong> The variables have little real connection to the outcome. Order frequency, basket size or region would be far more useful.</li>
+    <li><strong>The wrong shape.</strong> The relationship is curved, but the model assumes a straight line.</li>
+    <li><strong>Too little data.</strong> The model does not have enough examples to learn the relationship.</li>
+  </ul>
+  <p>Because the model has not learned the pattern even in the sample, it cannot work on new customers either.</p>
+
+  <h2>Training Data and Test Data</h2>
+  <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Training data</strong> is used to build the model.</li>
+    <li><strong>Test data</strong> (also called holdout or validation data) is kept back and only used to check how the model performs on customers it has never seen.</li>
+  </ul>
+  <p>Every record goes into exactly one of the two parts. In NordHome&#8217;s case, 80 of 100 customers train the model and 20 are held back.</p>
+  <figure class="post-fig">
+    <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
+    <figcaption><span>Chart 2</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
+  </figure>
+
+  <h2>Overfitting</h2>
+  <p>Underfitting shows up as poor performance on the training data. Overfitting does not. An overfitting model performs very well on the training data and clearly worse on the test data.</p>
+  <p>Suppose NordHome gives a model 40 predictors for only 60 customers. The model starts treating quirks as rules. One customer who happened to order during a flash sale and spent a lot becomes part of the pattern. On new customers, those rules do not hold.</p>
+  <p>The reason is that every dataset contains two things: <strong>signal</strong>, the real relationship between predictors and outcome, and <strong>noise</strong>, random variation that is not part of that relationship. An overfitting model learns both. Its conclusions then apply only to the sample it was built on, not to the wider population.</p>
+  <p>To tell the three situations apart, compare the error on the training data with the error on the test data:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Training error</th><th>Test error</th><th>Diagnosis</th></tr></thead>
+    <tbody>
+      <tr><td>High</td><td>High</td><td>Underfitting</td></tr>
+      <tr><td>Low</td><td>Low, similar</td><td>Good fit</td></tr>
+      <tr><td>Very low</td><td>Much higher</td><td>Overfitting</td></tr>
+    </tbody>
+  </table></div>
+  <p>Chart 3 shows the same 24 customers fitted three ways: a straight line (degree 1), a smooth curve (degree 2) and a very flexible curve (degree 12).</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/overfitting-underfitting/chart-3-three-fits.svg" alt="Three scatter plots of the same 24 customers with identical axes. The first has a nearly flat straight line, the second a smooth hump-shaped curve following the points, and the third a wildly oscillating curve that passes close to the points and shoots off the chart at the right edge." loading="lazy">
+    <figcaption><span>Chart 3</span> The wiggly curve is close to every past customer, but between and beyond those points it swings wildly. One new customer would be badly mispredicted. Illustrative data.</figcaption>
+  </figure>
+
+  <h2>Why More Predictors Inflate R²</h2>
+  <p>R² never goes down when you add a predictor, even a useless one. If NordHome adds the number of letters in the customer&#8217;s name to its revenue model, R² still creeps up, because the model gets more room to bend toward the sample.</p>
+  <p>A higher R² can therefore be a false sign of progress. It can even be a warning sign of overfitting.</p>
+  <p>This is what <strong>adjusted R²</strong> is for. It charges a penalty for every added predictor and only rewards predictors that really help:</p>
+  <p class="post-formula"><strong>Adjusted R² = 1 − <span class="frac"><span>(1 − R²)(n − 1)</span><span>n − k − 1</span></span></strong><span>n is the number of observations and k is the number of predictors. When you compare models with different numbers of predictors, choose the one with the higher adjusted R², not the higher R².</span></p>
+  <figure class="post-fig">
+    <img src="images/overfitting-underfitting/chart-4-adjusted-r2.svg" alt="Line chart of R squared and adjusted R squared against the number of predictors. R squared keeps rising slowly after four predictors, while adjusted R squared peaks at four predictors and then declines." loading="lazy">
+    <figcaption><span>Chart 4</span> R² keeps creeping up as junk predictors are added (0.54 with the four useful ones, 0.58 with all 24). Adjusted R² peaks at the four useful predictors and then falls, from 0.52 to 0.44. Simulated data with four real predictors and 100 customers.</figcaption>
+  </figure>
+
+  <h2>Bias and Variance</h2>
+  <p>Data scientists describe the two failures with two words:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>High bias</strong> means the model is too simple and misses the pattern. This is underfitting.</li>
+    <li><strong>High variance</strong> means the model reacts too strongly to the sample it saw, so its predictions change a lot from one sample to another. This is overfitting.</li>
+  </ul>
+  <p>An ideal model would have low bias and low variance. But as you reduce one, the other tends to rise. This is the <strong>bias-variance tradeoff</strong>, and it is why underfitting and overfitting can never be removed completely. The goal is to keep both as small as you can.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg" alt="Two charts side by side. Left: training error falls steadily as model complexity grows while test error is lowest at degree 2 and rises sharply after degree 10. Right: a schematic showing bias falling, variance rising and total error forming a U shape with its minimum in the middle." loading="lazy">
+    <figcaption><span>Chart 5</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
+  </figure>
+
+  <h2>How to Reduce Each Problem</h2>
+  <h3 class="post-h3-small">If the model underfits</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>Add relevant predictors.</strong> For NordHome: order frequency, basket size, region.</li>
+    <li><strong>Collect more data.</strong> The model needs enough examples to learn from.</li>
+    <li><strong>Engineer better features.</strong> For example, turn order dates into &#8220;days since last order&#8221;, or add a squared term for a curved relationship.</li>
+  </ul>
+  <h3 class="post-h3-small">If the model overfits</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>Choose models by adjusted R², not by R².</strong></li>
+    <li><strong>Always evaluate on a test set.</strong> Never judge a model only on the data it was built on.</li>
+    <li><strong>Use regularization.</strong> Ridge and Lasso penalize overly complex models.</li>
+    <li><strong>Simplify.</strong> Remove irrelevant or redundant predictors.</li>
+  </ul>
+
+  <h2>How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">&#8220;We compared a simple and a very complex model for predicting revenue per customer. The complex one looked almost perfect on the customers it was built on, with an average error of about €12. On new customers its average error was about €54, more than four times as large.&#8221;</p>
+    <p class="post-callout-q">&#8220;The simple model was off by about €13 on the customers it was built on and about €17 on new ones. It is less impressive on paper, but it behaves the same way on data it has not seen. We recommend the simple one. Which customers do we need to be able to predict well?&#8221;</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Underfitting shows up in poor training performance, but overfitting only shows up when you compare training performance with test performance. R² always rises with more predictors, so use adjusted R² to compare models.</p>
+  <p>You cannot remove both problems completely because of the bias-variance tradeoff, but you can keep them small once you know how to spot them.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> How R², MAE and MSE measure fit, and how confidence intervals describe uncertainty.</li>
+    <li><a href="simple-linear-regression.html">Simple Linear Regression</a> The fitted line and what its slope and intercept mean.</li>
+    <li><a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> When a fitted line can be trusted.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
