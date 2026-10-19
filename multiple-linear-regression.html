@@ -140,25 +140,36 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
   </figure>
   <h3>Variance Inflation Factor (VIF)</h3>
-  <p>Measures how strongly the other predictors explain a given predictor.</p>
-  <p>To get it, fit a regression of that predictor on all the other predictors and take its R&sup2;. Then:</p>
+  <p>VIF measures how much the variance of a coefficient estimate is inflated because a predictor is linearly related to the other predictors.</p>
+  <p>To calculate it, regress one predictor on all the remaining predictors and obtain the resulting R&sup2;:</p>
   <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
-  <p>For orders per year, the other predictors explain 91.5% of its variation (R&sup2; = 0.915), so VIF = 1 / (1 &minus; 0.915) &asymp; 11.7. In Python, <code>statsmodels</code> does this in one call:</p>
-  <pre class="post-code"><code>from statsmodels.stats.outliers_influence import variance_inflation_factor
+  <p>A high R&sup2; means the other predictors can explain much of that predictor&rsquo;s variation. This makes it harder to separate their individual relationships with the outcome.</p>
+  <p>For orders per year, the other predictors explain about 91% of its variation (R&sup2; = 0.9144), so VIF = 1 / (1 &minus; 0.9144) &asymp; 11.7. This matches Chart 4: the correlation between orders and items is 0.956 (0.96 rounded), so they alone already give a VIF of about 11.7, and basket size and tenure add almost nothing. Items has the same VIF for the same reason.</p>
+  <p>In Python, <code>statsmodels</code> calculates it in a few lines:</p>
+  <pre class="post-code"><code>import pandas as pd
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
-vifs = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]</code></pre>
-  <p>Here <code>X</code> holds the predictors, including the constant column.</p>
-  <p>To interpret it, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model A, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
+X = sm.add_constant(df[["orders", "items", "basket", "tenure"]])
+
+vifs = pd.Series(
+    [variance_inflation_factor(X.values, i) for i in range(X.shape[1])],
+    index=X.columns,
+)
+print(vifs.drop("const").round(1))</code></pre>
+  <p><code>X</code> contains the predictor columns, with categorical variables encoded as dummy variables. The constant column is needed for the calculation, but its own VIF is not reported.</p>
+  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model A, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>The predictor is uncorrelated with the others</td></tr>
+      <tr><td>1</td><td>No linear relationship with the other predictors</td></tr>
       <tr><td>1 to 5</td><td>Moderate; usually no action needed</td></tr>
-      <tr><td>5 to 10</td><td>High; investigate</td></tr>
-      <tr><td>Above 10</td><td>Severe; coefficient estimates are unreliable</td></tr>
+      <tr><td>5 to 10</td><td>Often treated as a warning</td></tr>
+      <tr><td>Above 10</td><td>Can indicate substantial multicollinearity</td></tr>
     </tbody>
   </table></div>
-  <p>In our model, orders and items both have a VIF of about 12; basket size and tenure are about 1.</p>
+  <p>These thresholds are rules of thumb, not strict decision boundaries. In our model, orders and items both have a VIF of about 12, while basket size and tenure are about 1.</p>
+
   <h3>Possible remedies</h3>
   <p>Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</p>
 
