@@ -34,9 +34,13 @@
   <p class="overline">Regression analysis</p>
   <h1 class="post-title">Overfitting and Underfitting</h1>
 
-  <p>NordHome Retail wants to predict net revenue per customer. One model barely beats a guess. Another predicts the customers it was built on almost perfectly, then falls apart on the next batch. Both models are unreliable, but for opposite reasons.</p>
+  <p>Imagine you want to predict net revenue per customer. One model barely improves on a simple guess. Another fits its training data almost perfectly&#8212;but performs poorly on new customers. Both models are unreliable, but for opposite reasons.</p>
 
-  <p>In <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>, we looked at how well a model fits. Now we ask a harder question: will it still work on customers it has never seen? Throughout this post we use NordHome&#8217;s revenue per customer as the example. All data is illustrative.</p>
+  <p>In <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>, we looked at how well a model fits the data it was given. Now we take the next step: will it still work on customers it has never seen?</p>
+
+  <p>This is the problem of <strong>generalization</strong>. A model that is too simple may miss important patterns (<strong>underfitting</strong>). A model that learns the training data too closely may fail to generalize (<strong>overfitting</strong>).</p>
+
+  <p>Throughout this post, we use customer revenue as an illustrative example. All data is illustrative.</p>
 
   <h2>Two Ways a Model Can Fail</h2>
 
