@@ -112,7 +112,11 @@ print(model.summary())</code></pre>
 
   <h3>What Is Multicollinearity?</h3>
   <p>Multicollinearity occurs when two or more independent variables in a regression model are highly correlated.</p>
-  <p>Imagine an online retailer that wants to predict annual net revenue per customer using two predictors: <strong>orders per year</strong> (how often a customer places an order) and <strong>items bought per year</strong> (how many items a customer purchases in total).</p>
+  <p>Imagine an online retailer that wants to predict annual net revenue per customer. The model uses two predictors:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Orders per year:</strong> How often a customer places an order.</li>
+    <li><strong>Items bought per year:</strong> How many items a customer purchases in total.</li>
+  </ul>
   <p>Customers who place more orders tend to buy more items over the course of a year. As a result, these two predictors contain overlapping information. In our illustrative data, their correlation is about 0.96. A correlation of 1 means two variables move perfectly together, and 0 means they are unrelated.</p>
   <p>This creates a challenge for the regression model: <strong>how much of the relationship with revenue should be attributed to orders, and how much to items bought?</strong> That is the central problem of multicollinearity.</p>
 
