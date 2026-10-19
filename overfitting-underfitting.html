@@ -137,15 +137,7 @@ Test customers: 20</code></pre>
     <figcaption><span>Chart 4</span> The wiggly curve is close to every past customer, but between and beyond those points it swings wildly. One new customer would be badly mispredicted. Illustrative data.</figcaption>
   </figure>
 
-  <h2>Why More Predictors Inflate R²</h2>
-  <p>R² never goes down when you add a predictor, even a useless one. If we add the number of letters in the customer&#8217;s name to the revenue model, R² still creeps up, because the model gets more room to bend toward the sample.</p>
-  <p>A higher R² can therefore be a false sign of progress. It can even be a warning sign of overfitting.</p>
-  <p>This is what <strong>adjusted R²</strong> is for. It charges a penalty for every added predictor and only rewards predictors that really help:</p>
-  <p class="post-formula"><strong>Adjusted R² = 1 − <span class="frac"><span>(1 − R²)(n − 1)</span><span>n − k − 1</span></span></strong><span>n is the number of observations and k is the number of predictors. When you compare models with different numbers of predictors, choose the one with the higher adjusted R², not the higher R².</span></p>
-  <figure class="post-fig">
-    <img src="images/overfitting-underfitting/chart-4-adjusted-r2.svg" alt="Line chart of R squared and adjusted R squared against the number of predictors. R squared keeps rising slowly after four predictors, while adjusted R squared peaks at four predictors and then declines." loading="lazy">
-    <figcaption><span>Chart 5</span> R² keeps creeping up as junk predictors are added (0.54 with the four useful ones, 0.58 with all 24). Adjusted R² peaks at the four useful predictors and then falls, from 0.52 to 0.44. Simulated data with four real predictors and 100 customers.</figcaption>
-  </figure>
+  <p>Adding predictors also makes overfitting easier, because R² never falls when a predictor is added, even a useless one. That is why adjusted R² is used to compare models; see <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
 
   <h2>Bias and Variance</h2>
   <p>Data scientists describe the two failures with two words:</p>
@@ -156,7 +148,7 @@ Test customers: 20</code></pre>
   <p>An ideal model would have low bias and low variance. But as you reduce one, the other tends to rise. This is the <strong>bias-variance tradeoff</strong>, and it is why underfitting and overfitting can never be removed completely. The goal is to keep both as small as you can.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg" alt="Two charts side by side. Left: training error falls steadily as model complexity grows while test error is lowest at degree 2 and rises sharply after degree 10. Right: a schematic showing bias falling, variance rising and total error forming a U shape with its minimum in the middle." loading="lazy">
-    <figcaption><span>Chart 6</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
+    <figcaption><span>Chart 5</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
   </figure>
 
   <h2>How to Reduce Each Problem</h2>
