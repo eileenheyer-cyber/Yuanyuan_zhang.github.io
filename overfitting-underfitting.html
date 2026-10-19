@@ -168,16 +168,16 @@ Test customers: 20</code></pre>
   <h2>Strategies to Reduce Underfitting and Overfitting</h2>
   <h3>If the model underfits</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Add relevant predictors.</strong> For customer revenue: order frequency, basket size, region.</li>
-    <li><strong>Collect more data.</strong> The model needs enough examples to learn from.</li>
-    <li><strong>Engineer better features.</strong> For example, turn order dates into &#8220;days since last order&#8221;, or add a squared term for a curved relationship.</li>
+    <li><strong>Add relevant predictors</strong> that have a meaningful relationship with the outcome variable.</li>
+    <li><strong>Increase the sample size</strong> to provide the model with more information to learn patterns.</li>
+    <li><strong>Use feature engineering</strong> to create better variables that capture the underlying relationships.</li>
   </ul>
   <h3>If the model overfits</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Choose models by adjusted R², not by R².</strong></li>
-    <li><strong>Always evaluate on a test set.</strong> Never judge a model only on the data it was built on.</li>
-    <li><strong>Use regularization.</strong> Ridge and Lasso penalize overly complex models.</li>
-    <li><strong>Simplify.</strong> Remove irrelevant or redundant predictors.</li>
+    <li><strong>Use adjusted R-squared</strong> to select models, avoiding unnecessary predictors that inflate R-squared.</li>
+    <li><strong>Split data into training and test sets</strong> to evaluate model performance on unseen data.</li>
+    <li><strong>Apply regularization techniques</strong> (if applicable) to penalize overly complex models.</li>
+    <li><strong>Simplify the model</strong> by removing irrelevant or redundant predictors.</li>
   </ul>
 
   <h2>How to explain it to stakeholders</h2>
