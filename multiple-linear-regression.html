@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261019f">
+  <link rel="stylesheet" href="style.css?v=20261019g">
 </head>
 <body>
 
@@ -109,6 +109,7 @@ print(model.summary())</code></pre>
 
   <h2>Multicollinearity: When Predictors Are Highly Correlated</h2>
   <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
+  <h3>What Is Multicollinearity?</h3>
   <p>Multicollinearity occurs when two or more predictors are highly correlated with each other. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation = 0.96 in this illustrative example).</p>
   <p>Compare two models:</p>
   <ul class="post-points post-points-color">
@@ -123,13 +124,14 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider when the highly correlated predictor is added. The interval for items bought crosses zero. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Correlation matrix or scatterplot matrix</h3>
+  <h3>How to Detect and Address It</h3>
+  <h4>Correlation matrix or scatterplot matrix</h4>
   <p>Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items, basket size and tenure, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; all other pairs show shapeless clouds." loading="lazy">
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
   </figure>
-  <h3>Variance Inflation Factor (VIF)</h3>
+  <h4>Variance Inflation Factor (VIF)</h4>
   <p>VIF measures how much the variance of a coefficient estimate is inflated because a predictor is linearly related to the other predictors.</p>
   <p>To calculate it, regress one predictor on all the remaining predictors and obtain the resulting R&sup2;:</p>
   <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
@@ -160,7 +162,7 @@ print(vifs.drop("const").round(1))</code></pre>
   </table></div>
   <p>These thresholds are rules of thumb, not strict decision boundaries. In our model, orders and items both have a VIF of about 12, while basket size and tenure are about 1.</p>
 
-  <h3>Possible remedies</h3>
+  <h4>Possible remedies</h4>
   <p>Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</p>
 
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>

@@ -1508,6 +1508,7 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post p { margin: 0 0 16px; font-size: 1.02rem; line-height: 1.75; }
 .post h2 { font-size: 1.7rem; margin: 64px 0 16px; padding-top: 24px; border-top: 1px solid var(--line); }
 .post h3 { font-size: 1.2rem; margin: 40px 0 12px; letter-spacing: -0.01em; }
+.post h4 { font-size: 1.02rem; font-weight: 700; margin: 28px 0 8px; letter-spacing: 0; }
 .post .formula { padding: 12px 18px; background: var(--surface-alt); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-weight: 500; overflow-x: auto; }
 .post-note { margin: 20px 0 24px; padding: 14px 18px; background: var(--surface-alt); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; }
 .post-note p { margin: 0; font-size: 0.97rem; }
