@@ -41,14 +41,17 @@
   <p>This is the problem of <strong>generalization</strong>. A model that is too simple may miss important patterns (<strong>underfitting</strong>). A model that learns the training data too closely may fail to generalize (<strong>overfitting</strong>). Throughout this post, we use customer revenue as an illustrative example. All data is illustrative.</p>
 
   <h2>Training Data and Test Data</h2>
-  <p>A model can perform well on the data it was trained on and still fail on new customers. To find out whether it has learned a useful pattern, we need to evaluate it on data it has never seen.</p>
-  <p>We do this by splitting our dataset into separate parts:</p>
+  <p>Before building a machine learning model, data scientists typically split their dataset into training and test data. This is a standard step in the machine learning workflow: the model needs data to learn from, but we also need separate data to check whether it can make reliable predictions on new observations.</p>
+  <p>We divide the data into two parts:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Training data</strong> is used to teach the model which patterns connect the predictors to customer revenue.</li>
-    <li><strong>Test data</strong> is held back during training. After the model is built, we use it to evaluate how well the model predicts outcomes for unseen customers.</li>
+    <li><strong>Training data</strong> is used to teach the model. It contains the predictors and the actual outcomes the model learns from.</li>
+    <li><strong>Test data</strong> is held back during training. Once the model is built, we use it to evaluate how well it predicts outcomes it has not seen before.</li>
   </ul>
-  <p>Imagine we have data from 100 customers. We use 80 customers to train the model and reserve the remaining 20 for testing. The model learns from the 80 training customers, then makes predictions for the 20 test customers without using their revenue values during training.</p>
-  <p>This gives us a more realistic estimate of how the model might perform on new customers. If it performs very well on the training data but much worse on the test data, that is a warning sign of overfitting.</p>
+
+  <h3>A practical example</h3>
+  <p>Imagine we have data from 100 customers and want to predict their net revenue. We randomly assign 80 customers to the training set and reserve the other 20 for the test set.</p>
+  <p>The model learns from the 80 training customers. It then predicts revenue for the 20 test customers without having used their actual revenue values during training. We compare those predictions with the actual values to see how well the model performs on unseen data.</p>
+  <p>This matters because a model can perform very well on its training data but poorly on new customers. Comparing its performance on both datasets helps us identify potential overfitting and assess whether the model has learned patterns that generalize beyond the data it was trained on.</p>
 
   <h3>Splitting the Data with Python</h3>
   <pre class="post-code"><code>from sklearn.model_selection import train_test_split
