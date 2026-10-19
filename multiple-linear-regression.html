@@ -173,7 +173,7 @@ print(model.summary())</code></pre>
     <li><strong>Items</strong> &mdash; estimate &minus;&euro;1.3, with a confidence interval that crosses zero.</li>
   </ul>
   <p>When items bought is added to the model, the estimated effect of orders changes only slightly, but its confidence interval becomes much wider. Because the two predictors contain similar information, the model has more difficulty separating their individual effects.</p>
-  <p>The confidence interval for items bought includes zero, meaning its individual effect is not statistically significant at the 5% level. However, this does not prove that items bought has no relationship with revenue.</p>
+  <div class="post-note post-note-explain"><p class="post-note-l">Reading the interval</p><p>The confidence interval for items bought includes zero, meaning its individual effect is not statistically significant at the 5% level. The data leave it uncertain whether the coefficient is positive, negative, or zero. However, this does not prove that items bought has no relationship with revenue.</p></div>
 
   <h3>Does Multicollinearity Make the Model Useless?</h3>
   <p>Not necessarily.</p>
