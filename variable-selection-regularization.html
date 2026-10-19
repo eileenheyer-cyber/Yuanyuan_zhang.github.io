@@ -47,12 +47,12 @@
     <img src="images/variable-selection-regularization/chart-1-train-test-error.svg" alt="Line chart of RMSE against the number of predictors, from 1 to 20. Training error falls steadily from about 72 euros to about 46 euros. Test error drops to about 66 euros with three predictors, then stays between about 68 and 74 euros and rises to about 77 euros with all 20 predictors." loading="lazy">
     <figcaption><span>Chart 1</span> Training error can only fall as predictors are added, but test error stops improving after the first few. The model with all 20 predictors predicts new customers worse (&euro;76.8) than the one with the best 3 (&euro;66.4). Illustrative data.</figcaption>
   </figure>
-  <p>More predictors do not automatically lead to better predictions on unseen data. Two strategies keep a model from growing too complex:</p>
+  <p>More predictors do not automatically lead to better predictions on unseen data. Two approaches can help control model complexity:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Variable selection</strong> decides which predictors enter the model at all.</li>
-    <li><strong>Regularization</strong> keeps the predictors but penalizes large coefficients.</li>
+    <li><strong>Variable selection</strong> decides which predictors to include in the model.</li>
+    <li><strong>Regularization</strong> penalizes large coefficients, shrinking their influence. Lasso can even shrink some coefficients to exactly zero.</li>
   </ul>
-  <p>Both accept a little bias in exchange for lower variance, the trade-off described in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
+  <p>Both approaches can help reduce overfitting by trading some bias for lower variance, connecting to the bias&ndash;variance trade-off discussed in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>. Whether they improve predictions depends on the data and how the methods are applied.</p>
 
   <h2>Variable Selection: Choosing Which Predictors to Keep</h2>
   <p>Imagine an analyst building a revenue forecast from a long list of candidate drivers. For each one she asks: does it earn its place? Purchase frequency clearly does. A customer ID number should not, because it only labels the customer.</p>
