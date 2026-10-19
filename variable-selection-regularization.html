@@ -65,12 +65,16 @@
     <li><strong>Repeat.</strong> Continue until no remaining predictor provides sufficient improvement, according to the chosen stopping rule.</li>
   </ul>
   <p>In our example, forward selection uses 5-fold cross-validation on the 60 training customers to compare candidate models. It selects purchase frequency first, followed by site visits, average order value and loyalty membership. The procedure stops at eight predictors. Age and customer ID are not selected.</p>
+  <figure class="post-fig">
+    <img src="images/variable-selection-regularization/chart-2-forward-selection-steps.svg" alt="Line chart of cross-validated RMSE against the number of predictors. The error falls from about 75 euros with one predictor to about 59 euros with five, stays near 58.6 euros from seven to ten predictors, and is lowest at eight predictors, marked with a red ring. Predictors 1 to 8 are labeled in order of entry: purchase frequency, site visits, average order value, loyalty member, coupon uses, distance to store, newsletter sign-up and wishlist items. A dashed gray line shows that adding more predictors would raise the error again, to about 79 euros with all 20." loading="lazy">
+    <figcaption><span>Chart 2</span> Each step adds the predictor that lowers the cross-validated error the most. The error drops quickly over the first five predictors and is almost flat from seven to ten (about &euro;58.6); the lowest value is at eight predictors, where the procedure stops. Illustrative data.</figcaption>
+  </figure>
 
   <h3>Backward elimination</h3>
   <p>Backward elimination works in the opposite direction. It starts with all 20 predictors and removes the least useful one at each step, stopping when every removal would make the model worse. In our data it ends at the same eight predictors. It needs more customers than predictors to fit its starting model.</p>
   <figure class="post-fig">
-    <img src="images/variable-selection-regularization/chart-2-selection-funnel.svg" alt="Diagram: a grid of 20 candidate predictors, eight of them filled blue and numbered 1 to 8 in order of entry, passes through a funnel labeled forward selection into a box listing the eight selected predictors: purchase frequency, site visits, average order value, loyalty member, coupon uses, distance to store, newsletter sign-up and wishlist items." loading="lazy">
-    <figcaption><span>Chart 2</span> Forward selection narrows 20 candidates to 8. Age and customer ID never earn a place. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-3-selection-funnel.svg" alt="Diagram: a grid of 20 candidate predictors, eight of them filled blue and numbered 1 to 8 in order of entry, passes through a funnel labeled forward selection into a box listing the eight selected predictors: purchase frequency, site visits, average order value, loyalty member, coupon uses, distance to store, newsletter sign-up and wishlist items." loading="lazy">
+    <figcaption><span>Chart 3</span> Forward selection narrows 20 candidates to 8. Age and customer ID never earn a place. Illustrative data.</figcaption>
   </figure>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Selection decides which predictors enter the model. The predictors that remain keep their ordinary, unpenalized coefficients.</p></div>
 
@@ -93,8 +97,8 @@
   <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; &Sigma; |b<sub>j</sub>|</strong><span>The penalty is the sum of the absolute values of the coefficients.</span></p>
   <p>The absolute-value penalty pushes every coefficient toward zero with the same force, however small it already is. A weak predictor can therefore reach exactly zero and drop out of the model. In our data, Lasso sets 9 of the 20 coefficients to exactly zero, including age. It is not perfect: customer ID keeps a small coefficient (&euro;4.7).</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/variable-selection-regularization/chart-3-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
-    <figcaption><span>Chart 3</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-4-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
+    <figcaption><span>Chart 4</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
   </figure>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect.</p></div>
 
@@ -174,8 +178,8 @@ Lasso  train RMSE:  51.9   test RMSE:  71.5</code></pre>
     <li><strong>RMSE</strong> (root mean squared error) is the typical prediction error in euros per customer. The code assumes <code>df</code> is your prepared DataFrame with <code>net_revenue</code> as the target.</li>
   </ul>
   <figure class="post-fig">
-    <img src="images/variable-selection-regularization/chart-4-rmse-comparison.svg" alt="Grouped bar chart of training and test RMSE for ordinary linear regression, Ridge and Lasso. Linear regression: training 45.8 euros, test 76.8. Ridge: training 49.1, test 72.9. Lasso: training 51.9, test 71.5." loading="lazy">
-    <figcaption><span>Chart 4</span> The model that fits the training customers best is the worst on new ones. Giving up a little training accuracy buys a lower test error. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-5-rmse-comparison.svg" alt="Grouped bar chart of training and test RMSE for ordinary linear regression, Ridge and Lasso. Linear regression: training 45.8 euros, test 76.8. Ridge: training 49.1, test 72.9. Lasso: training 51.9, test 71.5." loading="lazy">
+    <figcaption><span>Chart 5</span> The model that fits the training customers best is the worst on new ones. Giving up a little training accuracy buys a lower test error. Illustrative data.</figcaption>
   </figure>
   <h3>Why the lowest training error is not the best result</h3>
   <p>Ordinary regression has the lowest training error (&euro;45.8) but the highest test error (&euro;76.8), a gap of &euro;31. It has the most freedom, so it also fits the random quirks of the 60 customers it has seen. Ridge accepts a higher training error (&euro;49.1) and predicts new customers better (&euro;72.9). Lasso trades the most training accuracy (&euro;51.9) for the lowest test error (&euro;71.5). Training error only tells us how well a model memorized its data. Test error tells us how well it will work on customers it has not seen.</p>
@@ -193,8 +197,8 @@ Predictors kept: 11 of 20
 Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_tickets', 'newsletter_signup', 'days_since_last_order', 'page_views', 'social_followers']</code></pre>
   <p>For reference, ordinary regression refitted on only the eight predictors chosen by forward selection reaches a test RMSE of &euro;71.5, practically the same as Lasso. Variable selection and Lasso found equally useful, much smaller models.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/variable-selection-regularization/chart-5-coefficients-by-method.svg" alt="Dot plot of 20 predictor coefficients in euros per standard deviation, with one row per predictor and three markers per row for ordinary regression, Ridge and Lasso. Ridge markers sit between the ordinary estimate and zero; Lasso markers sit at zero for nine predictors." loading="lazy">
-    <figcaption><span>Chart 5</span> Compared with ordinary regression (red), Ridge (blue) moves every coefficient toward zero. Lasso (black) moves some exactly onto zero, which removes the predictor. Coefficients are in &euro; per one standard deviation. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-6-coefficients-by-method.svg" alt="Dot plot of 20 predictor coefficients in euros per standard deviation, with one row per predictor and three markers per row for ordinary regression, Ridge and Lasso. Ridge markers sit between the ordinary estimate and zero; Lasso markers sit at zero for nine predictors." loading="lazy">
+    <figcaption><span>Chart 6</span> Compared with ordinary regression (red), Ridge (blue) moves every coefficient toward zero. Lasso (black) moves some exactly onto zero, which removes the predictor. Coefficients are in &euro; per one standard deviation. Illustrative data.</figcaption>
   </figure>
   <div class="post-note"><p class="post-note-l">One split is one draw</p><p>The test set has only 40 customers, so the &euro;3.9 gap between ordinary regression and Ridge is small compared with the noise in the test error. We re-simulated the same setup 200 times. Lasso beat ordinary regression in 170 of 200 datasets and Ridge in 125 of 200. Lasso gains more here because many of the 20 predictors add little. Ridge tends to gain more when many predictors each carry some signal or are strongly correlated.</p></div>
 
@@ -210,8 +214,8 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   <h3>Choosing the Penalty Strength with Cross-Validation</h3>
   <p>The model cannot learn &lambda; from the training data, because the training error would always prefer &lambda; = 0. We choose it by cross-validation. The training data is split into five parts. For each candidate &lambda;, the model is fitted on four parts and scored on the fifth, and this is repeated so that every part is used once for scoring. The &lambda; with the lowest average error wins.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/variable-selection-regularization/chart-6-cv-curves.svg" alt="Two line charts with identical axes showing cross-validated RMSE against penalty strength on a log scale. Both curves are flat at about 79 euros for very small penalties, fall to a minimum of about 68 euros, and then rise steeply. The minimum is marked at alpha about 14.6 for Ridge and about 5.7 for Lasso." loading="lazy">
-    <figcaption><span>Chart 6</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-7-cv-curves.svg" alt="Two line charts with identical axes showing cross-validated RMSE against penalty strength on a log scale. Both curves are flat at about 79 euros for very small penalties, fall to a minimum of about 68 euros, and then rise steeply. The minimum is marked at alpha about 14.6 for Ridge and about 5.7 for Lasso." loading="lazy">
+    <figcaption><span>Chart 7</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
   </figure>
 
   <h3>Limitations of Stepwise Selection</h3>
