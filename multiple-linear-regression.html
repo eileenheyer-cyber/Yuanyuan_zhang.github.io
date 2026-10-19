@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Multiple Linear Regression – Yuanyuan Zhang</title>
-  <meta name="description" content="Multiple linear regression explained with NordHome retail data: predicting net revenue per customer from several drivers at once.">
+  <meta name="description" content="Multiple linear regression explained with an online retailer example: estimating net revenue per customer from several drivers at once, reading coefficients, handling categories and overlapping predictors, and checking the model on new data.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,107 @@
   <p class="overline">Regression analysis</p>
   <h1 class="post-title">Multiple Linear Regression</h1>
 
-  <p>This post is in progress.</p>
+  <p>An online retailer looks at two customers. Both placed 6 orders last year, yet one brought in about &euro;280 of net revenue and the other about &euro;520. <a href="simple-linear-regression.html">Simple Linear Regression</a> can explain revenue with one variable, such as order frequency, but it cannot explain a gap like this. Basket size, how long someone has been a customer, and how they were acquired may matter too.</p>
+
+  <p>Multiple linear regression estimates the relationship between an outcome and several predictors at the same time. This post builds one for net revenue per customer. The numbers come from simulated data for an online retailer, so the patterns are realistic but not from a real company.</p>
+
+  <h2>From One Predictor to Several: The Multiple Regression Equation</h2>
+  <p>In simple regression, revenue is explained by one variable. In multiple regression, every additional driver gets its own term:</p>
+  <p class="post-formula"><strong>Net revenue = b<sub>0</sub> + b<sub>1</sub> &middot; Orders + b<sub>2</sub> &middot; Basket size + b<sub>3</sub> &middot; Tenure + &hellip; + error</strong><span>Each b is the predicted change in revenue when that predictor goes up by one unit and all other predictors stay the same.</span></p>
+  <p>&ldquo;All other predictors stay the same&rdquo; is the key idea. It lets us compare two customers who differ in only one thing. If they have the same basket size and tenure, b<sub>1</sub> tells us what one extra order is worth. The coefficients are still found with <a href="least-squares.html">Least Squares</a>: the model picks the values that make the squared gaps between actual and predicted revenue as small as possible.</p>
+
+  <h2>The Data: Net Revenue per Customer and Its Possible Drivers</h2>
+  <p>The outcome is net revenue per customer over the last 12 months, after returns and discounts. The five possible drivers:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Orders per year</strong> (numeric): about 6 on average, from 1 to 14.</li>
+    <li><strong>Average basket size</strong> (numeric): about &euro;62 per order.</li>
+    <li><strong>Customer tenure</strong> (numeric): years since the first order, about 3 on average.</li>
+    <li><strong>Region</strong> (categorical): North, Central, South.</li>
+    <li><strong>Acquisition channel</strong> (categorical): Organic, Paid Search, Referral.</li>
+  </ul>
+  <p>The data contain 1,200 customers. The model is fitted on 900 of them, and the other 300 are held back for the test at the end of this post.</p>
+  <figure class="post-fig">
+    <img src="images/multiple-linear-regression/chart-1-revenue-distribution.svg" alt="Histogram of net revenue per customer, ranging from about 50 to 880 euros and centered near 420 euros. A dashed line marks the median at 414 euros and a red line the mean at 420 euros." loading="lazy">
+    <figcaption><span>Chart 1</span> Customers differ widely: most sit between &euro;250 and &euro;600, around a typical &euro;420. That spread is what the predictors have to explain, and no single variable can do it alone. Illustrative data.</figcaption>
+  </figure>
+  <p>Multiple regression can mix numeric and categorical predictors, but categories must be turned into numbers first.</p>
+
+  <h2>Turning Categories into Numbers: Dummy Variables</h2>
+  <p>Region and channel are words, not numbers. Each category becomes a 0/1 column called a dummy variable:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Channel</th><th>Paid Search</th><th>Referral</th></tr></thead>
+    <tbody>
+      <tr><td>Organic</td><td>0</td><td>0</td></tr>
+      <tr><td>Paid Search</td><td>1</td><td>0</td></tr>
+      <tr><td>Referral</td><td>0</td><td>1</td></tr>
+    </tbody>
+  </table></div>
+  <p>Organic has no column of its own. It becomes the <strong>reference category</strong>, the group every other category is compared with. The full encoding is covered in <a href="one-hot-encoding.html">One-Hot Encoding</a>.</p>
+  <p>This matters for reading results: the Paid Search coefficient is not a revenue level. It is the estimated difference between Paid Search and Organic customers, with the other predictors held constant. Region works the same way, with Central as the reference.</p>
+
+  <h2>Reading the Coefficients: What Each Number Means in Euros per Customer</h2>
+  <pre class="post-code"><code>import statsmodels.formula.api as smf
+
+model = smf.ols(
+    "net_revenue ~ orders + basket_size + tenure + C(channel) + C(region)",
+    data=train
+).fit()
+print(model.summary())</code></pre>
+  <p>The summary table lists one coefficient per predictor, with its confidence interval. Two of them, read in business language:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Orders:</strong> +&euro;46 per additional order per year, with basket size, tenure, channel and region held constant (95% interval: &euro;45 to &euro;48).</li>
+    <li><strong>Paid Search:</strong> &minus;&euro;38 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;45 to &minus;&euro;30).</li>
+  </ul>
+  <figure class="post-fig">
+    <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46 euros, basket size per 10 euros plus 29, tenure per year plus 11, Paid Search minus 38 and Referral plus 17 compared with Organic, all with intervals that do not reach zero. North plus 5 and South minus 7 compared with Central have intervals that cross zero." loading="lazy">
+    <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
+  </figure>
+
+  <h2>When Predictors Overlap: Multicollinearity</h2>
+  <p>Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two move almost together (correlation 0.96 here).</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Model A</strong> includes both orders and items.</li>
+    <li><strong>Model B</strong> keeps only orders.</li>
+  </ul>
+  <p>The coefficient for orders hardly moves (&euro;49 in Model A, &euro;46 in Model B), but its standard error is more than three times larger in Model A (&euro;2.5 vs. &euro;0.7). The items coefficient is about zero (&minus;&euro;1.2), with an interval that covers both positive and negative values. The model cannot decide how to split the credit between two predictors carrying almost the same information.</p>
+  <p>A common check is the Variance Inflation Factor (VIF). Values near 1 mean little overlap; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</p>
+  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors overlap, the individual coefficients become unreliable. Keep the one that is easier to act on, or combine them.</p>
+  <figure class="post-fig">
+    <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
+    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its uncertainty grows more than threefold once a near-copy of it enters the model. Lines show 95% intervals. Illustrative data.</figcaption>
+  </figure>
+
+  <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
+  <p>Three questions decide whether the model can be trusted:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.85 and adjusted R&sup2; is 0.85, so about 85% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
+    <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line. The checks from <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> carry over.</li>
+    <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
+  </ul>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/multiple-linear-regression/chart-4-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
+    <figcaption><span>Chart 4</span> Residuals scatter evenly around zero and the Q-Q points follow the line, so the errors behave as the assumptions require. Illustrative data, training customers.</figcaption>
+  </figure>
+
+  <h2>How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">&ldquo;Each additional order per year goes with about &euro;46 more net revenue per customer, when basket size, tenure, channel and region are the same. Customers acquired through Paid Search bring about &euro;38 less per year than organic customers who otherwise look alike, and referral customers about &euro;17 more.&rdquo;</p>
+    <p class="post-callout-q">&ldquo;Together these factors explain about 85% of the differences between customers, and the model works just as well on 300 customers it had not seen. It shows association, not proof that switching channels would change revenue.&rdquo;</p>
+    <p class="post-callout-q">&ldquo;So the question for the next budget meeting is: which channel brings customers who order more often and stay longer, and is Paid Search still worth its cost?&rdquo;</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Multiple linear regression estimates the relationship between an outcome and several predictors at once, and each coefficient is read with the other predictors held constant. Categories enter as dummy variables measured against a reference category, overlapping predictors blur individual coefficients, and the model should be judged on adjusted R&sup2;, residuals and new data, not on R&sup2; alone.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="simple-linear-regression.html">Simple Linear Regression</a> The fitted line and what its slope and intercept mean.</li>
+    <li><a href="least-squares.html">Least Squares</a> How the best-fitting line is chosen by minimizing squared errors.</li>
+    <li><a href="one-hot-encoding.html">One-Hot Encoding</a> How categories become 0/1 columns a model can use.</li>
+    <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> How R&sup2;, MAE and MSE measure fit, and how confidence intervals describe uncertainty.</li>
+    <li><a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> When a fitted line can be trusted.</li>
+    <li><a href="overfitting-underfitting.html">Overfitting and Underfitting</a> Why a model can fail on new data, and how to spot it.</li>
+    <li><a href="glm.html">Generalized Linear Models</a> Regression for outcomes that are not continuous numbers.</li>
+  </ul>
 
 </article>
 </main>
