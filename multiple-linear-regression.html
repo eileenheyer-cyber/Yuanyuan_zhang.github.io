@@ -127,8 +127,7 @@ print(model.summary())</code></pre>
     <li><strong>Model A: One predictor.</strong> The model uses orders per year to predict revenue.</li>
     <li><strong>Model B: Two predictors.</strong> The model uses both orders per year and items bought per year.</li>
   </ul>
-  <p>When both predictors are included, the model must estimate the individual contribution of each while accounting for the other. Because the predictors are strongly correlated, it becomes more difficult to distinguish their individual effects.</p>
-  <p>The model may still predict revenue reasonably well. However, its estimates of the individual coefficients can become less precise.</p>
+  <p>The model may still predict revenue accurately, but it becomes harder to determine how much each predictor contributes individually. Because the predictors contain overlapping information, the model struggles to separate their individual effects.</p>
 
   <h3>What Happens to the Regression Coefficients?</h3>
   <p>Consider this illustrative example:</p>
