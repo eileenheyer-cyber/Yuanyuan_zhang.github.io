@@ -107,10 +107,8 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
-  <h2>Assumptions of Multiple Linear Regression</h2>
-  <p>Multiple Linear Regression relies on the same four assumptions as simple linear regression: linearity, independent observations, normally distributed residuals, and constant residual variance (homoscedasticity). They are explained in <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>. With several predictors, one more concern matters: multicollinearity.</p>
-
-  <h3>An additional concern: Multicollinearity</h3>
+  <h2>Multicollinearity: When Predictors Are Highly Correlated</h2>
+  <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
   <p>Multicollinearity occurs when two or more predictors are highly correlated with each other. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation = 0.96 in this illustrative example).</p>
   <p>Compare two models:</p>
   <ul class="post-points post-points-color">
