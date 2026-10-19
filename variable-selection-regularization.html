@@ -84,17 +84,17 @@
 
   <h3>Adding a penalty to the loss function</h3>
   <p>The loss function is what the model tries to minimize. Ordinary regression only measures the errors:</p>
-  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup></strong></p>
+  <p class="post-formula"><strong>Loss = &Sigma; (y &minus; <span class="post-hat">y</span>)<sup>2</sup></strong><span><em>y</em> is the actual revenue of a customer and <span class="post-hat">y</span> the revenue the model predicts.</span></p>
   <p>Regularization adds a second term. The model now has to balance fitting the data against keeping its coefficients small:</p>
-  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; Penalty</strong><span>&lambda; sets the strength of the penalty and is called <code>alpha</code> in scikit-learn. &lambda; = 0 gives ordinary regression. The larger &lambda; is, the more the coefficients shrink.</span></p>
+  <p class="post-formula"><strong>Loss = &Sigma; (y &minus; <span class="post-hat">y</span>)<sup>2</sup> + &lambda; &times; Penalty</strong><span>&lambda; sets the strength of the penalty and is called <code>alpha</code> in scikit-learn. &lambda; = 0 gives ordinary regression. The larger &lambda; is, the more the coefficients shrink.</span></p>
   <p>Two practical points. First, predictors must be on a comparable scale before the penalty is applied, otherwise a predictor measured in euros is penalized differently from one counted in visits. We therefore standardize them (mean 0, standard deviation 1), so coefficients read as &ldquo;&euro; per one standard deviation&rdquo;. Second, the intercept is not penalized.</p>
 
   <h3>Ridge (L2)</h3>
-  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; &Sigma; b<sub>j</sub><sup>2</sup></strong><span>The penalty is the sum of the squared coefficients.</span></p>
+  <p class="post-formula"><strong>Loss = &Sigma; (y &minus; <span class="post-hat">y</span>)<sup>2</sup> + &lambda; &times; &Sigma; b<sub>j</sub><sup>2</sup></strong><span>The penalty is the sum of the squared coefficients.</span></p>
   <p>Squaring punishes large coefficients heavily and small ones hardly at all. Ridge therefore shrinks every coefficient toward zero, but does not set any of them exactly to zero. All predictors stay in the model. It is especially useful when predictors are correlated, because it spreads weight across them instead of letting one coefficient blow up. In our data, Ridge shrinks purchase frequency from &euro;45.5 to &euro;35.3 and customer ID from &euro;16.9 to &euro;10.8.</p>
 
   <h3>Lasso (L1)</h3>
-  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; &Sigma; |b<sub>j</sub>|</strong><span>The penalty is the sum of the absolute values of the coefficients.</span></p>
+  <p class="post-formula"><strong>Loss = &Sigma; (y &minus; <span class="post-hat">y</span>)<sup>2</sup> + &lambda; &times; &Sigma; |b<sub>j</sub>|</strong><span>The penalty is the sum of the absolute values of the coefficients.</span></p>
   <p>The absolute-value penalty pushes every coefficient toward zero with the same force, however small it already is. A weak predictor can therefore reach exactly zero and drop out of the model. In our data, Lasso sets 9 of the 20 coefficients to exactly zero, including age. It is not perfect: customer ID keeps a small coefficient (&euro;4.7).</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-4-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
