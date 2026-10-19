@@ -43,19 +43,20 @@
   <h2>Two Ways a Model Can Fail</h2>
 
   <h3 class="post-h3-small">Underfitting</h3>
-  <p>An underfitting model is too simple to pick up the real pattern. It misses the signal even in the data it was built on, so its R² is low.</p>
-  <p>Suppose NordHome predicts net revenue per customer from the weekday of the customer&#8217;s first order. That variable says very little about how much a customer spends, so the model explains almost nothing. Its R² is 0.03, and it predicts roughly the same amount for every customer.</p>
+  <p>An underfitting model is too simple to capture the underlying pattern in the data. It performs poorly even on the data it was trained on, often resulting in a low R².</p>
+  <p>Imagine predicting net revenue per customer using only the weekday of their first order. Monday and Saturday customers may spend very different amounts, but the weekday alone might explain very little of that variation. The model ends up predicting roughly the same revenue for everyone.</p>
+  <p>In this example, the model has not learned enough about what drives customer spending. Its R² is 0.03, meaning it explains only 3% of the variation in revenue in the data used to fit the model.</p>
   <figure class="post-fig">
-    <img src="images/overfitting-underfitting/chart-1-underfit.svg" alt="Scatter plot of predicted against actual net revenue per customer. The predictions are almost all near 110 euros while actual revenue ranges from 40 to 190 euros, far from the diagonal line of perfect prediction." loading="lazy">
-    <figcaption><span>Chart 1</span> The model predicts almost the same amount for everyone, so it cannot tell high-value customers from low-value ones. Illustrative data.</figcaption>
+    <img src="images/overfitting-underfitting/chart-1-underfit.svg" alt="Scatter plot of actual against predicted net revenue per customer. Actual revenue ranges from about 40 to 190 euros, but predictions stay in a narrow band around 113 euros, shown by a dashed horizontal line, far from the diagonal line of perfect predictions." loading="lazy">
+    <figcaption><span>Chart 1</span> The model predicts almost the same revenue for every customer, so it cannot tell high-value customers from low-value ones. Illustrative data.</figcaption>
   </figure>
   <p>Typical causes of underfitting:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Weak predictors.</strong> The variables have little real connection to the outcome. Order frequency, basket size or region would be far more useful.</li>
-    <li><strong>The wrong shape.</strong> The relationship is curved, but the model assumes a straight line.</li>
-    <li><strong>Too little data.</strong> The model does not have enough examples to learn the relationship.</li>
+    <li><strong>Model too simple.</strong> A straight line misses a curved relationship between customer characteristics and revenue.</li>
+    <li><strong>Missing useful predictors.</strong> The model ignores important factors, such as order frequency or average basket size.</li>
+    <li><strong>Too much regularization.</strong> The model is restricted so strongly that it cannot learn the underlying relationship.</li>
   </ul>
-  <p>Because the model has not learned the pattern even in the sample, it cannot work on new customers either.</p>
+  <p>Because the model fails to capture the pattern in its training data, it is also unlikely to make reliable predictions for new customers.</p>
 
   <h2>Training Data and Test Data</h2>
   <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
