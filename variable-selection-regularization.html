@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Variable Selection vs. Regularization: Managing Model Complexity – Yuanyuan Zhang</title>
+  <meta name="description" content="Two ways to keep a regression model from overfitting: choosing which predictors to keep (forward and backward selection) or shrinking their coefficients (Ridge and Lasso), compared on one customer-spending example.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261018j">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Regression analysis</p>
+  <h1 class="post-title">Variable Selection vs. Regularization: Managing Model Complexity</h1>
+
+  <p>An online retailer wants to predict how much each customer will spend. The data has 20 columns: age, purchase frequency, average order value, customer ID, site visits, newsletter sign-up and more. It is tempting to give the model all of them. More information should mean better predictions, right?</p>
+
+  <p>Not necessarily. In <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> we saw that a model can fit its training data closely and still fail on new customers. This post looks at two ways to manage that risk: choosing which predictors to keep (<strong>variable selection</strong>) and limiting how large their coefficients can become (<strong>regularization</strong>). Both are run on the same example: net revenue per customer, 100 simulated customers and 20 candidate predictors. All data is illustrative.</p>
+
+  <h2>When Does a Regression Model Become Too Complex?</h2>
+  <p>Every predictor adds a coefficient the model has to estimate. With 60 training customers and 20 predictors, there is little data behind each coefficient. Some predictors carry real information, such as purchase frequency and average order value. Others carry none. Customer ID, for example, is only a label. The model cannot tell the difference: least squares will use every predictor to explain the training customers as closely as possible, including their random fluctuations.</p>
+  <p>The chart below adds predictors to an ordinary linear regression one at a time, most useful first. The order comes from forward selection, introduced in the next section, and uses the training customers only.</p>
+  <figure class="post-fig">
+    <img src="images/variable-selection-regularization/chart-1-train-test-error.svg" alt="Line chart of RMSE against the number of predictors, from 1 to 20. Training error falls steadily from about 72 euros to about 46 euros. Test error drops to about 66 euros with three predictors, then stays between about 68 and 74 euros and rises to about 77 euros with all 20 predictors." loading="lazy">
+    <figcaption><span>Chart 1</span> Training error can only fall as predictors are added, but test error stops improving after the first few. The model with all 20 predictors predicts new customers worse (&euro;76.8) than the one with the best 3 (&euro;66.4). Illustrative data.</figcaption>
+  </figure>
+  <p>More predictors do not automatically lead to better predictions on unseen data. Two strategies keep a model from growing too complex:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Variable selection</strong> decides which predictors enter the model at all.</li>
+    <li><strong>Regularization</strong> keeps the predictors but penalizes large coefficients.</li>
+  </ul>
+  <p>Both accept a little bias in exchange for lower variance, the trade-off described in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
+
+  <h2>Variable Selection: Choosing Which Predictors to Keep</h2>
+  <p>Imagine an analyst building a revenue forecast from a long list of candidate drivers. For each one she asks: does it earn its place? Purchase frequency clearly does. A customer ID number should not, because it only labels the customer.</p>
+  <p>Variable selection automates that question. It compares models using a criterion that rewards predictive performance rather than training fit, such as cross-validated error, adjusted R&sup2; or AIC/BIC, and keeps the subset that scores best. Two common strategies do this step by step.</p>
+
+  <h3>Forward selection</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>Start empty.</strong> The model begins with no predictors and simply predicts the average revenue.</li>
+    <li><strong>Add the best one.</strong> Each remaining predictor is tried in turn, and the one that improves the model most is added.</li>
+    <li><strong>Repeat.</strong> Stop when no remaining predictor improves the model.</li>
+  </ul>
+  <p>In our data, forward selection (scored by 5-fold cross-validation on the 60 training customers) picks purchase frequency first, then site visits, average order value and loyalty member. It stops at 8 predictors. Age and customer ID never enter.</p>
+
+  <h3>Backward elimination</h3>
+  <p>Backward elimination works in the opposite direction. It starts with all 20 predictors and removes the least useful one at each step, stopping when every removal would make the model worse. In our data it ends at the same eight predictors. It needs more customers than predictors to fit its starting model.</p>
+  <figure class="post-fig">
+    <img src="images/variable-selection-regularization/chart-2-selection-funnel.svg" alt="Diagram: a grid of 20 candidate predictors, eight of them filled blue and numbered 1 to 8 in order of entry, passes through a funnel labeled forward selection into a box listing the eight selected predictors: purchase frequency, site visits, average order value, loyalty member, coupon uses, distance to store, newsletter sign-up and wishlist items." loading="lazy">
+    <figcaption><span>Chart 2</span> Forward selection narrows 20 candidates to 8. Age and customer ID never earn a place. Illustrative data.</figcaption>
+  </figure>
+  <div class="post-note"><p class="post-note-l">Key idea</p><p>Selection decides which predictors enter the model. The predictors that remain keep their ordinary, unpenalized coefficients.</p></div>
+
+  <h2>Regularization: Controlling the Size of Coefficients</h2>
+  <p>Regularization takes a different route. It keeps all 20 predictors but makes large coefficients expensive.</p>
+  <p>Here is why that helps. Ordinary least squares chooses the coefficients that minimize the sum of squared errors on the training data, and with many predictors it can inflate coefficients to chase noise. In our data, the ordinary model gives customer ID a coefficient of &euro;16.9 per standard deviation: it &ldquo;believes&rdquo; that higher ID numbers spend more, although an ID carries no meaning. A penalty discourages such large, unreliable coefficients.</p>
+
+  <h3>Adding a penalty to the loss function</h3>
+  <p>The loss function is what the model tries to minimize. Ordinary regression only measures the errors:</p>
+  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup></strong></p>
+  <p>Regularization adds a second term. The model now has to balance fitting the data against keeping its coefficients small:</p>
+  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; Penalty</strong><span>&lambda; sets the strength of the penalty and is called <code>alpha</code> in scikit-learn. &lambda; = 0 gives ordinary regression. The larger &lambda; is, the more the coefficients shrink.</span></p>
+  <p>Two practical points. First, predictors must be on a comparable scale before the penalty is applied, otherwise a predictor measured in euros is penalized differently from one counted in visits. We therefore standardize them (mean 0, standard deviation 1), so coefficients read as &ldquo;&euro; per one standard deviation&rdquo;. Second, the intercept is not penalized.</p>
+
+  <h3>Ridge (L2)</h3>
+  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; &Sigma; b<sub>j</sub><sup>2</sup></strong><span>The penalty is the sum of the squared coefficients.</span></p>
+  <p>Squaring punishes large coefficients heavily and small ones hardly at all. Ridge therefore shrinks every coefficient toward zero, but does not set any of them exactly to zero. All predictors stay in the model. It is especially useful when predictors are correlated, because it spreads weight across them instead of letting one coefficient blow up. In our data, Ridge shrinks purchase frequency from &euro;45.5 to &euro;35.3 and customer ID from &euro;16.9 to &euro;10.8.</p>
+
+  <h3>Lasso (L1)</h3>
+  <p class="post-formula"><strong>Loss = &Sigma; (actual &minus; predicted)<sup>2</sup> + &lambda; &times; &Sigma; |b<sub>j</sub>|</strong><span>The penalty is the sum of the absolute values of the coefficients.</span></p>
+  <p>The absolute-value penalty pushes every coefficient toward zero with the same force, however small it already is. A weak predictor can therefore reach exactly zero and drop out of the model. In our data, Lasso sets 9 of the 20 coefficients to exactly zero, including age. It is not perfect: customer ID keeps a small coefficient (&euro;4.7).</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/variable-selection-regularization/chart-3-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
+    <figcaption><span>Chart 3</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
+  </figure>
+  <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect.</p></div>
+
+  <h2>Variable Selection vs. Regularization: Two Approaches, Different Mechanisms</h2>
+  <p>Variable selection removes predictors from the chosen model. Ridge keeps all predictors and shrinks their coefficients. Lasso can do both.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Technique</th><th>What happens to the predictors</th><th>What happens to the coefficients</th></tr></thead>
+    <tbody>
+      <tr><td>Forward selection</td><td>Adds them one at a time; the rest stay out</td><td>Kept ones are unpenalized</td></tr>
+      <tr><td>Backward elimination</td><td>Starts with all, removes one at a time</td><td>Kept ones are unpenalized</td></tr>
+      <tr><td>Ridge (L2)</td><td>All stay in the model</td><td>All shrink, none reach zero</td></tr>
+      <tr><td>Lasso (L1)</td><td>Some are removed</td><td>The rest shrink</td></tr>
+    </tbody>
+  </table></div>
+  <p>The same four predictors from our customer data show the difference. Ordinary regression with all 20 predictors gives them coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9 per standard deviation. Coefficients below come from the Python demonstration in the next section.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Predictor</th><th>Forward selection</th><th>Ridge</th><th>Lasso</th></tr></thead>
+    <tbody>
+      <tr><td>Purchase frequency</td><td>Kept (1st)</td><td>&euro;35.3</td><td>&euro;40.6</td></tr>
+      <tr><td>Average order value</td><td>Kept (3rd)</td><td>&euro;23.6</td><td>&euro;21.4</td></tr>
+      <tr><td>Age</td><td>Left out</td><td>&minus;&euro;4.8</td><td>Removed (0)</td></tr>
+      <tr><td>Customer ID</td><td>Left out</td><td>&euro;10.8</td><td>&euro;4.7</td></tr>
+    </tbody>
+  </table></div>
+  <p>Selection gives a yes-or-no answer for each predictor. Ridge instead decides how much weight each predictor gets. Lasso does both at once, although as customer ID shows, it does not guarantee that every uninformative predictor disappears.</p>
+
+  <h2>Python Demonstration: Which Approach Generalizes Better?</h2>
+  <p>We fit three models on the same data and the same train/test split, so the comparison is fair: ordinary linear regression, Ridge regression and Lasso regression. The 100 customers are split into 60 for training and 40 for testing.</p>
+  <pre class="post-code"><code>from sklearn.model_selection import train_test_split
+
+X = df.drop(columns="net_revenue")   # 20 candidate predictors
+y = df["net_revenue"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.4, random_state=42
+)
+
+print("Training customers:", len(X_train))
+print("Test customers:", len(X_test))
+print("Candidate predictors:", X.shape[1])</code></pre>
+  <pre class="post-code post-code-out"><code>Training customers: 60
+Test customers: 40
+Candidate predictors: 20</code></pre>
+  <p>Next we build the three models and compare their errors on both datasets.</p>
+  <pre class="post-code"><code>import numpy as np
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, RidgeCV, LassoCV
+from sklearn.metrics import root_mean_squared_error
+
+alphas = np.logspace(-2, 3, 50)   # candidate penalty strengths
+
+models = {
+    "OLS": make_pipeline(StandardScaler(), LinearRegression()),
+    "Ridge": make_pipeline(
+        StandardScaler(),
+        RidgeCV(alphas=alphas, cv=5, scoring="neg_mean_squared_error"),
+    ),
+    "Lasso": make_pipeline(
+        StandardScaler(),
+        LassoCV(alphas=alphas, cv=5, random_state=42),
+    ),
+}
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    train_rmse = root_mean_squared_error(y_train, model.predict(X_train))
+    test_rmse = root_mean_squared_error(y_test, model.predict(X_test))
+    print(f"{name:&lt;6} train RMSE: {train_rmse:5.1f}   test RMSE: {test_rmse:5.1f}")</code></pre>
+  <pre class="post-code post-code-out"><code>OLS    train RMSE:  45.8   test RMSE:  76.8
+Ridge  train RMSE:  49.1   test RMSE:  72.9
+Lasso  train RMSE:  51.9   test RMSE:  71.5</code></pre>
+  <p>What the code does:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>StandardScaler</strong> puts the predictors on a comparable scale so the penalty treats them fairly. Inside a pipeline it is fitted on the training data only.</li>
+    <li><strong>RidgeCV and LassoCV</strong> choose the penalty strength from the <code>alphas</code> list using 5-fold cross-validation on the training customers. The test customers are not touched.</li>
+    <li><strong>RMSE</strong> (root mean squared error) is the typical prediction error in euros per customer. The code assumes <code>df</code> is your prepared DataFrame with <code>net_revenue</code> as the target.</li>
+  </ul>
+  <figure class="post-fig">
+    <img src="images/variable-selection-regularization/chart-4-rmse-comparison.svg" alt="Grouped bar chart of training and test RMSE for ordinary linear regression, Ridge and Lasso. Linear regression: training 45.8 euros, test 76.8. Ridge: training 49.1, test 72.9. Lasso: training 51.9, test 71.5." loading="lazy">
+    <figcaption><span>Chart 4</span> The model that fits the training customers best is the worst on new ones. Giving up a little training accuracy buys a lower test error. Illustrative data.</figcaption>
+  </figure>
+  <h3>Why the lowest training error is not the best result</h3>
+  <p>Ordinary regression has the lowest training error (&euro;45.8) but the highest test error (&euro;76.8), a gap of &euro;31. It has the most freedom, so it also fits the random quirks of the 60 customers it has seen. Ridge accepts a higher training error (&euro;49.1) and predicts new customers better (&euro;72.9). Lasso trades the most training accuracy (&euro;51.9) for the lowest test error (&euro;71.5). Training error only tells us how well a model memorized its data. Test error tells us how well it will work on customers it has not seen.</p>
+  <p>Lasso also produced a smaller model. We can list what it kept:</p>
+  <pre class="post-code"><code>import pandas as pd
+
+lasso = models["Lasso"]
+coefs = pd.Series(lasso[-1].coef_, index=X.columns)
+
+print("Chosen alpha:", round(lasso[-1].alpha_, 1))
+print("Predictors kept:", (coefs != 0).sum(), "of", len(coefs))
+print("Removed:", coefs[coefs == 0].index.tolist())</code></pre>
+  <pre class="post-code post-code-out"><code>Chosen alpha: 5.7
+Predictors kept: 11 of 20
+Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_tickets', 'newsletter_signup', 'days_since_last_order', 'page_views', 'social_followers']</code></pre>
+  <p>For reference, ordinary regression refitted on only the eight predictors chosen by forward selection reaches a test RMSE of &euro;71.5, practically the same as Lasso. Variable selection and Lasso found equally useful, much smaller models.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/variable-selection-regularization/chart-5-coefficients-by-method.svg" alt="Dot plot of 20 predictor coefficients in euros per standard deviation, with one row per predictor and three markers per row for ordinary regression, Ridge and Lasso. Ridge markers sit between the ordinary estimate and zero; Lasso markers sit at zero for nine predictors." loading="lazy">
+    <figcaption><span>Chart 5</span> Compared with ordinary regression (red), Ridge (blue) moves every coefficient toward zero. Lasso (black) moves some exactly onto zero, which removes the predictor. Coefficients are in &euro; per one standard deviation. Illustrative data.</figcaption>
+  </figure>
+  <div class="post-note"><p class="post-note-l">One split is one draw</p><p>The test set has only 40 customers, so the &euro;3.9 gap between ordinary regression and Ridge is small compared with the noise in the test error. We re-simulated the same setup 200 times. Lasso beat ordinary regression in 170 of 200 datasets and Ridge in 125 of 200. Lasso gains more here because many of the 20 predictors add little. Ridge tends to gain more when many predictors each carry some signal or are strongly correlated.</p></div>
+
+  <h2>What to Use and When</h2>
+  <p>No method wins in every situation. The choice depends on what you need from the model:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Forward or backward selection</strong> gives a short, readable list of predictors, but it is unstable and optimistic about its own results (see the limitations below).</li>
+    <li><strong>Ridge</strong> gives stable coefficients, especially when predictors are correlated, but it keeps every predictor, so the model is no simpler to explain.</li>
+    <li><strong>Lasso</strong> shrinks coefficients and drops weak predictors in one step. With a group of correlated predictors, it tends to keep one and drop the others, and which one it keeps can change with the data.</li>
+  </ul>
+  <p>Methods such as Elastic Net combine the Ridge and Lasso penalties when both behaviors are wanted.</p>
+
+  <h3>Choosing the Penalty Strength with Cross-Validation</h3>
+  <p>The model cannot learn &lambda; from the training data, because the training error would always prefer &lambda; = 0. We choose it by cross-validation. The training data is split into five parts. For each candidate &lambda;, the model is fitted on four parts and scored on the fifth, and this is repeated so that every part is used once for scoring. The &lambda; with the lowest average error wins.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/variable-selection-regularization/chart-6-cv-curves.svg" alt="Two line charts with identical axes showing cross-validated RMSE against penalty strength on a log scale. Both curves are flat at about 79 euros for very small penalties, fall to a minimum of about 68 euros, and then rise steeply. The minimum is marked at alpha about 14.6 for Ridge and about 5.7 for Lasso." loading="lazy">
+    <figcaption><span>Chart 6</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
+  </figure>
+
+  <h3>Limitations of Stepwise Selection</h3>
+  <p>Forward and backward selection are easy to explain, but they have well-known weaknesses:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Unstable.</strong> A small change in the data can produce a different set of predictors.</li>
+    <li><strong>Too optimistic.</strong> P-values, confidence intervals and R&sup2; are usually calculated as if the predictors had been chosen in advance. After selection on the same data, they look better than they should.</li>
+    <li><strong>Greedy.</strong> Each step looks only one move ahead, so it can miss predictors that are useful only in combination, and forward and backward selection can disagree.</li>
+    <li><strong>Arbitrary among correlated predictors.</strong> In our data, site visits entered second, right after purchase frequency, even though visits and orders move together.</li>
+    <li><strong>Sensitive to the criterion.</strong> Choosing by training R&sup2; or p-values favors overfitting. Use cross-validated error, adjusted R&sup2; or AIC/BIC, and judge the final model on held-out test data.</li>
+  </ul>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Variable selection decides which predictors enter the model. Regularization controls how large their coefficients can be. Ridge shrinks all coefficients and keeps every predictor; Lasso can also set some exactly to zero, so it does both.</p>
+  <p>Choose the penalty strength with cross-validation and compare models by test error, not training error. In our example, the lowest training error belonged to the model that predicted new customers worst.</p>
+  <p>Before choosing a method, ask one practical question: do we need a smaller set of predictors, more stable coefficients, or both?</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points">
+    <li><a href="overfitting-underfitting.html">Overfitting and Underfitting</a> Why a model can fit its training data well and still fail on new customers.</li>
+    <li><a href="multiple-linear-regression.html">Multiple Linear Regression</a> Several predictors at once, and why correlated predictors make coefficients unstable.</li>
+    <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> How R&sup2;, adjusted R&sup2; and error metrics measure fit.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
