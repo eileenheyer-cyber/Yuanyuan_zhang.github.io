@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Multiple Linear Regression – Yuanyuan Zhang</title>
-  <meta name="description" content="Multiple linear regression explained with an online retailer example: estimating net revenue per customer from several drivers at once, reading coefficients, handling categories and overlapping predictors, and checking the model on new data.">
+  <meta name="description" content="Multiple linear regression explained with an online retailer example: estimating net revenue per customer from several drivers at once, reading coefficients, handling categorical predictors and multicollinearity, and checking the model on new data.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -117,24 +117,24 @@ print(model.summary())</code></pre>
   </ul>
 
   <h3>The new assumption: no severe multicollinearity</h3>
-  <p>Predictors should not be almost copies of each other. Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two move almost together (correlation 0.96 here).</p>
+  <p>Predictors should not be highly correlated with one another. Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two are strongly correlated (correlation 0.96 here).</p>
   <ul class="post-points post-points-color">
     <li><strong>Model A</strong> includes both orders and items.</li>
     <li><strong>Model B</strong> keeps only orders.</li>
   </ul>
-  <p>The coefficient for orders hardly moves (&euro;49 in Model A, &euro;46 in Model B), but its standard error is more than three times larger in Model A (&euro;2.5 vs. &euro;0.7). The items coefficient is about zero (&minus;&euro;1.2), with an interval that covers both positive and negative values. The model cannot decide how to split the credit between two predictors carrying almost the same information.</p>
-  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors overlap, the individual coefficients become unreliable.</p>
+  <p>The coefficient for orders hardly moves (&euro;49 in Model A, &euro;46 in Model B), but its standard error is more than three times larger in Model A (&euro;2.5 vs. &euro;0.7). The items coefficient is about zero (&minus;&euro;1.2), with an interval that covers both positive and negative values. Because the two predictors are highly correlated, the model cannot separate their individual effects.</p>
+  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors are highly correlated, the standard errors of the individual coefficients inflate and the estimates become unstable.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
-    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its uncertainty grows more than threefold once a near-copy of it enters the model. Lines show 95% intervals. Illustrative data.</figcaption>
+    <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its uncertainty grows more than threefold once a highly correlated predictor enters the model. Lines show 95% intervals. Illustrative data.</figcaption>
   </figure>
 
 
   <h3>Detecting and addressing multicollinearity</h3>
   <ul class="post-points post-points-color">
     <li><strong>Correlation matrix or scatter plot matrix:</strong> shows which pairs of predictors move together.</li>
-    <li><strong>Variance Inflation Factor (VIF):</strong> values near 1 mean little overlap; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</li>
-    <li><strong>Fix:</strong> remove one of the overlapping predictors, or combine them into one (for example an average or an index), then check the VIF again.</li>
+    <li><strong>Variance Inflation Factor (VIF):</strong> values near 1 mean a predictor is almost uncorrelated with the others; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</li>
+    <li><strong>Fix:</strong> remove one of the highly correlated predictors, or combine them into one (for example an average or an index), then check the VIF again.</li>
   </ul>
 
   <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
@@ -156,7 +156,7 @@ print(model.summary())</code></pre>
     <p class="post-callout-q">&ldquo;So the question for the next budget meeting is: which channel brings customers who order more often and stay longer, and is Paid Search still worth its cost?&rdquo;</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Multiple linear regression estimates the relationship between an outcome and several predictors at once, and each coefficient is read with the other predictors held constant. Categories enter as dummy variables measured against a reference category, overlapping predictors blur individual coefficients, and the model should be judged on adjusted R&sup2;, residuals and new data, not on R&sup2; alone.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Multiple linear regression estimates the relationship between an outcome and several predictors at once, and each coefficient is read with the other predictors held constant. Categories enter as dummy variables measured against a reference category, highly correlated predictors (multicollinearity) inflate the standard errors of individual coefficients, and the model should be judged on adjusted R&sup2;, residuals and new data, not on R&sup2; alone.</p></div>
 
   <h2>Related posts</h2>
   <ul class="post-points">
