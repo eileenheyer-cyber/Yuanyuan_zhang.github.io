@@ -74,8 +74,9 @@
   <p>Multiple Linear Regression can combine numeric and categorical predictors. Categorical variables must first be encoded numerically so the model can use them.</p>
 
   <h3>Turning Categories into Numbers: Dummy Variables</h3>
-  <p>Region and acquisition channel are categorical variables. We represent their categories using binary (0/1) dummy variables.</p>
-  <p>For acquisition channel, Organic is the reference category:</p>
+  <p>Our model includes two categorical predictors: Region and Acquisition Channel. As explained in <a href="one-hot-encoding.html">One-Hot Encoding</a>, categorical variables can be represented using binary columns.</p>
+  <p>For this regression model, we use one category as the reference group and create dummy variables for the remaining categories.</p>
+  <p>For Acquisition Channel, Organic is the reference category:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Channel</th><th>Paid Search</th><th>Referral</th></tr></thead>
     <tbody>
@@ -84,10 +85,9 @@
       <tr><td>Referral</td><td>0</td><td>1</td></tr>
     </tbody>
   </table></div>
-  <p>Organic has no separate dummy column because it is the <strong>reference category</strong>. Its effect is represented by the intercept and the other model terms.</p>
-  <h3 class="post-h3-small">How to interpret the coefficients</h3>
-  <p>The Paid Search coefficient estimates the difference in predicted annual net revenue between Paid Search and Organic customers, holding the other predictors constant. The Referral coefficient is interpreted in the same way, using Organic as the reference.</p>
-  <p>Region works similarly, with Central as the reference category. With three regions, this requires two dummy variables. For more on this encoding, see <a href="one-hot-encoding.html">One-Hot Encoding</a>.</p>
+  <p>The model estimates a coefficient for Paid Search and another for Referral. Each coefficient represents the estimated difference in annual net revenue compared with Organic customers, holding the other predictors constant.</p>
+  <p>Region works the same way, using Central as the reference category.</p>
+  <p>This is how categorical information becomes part of the multiple regression equation.</p>
 
   <h2>Reading the Coefficients: What Each Number Means in Euros per Customer</h2>
   <pre class="post-code"><code>import statsmodels.formula.api as smf
