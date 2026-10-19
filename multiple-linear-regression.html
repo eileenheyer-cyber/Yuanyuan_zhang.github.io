@@ -56,7 +56,7 @@
   <p>Suppose the coefficient for Orders is &euro;40. Two otherwise identical customers differ by one order per year. The model predicts &euro;40 more in annual net revenue for the customer who places the additional order, assuming their basket size, tenure, and other predictors remain unchanged.</p>
   <p>The coefficients are estimated using <a href="least-squares.html">Least Squares</a>. The method finds the values that minimize the sum of squared differences between actual and predicted revenue.</p>
 
-  <h2>The Data: Net Revenue per Customer and Its Possible Drivers</h2>
+  <h2>The Data and Its Preparation</h2>
   <p>The outcome is net revenue per customer over the last 12 months, after returns and discounts. The five possible drivers:</p>
   <ul class="post-points post-points-color">
     <li><strong>Orders per year</strong> (numeric): about 6 on average, from 1 to 14.</li>
@@ -72,7 +72,7 @@
   </figure>
   <p>Multiple regression can mix numeric and categorical predictors, but categories must be turned into numbers first.</p>
 
-  <h2>Turning Categories into Numbers: Dummy Variables</h2>
+  <h3>Turning Categories into Numbers: Dummy Variables</h3>
   <p>Region and channel are words, not numbers. Each category becomes a 0/1 column called a dummy variable:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Channel</th><th>Paid Search</th><th>Referral</th></tr></thead>
