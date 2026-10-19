@@ -148,7 +148,7 @@ Test customers: 20</code></pre>
   </table></div>
   <p>Underfitting shows up as a high error on both sets. Overfitting shows up as a low training error but a much higher test error. Errors are RMSE (root mean squared error) in euros per customer.</p>
 
-  <p>Adding predictors also makes overfitting easier. In ordinary least squares regression with an intercept, R² on the training data never falls when a predictor is added, even a useless one, while R² on a test set can fall. Adjusted R² accounts for the number of predictors, but it does not replace testing on unseen data; see <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
+  <p>Adding predictors can reduce training error even when the new variables contribute little useful information. For predictive modeling, cross-validation helps compare models on data not used to fit them. Adjusted R&sup2; is another useful measure when comparing linear regression models, but it does not replace evaluating predictive performance on unseen data. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> for adjusted R&sup2;.</p>
 
   <h2>Bias and Variance</h2>
   <p>Underfitting and overfitting describe what goes wrong with a model. Bias and variance help explain why.</p>
