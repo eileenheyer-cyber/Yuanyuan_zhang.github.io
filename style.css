@@ -1558,7 +1558,7 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-formula.post-formula-sm .post-formula-lead { margin: 14px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.9rem; text-align: left; color: var(--muted); }
 .post-formula.post-formula-sm .post-formula-lead + ul { margin-top: 0; padding-top: 0; border-top: 0; }
 .post-formula .post-hat { position: relative; display: inline-block; margin: 0; font-size: inherit; color: inherit; }
-.post-formula .post-hat::before { content: "^"; position: absolute; left: 50%; top: -0.42em; transform: translateX(-50%) scaleX(2.6); font-size: 1.1em; line-height: 1; font-weight: 400; }
+.post-formula .post-hat::before { content: ""; position: absolute; left: 0.04em; right: 0.04em; top: -0.2em; height: 0.4em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpolyline points='2,18 50,3 98,18' fill='none' stroke='%230a0a0a' stroke-width='1.4' stroke-linejoin='miter' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
 /* Justified body text (add class post-justify to <article>): equal line lengths, hyphenated to avoid wide gaps */
 .post.post-justify > p:not(.overline):not(.post-formula),
 .post.post-justify .post-points li,
