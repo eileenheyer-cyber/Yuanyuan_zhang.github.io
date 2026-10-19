@@ -135,17 +135,21 @@ print(model.summary())</code></pre>
   <h3>Detecting and addressing multicollinearity</h3>
   <ul class="post-points post-points-color">
     <li><strong>Correlation matrix or scatterplot matrix:</strong> Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</li>
-    <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor. A VIF of 1 indicates no linear relationship with the other predictors; values above 5 or 10 are often treated as warning signs, depending on the context. In the model containing both orders and items, each has a VIF of about 12.</li>
-    <li><strong>Possible remedies:</strong> Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</li>
   </ul>
   <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-4-correlation-matrix.svg" alt="Correlation matrix of orders, items, basket size and tenure. Orders and items have a correlation of 0.96, shown as a dark blue cell. All other pairs are between 0.00 and 0.03." loading="lazy">
-    <figcaption><span>Chart 4</span> Orders and items are almost perfectly correlated (0.96), while basket size and tenure are unrelated to every other predictor. Illustrative data.</figcaption>
+    <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items, basket size and tenure, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; all other pairs show shapeless clouds." loading="lazy">
+    <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
   </figure>
+  <ul class="post-points post-points-color pc-2">
+    <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor. A VIF of 1 indicates no linear relationship with the other predictors; values above 5 or 10 are often treated as warning signs, depending on the context. In the model containing both orders and items, each has a VIF of about 12.</li>
+  </ul>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-5-vif.svg" alt="Bar chart of Variance Inflation Factors. Orders and items are both about 11.7, above the warning lines at 5 and 10. Basket size and tenure are both about 1." loading="lazy">
     <figcaption><span>Chart 5</span> Orders and items both exceed the common VIF warning thresholds at about 12, while basket size and tenure stay near 1. Illustrative data.</figcaption>
   </figure>
+  <ul class="post-points post-points-color pc-3">
+    <li><strong>Possible remedies:</strong> Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</li>
+  </ul>
 
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
 
