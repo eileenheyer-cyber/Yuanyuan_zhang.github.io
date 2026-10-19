@@ -59,9 +59,18 @@
   <p>Because the model fails to capture the pattern in its training data, it is also unlikely to make reliable predictions for new customers.</p>
 
   <h3>Overfitting</h3>
-  <p>Overfitting is the opposite problem. An overfitting model learns the training data too closely: it performs very well on the data it was built on, but clearly worse on new data.</p>
-  <p>Suppose NordHome gives a model 40 predictors for only 60 customers. The model starts treating quirks as rules. One customer who happened to order during a flash sale and spent a lot becomes part of the pattern. On new customers, those rules do not hold.</p>
-  <p>The reason is that every dataset contains two things: <strong>signal</strong>, the real relationship between predictors and outcome, and <strong>noise</strong>, random variation that is not part of that relationship. An overfitting model learns both. Its conclusions then apply only to the sample it was built on, not to the wider population.</p>
+  <p>Overfitting is the opposite problem. An overfitting model learns the training data too closely. It performs very well on the data it was trained on, but its predictions become less reliable when it encounters new data.</p>
+  <p>Imagine predicting net revenue per customer using 40 predictors but having data from only 60 customers. The model has many variables to work with relative to the number of observations. It may start treating random quirks as meaningful patterns. For example, one customer who happened to make a large purchase during a flash sale might disproportionately influence what the model learns. That pattern may not hold for other customers.</p>
+  <p>To understand why this happens, we need to distinguish between two things in the data:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Signal:</strong> The underlying relationships that help explain customer revenue.</li>
+    <li><strong>Noise:</strong> Random variation that does not reflect a reliable, generalizable relationship.</li>
+  </ul>
+  <p>An overfitting model learns both the signal and some of the noise. As a result, it fits its training data closely but struggles to generalize to the wider population.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/overfitting-underfitting/chart-2-signal-noise.svg" alt="Two scatter plots with identical axes. Left: a smooth blue curve shows the signal, gray vertical lines show each customer's distance from it as noise, and one flash-sale customer far above the curve is circled in red. Right: a red curve passes through every training customer, including a sharp spike at the flash-sale customer, while hollow dots for new customers sit close to the smooth dashed signal curve instead." loading="lazy">
+    <figcaption><span>Chart 2</span> Each customer&#8217;s revenue is the smooth signal plus random noise. The overfitting model passes through every training customer, noise included, so it spikes at the flash-sale customer. New customers follow the smooth signal, not the spikes. Illustrative data.</figcaption>
+  </figure>
 
   <h2>Training Data and Test Data</h2>
   <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
@@ -72,7 +81,7 @@
   <p>Every record goes into exactly one of the two parts. In NordHome&#8217;s case, 80 of 100 customers train the model and 20 are held back.</p>
   <figure class="post-fig">
     <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
-    <figcaption><span>Chart 2</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
+    <figcaption><span>Chart 3</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
   </figure>
 
   <h3>How to Tell Them Apart</h3>
@@ -85,10 +94,10 @@
       <tr><td>Very low</td><td>Much higher</td><td>Overfitting</td></tr>
     </tbody>
   </table></div>
-  <p>Chart 3 shows the same 24 customers fitted three ways: a straight line (degree 1), a smooth curve (degree 2) and a very flexible curve (degree 12).</p>
+  <p>Chart 4 shows the same 24 customers fitted three ways: a straight line (degree 1), a smooth curve (degree 2) and a very flexible curve (degree 12).</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/overfitting-underfitting/chart-3-three-fits.svg" alt="Three scatter plots of the same 24 customers with identical axes. The first has a nearly flat straight line, the second a smooth hump-shaped curve following the points, and the third a wildly oscillating curve that passes close to the points and shoots off the chart at the right edge." loading="lazy">
-    <figcaption><span>Chart 3</span> The wiggly curve is close to every past customer, but between and beyond those points it swings wildly. One new customer would be badly mispredicted. Illustrative data.</figcaption>
+    <figcaption><span>Chart 4</span> The wiggly curve is close to every past customer, but between and beyond those points it swings wildly. One new customer would be badly mispredicted. Illustrative data.</figcaption>
   </figure>
 
   <h2>Why More Predictors Inflate R²</h2>
@@ -98,7 +107,7 @@
   <p class="post-formula"><strong>Adjusted R² = 1 − <span class="frac"><span>(1 − R²)(n − 1)</span><span>n − k − 1</span></span></strong><span>n is the number of observations and k is the number of predictors. When you compare models with different numbers of predictors, choose the one with the higher adjusted R², not the higher R².</span></p>
   <figure class="post-fig">
     <img src="images/overfitting-underfitting/chart-4-adjusted-r2.svg" alt="Line chart of R squared and adjusted R squared against the number of predictors. R squared keeps rising slowly after four predictors, while adjusted R squared peaks at four predictors and then declines." loading="lazy">
-    <figcaption><span>Chart 4</span> R² keeps creeping up as junk predictors are added (0.54 with the four useful ones, 0.58 with all 24). Adjusted R² peaks at the four useful predictors and then falls, from 0.52 to 0.44. Simulated data with four real predictors and 100 customers.</figcaption>
+    <figcaption><span>Chart 5</span> R² keeps creeping up as junk predictors are added (0.54 with the four useful ones, 0.58 with all 24). Adjusted R² peaks at the four useful predictors and then falls, from 0.52 to 0.44. Simulated data with four real predictors and 100 customers.</figcaption>
   </figure>
 
   <h2>Bias and Variance</h2>
@@ -110,7 +119,7 @@
   <p>An ideal model would have low bias and low variance. But as you reduce one, the other tends to rise. This is the <strong>bias-variance tradeoff</strong>, and it is why underfitting and overfitting can never be removed completely. The goal is to keep both as small as you can.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/overfitting-underfitting/chart-5-error-and-bias-variance.svg" alt="Two charts side by side. Left: training error falls steadily as model complexity grows while test error is lowest at degree 2 and rises sharply after degree 10. Right: a schematic showing bias falling, variance rising and total error forming a U shape with its minimum in the middle." loading="lazy">
-    <figcaption><span>Chart 5</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
+    <figcaption><span>Chart 6</span> Training error always improves with complexity, but test error turns upward once the model starts memorizing noise. The best model sits where adding complexity starts to cost more than it gains. Left: simulated data. Right: schematic.</figcaption>
   </figure>
 
   <h2>How to Reduce Each Problem</h2>
