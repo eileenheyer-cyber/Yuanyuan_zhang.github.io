@@ -57,20 +57,21 @@
   <p>The coefficients are estimated using <a href="least-squares.html">Least Squares</a>. The method finds the values that minimize the sum of squared differences between actual and predicted revenue.</p>
 
   <h2>The Data and Its Preparation</h2>
-  <p>The outcome is net revenue per customer over the last 12 months, after returns and discounts. The five possible drivers:</p>
+  <p>The outcome is net revenue per customer over the last 12 months, measured in euros (&euro;), after returns and discounts. The model uses five potential predictors:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Orders per year</strong> (numeric): about 6 on average, from 1 to 14.</li>
-    <li><strong>Average basket size</strong> (numeric): about &euro;62 per order.</li>
-    <li><strong>Customer tenure</strong> (numeric): years since the first order, about 3 on average.</li>
-    <li><strong>Region</strong> (categorical): North, Central, South.</li>
-    <li><strong>Acquisition channel</strong> (categorical): Organic, Paid Search, Referral.</li>
+    <li><strong>Orders per year</strong> (numeric): approximately 6 on average, ranging from 1 to 14.</li>
+    <li><strong>Average basket size</strong> (numeric): approximately &euro;62 per order.</li>
+    <li><strong>Customer tenure</strong> (numeric): years since the first order, averaging around 3 years.</li>
+    <li><strong>Region</strong> (categorical): North, Central, or South.</li>
+    <li><strong>Acquisition channel</strong> (categorical): Organic, Paid Search, or Referral.</li>
   </ul>
+  <p>The figures are illustrative and based on simulated data, not a real retailer.</p>
   <p>The data contain 1,200 customers. The model is fitted on 900 of them, and the other 300 are held back for the test at the end of this post.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-1-revenue-distribution.svg" alt="Histogram of net revenue per customer, ranging from about 50 to 880 euros and centered near 420 euros. A dashed line marks the median at 414 euros and a red line the mean at 420 euros." loading="lazy">
     <figcaption><span>Chart 1</span> Customers differ widely: most sit between &euro;250 and &euro;600, around a typical &euro;420. That spread is what the predictors have to explain, and no single variable can do it alone. Illustrative data.</figcaption>
   </figure>
-  <p>Multiple regression can mix numeric and categorical predictors, but categories must be turned into numbers first.</p>
+  <p>Multiple Linear Regression can combine numeric and categorical predictors. Categorical variables must first be encoded numerically so the model can use them.</p>
 
   <h3>Turning Categories into Numbers: Dummy Variables</h3>
   <p>Region and channel are words, not numbers. Each category becomes a 0/1 column called a dummy variable:</p>
