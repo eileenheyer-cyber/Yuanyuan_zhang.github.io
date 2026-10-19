@@ -107,25 +107,58 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
-  <h2>Multicollinearity: When Predictors Are Highly Correlated</h2>
+  <h2>Multicollinearity: When Predictors Tell the Same Story</h2>
   <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
-  <h3>What Is Multicollinearity and Why Is It a Problem?</h3>
-  <p>Multicollinearity occurs when predictors are highly correlated, making it difficult for a regression model to separate their individual effects on the target variable. Suppose the retailer includes both orders per year and items bought per year. Customers who order more frequently tend to buy more items, so these predictors are strongly correlated (correlation of about 0.96 in this illustrative example).</p>
-  <p>Compare two models:</p>
+
+  <h3>What Is Multicollinearity?</h3>
+  <p>Multicollinearity occurs when two or more independent variables in a regression model are highly correlated.</p>
+  <p>Imagine an online retailer that wants to predict annual net revenue per customer. The model uses two predictors:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Model A:</strong> Includes both orders per year and items bought per year.</li>
-    <li><strong>Model B:</strong> Includes orders per year only.</li>
+    <li><strong>Orders per year:</strong> How often a customer places an order.</li>
+    <li><strong>Items bought per year:</strong> How many items a customer purchases in total.</li>
   </ul>
-  <p>The estimated coefficient for orders changes only slightly, from &euro;46 per additional order in Model B to &euro;49 in Model A. However, its standard error increases from &euro;0.7 to &euro;2.5.</p>
-  <p>Why? Orders per year and items bought per year are highly correlated. When both predictors enter the model, it becomes harder to estimate their individual relationships with revenue precisely. The coefficient for items bought is &minus;&euro;1.2, but its confidence interval crosses zero, so its individual association with revenue is uncertain.</p>
-  <p><strong>The key lesson:</strong> Multicollinearity does not automatically make a regression model useless. Predictions within the observed data range may remain reasonably accurate, while individual coefficients become less precise and more sensitive to changes in the data or model specification.</p>
+  <p>Customers who place more orders tend to buy more items over the course of a year. As a result, these two predictors contain overlapping information. In our illustrative data, their correlation is about 0.96.</p>
+  <p>This creates a challenge for the regression model: <strong>how much of the relationship with revenue should be attributed to orders, and how much to items bought?</strong> That is the central problem of multicollinearity.</p>
+
+  <h3>Why Is It a Problem?</h3>
+  <p>The problem becomes clearer when we compare two models.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Model A: One predictor.</strong> The model uses orders per year to predict revenue.</li>
+    <li><strong>Model B: Two predictors.</strong> The model uses both orders per year and items bought per year.</li>
+  </ul>
+  <p>When both predictors are included, the model must estimate the individual contribution of each while accounting for the other. Because the predictors are strongly correlated, it becomes more difficult to distinguish their individual effects.</p>
+  <p>The model may still predict revenue reasonably well. However, its estimates of the individual coefficients can become less precise.</p>
+
+  <h3>What Happens to the Regression Coefficients?</h3>
+  <p>Consider this illustrative example:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Metric</th><th>Model A: Orders only</th><th>Model B: Both predictors</th></tr></thead>
+    <tbody>
+      <tr><td>Coefficient for orders</td><td>&euro;46</td><td>&euro;49</td></tr>
+      <tr><td>Standard error</td><td>&euro;0.70</td><td>&euro;2.50</td></tr>
+    </tbody>
+  </table></div>
+  <p>The estimated coefficient for orders changes only slightly, from &euro;46 to &euro;49. However, its standard error increases considerably.</p>
+  <p><strong>What does this mean?</strong> The coefficient represents the estimated change in revenue associated with one additional order, holding the other predictors constant. The standard error describes the uncertainty in that estimate. A larger standard error means the coefficient has been estimated less precisely.</p>
+  <p>When two predictors contain similar information, the model has more difficulty separating their individual contributions. Consequently, the estimated coefficients can become less precise and more sensitive to changes in the data. The coefficient for items bought is &minus;&euro;1.2, but its confidence interval crosses zero, so its individual association with revenue is uncertain.</p>
   <figure class="post-fig post-fig-wide post-fig-pair">
     <img src="images/multiple-linear-regression/chart-3a-predictors.svg" alt="Scatter plot of items bought per year against orders per year for 900 customers. The points follow a tight rising line, with a correlation of 0.96." loading="lazy">
-    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model B, without items: plus 46 euros with a short interval. Orders in Model A, with items: plus 49 euros with an interval more than three times as wide. Items in Model A: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
+    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46 euros with a short interval. Orders in Model B, orders and items: plus 49 euros with an interval more than three times as wide. Items in Model B: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
     <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46 to &euro;49, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
   </figure>
 
-  <h3>How to Detect and Address It</h3>
+  <h3>Does Multicollinearity Make the Model Useless?</h3>
+  <p>Not necessarily.</p>
+  <p>Multicollinearity primarily creates problems when we want to interpret the individual regression coefficients. It does not automatically make predictions unreliable.</p>
+  <p>A model can still produce reasonably accurate predictions within the range of data it has observed, even when individual coefficients are difficult to interpret. However, highly correlated predictors can make coefficients unstable and can affect predictions in situations where the relationships between predictors change, particularly outside the observed data range.</p>
+  <p>This distinction is important:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Prediction:</strong> How accurately can the model estimate revenue?</li>
+    <li><strong>Interpretation:</strong> How confidently can we explain the individual relationship between each predictor and revenue?</li>
+  </ul>
+  <p>A model can perform well at the first task while struggling with the second.</p>
+
+  <h3>How Can We Detect Multicollinearity?</h3>
   <h4>Correlation matrix or scatterplot matrix</h4>
   <p>Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</p>
   <figure class="post-fig">
@@ -151,7 +184,7 @@ vifs = pd.Series(
 )
 print(vifs.drop("const").round(1))</code></pre>
   <p><code>X</code> contains the predictor columns, with categorical variables encoded as dummy variables. The constant column is needed for the calculation, but its own VIF is not reported.</p>
-  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model A, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
+  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.70 to &euro;2.50.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
     <tbody>
