@@ -117,7 +117,13 @@
     <figcaption><span>Chart 5</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
   </figure>
   <h4 style="font-size:1.2rem">Elastic Net</h4>
-  <p>Elastic Net is a third option that combines the Ridge (L2) and Lasso (L1) penalties. A mixing parameter sets the balance between the two: more weight on L1 behaves more like Lasso, more weight on L2 behaves more like Ridge. Like Lasso, it can set coefficients exactly to zero. Like Ridge, it handles correlated predictors more gracefully, because it tends to keep a group of related predictors together instead of arbitrarily picking one. In scikit-learn, <code>ElasticNetCV</code> chooses both the penalty strength and the mixing ratio by cross-validation.</p>
+  <p>Elastic Net is a third option that combines the Ridge (L2) and Lasso (L1) penalties. A mixing parameter sets the balance between the two:</p>
+  <ul class="post-points">
+    <li><strong>Balance.</strong> More weight on L1 behaves more like Lasso; more weight on L2 behaves more like Ridge.</li>
+    <li><strong>Like Lasso,</strong> it can set coefficients exactly to zero.</li>
+    <li><strong>Like Ridge,</strong> it handles correlated predictors more gracefully, because it tends to keep a group of related predictors together instead of arbitrarily picking one.</li>
+    <li><strong>In scikit-learn,</strong> <code>ElasticNetCV</code> chooses both the penalty strength and the mixing ratio by cross-validation.</li>
+  </ul>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect; Elastic Net combines the two.</p></div>
 
   <h2>Variable Selection vs. Regularization: Two Approaches, Different Mechanisms</h2>
