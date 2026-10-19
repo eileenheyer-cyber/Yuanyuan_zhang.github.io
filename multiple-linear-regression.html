@@ -236,13 +236,13 @@ print(vifs.drop("const").round(1))</code></pre>
   <p>Three questions decide whether the model can be trusted:</p>
   <h3>Adjusted R&sup2;: How Much Variation Does the Model Explain?</h3>
   <p>The model has an R&sup2; of 0.82, meaning it explains 82% of the variation in revenue in the training data. The adjusted R&sup2; is also 0.82, suggesting that accounting for the number of predictors makes little difference to the overall fit. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
-  <h3>Do the Errors Behave as Expected?</h3>
+  <h3>Residuals: Do the Errors Behave as Expected?</h3>
   <p>The residuals appear randomly scattered around zero, with no obvious curve or funnel shape. The Q&ndash;Q plot also follows the reference line closely. These patterns support the linearity, constant-variance and approximate-normality assumptions, although the plots alone cannot prove that all assumptions are satisfied.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/multiple-linear-regression/chart-5-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
     <figcaption><span>Chart 5</span> Residuals scatter evenly around zero and the Q-Q points follow the line, which supports the model assumptions. Illustrative data, training customers.</figcaption>
   </figure>
-  <h3>Does It Work on Customers It Has Not Seen?</h3>
+  <h3>New Data: Does It Work on Customers It Has Not Seen?</h3>
   <p>The Root Mean Squared Error (RMSE, a measure of prediction error that gives larger mistakes more weight) is &euro;52.8 on the training data and &euro;51.6 on the held-out test data. The similar error levels suggest that the model generalizes well to unseen customers, with no obvious sign of overfitting. The slightly lower test error may simply mean that these customers were easier to predict. See <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
 
   <h2>How to explain it to stakeholders</h2>
