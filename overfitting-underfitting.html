@@ -46,7 +46,7 @@
     <li><strong>Training data</strong> is used to build the model.</li>
     <li><strong>Test data</strong> (also called holdout or validation data) is kept back and only used to check how the model performs on customers it has never seen.</li>
   </ul>
-  <p>Every record goes into exactly one of the two parts. In NordHome&#8217;s case, 80 of 100 customers train the model and 20 are held back.</p>
+  <p>Every record goes into exactly one of the two parts. In our customer example, 80 of 100 customers train the model and 20 are held back.</p>
   <figure class="post-fig">
     <img src="images/overfitting-underfitting/chart-2-split.svg" alt="A grid of 100 dots, 80 blue for training data and 20 red for test data, scattered at random." loading="lazy">
     <figcaption><span>Chart 1</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
@@ -101,7 +101,7 @@
   </figure>
 
   <h2>Why More Predictors Inflate R²</h2>
-  <p>R² never goes down when you add a predictor, even a useless one. If NordHome adds the number of letters in the customer&#8217;s name to its revenue model, R² still creeps up, because the model gets more room to bend toward the sample.</p>
+  <p>R² never goes down when you add a predictor, even a useless one. If we add the number of letters in the customer&#8217;s name to the revenue model, R² still creeps up, because the model gets more room to bend toward the sample.</p>
   <p>A higher R² can therefore be a false sign of progress. It can even be a warning sign of overfitting.</p>
   <p>This is what <strong>adjusted R²</strong> is for. It charges a penalty for every added predictor and only rewards predictors that really help:</p>
   <p class="post-formula"><strong>Adjusted R² = 1 − <span class="frac"><span>(1 − R²)(n − 1)</span><span>n − k − 1</span></span></strong><span>n is the number of observations and k is the number of predictors. When you compare models with different numbers of predictors, choose the one with the higher adjusted R², not the higher R².</span></p>
@@ -125,7 +125,7 @@
   <h2>How to Reduce Each Problem</h2>
   <h3>If the model underfits</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Add relevant predictors.</strong> For NordHome: order frequency, basket size, region.</li>
+    <li><strong>Add relevant predictors.</strong> For customer revenue: order frequency, basket size, region.</li>
     <li><strong>Collect more data.</strong> The model needs enough examples to learn from.</li>
     <li><strong>Engineer better features.</strong> For example, turn order dates into &#8220;days since last order&#8221;, or add a squared term for a curved relationship.</li>
   </ul>
