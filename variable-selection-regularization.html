@@ -71,10 +71,12 @@
   </figure>
 
   <h3>Backward elimination</h3>
-  <p>Backward elimination works in the opposite direction. It starts with all 20 predictors and removes the least useful one at each step, stopping when every removal would make the model worse. In our data it ends at the same eight predictors. It needs more customers than predictors to fit its starting model.</p>
+  <p>Backward elimination starts with all 20 candidate predictors and removes the least useful one at each step. After each removal, the model is evaluated again using the chosen selection criterion. The process stops when removing another predictor no longer improves that criterion.</p>
+  <p>In our example, backward elimination selects eight predictors. However, it does not necessarily select the same eight as forward selection: the result can depend on the selection criterion and the combination of predictors already in the model.</p>
+  <p>Backward elimination also requires the initial model to be estimable. With only 60 training customers and 20 predictors, fitting the starting model is possible in this example, but the estimates may be unstable, especially if predictors are strongly correlated.</p>
   <figure class="post-fig">
-    <img src="images/variable-selection-regularization/chart-3-selection-funnel.svg" alt="Diagram: a grid of 20 candidate predictors, eight of them filled blue and numbered 1 to 8 in order of entry, passes through a funnel labeled forward selection into a box listing the eight selected predictors: purchase frequency, site visits, average order value, loyalty member, coupon uses, distance to store, newsletter sign-up and wishlist items." loading="lazy">
-    <figcaption><span>Chart 3</span> Forward selection narrows 20 candidates to 8. Age and customer ID never earn a place. Illustrative data.</figcaption>
+    <img src="images/variable-selection-regularization/chart-3-backward-elimination.svg" alt="Diagram: a grid of 20 candidate predictors passes through a funnel labeled backward elimination, which removes the least useful predictor at a time, into a box listing the eight remaining predictors: purchase frequency, average order value, loyalty member, site visits, wishlist items, distance to store, newsletter sign-up and coupon uses. Hollow circles are numbered 1 to 12 in the order they were removed, starting with customer ID and ending with review count." loading="lazy">
+    <figcaption><span>Chart 3</span> Backward elimination removes predictors one at a time, starting with customer ID, until eight remain. Age is removed 11th. In this example the eight that remain happen to be the same as those forward selection chose, but that is not guaranteed. Illustrative data.</figcaption>
   </figure>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Selection decides which predictors enter the model. The predictors that remain keep their ordinary, unpenalized coefficients.</p></div>
 
