@@ -58,6 +58,11 @@
   </ul>
   <p>Because the model fails to capture the pattern in its training data, it is also unlikely to make reliable predictions for new customers.</p>
 
+  <h3 class="post-h3-small">Overfitting</h3>
+  <p>Overfitting is the opposite problem. An overfitting model learns the training data too closely: it performs very well on the data it was built on, but clearly worse on new data.</p>
+  <p>Suppose NordHome gives a model 40 predictors for only 60 customers. The model starts treating quirks as rules. One customer who happened to order during a flash sale and spent a lot becomes part of the pattern. On new customers, those rules do not hold.</p>
+  <p>The reason is that every dataset contains two things: <strong>signal</strong>, the real relationship between predictors and outcome, and <strong>noise</strong>, random variation that is not part of that relationship. An overfitting model learns both. Its conclusions then apply only to the sample it was built on, not to the wider population.</p>
+
   <h2>Training Data and Test Data</h2>
   <p>To see whether a model works on new data, data scientists split the dataset at random before building it:</p>
   <ul class="post-points post-points-color">
@@ -70,10 +75,7 @@
     <figcaption><span>Chart 2</span> The test customers stand in for the future. If the model has never seen them, how it performs on them is an honest preview of how it will perform on tomorrow&#8217;s customers. Illustrative data.</figcaption>
   </figure>
 
-  <h2>Overfitting</h2>
-  <p>Underfitting shows up as poor performance on the training data. Overfitting does not. An overfitting model performs very well on the training data and clearly worse on the test data.</p>
-  <p>Suppose NordHome gives a model 40 predictors for only 60 customers. The model starts treating quirks as rules. One customer who happened to order during a flash sale and spent a lot becomes part of the pattern. On new customers, those rules do not hold.</p>
-  <p>The reason is that every dataset contains two things: <strong>signal</strong>, the real relationship between predictors and outcome, and <strong>noise</strong>, random variation that is not part of that relationship. An overfitting model learns both. Its conclusions then apply only to the sample it was built on, not to the wider population.</p>
+  <h3 class="post-h3-small">How to Tell Them Apart</h3>
   <p>To tell the three situations apart, compare the error on the training data with the error on the test data:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Training error</th><th>Test error</th><th>Diagnosis</th></tr></thead>
