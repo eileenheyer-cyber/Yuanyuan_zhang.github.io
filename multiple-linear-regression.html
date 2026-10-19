@@ -133,13 +133,13 @@ print(model.summary())</code></pre>
   </figure>
 
   <h3>Detecting and addressing multicollinearity</h3>
-  <h3 class="post-h3-small">Correlation matrix or scatterplot matrix</h3>
+  <h3>Correlation matrix or scatterplot matrix</h3>
   <p>Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items, basket size and tenure, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; all other pairs show shapeless clouds." loading="lazy">
     <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
   </figure>
-  <h3 class="post-h3-small">Variance Inflation Factor (VIF)</h3>
+  <h3>Variance Inflation Factor (VIF)</h3>
   <p>Measures how strongly the other predictors explain a given predictor.</p>
   <p>To get it, fit a regression of that predictor on all the other predictors and take its R&sup2;. Then:</p>
   <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
@@ -159,7 +159,7 @@ vifs = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]</code
     </tbody>
   </table></div>
   <p>In our model, orders and items both have a VIF of about 12; basket size and tenure are about 1.</p>
-  <h3 class="post-h3-small">Possible remedies</h3>
+  <h3>Possible remedies</h3>
   <p>Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</p>
 
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
