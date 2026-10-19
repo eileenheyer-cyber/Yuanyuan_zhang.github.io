@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261019c">
+  <link rel="stylesheet" href="style.css?v=20261019e">
 </head>
 <body>
 
@@ -42,14 +42,19 @@
 
   <h2>From One Predictor to Several</h2>
   <h3 class="post-h3-small">The multiple regression equation</h3>
-  <p>In simple regression, revenue is explained by one variable. In multiple regression, every additional driver gets its own term:</p>
-  <div class="post-formula post-formula-sm"><strong>Net revenue = b<sub>0</sub> + b<sub>1</sub> &middot; Orders + b<sub>2</sub> &middot; Basket size + b<sub>3</sub> &middot; Tenure + &hellip;</strong>
+  <p>In <a href="simple-linear-regression.html">Simple Linear Regression</a>, revenue is modeled using one predictor. Multiple Linear Regression extends this idea by including several predictors, each with its own coefficient.</p>
+  <p>For an online retailer, net revenue might depend on order frequency, average basket size, and customer tenure.</p>
+  <h3 class="post-h3-small">The model</h3>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> Orders + b<sub>2</sub> BasketSize + b<sub>3</sub> Tenure</strong>
+    <p class="post-formula-lead">Each coefficient represents a different part of the model:</p>
     <ul class="post-points post-points-color">
-    <li><strong>b<sub>0</sub> &mdash; Intercept:</strong> The model&rsquo;s predicted revenue when all numeric predictors are zero and categorical predictors are at their reference values.</li>
-    <li><strong>b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub> &hellip; &mdash; Coefficients:</strong> Each coefficient estimates how much predicted net revenue changes when its predictor increases by one unit, while the other predictors remain constant.</li>
-  </ul>
+      <li><strong>b<sub>0</sub> &mdash; Intercept:</strong> The predicted revenue when all numeric predictors are zero and categorical predictors are at their reference categories.</li>
+      <li><strong>b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub> &mdash; Coefficients:</strong> Each coefficient estimates the change in predicted revenue associated with a one-unit increase in its predictor, while the other predictors remain constant.</li>
+    </ul>
   </div>
-  <p>&ldquo;All other predictors stay the same&rdquo; is the key idea. It lets us compare two customers who differ in only one thing. If they have the same basket size and tenure, b<sub>1</sub> tells us what one extra order is worth. The coefficients are still found with <a href="least-squares.html">Least Squares</a>: the model picks the values that make the squared gaps between actual and predicted revenue as small as possible.</p>
+  <h3 class="post-h3-small">What does &ldquo;holding other predictors constant&rdquo; mean?</h3>
+  <p>Suppose the coefficient for Orders is &euro;40. Two otherwise identical customers differ by one order per year. The model predicts &euro;40 more in annual net revenue for the customer who places the additional order, assuming their basket size, tenure, and other predictors remain unchanged.</p>
+  <p>The coefficients are estimated using <a href="least-squares.html">Least Squares</a>. The method finds the values that minimize the sum of squared differences between actual and predicted revenue.</p>
 
   <h2>The Data: Net Revenue per Customer and Its Possible Drivers</h2>
   <p>The outcome is net revenue per customer over the last 12 months, after returns and discounts. The five possible drivers:</p>
