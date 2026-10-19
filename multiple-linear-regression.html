@@ -113,7 +113,7 @@ print(model.summary())</code></pre>
   <h3>Interaction Terms in Regression</h3>
   <p>Interaction terms allow the effect of one predictor on the target variable to depend on another predictor.</p>
   <p>For example, an additional order might generate different revenue depending on whether a customer came from Paid Search or Organic Search.</p>
-  <p>In our model, one more order adds &euro;46.4 for every customer, whatever the channel. Written with just these two predictors, the model simply adds the two effects:</p>
+  <p>In our full model, one more order adds &euro;46.4 for every customer, whatever the channel. To keep the formulas simple, we show only two predictors here, so the model simply adds the two effects:</p>
   <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; PaidSearch</strong></div>
   <p>Without an interaction term, the model assumes that an additional order has the same effect on revenue across acquisition channels.</p>
   <p>But this may not be realistic. Paid Search customers might generate less revenue per additional order than Organic Search customers, for example because of differences in discounts or profit margins.</p>
@@ -121,11 +121,11 @@ print(model.summary())</code></pre>
   <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; PaidSearch + b<sub>3</sub> &times; (Orders &times; PaidSearch)</strong></div>
   <p>The effect of one additional order now depends on the channel:</p>
   <ul class="post-points">
-    <li><strong>Organic Search</strong> (PaidSearch = 0): effect of one additional order = <em>b</em><sub>1</sub></li>
+    <li><strong>All other customers, Organic and Referral</strong> (PaidSearch = 0): effect of one additional order = <em>b</em><sub>1</sub></li>
     <li><strong>Paid Search</strong> (PaidSearch = 1): effect of one additional order = <em>b</em><sub>1</sub> + <em>b</em><sub>3</sub></li>
   </ul>
-  <p>The interaction coefficient <em>b</em><sub>3</sub> tells us how much the effect of an additional order differs for Paid Search customers compared with the reference group. If <em>b</em><sub>3</sub> is 0, there is no interaction.</p>
-  <p>For example (illustrative numbers, our model does not include this interaction): with <em>b</em><sub>1</sub> = 46.4 and <em>b</em><sub>3</sub> = &minus;6, one more order adds &euro;46.4 for Organic Search customers but only &euro;40.4 for Paid Search customers.</p>
+  <p>The interaction coefficient <em>b</em><sub>3</sub> tells us how much the effect of an additional order differs for Paid Search customers compared with all other customers. If <em>b</em><sub>3</sub> is 0, there is no interaction.</p>
+  <p>For example (illustrative numbers, our model does not include this interaction): with <em>b</em><sub>1</sub> = 46.4 and <em>b</em><sub>3</sub> = &minus;6, one more order adds &euro;46.4 for all other customers but only &euro;40.4 for Paid Search customers.</p>
   <p>In Python, a <code>*</code> in the formula adds both variables and their product:</p>
   <pre class="post-code"><code>model = smf.ols("net_revenue ~ orders * paid_search", data=train).fit()</code></pre>
 
