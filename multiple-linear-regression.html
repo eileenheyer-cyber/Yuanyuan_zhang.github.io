@@ -36,33 +36,31 @@
 
   <p>An online retailer looks at two customers. Both placed 6 orders last year, yet one generated &euro;280 in net revenue and the other &euro;520. <a href="simple-linear-regression.html">Simple Linear Regression</a> can model how revenue relates to order frequency, but because both customers placed the same number of orders, it cannot explain their revenue difference using that predictor alone.</p>
 
-  <p>Average basket size, customer tenure, and acquisition channel may help explain the gap.</p>
+  <p>Average basket size and acquisition channel may help explain the gap.</p>
 
   <p>Multiple linear regression estimates the relationship between an outcome and several predictors at the same time. This post builds one for net revenue per customer. The numbers come from simulated data for an online retailer, so the patterns are realistic but not from a real company.</p>
 
   <h2>From One Predictor to Several</h2>
   <h3>The multiple regression equation</h3>
   <p>In <a href="simple-linear-regression.html">Simple Linear Regression</a>, revenue is modeled using one predictor. Multiple Linear Regression extends this idea by including several predictors, each with its own coefficient.</p>
-  <p>For an online retailer, net revenue might depend on order frequency, average basket size, and customer tenure.</p>
+  <p>For an online retailer, net revenue might depend on order frequency, average basket size, and the channel through which the customer was acquired.</p>
   <h3>The model</h3>
-  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; BasketSize + b<sub>3</sub> &times; Tenure</strong>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; BasketSize</strong>
     <p class="post-formula-lead">Each coefficient represents a different part of the model:</p>
     <ul class="post-points post-points-color">
       <li><strong>b<sub>0</sub> &mdash; Intercept:</strong> The predicted revenue when all numeric predictors are zero and categorical predictors are at their reference categories.</li>
-      <li><strong>b<sub>1</sub>, b<sub>2</sub>, b<sub>3</sub> &mdash; Coefficients:</strong> Each coefficient estimates the change in predicted revenue associated with a one-unit increase in its predictor, while the other predictors remain constant.</li>
+      <li><strong>b<sub>1</sub>, b<sub>2</sub> &mdash; Coefficients:</strong> Each coefficient estimates the change in predicted revenue associated with a one-unit increase in its predictor, while the other predictors remain constant.</li>
     </ul>
   </div>
   <h3>What does &ldquo;holding other predictors constant&rdquo; mean?</h3>
-  <p>Suppose the coefficient for Orders is &euro;40. Two otherwise identical customers differ by one order per year. The model predicts &euro;40 more in annual net revenue for the customer who places the additional order, assuming their basket size, tenure, and other predictors remain unchanged.</p>
+  <p>Suppose the coefficient for Orders is &euro;40. Two otherwise identical customers differ by one order per year. The model predicts &euro;40 more in annual net revenue for the customer who places the additional order, assuming their basket size, acquisition channel, and other predictors remain unchanged.</p>
   <p>The coefficients are estimated using <a href="least-squares.html">Least Squares</a>. The method finds the values that minimize the sum of squared differences between actual and predicted revenue.</p>
 
   <h2>The Data and Its Preparation</h2>
-  <p>The outcome is net revenue per customer over the last 12 months, measured in euros (&euro;), after returns and discounts. The model uses five potential predictors:</p>
+  <p>The outcome is net revenue per customer over the last 12 months, measured in euros (&euro;), after returns and discounts. The model uses three predictors:</p>
   <ul class="post-points post-points-color">
     <li><strong>Orders per year</strong> (numeric): approximately 6 on average, ranging from 1 to 14.</li>
     <li><strong>Average basket size</strong> (numeric): approximately &euro;62 per order.</li>
-    <li><strong>Customer tenure</strong> (numeric): years since the first order, averaging around 3 years.</li>
-    <li><strong>Region</strong> (categorical): North, Central, or South.</li>
     <li><strong>Acquisition channel</strong> (categorical): Organic, Paid Search, or Referral.</li>
   </ul>
   <p>The figures are illustrative and based on simulated data, not a real retailer.</p>
@@ -74,7 +72,7 @@
   <p>Multiple Linear Regression can combine numeric and categorical predictors. Categorical variables must first be encoded numerically so the model can use them.</p>
 
   <h3>Turning Categories into Numbers: Dummy Variables</h3>
-  <p>Our model includes two categorical predictors: Region and Acquisition Channel. As explained in <a href="one-hot-encoding.html">One-Hot Encoding</a>, categorical variables can be represented using binary columns.</p>
+  <p>Our model includes one categorical predictor: Acquisition Channel. As explained in <a href="one-hot-encoding.html">One-Hot Encoding</a>, categorical variables can be represented using binary columns.</p>
   <p>For this regression model, we use one category as the reference group and create dummy variables for the remaining categories.</p>
   <p>For Acquisition Channel, Organic is the reference category:</p>
   <div class="post-table-wrap"><table class="post-table">
@@ -86,39 +84,38 @@
     </tbody>
   </table></div>
   <p>The model estimates a coefficient for Paid Search and another for Referral. Each coefficient represents the estimated difference in annual net revenue compared with Organic customers, holding the other predictors constant.</p>
-  <p>Region works the same way, using Central as the reference category.</p>
   <p>This is how categorical information becomes part of the multiple regression equation.</p>
 
   <h2>Interpreting Regression Coefficients</h2>
   <pre class="post-code"><code>import statsmodels.formula.api as smf
 
 model = smf.ols(
-    "net_revenue ~ orders + basket_size + tenure + C(channel) + C(region)",
+    "net_revenue ~ orders + basket_size + C(channel)",
     data=train
 ).fit()
 print(model.summary())</code></pre>
   <p>The fitted model gives this equation, with one coefficient for each predictor:</p>
-  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;61.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;2.9&nbsp;&times;&nbsp;BasketSize +&nbsp;10.8&nbsp;&times;&nbsp;Tenure &minus;&nbsp;37.7&nbsp;&times;&nbsp;PaidSearch +&nbsp;17.3&nbsp;&times;&nbsp;Referral +&nbsp;5.5&nbsp;&times;&nbsp;North &minus;&nbsp;6.7&nbsp;&times;&nbsp;South</strong></div>
-  <p>Channel and region enter as 0/1 dummy variables, so PaidSearch is 1 for a Paid Search customer and 0 otherwise. Each coefficient is read the same way. For every additional order per year, while holding basket size, tenure, channel and region constant, we expect annual net revenue per customer to increase by &euro;46.4.</p>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;32.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;3.0&nbsp;&times;&nbsp;BasketSize &minus;&nbsp;35.9&nbsp;&times;&nbsp;PaidSearch +&nbsp;18.4&nbsp;&times;&nbsp;Referral</strong></div>
+  <p>Channel enters as 0/1 dummy variables, so PaidSearch is 1 for a Paid Search customer and 0 otherwise. Each coefficient is read the same way. For every additional order per year, while holding basket size and channel constant, we expect annual net revenue per customer to increase by &euro;46.4.</p>
   <p>The summary table lists one coefficient per predictor, with its confidence interval. Two of them, read in business language:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Orders:</strong> +&euro;46.4 per additional order per year, with basket size, tenure, channel and region held constant (95% interval: &euro;45.0 to &euro;47.8).</li>
-    <li><strong>Paid Search:</strong> &minus;&euro;37.7 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;44.8 to &minus;&euro;30.5).</li>
+    <li><strong>Orders:</strong> +&euro;46.4 per additional order per year, with basket size and channel held constant (95% interval: &euro;44.9 to &euro;47.9).</li>
+    <li><strong>Paid Search:</strong> &minus;&euro;35.9 compared with Organic customers who are otherwise alike (95% interval: &minus;&euro;43.7 to &minus;&euro;28.1).</li>
   </ul>
   <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46.4 euros, basket size per 10 euros plus 29.4, tenure per year plus 10.8, Paid Search minus 37.7 and Referral plus 17.3 compared with Organic, all with intervals that do not reach zero. North plus 5.5 and South minus 6.7 compared with Central have intervals that cross zero." loading="lazy">
-    <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
+    <img src="images/multiple-linear-regression/chart-2-coefficients.svg" alt="Coefficient plot with 95 percent intervals. Orders per year plus 46.4 euros, basket size per 10 euros plus 29.9, Paid Search minus 35.9 and Referral plus 18.4 compared with Organic, all with intervals that do not reach zero." loading="lazy">
+    <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones, even when orders and basket size are the same. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
   <h3>Interaction Terms in Regression</h3>
   <p>Interaction terms allow the effect of one predictor on the target variable to depend on another predictor.</p>
   <p>For example, an additional order might generate different revenue depending on whether a customer came from Paid Search or Organic Search.</p>
   <p>In our model, one more order adds &euro;46.4 for every customer, whatever the channel:</p>
-  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;61.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;2.9&nbsp;&times;&nbsp;BasketSize +&nbsp;10.8&nbsp;&times;&nbsp;Tenure &minus;&nbsp;37.7&nbsp;&times;&nbsp;PaidSearch +&nbsp;17.3&nbsp;&times;&nbsp;Referral +&nbsp;5.5&nbsp;&times;&nbsp;North &minus;&nbsp;6.7&nbsp;&times;&nbsp;South</strong></div>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;32.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;3.0&nbsp;&times;&nbsp;BasketSize &minus;&nbsp;35.9&nbsp;&times;&nbsp;PaidSearch +&nbsp;18.4&nbsp;&times;&nbsp;Referral</strong></div>
   <p>Without an interaction term, the model assumes that an additional order has the same effect on revenue across acquisition channels.</p>
   <p>But this may not be realistic. Paid Search customers might generate less revenue per additional order than Organic Search customers, for example because of differences in discounts or profit margins.</p>
   <p>To let the effect of orders vary by channel, we add an interaction term: Orders &times; PaidSearch.</p>
-  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;61.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;2.9&nbsp;&times;&nbsp;BasketSize +&nbsp;10.8&nbsp;&times;&nbsp;Tenure &minus;&nbsp;37.7&nbsp;&times;&nbsp;PaidSearch +&nbsp;17.3&nbsp;&times;&nbsp;Referral +&nbsp;5.5&nbsp;&times;&nbsp;North &minus;&nbsp;6.7&nbsp;&times;&nbsp;South +&nbsp;<em>b</em><sub>int</sub>&nbsp;&times;&nbsp;(Orders&nbsp;&times;&nbsp;PaidSearch)</strong></div>
+  <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = &minus;32.0 +&nbsp;46.4&nbsp;&times;&nbsp;Orders +&nbsp;3.0&nbsp;&times;&nbsp;BasketSize &minus;&nbsp;35.9&nbsp;&times;&nbsp;PaidSearch +&nbsp;18.4&nbsp;&times;&nbsp;Referral +&nbsp;<em>b</em><sub>int</sub>&nbsp;&times;&nbsp;(Orders&nbsp;&times;&nbsp;PaidSearch)</strong></div>
   <p>The effect of one additional order now depends on the channel:</p>
   <ul class="post-points">
     <li><strong>All other customers, Organic and Referral</strong> (PaidSearch = 0): effect of one additional order = 46.4</li>
@@ -156,18 +153,18 @@ print(model.summary())</code></pre>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Model A: Orders only</th><th>Model B: Both predictors</th></tr></thead>
     <tbody>
-      <tr><td>Coefficient for orders</td><td>&euro;46.4</td><td>&euro;49.3</td></tr>
-      <tr><td>Standard error</td><td>&euro;0.7</td><td>&euro;2.5</td></tr>
+      <tr><td>Coefficient for orders</td><td>&euro;46.4</td><td>&euro;49.5</td></tr>
+      <tr><td>Standard error</td><td>&euro;0.8</td><td>&euro;2.7</td></tr>
     </tbody>
   </table></div>
-  <p>The estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.3. However, its standard error increases considerably.</p>
+  <p>The estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.5. However, its standard error increases considerably.</p>
   <p><strong>What does this mean?</strong> The coefficient represents the estimated change in revenue associated with one additional order, holding the other predictors constant. The standard error describes the uncertainty in that estimate. A larger standard error means the coefficient has been estimated less precisely.</p>
   <p>When predictors overlap in the information they provide, the model has difficulty separating their individual effects. As a result, the estimated coefficients can become less precise and more sensitive to changes in the data.</p>
-  <p>For example, the coefficient for items bought is &minus;&euro;1.2. However, its confidence interval includes zero, meaning the data do not provide sufficiently strong evidence that its individual coefficient differs from zero at the corresponding significance level. This does not prove that items bought has no relationship with revenue.</p>
+  <p>For example, the coefficient for items bought is &minus;&euro;1.3. However, its confidence interval includes zero, meaning the data do not provide sufficiently strong evidence that its individual coefficient differs from zero at the corresponding significance level. This does not prove that items bought has no relationship with revenue.</p>
   <figure class="post-fig post-fig-wide post-fig-pair">
     <img src="images/multiple-linear-regression/chart-3a-predictors.svg" alt="Scatter plot of items bought per year against orders per year for 900 customers. The points follow a tight rising line, with a correlation of 0.96." loading="lazy">
-    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46.4 euros with a short interval. Orders in Model B, orders and items: plus 49.3 euros with an interval more than three times as wide. Items in Model B: minus 1.2 euros, with an interval that crosses the zero line." loading="lazy">
-    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.3, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
+    <img src="images/multiple-linear-regression/chart-3b-coefficients.svg" alt="Coefficient plot with 95 percent confidence intervals. Orders in Model A, orders only: plus 46.4 euros with a short interval. Orders in Model B, orders and items: plus 49.5 euros with an interval more than three times as wide. Items in Model B: minus 1.3 euros, with an interval that crosses the zero line." loading="lazy">
+    <figcaption><span>Chart 3</span> Multicollinearity and coefficient uncertainty. A: Orders per year and items bought per year are strongly correlated (r = 0.96). B: When both predictors enter the model, the estimated coefficient for orders changes only slightly, from &euro;46.4 to &euro;49.5, but its 95% confidence interval becomes more than three times wider. The interval for items bought crosses zero, indicating substantial uncertainty about its individual coefficient. Values in brackets are the bounds of the 95% confidence intervals. Illustrative data.</figcaption>
   </figure>
 
   <h3>Does Multicollinearity Make the Model Useless?</h3>
@@ -185,21 +182,21 @@ print(model.summary())</code></pre>
   <h4>Correlation matrix or scatterplot matrix</h4>
   <p>Helps identify pairs of highly correlated predictors. However, it may not reveal multicollinearity involving combinations of several variables.</p>
   <figure class="post-fig">
-    <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items, basket size and tenure, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; all other pairs show shapeless clouds." loading="lazy">
-    <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while every other pair of predictors forms a shapeless cloud. Illustrative data.</figcaption>
+    <img src="images/multiple-linear-regression/chart-4-scatterplot-matrix.svg" alt="Scatterplot matrix of orders, items and basket size, with a histogram of each variable on the diagonal. The scatterplot of orders against items forms a tight rising band; the other pairs show shapeless clouds." loading="lazy">
+    <figcaption><span>Chart 4</span> Orders and items rise together almost in a straight line, while the other pairs of predictors form shapeless clouds. Illustrative data.</figcaption>
   </figure>
   <h4>Variance Inflation Factor (VIF)</h4>
   <p>VIF measures how much the variance of a coefficient estimate is inflated because a predictor is linearly related to the other predictors.</p>
   <p>To calculate it, regress one predictor on all the remaining predictors and obtain the resulting R&sup2;:</p>
   <p class="post-formula"><strong>VIF = <span class="frac"><span>1</span><span>1 &minus; R&sup2;</span></span></strong><span>R&sup2; comes from regressing one predictor on all the others.</span></p>
   <p>A high R&sup2; means the other predictors can explain much of that predictor&rsquo;s variation. This makes it harder to separate their individual relationships with the outcome.</p>
-  <p>For orders per year, the other predictors explain about 91% of its variation (R&sup2; = 0.9144), so VIF = 1 / (1 &minus; 0.9144) &asymp; 11.7. This matches Chart 4: the correlation between orders and items is 0.956 (0.96 rounded), so they alone already give a VIF of about 11.7, and basket size and tenure add almost nothing. Items has the same VIF for the same reason.</p>
+  <p>For orders per year, the other predictors explain about 91% of its variation (R&sup2; = 0.9144), so VIF = 1 / (1 &minus; 0.9144) &asymp; 11.7. This matches Chart 4: the correlation between orders and items is 0.956 (0.96 rounded), so they alone already give a VIF of about 11.7, and basket size adds almost nothing. Items has the same VIF for the same reason.</p>
   <p>In Python, <code>statsmodels</code> calculates it in a few lines:</p>
   <pre class="post-code"><code>import pandas as pd
 import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
-X = sm.add_constant(df[["orders", "items", "basket", "tenure"]])
+X = sm.add_constant(df[["orders", "items", "basket"]])
 
 vifs = pd.Series(
     [variance_inflation_factor(X.values, i) for i in range(X.shape[1])],
@@ -207,7 +204,7 @@ vifs = pd.Series(
 )
 print(vifs.drop("const").round(1))</code></pre>
   <p><code>X</code> contains the predictor columns, with categorical variables encoded as dummy variables. The constant column is needed for the calculation, but its own VIF is not reported.</p>
-  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.7 to &euro;2.5.</p>
+  <p>To interpret the result, take the square root. &radic;VIF shows how many times larger the standard error of that coefficient is than it would be if the predictor were uncorrelated with the others. &radic;11.7 &asymp; 3.4, which matches Model B, where the standard error of orders rose from &euro;0.8 to &euro;2.7.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>VIF</th><th>Interpretation</th></tr></thead>
     <tbody>
@@ -217,7 +214,7 @@ print(vifs.drop("const").round(1))</code></pre>
       <tr><td>Above 10</td><td>Can indicate substantial multicollinearity</td></tr>
     </tbody>
   </table></div>
-  <p>These thresholds are rules of thumb, not strict decision boundaries. In our model, orders and items both have a VIF of about 12, while basket size and tenure are about 1.</p>
+  <p>These thresholds are rules of thumb, not strict decision boundaries. In our model, orders and items both have a VIF of about 12, while basket size is about 1.</p>
 
   <h4>Possible remedies</h4>
   <p>Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</p>
@@ -227,9 +224,9 @@ print(vifs.drop("const").round(1))</code></pre>
   <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
   <p>Three questions decide whether the model can be trusted:</p>
   <ul class="post-points post-points-color">
-    <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.85 and adjusted R&sup2; is 0.85, so about 85% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
+    <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.82 and adjusted R&sup2; is 0.82, so about 82% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
     <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line, so the linearity, normality and constant-variance assumptions look satisfied.</li>
-    <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46.4, against &euro;48.2 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
+    <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;51.6, against &euro;52.8 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
     <img src="images/multiple-linear-regression/chart-5-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
@@ -238,9 +235,9 @@ print(vifs.drop("const").round(1))</code></pre>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&ldquo;Each additional order per year goes with &euro;46.4 more net revenue per customer, when basket size, tenure, channel and region are the same. Customers acquired through Paid Search bring &euro;37.7 less per year than organic customers who otherwise look alike, and referral customers &euro;17.3 more.&rdquo;</p>
-    <p class="post-callout-q">&ldquo;Together these factors explain about 85% of the differences between customers, and the model works just as well on 300 customers it had not seen. It shows association, not proof that switching channels would change revenue.&rdquo;</p>
-    <p class="post-callout-q">&ldquo;So the question for the next budget meeting is: which channel brings customers who order more often and stay longer, and is Paid Search still worth its cost?&rdquo;</p>
+    <p class="post-callout-q">&ldquo;Each additional order per year goes with &euro;46.4 more net revenue per customer, when basket size and channel are the same. Customers acquired through Paid Search bring &euro;35.9 less per year than organic customers who otherwise look alike, and referral customers &euro;18.4 more.&rdquo;</p>
+    <p class="post-callout-q">&ldquo;Together these factors explain about 82% of the differences between customers, and the model works just as well on 300 customers it had not seen. It shows association, not proof that switching channels would change revenue.&rdquo;</p>
+    <p class="post-callout-q">&ldquo;So the question for the next budget meeting is: which channel brings customers who order more often, and is Paid Search still worth its cost?&rdquo;</p>
   </div>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Multiple linear regression estimates the relationship between an outcome and several predictors at once, and each coefficient is read with the other predictors held constant. Categories enter as dummy variables measured against a reference category, highly correlated predictors (multicollinearity) inflate the standard errors of individual coefficients, and the model should be judged on adjusted R&sup2;, residuals and new data, not on R&sup2; alone.</p></div>
