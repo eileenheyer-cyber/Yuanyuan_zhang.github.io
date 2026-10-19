@@ -138,6 +138,15 @@ print(model.summary())</code></pre>
     <li><strong>Variance Inflation Factor (VIF):</strong> Measures how strongly the other predictors explain a given predictor. A VIF of 1 indicates no linear relationship with the other predictors; values above 5 or 10 are often treated as warning signs, depending on the context. In the model containing both orders and items, each has a VIF of about 12.</li>
     <li><strong>Possible remedies:</strong> Remove one of the highly correlated predictors if it is not essential, or combine them into a meaningful measure when this makes sense for the business problem. Then refit the model and reassess the diagnostics.</li>
   </ul>
+  <figure class="post-fig">
+    <img src="images/multiple-linear-regression/chart-4-correlation-matrix.svg" alt="Correlation matrix of orders, items, basket size and tenure. Orders and items have a correlation of 0.96, shown as a dark blue cell. All other pairs are between 0.00 and 0.03." loading="lazy">
+    <figcaption><span>Chart 4</span> Orders and items are almost perfectly correlated (0.96), while basket size and tenure are unrelated to every other predictor. Illustrative data.</figcaption>
+  </figure>
+  <figure class="post-fig">
+    <img src="images/multiple-linear-regression/chart-5-vif.svg" alt="Bar chart of Variance Inflation Factors. Orders and items are both about 11.7, above the warning lines at 5 and 10. Basket size and tenure are both about 1." loading="lazy">
+    <figcaption><span>Chart 5</span> Orders and items both exceed the common VIF warning thresholds at about 12, while basket size and tenure stay near 1. Illustrative data.</figcaption>
+  </figure>
+
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
 
   <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
@@ -148,8 +157,8 @@ print(model.summary())</code></pre>
     <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/multiple-linear-regression/chart-4-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
-    <figcaption><span>Chart 4</span> Residuals scatter evenly around zero and the Q-Q points follow the line, so the errors behave as the assumptions require. Illustrative data, training customers.</figcaption>
+    <img src="images/multiple-linear-regression/chart-6-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
+    <figcaption><span>Chart 6</span> Residuals scatter evenly around zero and the Q-Q points follow the line, so the errors behave as the assumptions require. Illustrative data, training customers.</figcaption>
   </figure>
 
   <h2>How to explain it to stakeholders</h2>
