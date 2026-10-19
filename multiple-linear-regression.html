@@ -111,10 +111,7 @@ print(model.summary())</code></pre>
   </figure>
 
   <h3>Interaction Terms in Regression</h3>
-  <ul class="post-points post-points-color">
-    <li>Interaction terms capture how the effect of one independent variable on the dependent variable changes depending on the value of another independent variable.</li>
-    <li>Represented as the product of two variables, allowing the model to account for combined effects, such as how orders per year and the acquisition channel together impact revenue differently than individually.</li>
-  </ul>
+  <p>Interaction terms capture how the effect of one independent variable on the dependent variable changes depending on the value of another independent variable. They are represented as the product of two variables, allowing the model to account for combined effects, such as how orders per year and the acquisition channel together impact revenue differently than individually.</p>
   <p>In our model, one more order adds &euro;46.4 for every customer, whatever the channel. Written with just these two predictors, the model simply adds the two effects:</p>
   <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; PaidSearch</strong></div>
   <p>Here <em>b</em><sub>1</sub> is the same for everyone. But customers won&rsquo;t necessarily behave alike: a repeat order from a Paid Search customer could be worth less than one from an Organic customer, for example because of discounts or lower margins. To let the effect of orders depend on the channel, we add the product of the two variables as a third predictor:</p>
