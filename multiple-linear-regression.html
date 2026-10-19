@@ -107,25 +107,41 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones. Both region intervals cross zero, so the data show no clear regional effect once the other drivers are held constant. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
-  <h2>When Predictors Overlap: Multicollinearity</h2>
-  <p>Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two move almost together (correlation 0.96 here).</p>
+  <h2>Assumptions of Multiple Linear Regression</h2>
+  <p>Multiple Linear Regression keeps the four assumptions from <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> and adds one more.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Linearity:</strong> Each predictor has a straight-line relationship with revenue, holding the other predictors constant.</li>
+    <li><strong>Independent observations:</strong> One customer&rsquo;s revenue does not influence another&rsquo;s.</li>
+    <li><strong>Normality:</strong> The residuals are roughly normally distributed.</li>
+    <li><strong>Homoscedasticity:</strong> The spread of the residuals is constant across the fitted values.</li>
+  </ul>
+
+  <h3>The new assumption: no severe multicollinearity</h3>
+  <p>Predictors should not be almost copies of each other. Suppose the retailer adds items bought per year. Customers who order more often also buy more items, so the two move almost together (correlation 0.96 here).</p>
   <ul class="post-points post-points-color">
     <li><strong>Model A</strong> includes both orders and items.</li>
     <li><strong>Model B</strong> keeps only orders.</li>
   </ul>
   <p>The coefficient for orders hardly moves (&euro;49 in Model A, &euro;46 in Model B), but its standard error is more than three times larger in Model A (&euro;2.5 vs. &euro;0.7). The items coefficient is about zero (&minus;&euro;1.2), with an interval that covers both positive and negative values. The model cannot decide how to split the credit between two predictors carrying almost the same information.</p>
-  <p>A common check is the Variance Inflation Factor (VIF). Values near 1 mean little overlap; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</p>
-  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors overlap, the individual coefficients become unreliable. Keep the one that is easier to act on, or combine them.</p>
+  <p>The lesson is not &ldquo;multicollinearity is bad&rdquo;. Predictions usually stay fine, but when predictors overlap, the individual coefficients become unreliable.</p>
   <figure class="post-fig">
     <img src="images/multiple-linear-regression/chart-3-multicollinearity.svg" alt="Coefficient plot with 95 percent intervals. Orders without items: plus 46 euros with a short interval. Orders with items: plus 49 euros with an interval more than three times as wide. Items: minus 1 euro with an interval that crosses zero." loading="lazy">
     <figcaption><span>Chart 3</span> The estimate for orders stays near &euro;46 to &euro;49, but its uncertainty grows more than threefold once a near-copy of it enters the model. Lines show 95% intervals. Illustrative data.</figcaption>
   </figure>
 
+
+  <h3>Detecting and addressing multicollinearity</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>Correlation matrix or scatter plot matrix:</strong> shows which pairs of predictors move together.</li>
+    <li><strong>Variance Inflation Factor (VIF):</strong> values near 1 mean little overlap; a common rule of thumb treats values above 5 to 10 as a warning. Orders and items both have a VIF of about 12.</li>
+    <li><strong>Fix:</strong> remove one of the overlapping predictors, or combine them into one (for example an average or an index), then check the VIF again.</li>
+  </ul>
+
   <h2>Does the Model Hold Up? Adjusted R&sup2;, Residuals, and New Data</h2>
   <p>Three questions decide whether the model can be trusted:</p>
   <ul class="post-points post-points-color">
     <li><strong>How much variation does the model explain?</strong> R&sup2; is 0.85 and adjusted R&sup2; is 0.85, so about 85% of the differences in revenue between customers are explained. Adjusted R&sup2; penalizes predictors that add little, which makes it fairer when comparing models. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</li>
-    <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line. The checks from <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> carry over.</li>
+    <li><strong>Do the errors behave?</strong> The residuals show no curve and no fanning, and the Q-Q points follow the line, so the assumptions above hold.</li>
     <li><strong>Does it work on customers it has not seen?</strong> On the 300 held-out customers the typical error (RMSE) is &euro;46, against &euro;48 on the 900 training customers. That similarity is a sign the model is not overfitted; see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
