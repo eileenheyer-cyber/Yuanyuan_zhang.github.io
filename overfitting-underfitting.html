@@ -178,7 +178,7 @@ Test customers: 20</code></pre>
     <li>Use regularization. Penalize excessive model complexity to reduce sensitivity to the training data.</li>
     <li>Use cross-validation. Compare candidate models on different training/validation splits to find a model that generalizes well.</li>
   </ul>
-  <p>Several of these strategies come down to the same question: which predictors belong in the model? Too few lead to underfitting, too many to overfitting. Deciding which ones to keep is called variable selection, and it is covered in <a href="multiple-linear-regression.html">Multiple Linear Regression</a>.</p>
+  <p>Several of these strategies come down to the same question: which predictors belong in the model? Too few useful predictors can leave important patterns unexplained, while unnecessary predictors can increase overfitting risk. The right choice depends on the data, model complexity, and how the model is evaluated. Deciding which ones to keep is called variable selection, and it is covered in <a href="multiple-linear-regression.html">Multiple Linear Regression</a>.</p>
   <h3>How do we know if the changes work?</h3>
   <p>Evaluate the selected model on a separate test set that was not used for model selection. This provides an estimate of how well the model predicts unseen observations.</p>
   <p>The goal is not to build the most complicated model or the model with the smallest training error. It is to find a model that captures meaningful patterns and performs reliably on new data.</p>
