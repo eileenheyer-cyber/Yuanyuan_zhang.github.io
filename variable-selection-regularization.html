@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Variable Selection vs. Regularization: Managing Model Complexity – Yuanyuan Zhang</title>
-  <meta name="description" content="Two ways to keep a regression model from overfitting: choosing which predictors to keep (forward and backward selection) or shrinking their coefficients (Ridge and Lasso), compared on one customer-spending example.">
+  <meta name="description" content="Two ways to keep a regression model from overfitting: choosing which predictors to keep (forward, backward and stepwise selection) or shrinking their coefficients (Ridge and Lasso), compared on one customer-spending example.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -56,7 +56,7 @@
 
   <h2>Variable Selection: Choosing Which Predictors to Keep</h2>
   <p>Imagine an analyst building a revenue forecast from a long list of candidate predictors. For each one, she asks: does it improve the model enough to justify including it? Purchase frequency may provide useful information about customer spending. Customer ID, by contrast, is usually just an identifier and should not be treated as a meaningful predictor.</p>
-  <p>Variable selection automates the process of choosing a subset of predictors. It compares candidate models using a defined criterion, such as cross-validated prediction error, adjusted R&sup2;, AIC or BIC, and selects predictors according to that criterion. Two common approaches build the model step by step.</p>
+  <p>Variable selection automates the process of choosing a subset of predictors. It compares candidate models using a defined criterion, such as cross-validated prediction error, adjusted R&sup2;, AIC or BIC, and selects predictors according to that criterion. Three common approaches build the model step by step.</p>
 
   <h3>Forward selection</h3>
   <ul class="post-points post-points-color">
@@ -78,6 +78,16 @@
     <img src="images/variable-selection-regularization/chart-3-backward-elimination-steps.svg" alt="Line chart of cross-validated RMSE against the number of predictors remaining, read from left to right as predictors are removed. The error starts at about 79 euros with all 20 predictors and falls steadily to about 58.6 euros with eight predictors, marked with a ring. Each removed predictor is labeled with a minus sign in order: customer ID, tenure, social followers, returns count, support tickets, page views, days since last order, cart additions, app sessions, email opens, age and review count. A dashed gray line shows that removing more predictors would raise the error again, to about 116 euros for the average-revenue model with none." loading="lazy">
     <figcaption><span>Chart 3</span> Backward elimination starts with all 20 predictors (error about &euro;79) and removes one predictor at each step, beginning with customer ID. The error keeps falling until eight predictors remain (about &euro;58.6); removing more would raise it again. In this example the eight that remain happen to be the same as those forward selection chose, but that is not guaranteed. Illustrative data.</figcaption>
   </figure>
+
+  <h3>Stepwise selection</h3>
+  <p>Stepwise selection combines forward selection and backward elimination. It adds predictors one at a time, but after each addition, it also checks whether any predictors already in the model should be removed.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Add the best predictor.</strong> Choose the candidate that improves the selected criterion the most.</li>
+    <li><strong>Reassess existing predictors.</strong> After adding a new variable, check whether any previously selected predictor should now be removed.</li>
+    <li><strong>Repeat.</strong> Continue until no variable can be added or removed under the chosen criterion.</li>
+  </ul>
+  <p>Why does this matter? A predictor can provide useful information when considered alone but become redundant once other predictors enter the model. For example, website visits might initially improve a model predicting customer revenue. After purchase frequency and average order value are included, website visits may contribute little additional information and be removed.</p>
+  <p>Unlike forward selection, stepwise selection can reconsider earlier decisions. However, it does not guarantee the globally best subset of predictors because each decision is made sequentially.</p>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Selection decides which predictors enter the model. The predictors that remain keep their ordinary, unpenalized coefficients.</p></div>
 
   <h2>Regularization: Controlling the Size of Coefficients</h2>
@@ -133,6 +143,7 @@
     <tbody>
       <tr><td>Forward selection</td><td>Adds predictors one at a time</td><td>Selected predictors have unpenalized coefficients</td></tr>
       <tr><td>Backward elimination</td><td>Starts with all predictors and removes them one at a time</td><td>Remaining predictors have unpenalized coefficients</td></tr>
+      <tr><td>Stepwise selection</td><td>Adds predictors one at a time and can remove earlier ones</td><td>Selected predictors have unpenalized coefficients</td></tr>
       <tr><td>Ridge (L2)</td><td>All predictors typically remain</td><td>Coefficients shrink toward zero</td></tr>
       <tr><td>Lasso (L1)</td><td>Some predictors can be removed</td><td>Coefficients shrink; some become exactly zero</td></tr>
     </tbody>
@@ -229,7 +240,7 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   <h2>What to Use and When</h2>
   <p>No method wins in every situation. The choice depends on what you need from the model:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Forward or backward selection</strong> gives a short, readable list of predictors, but it is unstable and optimistic about its own results (see the limitations below).</li>
+    <li><strong>Forward, backward or stepwise selection</strong> gives a short, readable list of predictors, but it is unstable and optimistic about its own results (see the limitations below).</li>
     <li><strong>Ridge</strong> gives stable coefficients, especially when predictors are correlated, but it keeps every predictor, so the model is no simpler to explain.</li>
     <li><strong>Lasso</strong> shrinks coefficients and drops weak predictors in one step. With a group of correlated predictors, it tends to keep one and drop the others, and which one it keeps can change with the data.</li>
     <li><strong>Elastic Net</strong> blends both penalties, so it can drop weak predictors and still keep groups of correlated predictors together. It is a good choice when you want both behaviors.</li>
@@ -244,7 +255,7 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   </figure>
 
   <h3>Limitations of Stepwise Selection</h3>
-  <p>Forward and backward selection are easy to understand, but they have several limitations:</p>
+  <p>Forward, backward and stepwise selection are easy to understand, but they have several limitations:</p>
   <ul class="post-points post-points-color">
     <li><strong>Unstable.</strong> Small changes in the data can lead to a different set of selected predictors.</li>
     <li><strong>Overly optimistic.</strong> Evaluating a model on the same data used to select its predictors can overstate its performance. Standard p-values and confidence intervals may also be unreliable because they do not account for the selection process.</li>
