@@ -39,7 +39,7 @@
   <p>The <strong>chi-squared test</strong> (χ², pronounced “kai-squared”) compares the counts we observed with the counts we would expect if the two categories were unrelated. It follows the same logic as <a href="hypothesis-testing.html">Hypothesis Testing</a>. A t-test or z-test compares means or proportions (see <a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a>), while a chi-squared test examines whether two categorical variables are associated.</p>
 
   <h2>A question about two categories</h2>
-  <p>An online shop looks at its last 300 orders. For each order we know whether the customer is new or returning, and which delivery option they chose. Counting the orders gives a table of <strong>observed</strong> counts:</p>
+  <p>An online shop looks at its last 300 orders. For each order, it records two things: whether the customer is new or returning, and which delivery option they chose. Counting the orders gives us a table of <strong>observed</strong> counts.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th></th><th>Standard</th><th>Express</th><th>Pickup</th></tr></thead>
     <tbody>
@@ -47,10 +47,13 @@
       <tr><td><strong>Returning customers</strong></td><td>90</td><td>40</td><td>70</td></tr>
     </tbody>
   </table></div>
-  <p>Pickup stands out: only 10 of 100 new customers’ orders (10%) used it, against 70 of 200 returning customers’ orders (35%). The test decides whether such a gap is evidence of a real relationship or could be chance. As always, we start with two statements:</p>
+  <p>Pickup stands out. Only 10 of 100 orders from new customers (10%) used pickup, compared with 70 of 200 orders from returning customers (35%).</p>
+  <p>But does this difference indicate an association between customer type and delivery choice, or could it simply be due to random variation?</p>
+  <p>The <strong>chi-squared test of independence</strong> helps us investigate this by comparing the observed counts with the counts we would expect if the two variables were unrelated.</p>
+  <p>We begin with two hypotheses:</p>
   <ul class="post-points post-points-color">
-    <li><strong>H<sub>0</sub>:</strong> delivery option and customer type are unrelated. Both groups choose in the same proportions.</li>
-    <li><strong>H<sub>a</sub>:</strong> delivery option and customer type are related.</li>
+    <li><strong>H<sub>0</sub> (null hypothesis):</strong> Customer type and delivery choice are independent. Both groups have the same distribution of delivery choices.</li>
+    <li><strong>H<sub>1</sub> (alternative hypothesis):</strong> Customer type and delivery choice are associated. The distribution of delivery choices differs between the two groups.</li>
   </ul>
 
   <h2>What we would expect if there were no relationship</h2>
