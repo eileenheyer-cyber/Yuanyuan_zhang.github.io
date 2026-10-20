@@ -174,8 +174,11 @@ print(f"chi-squared = {result.statistic:.2f}, p = {result.pvalue:.3f}")
   <p>We therefore reject H<sub>0</sub> and conclude that the data provide strong evidence of an association between customer type and delivery choice.</p>
 
   <h3>Step 4: Make a conclusion</h3>
-  <p>The p-value of about 0.00002 is far below α = 0.05, so we reject H<sub>0</sub> in favor of H<sub>1</sub>. We conclude that customer type and delivery choice are associated: new and returning customers do not choose delivery options in the same proportions.</p>
-  <div class="post-note"><p class="post-note-l">What the test does not say</p><p>A significant result tells you that a relationship exists, not what it looks like or how strong it is. To find out where the gap comes from, compare the cells, as we did with Pickup.</p></div>
+  <p>The p-value of approximately 0.000022 is far below our significance level of α = 0.05. We therefore reject H<sub>0</sub> in favor of H<sub>1</sub>.</p>
+  <p>The data provide strong evidence that customer type and delivery choice are associated. New and returning customers do not choose delivery options in the same proportions.</p>
+  <h3 class="post-h3-small">What the test does not tell us</h3>
+  <p>A significant result tells us that the observed differences are unlikely to be explained by random variation alone under the null hypothesis. It does not tell us how strong the association is, why it exists, or whether customer type causes a particular delivery choice.</p>
+  <p>To understand where the difference comes from, we can compare observed and expected values across individual cells. In our example, Pickup contributes most to the chi-squared statistic. To quantify the overall strength of the association, we can calculate Cramér’s V.</p>
 
   <h3>Coding</h3>
   <p>For the test of independence, <code>scipy.stats</code> offers <code>chi2_contingency()</code>. It only needs the observed table and calculates the expected values for you.</p>
