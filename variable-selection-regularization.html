@@ -137,14 +137,14 @@
       <tr><td>Lasso (L1)</td><td>Some predictors can be removed</td><td>Coefficients shrink; some become exactly zero</td></tr>
     </tbody>
   </table></div>
-  <p>The same four predictors from our customer data show the difference. Ordinary regression with all 20 predictors gives purchase frequency, average order value, age and customer ID coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9, in that order. The coefficients below come from the Python demonstration in the next section. All coefficients are measured in euros per one-standard-deviation increase in the predictor, with other predictors held constant.</p>
+  <p>We follow four of the 20 predictors from our customer data: two that genuinely drive revenue, and two (age and customer ID) that do not. Ordinary regression with all 20 predictors gives purchase frequency, average order value, age and customer ID coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9, in that order. The coefficients below come from the Python demonstration in the next section. All coefficients are measured in euros per one-standard-deviation increase in the predictor, with other predictors held constant.</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Predictor</th><th>Forward selection</th><th>Ridge</th><th>Lasso</th></tr></thead>
+    <thead><tr><th>Predictor</th><th>Forward selection</th><th>Backward elimination</th><th>Ridge</th><th>Lasso</th></tr></thead>
     <tbody>
-      <tr><td>Purchase frequency</td><td>Kept (1st)</td><td>&euro;35.3</td><td>&euro;40.6</td></tr>
-      <tr><td>Average order value</td><td>Kept (3rd)</td><td>&euro;23.6</td><td>&euro;21.4</td></tr>
-      <tr><td>Age</td><td>Left out</td><td>&minus;&euro;4.8</td><td>Removed (0)</td></tr>
-      <tr><td>Customer ID</td><td>Left out</td><td>&euro;10.8</td><td>&euro;4.7</td></tr>
+      <tr><td>Purchase frequency</td><td>Kept (1st)</td><td>Kept</td><td>&euro;35.3</td><td>&euro;40.6</td></tr>
+      <tr><td>Average order value</td><td>Kept (3rd)</td><td>Kept</td><td>&euro;23.6</td><td>&euro;21.4</td></tr>
+      <tr><td>Age</td><td>Left out</td><td>Removed (11th)</td><td>&minus;&euro;4.8</td><td>Removed (0)</td></tr>
+      <tr><td>Customer ID</td><td>Left out</td><td>Removed (1st)</td><td>&euro;10.8</td><td>&euro;4.7</td></tr>
     </tbody>
   </table></div>
   <p>Selection gives a yes-or-no answer for each predictor. Ridge instead decides how much weight each predictor gets. Lasso does both at once, although as customer ID shows, it does not guarantee that every uninformative predictor disappears.</p>
