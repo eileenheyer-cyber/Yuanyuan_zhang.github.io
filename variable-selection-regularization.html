@@ -127,7 +127,7 @@
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Regularization controls the size of coefficients. Ridge shrinks them all; Lasso can also shrink some exactly to zero, so it performs variable selection as a side effect; Elastic Net combines the two.</p></div>
 
   <h2>Variable Selection vs. Regularization: Two Approaches, Different Mechanisms</h2>
-  <p>Variable selection decides which predictors to keep. Ridge controls how strongly predictors influence the model. Lasso does both: it shrinks coefficients and can remove predictors by setting their coefficients to zero. However, neither method automatically identifies which variables make sense from a business perspective.</p>
+  <p>Variable selection decides which predictors to keep. Ridge controls how strongly predictors influence the model. Lasso does both: it shrinks coefficients and can remove predictors by setting their coefficients to zero. <mark style="background:rgba(245,197,72,.6);color:inherit;padding:.05em .2em;border-radius:2px">However, neither method automatically identifies which variables make sense from a business perspective.</mark></p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Technique</th><th>What happens to predictors?</th><th>What happens to coefficients?</th></tr></thead>
     <tbody>
