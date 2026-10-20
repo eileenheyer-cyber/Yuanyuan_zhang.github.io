@@ -129,12 +129,12 @@
   <h2>Variable Selection vs. Regularization: Two Approaches, Different Mechanisms</h2>
   <p>Variable selection removes predictors from the chosen model. Ridge keeps all predictors and shrinks their coefficients. Lasso can do both.</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Technique</th><th>What happens to the predictors</th><th>What happens to the coefficients</th></tr></thead>
+    <thead><tr><th>Technique</th><th>What happens to predictors?</th><th>What happens to coefficients?</th></tr></thead>
     <tbody>
-      <tr><td>Forward selection</td><td>Adds them one at a time; the rest stay out</td><td>Kept ones are unpenalized</td></tr>
-      <tr><td>Backward elimination</td><td>Starts with all, removes one at a time</td><td>Kept ones are unpenalized</td></tr>
-      <tr><td>Ridge (L2)</td><td>All stay in the model</td><td>All shrink, none reach zero</td></tr>
-      <tr><td>Lasso (L1)</td><td>Some are removed</td><td>The rest shrink</td></tr>
+      <tr><td>Forward selection</td><td>Adds predictors one at a time</td><td>Selected predictors have unpenalized coefficients</td></tr>
+      <tr><td>Backward elimination</td><td>Starts with all predictors and removes them one at a time</td><td>Remaining predictors have unpenalized coefficients</td></tr>
+      <tr><td>Ridge (L2)</td><td>All predictors typically remain</td><td>Coefficients shrink toward zero</td></tr>
+      <tr><td>Lasso (L1)</td><td>Some predictors can be removed</td><td>Coefficients shrink; some become exactly zero</td></tr>
     </tbody>
   </table></div>
   <p>The same four predictors from our customer data show the difference. Ordinary regression with all 20 predictors gives them coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9 per standard deviation. Coefficients below come from the Python demonstration in the next section.</p>
