@@ -852,69 +852,146 @@ body.eda-lb-open { overflow: hidden; }
 
 
 /* ==========================================================================
-   Home page — dark hero (scoped to body.home so project pages are unchanged)
-   Navy / near-black surface, existing purple accent, light typography.
+   Home page — dark mint / teal theme
+   Scoped to body.home so project, blog and case-study pages are unchanged.
+   Re-points the shared tokens, so every homepage section follows the palette.
    ========================================================================== */
+body.home {
+  --bg: #0b1513;
+  --surface: #12211e;
+  --surface-alt: #0f1c19;
+  --ink: #e4f0ed;
+  --muted: #93b0a8;
+  --accent: #2dd4bf;        /* teal: headline highlight, primary button, links */
+  --accent-light: #5eead4;  /* lighter teal for hover and text on dark */
+  --mint: #86efac;          /* mint: tags and the highlighted data point */
+  --night: #0b1513;
+  --night-line: rgba(134, 239, 172, 0.10);
+  --line: #21403a;
+  --on-accent: #0b1513;
+  background: var(--bg);
+  color: var(--ink);
+}
+
 body.home .site-header {
-  background: rgba(10, 13, 28, 0.97);
-  border-bottom: 1px solid var(--night-line);
+  background: rgba(11, 21, 19, 0.96);
+  border-bottom: 1px solid var(--line);
 }
 body.home .brand,
-body.home .site-header nav a { color: #e9e9f3; }
-body.home .site-header nav a:hover { color: var(--accent-light); }
-body.home .lang-toggle { color: #e9e9f3; border-color: rgba(255, 255, 255, 0.24); }
-body.home .lang-toggle:hover { border-color: var(--accent-light); color: var(--accent-light); }
-body.home .lang-toggle .lang-opt.is-active { color: var(--accent-light); }
+body.home .site-header nav a { color: var(--ink); }
+body.home .site-header nav a:hover { color: var(--accent); }
+body.home .lang-toggle { color: var(--ink); border-color: var(--line); }
+body.home .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+body.home .lang-toggle .lang-opt.is-active { color: var(--accent); }
 
 body.home .hero {
   max-width: none;
   padding: 72px max(24px, calc((100vw - var(--maxw)) / 2 + 8px)) 88px;
   background:
-    radial-gradient(56% 78% at 76% 52%, rgba(106, 79, 160, 0.26), transparent 72%),
-    radial-gradient(40% 50% at 4% 100%, rgba(106, 79, 160, 0.10), transparent 70%),
+    radial-gradient(56% 78% at 76% 52%, rgba(45, 212, 191, 0.14), transparent 72%),
+    radial-gradient(40% 50% at 4% 100%, rgba(134, 239, 172, 0.06), transparent 70%),
     var(--night);
-  color: #e9e9f3;
+  color: var(--ink);
 }
-
-body.home .hero .overline { color: var(--accent-light); }
-body.home .hero h1 { color: #f6f6fb; }
-body.home .hero h1 .accent { color: var(--accent-light); }
-body.home .hero .lead { color: #b6b9cf; }
-/* the oversized quote mark from the light design has no place on the dark hero */
+body.home .hero .overline { color: var(--mint); }
+body.home .hero h1 { color: #f1faf7; }
+body.home .hero h1 .accent { color: var(--accent); }
+body.home .hero .lead { color: #b3cbc4; margin-bottom: 22px; }
 body.home .hero-quotemark { display: none; }
 
-/* Buttons on dark */
-body.home .hero .btn {
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #f1f1f8;
-  background: transparent;
+/* Tool chips under the intro */
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
 }
-body.home .hero .btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.55);
-  color: #fff;
-}
-body.home .hero .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-body.home .hero .btn.primary:hover { background: #7d62b8; border-color: #7d62b8; }
-body.home .hero .btn:focus-visible {
-  outline: 2px solid var(--accent-light);
-  outline-offset: 3px;
+.hero-chips li {
+  padding: 4px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--mint);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
-/* Visualization stage labels on dark */
+/* Buttons on dark */
+body.home .btn {
+  border-color: rgba(228, 240, 237, 0.30);
+  color: var(--ink);
+  background: transparent;
+}
+body.home .btn:hover {
+  background: rgba(45, 212, 191, 0.12);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+body.home .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+body.home .btn.primary:hover { background: var(--accent-light); border-color: var(--accent-light); color: var(--on-accent); }
+body.home .btn:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 3px; }
+
+/* Visualization stage lines and numbered labels */
+body.home .viz-wrap { counter-reset: stage; }
 body.home .milestone::before {
   background: repeating-linear-gradient(
     to bottom,
-    rgba(184, 163, 238, 0.30) 0,
-    rgba(184, 163, 238, 0.30) 4px,
+    rgba(94, 234, 212, 0.30) 0,
+    rgba(94, 234, 212, 0.30) 4px,
     transparent 4px,
     transparent 9px
   );
 }
-body.home .milestone-label { color: #a3a7c1; }
+body.home .milestone-label { color: #bcd6cf; font-size: 0.7rem; }
+body.home .milestone-label::before {
+  counter-increment: stage;
+  content: "0" counter(stage);
+  display: block;
+  margin-bottom: 2px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+}
 
+/* What I do */
+body.home main > section.what-i-do { padding-top: 80px; padding-bottom: 0; }
+.what-i-do .section-title { margin-bottom: 28px; }
+.do-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.do-card {
+  padding: 24px 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.do-card h3 { margin: 0 0 8px; font-size: 1.05rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--accent); }
+.do-card p { margin: 0; font-size: 0.93rem; line-height: 1.6; color: var(--muted); }
+
+/* Cards, tags, arrows */
+body.home .project-card { background: var(--surface); }
+body.home a.project-card:hover { box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38); }
+body.home a.project-card:hover .project-arrow { color: var(--on-accent); }
+body.home .project-tags span { background: var(--bg); border: 1px solid var(--line); color: var(--mint); }
+body.home .project-card-img { background: var(--bg); }
+
+/* Skills, about, contact */
+body.home .skills h3 { border-bottom-color: var(--line); }
+body.home .skills .skills-building h3 { border-bottom-color: var(--accent); }
+body.home .contact { border-top-color: var(--line); }
+body.home .contact-list a { border-color: rgba(228, 240, 237, 0.30); }
+body.home .contact-list a:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+body.home .about-photo img { border-radius: 10px; }
+
+@media (max-width: 860px) {
+  .do-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 720px) {
   body.home .hero { padding: 40px 20px 56px; }
+  body.home main > section.what-i-do { padding-top: 56px; }
 }
 
 /* ==========================================================================

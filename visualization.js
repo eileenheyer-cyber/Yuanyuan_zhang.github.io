@@ -34,11 +34,11 @@
     entranceStaggerMs: 900,
     entranceDurationMs: 950,
 
-    // Cool slate -> brand purple -> light lilac, left to right.
+    // Muted sage -> teal -> mint, left to right.
     colorStops: [
-      { t: 0.0, rgb: [122, 134, 196] },
-      { t: 0.5, rgb: [146, 112, 218] },
-      { t: 1.0, rgb: [204, 186, 255] },
+      { t: 0.0, rgb: [112, 156, 148] },
+      { t: 0.5, rgb: [45, 212, 191] },
+      { t: 1.0, rgb: [134, 239, 172] },
     ],
 
     // Stage boundaries as fractions of the canvas width. They line up with
@@ -578,7 +578,7 @@
 
       ctx.shadowColor = rgba(halo, 0.95 * m);
       ctx.shadowBlur = 16;
-      ctx.fillStyle = `rgba(248, 245, 255, ${(0.95 * m).toFixed(3)})`;
+      ctx.fillStyle = `rgba(236, 253, 245, ${(0.95 * m).toFixed(3)})`;
       ctx.beginPath();
       ctx.arc(x, y, 4.4, 0, Math.PI * 2);
       ctx.fill();
