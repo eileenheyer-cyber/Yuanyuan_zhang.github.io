@@ -87,6 +87,10 @@
     <li><strong>Repeat.</strong> Continue until no variable can be added or removed under the chosen criterion.</li>
   </ul>
   <p>Why does this matter? A predictor can provide useful information when considered alone but become redundant once other predictors enter the model. For example, website visits might initially improve a model predicting customer revenue. After purchase frequency and average order value are included, website visits may contribute little additional information and be removed.</p>
+  <figure class="post-fig">
+    <img src="images/variable-selection-regularization/chart-stepwise-selection-steps.svg" alt="Schematic line chart of cross-validated RMSE against step number, read from left to right. The error starts at about 116 euros for the average-revenue model at step 0 and falls to about 75 euros after the first step. Steps 1 to 4 each add a predictor in this order: purchase frequency, site visits, average order value and loyalty member. At step 5, site visits is removed, marked in red, and the error still falls slightly to about 59.8 euros. Steps 6 and 7 add coupon uses and distance to store, and the procedure stops at step 7 at about 58.6 euros, marked with a ring. A dashed gray line shows that continuing would raise the error again. The values are illustrative." loading="lazy">
+    <figcaption><span>Chart 4</span> Stepwise selection adds predictors like forward selection, but it can also remove one that has become redundant. Here, site visits is added at step 2 and removed at step 5, once other predictors cover the same information. Schematic: values are illustrative.</figcaption>
+  </figure>
   <p>Unlike forward selection, stepwise selection can reconsider earlier decisions. However, it does not guarantee the globally best subset of predictors because each decision is made sequentially.</p>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Selection decides which predictors enter the model. The predictors that remain keep their ordinary, unpenalized coefficients.</p></div>
 
@@ -110,7 +114,7 @@
 
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-4-standardization.svg" alt="Four dot plots. On the left, ad spend in euros (mean about 18,700, standard deviation about 5,300) and website visits (mean about 39, standard deviation about 10) are shown in their own units. On the right, both predictors are shown after standardization, centered at 0 with a standard deviation of 1, on the same axis from minus 3 to 3." loading="lazy">
-    <figcaption><span>Chart 4</span> Standardizing shifts each predictor to a mean of 0 and rescales it to a standard deviation of 1. The shape of the data does not change; only the units do. Illustrative data.</figcaption>
+    <figcaption><span>Chart 5</span> Standardizing shifts each predictor to a mean of 0 and rescales it to a standard deviation of 1. The shape of the data does not change; only the units do. Illustrative data.</figcaption>
   </figure>
 
   <h3 style="font-size:1.5rem">Ridge vs. Lasso: Two Types of Penalties</h3>
@@ -124,7 +128,7 @@
   <p>Because Ridge penalizes squared coefficients, large coefficients contribute disproportionately to the penalty. It shrinks coefficients toward zero but generally does not set them exactly to zero. This is especially useful when predictors are correlated, as Ridge can distribute their influence across them. In our data, Ridge shrinks purchase frequency from &euro;45.5 to &euro;35.3 and customer ID from &euro;16.9 to &euro;10.8.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-5-coefficient-paths.svg" alt="Two line charts with identical axes showing coefficients against penalty strength on a log scale. In the Ridge panel all coefficient lines slide smoothly toward zero without reaching it. In the Lasso panel the lines reach exactly zero one after another; age reaches zero before the dashed cross-validated penalty, while Ridge still keeps a small age coefficient there." loading="lazy">
-    <figcaption><span>Chart 5</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
+    <figcaption><span>Chart 6</span> As the penalty grows, Ridge pulls every coefficient smoothly toward zero. Lasso reaches exactly zero one predictor after another, and each zero removes that predictor from the model. At the penalty chosen by cross-validation (dashed line), Lasso has already dropped age while Ridge still keeps it. Illustrative data.</figcaption>
   </figure>
   <h4 style="font-size:1.2rem">Elastic Net</h4>
   <p>Elastic Net combines Ridge and Lasso, bringing together the strengths of both approaches. It shrinks coefficients toward zero like Ridge, while also allowing some coefficients to become exactly zero, as with Lasso.</p>
@@ -214,7 +218,7 @@ Lasso  train RMSE:  51.9   test RMSE:  71.5</code></pre>
   </ul>
   <figure class="post-fig">
     <img src="images/variable-selection-regularization/chart-6-rmse-comparison.svg" alt="Grouped bar chart of training and test RMSE for ordinary linear regression, Ridge and Lasso. Linear regression: training 45.8 euros, test 76.8. Ridge: training 49.1, test 72.9. Lasso: training 51.9, test 71.5." loading="lazy">
-    <figcaption><span>Chart 6</span> The model that fits the training customers best is the worst on new ones. Giving up a little training accuracy buys a lower test error. Illustrative data.</figcaption>
+    <figcaption><span>Chart 7</span> The model that fits the training customers best is the worst on new ones. Giving up a little training accuracy buys a lower test error. Illustrative data.</figcaption>
   </figure>
   <h3>Why the lowest training error is not the best result</h3>
   <p>Ordinary regression has the lowest training error (&euro;45.8) but the highest test error (&euro;76.8), a gap of &euro;31. It has the most freedom, so it also fits the random quirks of the 60 customers it has seen. Ridge accepts a higher training error (&euro;49.1) and predicts new customers better (&euro;72.9). Lasso trades the most training accuracy (&euro;51.9) for the lowest test error (&euro;71.5). Training error only tells us how well a model memorized its data. Test error tells us how well it will work on customers it has not seen.</p>
@@ -233,7 +237,7 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   <p>For reference, ordinary regression refitted on only the eight predictors chosen by forward selection reaches a test RMSE of &euro;71.5, practically the same as Lasso. Variable selection and Lasso found equally useful, much smaller models.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-7-coefficients-by-method.svg" alt="Dot plot of 20 predictor coefficients in euros per standard deviation, with one row per predictor and three markers per row for ordinary regression, Ridge and Lasso. Ridge markers sit between the ordinary estimate and zero; Lasso markers sit at zero for nine predictors." loading="lazy">
-    <figcaption><span>Chart 7</span> Compared with ordinary regression (red), Ridge (blue) moves every coefficient toward zero. Lasso (black) moves some exactly onto zero, which removes the predictor. Coefficients are in &euro; per one standard deviation. Illustrative data.</figcaption>
+    <figcaption><span>Chart 8</span> Compared with ordinary regression (red), Ridge (blue) moves every coefficient toward zero. Lasso (black) moves some exactly onto zero, which removes the predictor. Coefficients are in &euro; per one standard deviation. Illustrative data.</figcaption>
   </figure>
   <div class="post-note"><p class="post-note-l">One split is one draw</p><p>The test set has only 40 customers, so the &euro;3.9 gap between ordinary regression and Ridge is small compared with the noise in the test error. We re-simulated the same setup 200 times. Lasso beat ordinary regression in 170 of 200 datasets and Ridge in 125 of 200. Lasso gains more here because many of the 20 predictors add little. Ridge tends to gain more when many predictors each carry some signal or are strongly correlated.</p></div>
 
@@ -251,7 +255,7 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   <p>Instead, we use cross-validation to estimate how well different values generalize to unseen data. We divide the training data into five folds. For each candidate &lambda;, the model is fitted on four folds and evaluated on the fifth. This is repeated until every fold has served as the validation set once. The &lambda; with the lowest average validation error is selected.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-8-cv-curves.svg" alt="Two line charts with identical axes showing cross-validated RMSE against penalty strength on a log scale. Both curves are flat at about 79 euros for very small penalties, fall to a minimum of about 68 euros, and then rise steeply. The minimum is marked at alpha about 14.6 for Ridge and about 5.7 for Lasso." loading="lazy">
-    <figcaption><span>Chart 8</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
+    <figcaption><span>Chart 9</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
   </figure>
 
   <h3>Limitations of Stepwise Selection</h3>
