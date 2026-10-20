@@ -174,11 +174,17 @@
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“In our last 300 orders, new and returning customers chose their delivery options differently. The main difference is pickup: 10% of new customers used it, against 35% of returning customers. If customer type had nothing to do with the delivery choice, a gap this large would show up in far fewer than 1 in 1,000 samples.”</p>
-    <p class="post-callout-q">“So the difference is real, but the test cannot tell us why. The business question is whether new customers do not know about pickup, or whether it is simply less convenient for them, and whether that is worth fixing.”</p>
+    <p class="post-callout-q">“In our last 300 orders, new and returning customers chose their delivery options differently. The clearest difference is pickup: 10% of new customers used it, compared with 35% of returning customers. The chi-squared test indicates that this difference is unlikely to be explained by random variation alone.”</p>
+    <p class="post-callout-q">“The test tells us that customer type and delivery choice are associated, but it cannot tell us why. The business question is whether new customers are unaware of the pickup option or find it less convenient, and whether there is an opportunity to improve the experience.”</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The chi-squared test asks whether the counts in a table differ from what we would expect if two categories were unrelated. Calculate the expected values, add up (O − E)² / E, and compare the result with the critical value for your degrees of freedom. A significant result shows that a relationship exists; the cells with the biggest gaps show where it comes from.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>The chi-squared test compares observed counts with the values we would expect under a specific null hypothesis.</p>
+  <ul class="post-points post-points-color" style="margin:10px 0 0">
+    <li><strong>Test of independence:</strong> Tests whether two categorical variables are associated.</li>
+    <li><strong>Goodness-of-fit test:</strong> Tests whether the observed distribution of one categorical variable matches an expected distribution.</li>
+  </ul>
+  <p style="margin-top:12px">Both follow the same core logic: calculate the expected values, measure the differences using χ² = Σ (O − E)² / E, and evaluate the result using the appropriate chi-squared distribution and degrees of freedom.</p>
+  <p style="margin-top:10px">A significant result provides evidence against the null hypothesis. It does not, by itself, establish causation or explain why the observed pattern occurred.</p></div>
 
   <h2>Related posts</h2>
   <ul class="post-points post-points-color">
