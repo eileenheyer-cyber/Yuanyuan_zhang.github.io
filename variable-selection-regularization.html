@@ -244,13 +244,13 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   </figure>
 
   <h3>Limitations of Stepwise Selection</h3>
-  <p>Forward and backward selection are easy to explain, but they have well-known weaknesses:</p>
+  <p>Forward and backward selection are easy to understand, but they have several limitations:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Unstable.</strong> A small change in the data can produce a different set of predictors.</li>
-    <li><strong>Too optimistic.</strong> P-values, confidence intervals and R&sup2; are usually calculated as if the predictors had been chosen in advance. After selection on the same data, they look better than they should.</li>
-    <li><strong>Greedy.</strong> Each step looks only one move ahead, so it can miss predictors that are useful only in combination, and forward and backward selection can disagree.</li>
-    <li><strong>Arbitrary among correlated predictors.</strong> In our data, site visits entered second, right after purchase frequency, even though visits and orders move together.</li>
-    <li><strong>Sensitive to the criterion.</strong> Choosing by training R&sup2; or p-values favors overfitting. Use cross-validated error, adjusted R&sup2; or AIC/BIC, and judge the final model on held-out test data.</li>
+    <li><strong>Unstable.</strong> Small changes in the data can lead to a different set of selected predictors.</li>
+    <li><strong>Overly optimistic.</strong> Evaluating a model on the same data used to select its predictors can overstate its performance. Standard p-values and confidence intervals may also be unreliable because they do not account for the selection process.</li>
+    <li><strong>Greedy.</strong> Each step considers only the next addition or removal, rather than every possible combination of predictors. It can miss a better subset, and forward and backward selection may produce different results.</li>
+    <li><strong>Unreliable with correlated predictors.</strong> When predictors contain overlapping information, the selection process may favor one over another. In our data, site visits entered second, immediately after purchase frequency, although both may capture aspects of customer activity.</li>
+    <li><strong>Sensitive to the selection criterion.</strong> Different criteria can produce different subsets. Training R&sup2; tends to favor larger models, so consider cross-validated error, adjusted R&sup2; or AIC/BIC. Evaluate the final model&rsquo;s predictive performance on held-out test data.</li>
   </ul>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Variable selection decides which predictors enter the model. Regularization controls the size of their coefficients. Ridge shrinks coefficients toward zero, while Lasso can also set some exactly to zero, effectively removing those predictors.</p>
