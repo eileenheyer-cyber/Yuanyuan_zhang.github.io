@@ -83,6 +83,19 @@
   </ul>
   <p>Squaring prevents positive and negative differences from cancelling each other out. Dividing by E makes the size of a difference relative to the expected value matter.</p>
   <p>For our table, the six cell contributions add up to χ² = 21.48.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Cell</th><th>Observed (O)</th><th>Expected (E)</th><th>(O − E)² / E</th></tr></thead>
+    <tbody>
+      <tr><td>New customers, Standard</td><td>60</td><td>50</td><td>2.00</td></tr>
+      <tr><td>New customers, Express</td><td>30</td><td>23.33</td><td>1.90</td></tr>
+      <tr><td>New customers, Pickup</td><td>10</td><td>26.67</td><td>10.42</td></tr>
+      <tr><td>Returning customers, Standard</td><td>90</td><td>100</td><td>1.00</td></tr>
+      <tr><td>Returning customers, Express</td><td>40</td><td>46.67</td><td>0.95</td></tr>
+      <tr><td>Returning customers, Pickup</td><td>70</td><td>53.33</td><td>5.21</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>300</strong></td><td><strong>300</strong></td><td><strong>21.48</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p>The expected values are shown with two decimals here; the calculation uses the unrounded values.</p>
   <p>Three numbers help explain where this value comes from:</p>
   <ul class="post-points post-points-color">
     <li><strong>Pickup, new customers: 10.42.</strong> We expected 26.7 orders but observed only 10. This cell contributes almost half of the total chi-squared statistic.</li>
