@@ -39,9 +39,10 @@
   <p>The <strong>chi-squared test</strong> (χ², pronounced “kai-squared”) compares the counts we observed with the counts we would expect if the two categories were unrelated. It follows the same logic as <a href="hypothesis-testing.html">Hypothesis Testing</a>. A t-test or z-test compares means or proportions (see <a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a>), while a chi-squared test examines whether two categorical variables are associated.</p>
 
   <h2>Two types of chi-squared test</h2>
+  <p>The chi-squared test comes in two main forms. Both compare observed counts with the values we would expect under a null hypothesis.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Test of independence.</strong> Two categorical variables measured on the same orders or customers. H<sub>0</sub>: they are unrelated. This is our delivery example.</li>
-    <li><strong>Goodness-of-fit test.</strong> One categorical variable compared with an expected distribution. H<sub>0</sub>: the data follow that distribution.</li>
+    <li><strong>Goodness-of-fit test.</strong> Checks whether one categorical variable with more than two levels follows an expected distribution. H<sub>0</sub>: it follows that distribution. H<sub>1</sub>: it does not. Example below: support tickets across the weekdays.</li>
+    <li><strong>Test of independence.</strong> Checks whether two categorical variables are associated. It is valid when the data come from a random sample and you want to draw conclusions about a larger population. H<sub>0</sub>: the two variables are independent. H<sub>1</sub>: they are not. Example below: delivery option by customer type.</li>
   </ul>
 
   <h2>Chi-Squared Goodness-of-Fit Test: A question about one category</h2>
@@ -86,6 +87,18 @@
   <h3>Step 4: Make a conclusion</h3>
   <p>The p-value of about 0.080 is above α = 0.05, so we fail to reject H<sub>0</sub>. This week’s data do not give enough evidence that tickets are spread unevenly.</p>
   <p>That does not prove the load is even. Monday looks busy, but one week of data cannot separate a real pattern from chance. Collecting several weeks would give the test more to work with.</p>
+
+  <h3>Coding</h3>
+  <p>You do not have to calculate the statistic and the p-value by hand. The <code>chisquare()</code> function from Python’s <code>scipy.stats</code> package does both. It needs the observed and the expected values.</p>
+  <pre class="post-code"><code>from scipy import stats
+
+observed = [36, 22, 20, 18, 24]
+expected = [24, 24, 24, 24, 24]
+
+result = stats.chisquare(f_obs=observed, f_exp=expected)
+print(f"chi-squared = {result.statistic:.2f}, p = {result.pvalue:.3f}")
+# chi-squared = 8.33, p = 0.080</code></pre>
+  <p>The output confirms our calculation. By default, the degrees of freedom are the number of categories minus one, which is 4 here. Because the p-value is above 0.05, we fail to reject H<sub>0</sub>.</p>
 
   <h2>Chi-Squared Test for Independence: A question about two categories</h2>
   <p>An online shop looks at its last 300 orders. For each order, it records two things: whether the customer is new or returning, and which delivery option they chose. Counting the orders gives us a table of <strong>observed</strong> counts.</p>
@@ -163,6 +176,24 @@
   <h3>Step 4: Make a conclusion</h3>
   <p>The p-value of about 0.00002 is far below α = 0.05, so we reject H<sub>0</sub> in favor of H<sub>1</sub>. We conclude that customer type and delivery choice are associated: new and returning customers do not choose delivery options in the same proportions.</p>
   <div class="post-note"><p class="post-note-l">What the test does not say</p><p>A significant result tells you that a relationship exists, not what it looks like or how strong it is. To find out where the gap comes from, compare the cells, as we did with Pickup.</p></div>
+
+  <h3>Coding</h3>
+  <p>For the test of independence, <code>scipy.stats</code> offers <code>chi2_contingency()</code>. It only needs the observed table and calculates the expected values for you.</p>
+  <pre class="post-code"><code>import numpy as np
+from scipy import stats
+
+observed = np.array([[60, 30, 10],
+                     [90, 40, 70]])
+
+chi2, p, dof, expected = stats.chi2_contingency(observed)
+
+print(f"chi-squared = {chi2:.2f}, p = {p:.6f}, df = {dof}")
+print(expected.round(1))
+# chi-squared = 21.48, p = 0.000022, df = 2
+# [[ 50.   23.3  26.7]
+#  [100.   46.7  53.3]]</code></pre>
+  <p>The function returns the χ² statistic, the p-value, the degrees of freedom and the expected values, in this order. They match our calculation.</p>
+  <p>One detail for 2 × 2 tables: with 1 degree of freedom, the function applies Yates’ correction by default, which makes small differences less likely to look significant. Our table is 2 × 3, so no correction is applied. For a 2 × 2 table with large expected values, you can switch it off with <code>correction=False</code>.</p>
 
   <h2>When not to use the chi-squared test</h2>
   <ul class="post-points post-points-color">
