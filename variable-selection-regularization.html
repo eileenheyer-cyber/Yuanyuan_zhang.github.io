@@ -236,7 +236,8 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
   </ul>
 
   <h3>Choosing the Penalty Strength with Cross-Validation</h3>
-  <p>The model cannot learn &lambda; from the training data, because the training error would always prefer &lambda; = 0. We choose it by cross-validation. The training data is split into five parts. For each candidate &lambda;, the model is fitted on four parts and scored on the fifth, and this is repeated so that every part is used once for scoring. The &lambda; with the lowest average error wins.</p>
+  <p>The penalty strength, &lambda;, is a hyperparameter that we choose rather than estimate directly from the data. If we selected it using training error alone, a value of &lambda; = 0 would generally be preferred because it removes the regularization penalty.</p>
+  <p>Instead, we use cross-validation to estimate how well different values generalize to unseen data. We divide the training data into five folds. For each candidate &lambda;, the model is fitted on four folds and evaluated on the fifth. This is repeated until every fold has served as the validation set once. The &lambda; with the lowest average validation error is selected.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/variable-selection-regularization/chart-8-cv-curves.svg" alt="Two line charts with identical axes showing cross-validated RMSE against penalty strength on a log scale. Both curves are flat at about 79 euros for very small penalties, fall to a minimum of about 68 euros, and then rise steeply. The minimum is marked at alpha about 14.6 for Ridge and about 5.7 for Lasso." loading="lazy">
     <figcaption><span>Chart 8</span> Too little penalty leaves the model overfitting; too much squeezes out real signal. The best penalty lies in between. Ridge and Lasso penalties are on different scales, so their &alpha; values should not be compared directly. Illustrative data.</figcaption>
