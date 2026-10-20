@@ -75,7 +75,13 @@
   <h3 class="post-h3-small">Measuring the gap: the χ² statistic</h3>
   <p>To measure how far our observed counts differ from the expected values, we calculate a contribution for each cell and add them together.</p>
   <p class="post-formula"><strong>χ² = Σ <span class="frac"><span>(O − E)²</span><span>E</span></span></strong></p>
-  <p>Here, O represents the observed count and E the expected value. Squaring the difference prevents positive and negative gaps from cancelling each other out. Dividing by the expected value scales each gap relative to what we would expect in that cell.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>O = observed count:</strong> what actually happened.</li>
+    <li><strong>E = expected value:</strong> what we would expect if the variables were independent.</li>
+    <li><strong>(O − E)² = the squared difference</strong> between them.</li>
+    <li><strong>Dividing by E</strong> scales the difference relative to the expected value.</li>
+  </ul>
+  <p>Squaring prevents positive and negative differences from cancelling each other out. Dividing by E makes the size of a difference relative to the expected value matter.</p>
   <p>For our table, the six cell contributions add up to χ² = 21.48.</p>
   <p>Three numbers help explain where this value comes from:</p>
   <ul class="post-points post-points-color">
