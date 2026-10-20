@@ -137,7 +137,7 @@
       <tr><td>Lasso (L1)</td><td>Some predictors can be removed</td><td>Coefficients shrink; some become exactly zero</td></tr>
     </tbody>
   </table></div>
-  <p>The same four predictors from our customer data show the difference. Ordinary regression with all 20 predictors gives them coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9 per standard deviation. Coefficients below come from the Python demonstration in the next section.</p>
+  <p>The same four predictors from our customer data show the difference. Ordinary regression with all 20 predictors gives purchase frequency, average order value, age and customer ID coefficients of &euro;45.5, &euro;33.3, &minus;&euro;8.5 and &euro;16.9, in that order. The coefficients below come from the Python demonstration in the next section. All coefficients are measured in euros per one-standard-deviation increase in the predictor, with other predictors held constant.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Predictor</th><th>Forward selection</th><th>Ridge</th><th>Lasso</th></tr></thead>
     <tbody>
