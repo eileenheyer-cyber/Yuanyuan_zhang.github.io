@@ -252,9 +252,9 @@ Removed: ['age', 'email_opens', 'app_sessions', 'wishlist_items', 'support_ticke
     <li><strong>Sensitive to the criterion.</strong> Choosing by training R&sup2; or p-values favors overfitting. Use cross-validated error, adjusted R&sup2; or AIC/BIC, and judge the final model on held-out test data.</li>
   </ul>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Variable selection decides which predictors enter the model. Regularization controls how large their coefficients can be. Ridge shrinks all coefficients and keeps every predictor; Lasso can also set some exactly to zero, so it does both.</p>
-  <p>Choose the penalty strength with cross-validation and compare models by test error, not training error. In our example, the lowest training error belonged to the model that predicted new customers worst.</p>
-  <p>Before choosing a method, ask one practical question: do we need a smaller set of predictors, more stable coefficients, or both?</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Variable selection decides which predictors enter the model. Regularization controls the size of their coefficients. Ridge shrinks coefficients toward zero, while Lasso can also set some exactly to zero, effectively removing those predictors.</p>
+  <p>Use cross-validation to select the model and tune the penalty strength, then evaluate its performance on unseen test data. In our example, the model with the lowest training error performed worst on new customers.</p>
+  <p>The choice depends on your goal: do you need fewer predictors, more stable coefficients, or both?</p></div>
 
   <h2>Related posts</h2>
   <ul class="post-points">
