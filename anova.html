@@ -101,12 +101,14 @@
     <figcaption><span>Chart 2</span> Social orders sit lowest and search orders highest, yet every channel contains both cheap and expensive orders. The question is whether the gaps between the three averages are bigger than this spread would produce by chance. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Step 1: Identify the null and alternative hypotheses</h3>
+  <h3>Step 1: Define the null and alternative hypotheses</h3>
   <ul class="post-points post-points-color">
-    <li><strong>H<sub>0</sub>:</strong> the average order value is the same in all three channels (μ<sub>Email</sub> = μ<sub>Social</sub> = μ<sub>Search</sub>).</li>
-    <li><strong>H<sub>1</sub>:</strong> at least one channel has a different average. It does not say that all three differ, and it does not say which one.</li>
+    <li><strong>H<sub>0</sub> (null hypothesis):</strong> The population mean order value is equal across all three marketing channels.
+      <p class="post-formula" style="margin:8px 0 0"><strong>H<sub>0</sub>: μ<sub>Email</sub> = μ<sub>Social</sub> = μ<sub>Search</sub></strong></p>
+    </li>
+    <li><strong>H<sub>1</sub> (alternative hypothesis):</strong> At least one population mean differs from another. This does not mean that all three means must be different, and it does not identify which channels differ.</li>
   </ul>
-  <p>We use a significance level of α = 0.05.</p>
+  <p>We use a significance level of α = 0.05, meaning we accept a 5% Type I error rate for this test.</p>
 
   <h3>Step 2: Calculate the F statistic</h3>
   <p>The overall average of all 60 orders is €64.22. From here we measure the two kinds of variation as sums of squared distances.</p>
