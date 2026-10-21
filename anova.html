@@ -39,6 +39,8 @@
   <p><strong>ANOVA</strong> (analysis of variance) tests whether the average of a numeric variable differs between three or more groups. It follows the same logic as <a href="hypothesis-testing.html">Hypothesis Testing</a> and extends the two-group comparison from <a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a>.</p>
 
   <h2>Why Not Run Several t-Tests?</h2>
+  <p>Imagine we compare the average order value of three channels with t-tests: email vs. social, email vs. search and social vs. search. That is three tests, and each one has a 5% risk of a false alarm when there is no real difference. Together the risk grows to about 14%, and with more groups it keeps growing.</p>
+  <p>ANOVA avoids this by asking one question first: is there any difference at all? It answers that with a single test.</p>
 
   <h3 class="post-h3-small">Two types of ANOVA</h3>
   <ul class="post-points post-points-color">
@@ -52,6 +54,186 @@
     </li>
   </ul>
   <p>This post walks through one-way ANOVA step by step. Two-way ANOVA builds on the same logic and is covered in a short section at the end.</p>
+
+  <h2>The Core Idea: Variation Between Groups vs. Variation Within Groups</h2>
+  <p>ANOVA does not compare the averages directly. It compares two kinds of variation:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Variation between groups.</strong> How far the group averages are from the overall average. If the channels really differ, their averages spread out.</li>
+    <li><strong>Variation within groups.</strong> How much individual orders differ inside the same channel. Even within one channel, some customers spend €30 and others €90. This is the background noise.</li>
+  </ul>
+  <figure class="post-fig">
+    <img src="images/anova/chart-1-between-within.svg" alt="Two strip plots with three groups each on the same axis. In panel A the three group means are close together and the orders are widely spread, F is 0.6. In panel B the means are far apart and the orders are tightly spread, F is 52." loading="lazy">
+    <figcaption><span>Chart 1</span> The same kind of spread can mean very different things. In A the gaps between averages are small compared with the noise, so they could easily be chance. In B they are much larger than the noise, so chance is a poor explanation. The F value measures exactly this ratio. Illustrative data.</figcaption>
+  </figure>
+  <p>The F statistic puts the two kinds of variation into one ratio:</p>
+  <p class="post-formula"><strong>F = <span class="frac"><span>variation between groups</span><span>variation within groups</span></span></strong><span>If all groups share the same true average, F is close to 1. The larger F gets, the harder it is to explain the gaps by chance.</span></p>
+
+  <h2>One-Way ANOVA, Step by Step</h2>
+  <p>We compare 60 orders from three marketing channels, 20 per channel. The figures are illustrative and based on simulated data, not a real retailer.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Channel</th><th>Average order value</th><th>Standard deviation</th></tr></thead>
+    <tbody>
+      <tr><td>Email</td><td>€66.10</td><td>€19.01</td></tr>
+      <tr><td>Social</td><td>€54.95</td><td>€13.15</td></tr>
+      <tr><td>Search</td><td>€71.60</td><td>€13.86</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/anova/chart-2-orders-by-channel.svg" alt="Strip plot of 60 order values by marketing channel. Averages are 66.1 euros for email, 55.0 for social and 71.6 for search, around an overall mean of 64.2 euros. The orders of all three channels overlap widely." loading="lazy">
+    <figcaption><span>Chart 2</span> Social orders sit lowest and search orders highest, yet every channel contains both cheap and expensive orders. The question is whether the gaps between the three averages are bigger than this spread would produce by chance. Illustrative data.</figcaption>
+  </figure>
+
+  <h3>Step 1: Identify the null and alternative hypotheses</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>H<sub>0</sub>:</strong> the average order value is the same in all three channels (μ<sub>Email</sub> = μ<sub>Social</sub> = μ<sub>Search</sub>).</li>
+    <li><strong>H<sub>1</sub>:</strong> at least one channel has a different average. It does not say that all three differ, and it does not say which one.</li>
+  </ul>
+  <p>We use a significance level of α = 0.05.</p>
+
+  <h3>Step 2: Calculate the F statistic</h3>
+  <p>The overall average of all 60 orders is €64.22. From here we measure the two kinds of variation as sums of squared distances.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Between groups (SSB).</strong> For each channel, take the squared distance between its average and the overall average, multiply by the 20 orders in the channel, and add the three results. SSB = 2,878.6.</li>
+    <li><strong>Within groups (SSW).</strong> For each channel, add up the squared distances of every order from its own channel average, then add the three results. SSW = 13,799.6.</li>
+  </ul>
+  <p>Sums of squares are not comparable yet, because they are based on different numbers of independent pieces of information. We divide each by its degrees of freedom (df) to get a <strong>mean square</strong>, which is an average squared distance:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Between:</strong> df = number of groups − 1 = 3 − 1 = 2</li>
+    <li><strong>Within:</strong> df = number of orders − number of groups = 60 − 3 = 57</li>
+  </ul>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Source</th><th>Sum of squares</th><th>df</th><th>Mean square</th></tr></thead>
+    <tbody>
+      <tr><td>Between channels</td><td>2,878.6</td><td>2</td><td>1,439.3</td></tr>
+      <tr><td>Within channels</td><td>13,799.6</td><td>57</td><td>242.1</td></tr>
+      <tr><td>Total</td><td>16,678.2</td><td>59</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p>The F statistic is the ratio of the two mean squares:</p>
+  <p class="post-formula"><strong>F = <span class="frac"><span>1,439.3</span><span>242.1</span></span> = 5.95</strong><span>Between-group variation is almost six times as large as the noise we would expect if the channels did not differ.</span></p>
+
+  <h3>Step 3: Find the p-value</h3>
+  <p>If H<sub>0</sub> is true, F follows an F distribution. Its shape depends on two degrees of freedom: 2 for the numerator and 57 for the denominator.</p>
+  <p>At a significance level of 5%, the critical value for 2 and 57 degrees of freedom is 3.16. Our statistic of 5.95 is above it.</p>
+  <figure class="post-fig">
+    <img src="images/anova/chart-3-f-distribution.svg" alt="Density curve of the F distribution with 2 and 57 degrees of freedom, falling steeply from 1 at zero. A dashed line marks the critical value 3.16. A red line marks the observed F of 5.95, with a very small shaded area to its right." loading="lazy">
+    <figcaption><span>Chart 3</span> Almost all of the curve lies to the left of our result. Only a thin sliver of area, 0.45%, sits at or beyond F = 5.95, which means this result would be rare if the channels had the same true average.</figcaption>
+  </figure>
+  <p>The p-value is approximately 0.0045. It was determined using Python. If all three channels really had the same average, an F value this large or larger would appear in about 4 or 5 of 1,000 samples.</p>
+
+  <h3>Step 4: Make a conclusion</h3>
+  <p>The p-value of about 0.0045 is below α = 0.05, so we reject H<sub>0</sub>. The data give evidence that at least one channel has a different average order value.</p>
+  <p>How large is the effect? The between-group share of the total variation is 2,878.6 ÷ 16,678.2 = 0.17 (called <strong>η²</strong>, “eta squared”). The channel explains about 17% of the differences in order values. The other 83% is variation within channels.</p>
+
+  <h2>What a Significant Result Does Not Tell You</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>Which groups differ.</strong> ANOVA says that the averages are not all equal. It does not say whether email differs from social, or only search from social.</li>
+    <li><strong>Why they differ.</strong> The channels may reach different audiences. A higher average in search does not prove that search makes people spend more.</li>
+    <li><strong>That the difference matters.</strong> With thousands of orders, even a tiny gap becomes significant. Look at η² and the size of the differences in euros, not only at the p-value.</li>
+  </ul>
+
+  <h2>Which Groups Differ? Post-Hoc Tests</h2>
+  <p>To find out which channels differ, we compare the pairs after ANOVA with a <strong>post-hoc test</strong>. A common choice is <strong>Tukey’s HSD</strong>. It compares every pair, but adjusts the p-values and intervals for the fact that we make three comparisons. This keeps the overall false-alarm risk at 5%, which is the problem from the start of this post.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Comparison</th><th>Difference in average</th><th>Adjusted p-value</th></tr></thead>
+    <tbody>
+      <tr><td>Email − Social</td><td>€11.15</td><td>0.069</td></tr>
+      <tr><td>Search − Email</td><td>€5.50</td><td>0.507</td></tr>
+      <tr><td>Search − Social</td><td>€16.65</td><td>0.004</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/anova/chart-4-tukey-intervals.svg" alt="Three horizontal intervals showing differences in average order value with 95 percent intervals. Email minus social and search minus email cross zero. Search minus social, shown in red, lies entirely above zero." loading="lazy">
+    <figcaption><span>Chart 4</span> An interval that crosses zero means the data cannot rule out “no difference”. Only search and social are clearly apart. Search orders are about €5 to €28 higher than social orders.</figcaption>
+  </figure>
+  <p>Why the adjustment matters: an ordinary t-test of email against social would give p ≈ 0.037 and look significant. After adjusting for three comparisons, the p-value is 0.069. Without the adjustment, we would have found a difference that the data do not support.</p>
+
+  <h2>Assumptions and When ANOVA Breaks</h2>
+  <ul class="post-points post-points-color">
+    <li><strong>Independent observations.</strong> Each order should come from a different customer. If the same customer appears many times, the orders are not independent.</li>
+    <li><strong>Roughly normal residuals.</strong> The differences between orders and their channel average should be roughly bell-shaped. With about 20 or more observations per group, ANOVA tolerates moderate deviations.</li>
+    <li><strong>Similar spread in all groups.</strong> A common rule of thumb is that the largest standard deviation should be less than twice the smallest. Here it is €19.01 against €13.15, about 1.4 times. Levene’s test agrees (p = 0.18).</li>
+  </ul>
+  <p>If the assumptions fail, there are alternatives. <strong>Welch’s ANOVA</strong> handles groups with unequal spread. The <strong>Kruskal–Wallis test</strong> compares groups without assuming a normal shape, which helps with strongly skewed data or extreme outliers.</p>
+
+  <h2>Two-Way ANOVA: Adding a Second Factor</h2>
+  <p>So far the customer type was ignored. Of our 60 orders, 30 came from new and 30 from returning customers, evenly spread over the channels (10 in each combination). Two-way ANOVA tests the channel, the customer type and their interaction at once.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Average order value</th><th>New customers</th><th>Returning customers</th></tr></thead>
+    <tbody>
+      <tr><td>Email</td><td>€51.70</td><td>€80.50</td></tr>
+      <tr><td>Social</td><td>€51.80</td><td>€58.10</td></tr>
+      <tr><td>Search</td><td>€68.70</td><td>€74.50</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/anova/chart-5-interaction.svg" alt="Line chart of average order value by marketing channel for new and returning customers. The returning-customer line is far above the new-customer line for email, with a gap of about 29 euros, but only about 6 euros apart for social and search." loading="lazy">
+    <figcaption><span>Chart 5</span> The lines are not parallel. Returning customers spend far more than new customers in the email channel, but hardly more in social and search. When lines diverge like this, the effect of the channel depends on the customer type. That is an interaction.</figcaption>
+  </figure>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Effect</th><th>F</th><th>p-value</th></tr></thead>
+    <tbody>
+      <tr><td>Channel</td><td>8.37</td><td>0.0007</td></tr>
+      <tr><td>Customer type</td><td>16.21</td><td>0.0002</td></tr>
+      <tr><td>Channel × customer type</td><td>5.02</td><td>0.0100</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="post-points post-points-color">
+    <li><strong>Channel and customer type both matter.</strong> Returning customers spend about €13.60 more on average than new customers (€71.03 vs. €57.40).</li>
+    <li><strong>The interaction is significant.</strong> Email lifts the order value of returning customers by €28.80 compared with new customers, social by only €6.30 and search by €5.80.</li>
+    <li><strong>Read the interaction first.</strong> If it is significant, “which channel is best?” has no single answer. For new customers search is best (€68.70). For returning customers email is best (€80.50).</li>
+  </ul>
+  <p>The channel effect is stronger here (F = 8.37) than in the one-way test (F = 5.95). Customer type explains part of the variation that was left over as noise before, which makes the channel differences easier to see.</p>
+
+  <h2>Coding</h2>
+  <p>You do not have to calculate the F statistic by hand. The <code>f_oneway()</code> function from <code>scipy.stats</code> runs the one-way test, and <code>tukey_hsd()</code> runs the post-hoc comparisons. The data frame <code>orders</code> has one row per order, with the columns channel, customer and value.</p>
+  <pre class="post-code"><code>import pandas as pd
+from scipy import stats
+
+orders = pd.read_csv("orders.csv")   # columns: channel, customer, value
+
+groups = [g["value"] for _, g in orders.groupby("channel")]
+result = stats.f_oneway(*groups)
+print(f"F = {result.statistic:.2f}, p = {result.pvalue:.4f}")
+
+print(stats.tukey_hsd(*groups))
+print(stats.levene(*groups))
+
+# F = 5.95, p = 0.0045
+# Levene test for equal spread: p = 0.18</code></pre>
+  <p>The groups are sorted alphabetically, so in the Tukey output 0 = Email, 1 = Search and 2 = Social. The result matches our calculation: F = 5.95 and p = 0.0045. Only the pair 1 − 2 (Search − Social) has an adjusted p-value below 0.05.</p>
+  <p>For two-way ANOVA we use the <code>statsmodels</code> package. The formula <code>channel * customer</code> includes both main effects and their interaction.</p>
+  <pre class="post-code"><code>import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+model = ols("value ~ C(channel) * C(customer)", data=orders).fit()
+print(sm.stats.anova_lm(model, typ=2).round(4))</code></pre>
+  <pre class="post-code post-code-out"><code>                        sum_sq    df        F  PR(&gt;F)
+C(channel)              2878.6333   2.0   8.3702  0.0007
+C(customer)             2788.0167   1.0  16.2134  0.0002
+C(channel):C(customer)  1725.8333   2.0   5.0182  0.0100
+Residual                9285.7000  54.0      NaN     NaN</code></pre>
+
+  <h2>How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“In our last 60 orders, the three marketing channels did not bring in orders of the same value. Search orders averaged €71.60, email orders €66.10 and social orders €54.95. The ANOVA test indicates that gaps this large are unlikely to be explained by random variation alone. The one difference we can clearly confirm is between search and social, about €17.”</p>
+    <p class="post-callout-q">“The test does not tell us why. It also shows that customer type matters: email works very well for returning customers (€80.50) but not for new ones (€51.70). The business question is whether we should use email to keep existing customers buying and search to win new ones.”</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>ANOVA tests whether the averages of three or more groups are equal, by comparing the variation between groups with the variation within groups. A large F ratio and a small p-value mean that at least one group differs.</p>
+  <ul class="post-points post-points-color" style="margin:10px 0 0">
+    <li><strong>Post-hoc tests</strong> such as Tukey’s HSD show which groups differ, without inflating the false-alarm risk.</li>
+    <li><strong>Two-way ANOVA</strong> adds a second factor and tests the interaction between the two.</li>
+  </ul>
+  <p style="margin-top:12px">A significant result does not show why groups differ or how much the difference matters. Check the size of the effect and the assumptions before drawing conclusions.</p></div>
+
+  <h2>Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="hypothesis-testing.html">Hypothesis Testing</a> The logic of H<sub>0</sub>, p-values and significance levels behind every test.</li>
+    <li><a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a> The tests for comparing two averages, where ANOVA handles three or more.</li>
+    <li><a href="chi-squared-test.html">Chi-Squared Test</a> The test to use when the outcome is a category instead of a number.</li>
+    <li><a href="ab-testing.html">A/B Testing</a> How to design an experiment whose results you can test.</li>
+  </ul>
 
 </article>
 </main>
