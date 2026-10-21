@@ -44,12 +44,17 @@
 
   <h3 class="post-h3-small">Two types of ANOVA</h3>
   <ul class="post-points post-points-color">
-    <li><strong>One-way ANOVA.</strong> It looks at one factor. Example: does the average order value differ between the three marketing channels (email, social, search)? There is one question, one grouping variable and three groups.</li>
-    <li><strong>Two-way ANOVA.</strong> It looks at two factors at the same time. Example: does the average order value differ by marketing channel <em>and</em> by customer type (new vs. returning)? It tests three hypotheses in one analysis:
+    <li><strong>One-way ANOVA.</strong> It looks at one factor. Example: does the average order value differ between the three marketing channels (email, social, search)? There is one question, one grouping variable and three groups. It has one pair of hypotheses:
       <ul class="post-points post-points-color" style="margin:8px 0 0">
-        <li>the effect of the channel</li>
-        <li>the effect of the customer type</li>
-        <li>the <strong>interaction</strong> between the two. Email might work well for returning customers but not for new ones, so the channel effect depends on the customer type.</li>
+        <li><strong>H<sub>0</sub>:</strong> the average order value is the same in all three channels.</li>
+        <li><strong>H<sub>1</sub>:</strong> at least one channel has a different average.</li>
+      </ul>
+    </li>
+    <li><strong>Two-way ANOVA.</strong> It looks at two factors at the same time. Example: does the average order value differ by marketing channel <em>and</em> by customer type (new vs. returning)? It has three pairs of hypotheses, one for each effect:
+      <ul class="post-points post-points-color" style="margin:8px 0 0">
+        <li><strong>Channel.</strong> H<sub>0</sub>: the average order value is the same in all channels. H<sub>1</sub>: at least one channel differs.</li>
+        <li><strong>Customer type.</strong> H<sub>0</sub>: new and returning customers have the same average order value. H<sub>1</sub>: they differ.</li>
+        <li><strong>Interaction.</strong> H<sub>0</sub>: the channel effect is the same for new and returning customers. H<sub>1</sub>: the channel effect depends on the customer type. Email might work well for returning customers but not for new ones.</li>
       </ul>
     </li>
   </ul>
