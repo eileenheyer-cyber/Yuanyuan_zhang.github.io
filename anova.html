@@ -35,8 +35,9 @@
   <p class="overline">Inference &amp; experiments</p>
   <h1 class="post-title">ANOVA: Comparing Averages Across Three or More Groups</h1>
 
-  <p>Do email, social and search campaigns bring in orders of the same value, or does one channel really stand out? With two groups we could use a t-test. With three or more groups we need a different tool.</p>
-  <p><strong>ANOVA</strong> (analysis of variance) tests whether the average of a numeric variable differs between three or more groups. It follows the same logic as <a href="hypothesis-testing.html">Hypothesis Testing</a> and extends the two-group comparison from <a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a>.</p>
+  <p>Do email, social media and search campaigns generate different average order values? And if they do, are these differences meaningful or simply the result of random variation?</p>
+  <p>Comparing two groups is relatively straightforward with a <a href="t-test-vs-z-test.html">t-test</a>. But when we want to compare three or more groups, running multiple t-tests can increase the risk of false positives.</p>
+  <p>This is where <strong>ANOVA</strong> (Analysis of Variance) comes in. It tests whether the differences between group means are large relative to the variation within each group. Instead of testing each pair separately, ANOVA evaluates whether there is sufficient statistical evidence that not all group means are equal.</p>
 
   <h2>Why Not Run Several t-Tests?</h2>
   <p>Imagine we compare the average order value of three channels with t-tests: email vs. social, email vs. search and social vs. search. That is three tests, and each one has a 5% risk of a false alarm when there is no real difference. Together the risk grows to about 14%, and with more groups it keeps growing.</p>
