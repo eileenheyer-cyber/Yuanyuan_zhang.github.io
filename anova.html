@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANOVA – Yuanyuan Zhang</title>
+  <meta name="description" content="ANOVA explained with a marketing-channel example: one-way and two-way ANOVA, the F statistic, post-hoc tests and when not to use it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261019h">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs post-nd">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Inference &amp; experiments</p>
+  <h1 class="post-title">ANOVA: Comparing Averages Across Three or More Groups</h1>
+
+  <h2>Why Not Run Several t-Tests?</h2>
+
+  <h3 class="post-h3-small">Two types of ANOVA</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>One-way ANOVA.</strong> It looks at one factor. Example: does the average order value differ between the three marketing channels (email, social, search)? There is one question, one grouping variable and three groups.</li>
+    <li><strong>Two-way ANOVA.</strong> It looks at two factors at the same time. Example: does the average order value differ by marketing channel <em>and</em> by customer type (new vs. returning)? It tests three things in one analysis:
+      <ul class="post-points post-points-color" style="margin:8px 0 0">
+        <li>the effect of the channel</li>
+        <li>the effect of the customer type</li>
+        <li>the <strong>interaction</strong> between the two. Email might work well for returning customers but not for new ones, so the channel effect depends on the customer type.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>This post walks through one-way ANOVA step by step. Two-way ANOVA builds on the same logic and is covered in a short section at the end.</p>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
