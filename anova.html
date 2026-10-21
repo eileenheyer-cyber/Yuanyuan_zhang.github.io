@@ -115,7 +115,7 @@
   <h3>Step 2: Calculate the F-statistic</h3>
   <p>The overall mean of all 60 orders is €64.22. ANOVA uses this overall mean as a reference point to measure two types of variation: between-group variation and within-group variation.</p>
 
-  <p><strong>1. Between-group variation (SSB)</strong></p>
+  <p><strong>1. Between-group variation: sum of squares between groups (SSB)</strong></p>
   <h3 class="post-h3-small">How far are the group means from the overall mean?</h3>
   <p>For each marketing channel, we calculate the squared difference between its mean order value and the overall mean. We multiply this difference by the number of orders in that group and add the results.</p>
   <p class="post-formula"><strong>SSB = Σ<sub>i=1</sub><sup>k</sup> n<sub>i</sub>(x&#772;<sub>i</sub> − x&#772;)²</strong></p>
@@ -124,7 +124,7 @@
   <p class="post-formula"><strong>SSB = 20 × (66.10 − 64.22)² + 20 × (54.95 − 64.22)² + 20 × (71.60 − 64.22)²<br>SSB = 70.69 + 1,718.66 + 1,089.29 = 2,878.64 ≈ 2,878.6</strong><span>Each channel has 20 orders. The channel means are €66.10 (email), €54.95 (social) and €71.60 (search).</span></p>
   <p>A larger SSB indicates that the group means are more spread out around the overall mean.</p>
 
-  <p><strong>2. Within-group variation (SSW)</strong></p>
+  <p><strong>2. Within-group variation: sum of squares within groups (SSW)</strong></p>
   <h3 class="post-h3-small">How much do individual order values vary within their own marketing channel?</h3>
   <p>For each channel, we calculate the squared difference between every order value and its channel’s mean. We then add all these squared differences across the three groups.</p>
   <p class="post-formula"><strong>SSW = Σ<sub>i=1</sub><sup>k</sup> Σ<sub>j=1</sub><sup>n<sub>i</sub></sup> (x<sub>ij</sub> − x&#772;<sub>i</sub>)²</strong></p>
