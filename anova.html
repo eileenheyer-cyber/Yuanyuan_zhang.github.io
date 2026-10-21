@@ -146,15 +146,18 @@
   <p class="post-formula"><strong>MSW = <span class="frac"><span>SSW</span><span>df<sub>W</sub></span></span> = <span class="frac"><span>13,799.6</span><span>57</span></span> ≈ 242.10</strong></p>
 
   <p style="font-size:0.9rem"><strong>4. Why Does This Matter?</strong></p>
-  <p>The mean squares allow us to compare the variation between groups with the variation within groups.</p>
+  <p>The mean squares allow us to compare variation between groups with variation within groups.</p>
   <ul class="post-points post-points-color">
-    <li><strong>MSB</strong> measures how much the group means vary around the overall mean, accounting for the number of groups.</li>
-    <li><strong>MSW</strong> estimates the variation among individual observations within their respective groups.</li>
+    <li><strong>MSB</strong> (between-group mean square) measures how much the group means vary around the overall mean.</li>
+    <li><strong>MSW</strong> (within-group mean square) estimates the variation among individual observations within their respective groups.</li>
   </ul>
-  <p>If the null hypothesis is true, both mean squares estimate the same underlying population variance, on average. If the group means differ substantially, MSB tends to become larger relative to MSW.</p>
-  <p>This gives us the F-statistic:</p>
+  <p>If the null hypothesis is true, both mean squares estimate the same underlying population variance on average. The F-statistic should therefore generally be around 1, although random variation can make it larger or smaller.</p>
+  <p>If the group means differ substantially, MSB tends to become larger relative to MSW, resulting in a higher F-statistic.</p>
+  <p>The F-statistic is calculated as the ratio of the two mean squares:</p>
   <p class="post-formula"><strong>F = <span class="frac"><span>MSB</span><span>MSW</span></span> = <span class="frac"><span>1,439.32</span><span>242.10</span></span> ≈ 5.95</strong></p>
-  <p>A larger F-statistic indicates that the variation between group means is large relative to the variation within the groups. We use the F-distribution to determine whether this result provides sufficient evidence against the null hypothesis.</p>
+  <p>Our F-statistic is approximately 5.95. This means the between-group mean square is about 5.95 times the within-group mean square.</p>
+  <p>However, a large F-statistic alone does not tell us whether the result is statistically significant. We need to compare it with the F-distribution or calculate its p-value.</p>
+
   <p>These results are usually summarized in an ANOVA table:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Source</th><th>Sum of squares</th><th>df</th><th>Mean square</th></tr></thead>
