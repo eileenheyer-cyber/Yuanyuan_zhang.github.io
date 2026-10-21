@@ -121,7 +121,7 @@
   <p class="post-formula"><strong>SSB = Σ<sub>i=1</sub><sup>k</sup> n<sub>i</sub>(x&#772;<sub>i</sub> − x&#772;)²</strong></p>
   <p>Here, n<sub>i</sub> is the number of orders in group i, x&#772;<sub>i</sub> is the group mean, and x&#772; is the overall mean.</p>
   <p>In our example:</p>
-  <p class="post-formula"><strong>SSB = 2,878.6</strong></p>
+  <p class="post-formula"><strong>SSB = 20 × (66.10 − 64.22)² + 20 × (54.95 − 64.22)² + 20 × (71.60 − 64.22)²<br>SSB = 70.69 + 1,718.66 + 1,089.29 = 2,878.64 ≈ 2,878.6</strong><span>Each channel has 20 orders. The channel means are €66.10 (email), €54.95 (social) and €71.60 (search).</span></p>
   <p>A larger SSB indicates that the group means are more spread out around the overall mean.</p>
 
   <p><strong>2. Within-group variation (SSW)</strong></p>
@@ -129,7 +129,7 @@
   <p>For each channel, we calculate the squared difference between every order value and its channel’s mean. We then add all these squared differences across the three groups.</p>
   <p class="post-formula"><strong>SSW = Σ<sub>i=1</sub><sup>k</sup> Σ<sub>j=1</sub><sup>n<sub>i</sub></sup> (x<sub>ij</sub> − x&#772;<sub>i</sub>)²</strong></p>
   <p>In our example:</p>
-  <p class="post-formula"><strong>SSW = 13,799.6</strong></p>
+  <p class="post-formula"><strong>SSW = 6,863.8 + 3,285.0 + 3,650.8 = 13,799.6</strong><span>The three terms are the squared differences within email, social and search orders, added up per channel.</span></p>
   <p>A larger SSW indicates greater variation among individual orders within the groups.</p>
 
   <h3 class="post-h3-small">Why do we divide by degrees of freedom?</h3>
