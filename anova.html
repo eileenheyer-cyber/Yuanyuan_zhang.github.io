@@ -130,23 +130,30 @@
   <p class="post-formula"><strong>SSW = 6,863.8 + 3,285.0 + 3,650.8 = 13,799.6</strong><span>The three terms are the squared differences within email, social and search orders, added up per channel.</span></p>
   <p>A larger SSW indicates greater variation among individual orders within the groups.</p>
 
-  <p style="font-size:0.9rem"><strong>3. Why do we divide by degrees of freedom?</strong></p>
-  <p>SSB and SSW cannot be compared directly because they represent variation across different numbers of independent pieces of information. We divide each sum of squares by its corresponding degrees of freedom to obtain a mean square.</p>
+  <p style="font-size:0.9rem"><strong>3. Why Do We Divide by Degrees of Freedom?</strong></p>
+  <p>The between-group sum of squares (SSB) and the within-group sum of squares (SSW) both measure variation, but they are based on different degrees of freedom. Dividing each sum of squares by its degrees of freedom gives us a mean square (MS), which represents an estimate of variance.</p>
   <p>For a one-way ANOVA with three groups and 60 observations:</p>
   <ul class="post-points post-points-color">
     <li><strong>Between-group degrees of freedom:</strong> df<sub>B</sub> = k − 1 = 3 − 1 = 2</li>
     <li><strong>Within-group degrees of freedom:</strong> df<sub>W</sub> = N − k = 60 − 3 = 57</li>
   </ul>
-  <p>The mean squares are:</p>
+  <p>Here, k is the number of groups and N is the total number of observations.</p>
+  <p>The mean squares are calculated as follows:</p>
+  <p>Between-group mean square:</p>
   <p class="post-formula"><strong>MSB = <span class="frac"><span>SSB</span><span>df<sub>B</sub></span></span> = <span class="frac"><span>2,878.64</span><span>2</span></span> = 1,439.32</strong></p>
+  <p>Within-group mean square:</p>
   <p class="post-formula"><strong>MSW = <span class="frac"><span>SSW</span><span>df<sub>W</sub></span></span> = <span class="frac"><span>13,799.6</span><span>57</span></span> ≈ 242.10</strong></p>
 
-  <h3 class="post-h3-small">Calculate the F-statistic</h3>
-  <p>The F-statistic is the ratio of the between-group mean square to the within-group mean square.</p>
-  <p class="post-formula"><strong>F = <span class="frac"><span>MSB</span><span>MSW</span></span></strong></p>
-  <p>Using our example:</p>
-  <p class="post-formula"><strong>F = <span class="frac"><span>1,439.32</span><span>242.10</span></span> ≈ 5.95</strong></p>
-  <p>A larger F-statistic indicates that the variation between group means is large relative to the variation within the groups. We use the F-distribution, together with the degrees of freedom, to calculate the p-value and determine whether the observed differences are statistically significant.</p>
+  <p style="font-size:0.9rem"><strong>4. Why Does This Matter?</strong></p>
+  <p>The mean squares allow us to compare the variation between groups with the variation within groups.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>MSB</strong> measures how much the group means vary around the overall mean, accounting for the number of groups.</li>
+    <li><strong>MSW</strong> estimates the variation among individual observations within their respective groups.</li>
+  </ul>
+  <p>If the null hypothesis is true, both mean squares estimate the same underlying population variance, on average. If the group means differ substantially, MSB tends to become larger relative to MSW.</p>
+  <p>This gives us the F-statistic:</p>
+  <p class="post-formula"><strong>F = <span class="frac"><span>MSB</span><span>MSW</span></span> = <span class="frac"><span>1,439.32</span><span>242.10</span></span> ≈ 5.95</strong></p>
+  <p>A larger F-statistic indicates that the variation between group means is large relative to the variation within the groups. We use the F-distribution to determine whether this result provides sufficient evidence against the null hypothesis.</p>
   <p>These results are usually summarized in an ANOVA table:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Source</th><th>Sum of squares</th><th>df</th><th>Mean square</th></tr></thead>
