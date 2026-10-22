@@ -40,10 +40,12 @@
   <p>In this post, we use a simple customer churn example with one predictor: the number of support tickets a customer opened last month. It builds on <a href="simple-linear-regression.html">Simple Linear Regression</a> and the framework introduced in <a href="glm.html">Generalized Linear Models</a>.</p>
 
   <h2>Why a Straight Line Fails for Yes/No Outcomes</h2>
-  <p>Suppose we code each customer as 0 if they stayed and 1 if they cancelled. If we fit a straight line to these observations, as we would in simple linear regression, the predictions can fall outside the range of 0 to 1. A customer with no support tickets might receive a predicted value below 0, while a customer with many tickets might receive a value above 1.</p>
-  <p>These values cannot represent probabilities. A probability must always lie between 0 and 1.</p>
-  <p>The relationship between support tickets and churn may also be nonlinear. Moving from zero to one ticket might make little difference, while the probability of cancellation could rise sharply across a middle range. At higher ticket counts, the probability may begin to level off.</p>
-  <p>This is the pattern logistic regression is designed to capture: an <strong>S-shaped curve</strong>, also called a sigmoid curve (Chart 1).</p>
+  <p>Imagine a subscription company approaching a customer's renewal date. The company wants to know: <strong>Will this customer renew their subscription or cancel?</strong></p>
+  <p>The answer has only two possible outcomes: stay or cancel. The company also knows how many support tickets the customer opened last month. Could this information help predict whether they will leave?</p>
+  <p>Ordinary linear regression is not designed for this kind of prediction.</p>
+  <p>Suppose we code each customer as 0 if they stay and 1 if they cancel. A straight line fitted to these observations can produce predictions below 0 or above 1. But a probability cannot be negative or exceed 100%.</p>
+  <p>There is another challenge. The relationship between support tickets and cancellation may not follow a straight line. Going from zero to one ticket might make little difference, while the probability of cancellation could rise sharply as the number of tickets increases. At higher ticket counts, the probability may begin to level off.</p>
+  <p>Logistic regression models this pattern using an <strong>S-shaped curve</strong>, also called a sigmoid curve (Chart 1).</p>
   <figure class="post-fig">
     <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 70 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls just below 0 at zero tickets and rises above 1 beyond about 13 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
