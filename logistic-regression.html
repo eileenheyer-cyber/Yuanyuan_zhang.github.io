@@ -45,7 +45,7 @@
   <p>The relationship between support tickets and churn may also be nonlinear. Moving from zero to one ticket might make little difference, while the probability of cancellation could rise sharply across a middle range. At higher ticket counts, the probability may begin to level off.</p>
   <p>This is the pattern logistic regression is designed to capture: an <strong>S-shaped curve</strong>, also called a sigmoid curve (Chart 1).</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 60 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls below 0 near zero tickets and rises above 1 beyond about 11 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 70 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls just below 0 at zero tickets and rises above 1 beyond about 13 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
@@ -77,7 +77,7 @@
   </table></div>
   <p>When the log-odds equal zero, the odds are 1 to 1, corresponding to a probability of 50%. Positive log-odds indicate that cancellation is more likely than staying; negative log-odds indicate the opposite.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 12 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 2 to about 2.8, with the 8-ticket customer marked at 1.2. On the right, the same model on the probability scale is a red S-curve from 12% to about 95%, with the 8-ticket customer marked at 77%." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 16 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 2 to about 4.4, with the 8-ticket customer marked at 1.2. On the right, the same model on the probability scale is a red S-curve from 12% to about 99%, with the 8-ticket customer marked at 77%." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The same model on two scales: a constant change in log-odds per ticket becomes a probability that changes fast in the middle and slowly at the ends. Illustrative data.</figcaption>
   </figure>
   <p>The important takeaway is that <strong>logistic regression is linear on the log-odds scale, not on the probability scale</strong>.</p>
@@ -106,8 +106,13 @@
   <p>However, 0.5 is a common default, not a universal rule.</p>
   <p>Suppose losing a customer costs the company ten times as much as making a retention offer. In that case, missing a customer who eventually cancels may be much more expensive than contacting someone who would have stayed. A lower threshold, such as 0.2, might therefore be more appropriate. In our example, that would flag customers with two or more tickets.</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 12 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 and 1 tickets are not flagged. Customers with 2, 3 and 4 tickets are flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 16 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 and 1 tickets are not flagged. Customers with 2, 3 and 4 tickets are flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 2 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
+  </figure>
+  <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the log-odds equal 0 (Chart 4).</p>
+  <figure class="post-fig">
+    <img src="images/regression/logistic-chart4.svg" alt="The S-shaped probability curve for 0 to 16 support tickets with horizontal threshold lines at 0.5 and 0.2 and vertical lines dropping to the decision boundaries at 5 tickets and 1.5 tickets. The background is blue left of 1.5 tickets (not flagged), yellow between 1.5 and 5 tickets (flagged at 0.2 only) and red beyond 5 tickets (flagged at both thresholds)." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 4</span> A decision boundary is the ticket count where the curve crosses the threshold. A lower threshold moves the boundary to the left, so more customers are flagged. Illustrative data.</figcaption>
   </figure>
   <p>Lowering the threshold generally identifies more potential churners, but it also increases the number of customers contacted unnecessarily.</p>
   <p>These mistakes have names:</p>
