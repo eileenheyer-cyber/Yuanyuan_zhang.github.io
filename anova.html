@@ -220,7 +220,7 @@
   <p>The confidence intervals in the chart tell the same story: an interval that crosses zero includes the possibility of no difference, while an interval entirely above or below zero indicates a statistically significant difference at the corresponding confidence level.</p>
 
   <p style="font-size:0.9rem"><strong>Why does the adjustment matter?</strong></p>
-  <p>Running multiple unadjusted tests increases the risk of false positives. Tukey’s HSD accounts for the multiple comparisons, helping keep the overall family-wise error rate at the chosen significance level.</p>
+  <p>An unadjusted test is a regular test whose p-value is used as it is, without correcting for the number of comparisons being made. Running multiple unadjusted tests increases the risk of false positives. Tukey’s HSD accounts for the multiple comparisons, helping keep the overall family-wise error rate at the chosen significance level.</p>
   <p>In this example, the unadjusted email-versus-social comparison has a p-value of approximately 0.037, but the Tukey-adjusted p-value is 0.069. After accounting for the multiple comparisons, we do not have sufficient evidence to conclude that these two channels differ.</p>
 
   <h2>Assumptions and When ANOVA Breaks</h2>
