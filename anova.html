@@ -201,20 +201,27 @@
   <p>The goal is not simply to find a significant p-value. It is to understand the size, meaning and limitations of the observed differences.</p>
 
   <h2>Which Groups Differ? Post-Hoc Tests</h2>
-  <p>To find out which channels differ, we compare the pairs after ANOVA with a <strong>post-hoc test</strong>. A common choice is <strong>Tukey’s HSD</strong>. It compares every pair, but adjusts the p-values and intervals for the fact that we make three comparisons. This keeps the overall false-alarm risk at 5%, which is the problem from the start of this post.</p>
+  <p>ANOVA tells us whether there is evidence that not all group means are equal, but it does not identify which groups differ. To investigate individual pairs, we can use a <strong>post-hoc test</strong>.</p>
+  <p>A common choice is <strong>Tukey’s HSD (Honestly Significant Difference)</strong>. It compares all pairs of group means while controlling the family-wise error rate — the probability of making at least one Type I error across the set of comparisons.</p>
+  <p>For our three marketing channels, we compare email vs. social, search vs. email, and search vs. social.</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Comparison</th><th>Difference in average</th><th>Adjusted p-value</th></tr></thead>
+    <thead><tr><th>Comparison</th><th>Difference in sample means</th><th>Adjusted p-value</th></tr></thead>
     <tbody>
-      <tr><td>Email − Social</td><td>€11.15</td><td>0.069</td></tr>
-      <tr><td>Search − Email</td><td>€5.50</td><td>0.507</td></tr>
-      <tr><td>Search − Social</td><td>€16.65</td><td>0.004</td></tr>
+      <tr><td>Email – Social</td><td>€11.15</td><td>0.069</td></tr>
+      <tr><td>Search – Email</td><td>€5.50</td><td>0.507</td></tr>
+      <tr><td>Search – Social</td><td>€16.65</td><td>0.004</td></tr>
     </tbody>
   </table></div>
+  <p>At a significance level of 0.05, only the difference between search and social is statistically significant. The adjusted p-values for the other two comparisons exceed 0.05.</p>
   <figure class="post-fig">
     <img src="images/anova/chart-4-tukey-intervals.svg" alt="Three horizontal intervals showing differences in average order value with 95 percent intervals. Email minus social and search minus email cross zero. Search minus social, shown in red, lies entirely above zero." loading="lazy">
     <figcaption><span>Chart 4</span> An interval that crosses zero means the data cannot rule out “no difference”. Only search and social are clearly apart. Search orders are about €5 to €28 higher than social orders.</figcaption>
   </figure>
-  <p>Why the adjustment matters: an ordinary t-test of email against social would give p ≈ 0.037 and look significant. After adjusting for three comparisons, the p-value is 0.069. Without the adjustment, we would have found a difference that the data do not support.</p>
+  <p>The confidence intervals in the chart tell the same story: an interval that crosses zero includes the possibility of no difference, while an interval entirely above or below zero indicates a statistically significant difference at the corresponding confidence level.</p>
+
+  <p style="font-size:0.9rem"><strong>Why does the adjustment matter?</strong></p>
+  <p>Running multiple unadjusted tests increases the risk of false positives. Tukey’s HSD accounts for the multiple comparisons, helping keep the overall family-wise error rate at the chosen significance level.</p>
+  <p>In this example, the unadjusted email-versus-social comparison has a p-value of approximately 0.037, but the Tukey-adjusted p-value is 0.069. After accounting for the multiple comparisons, we do not have sufficient evidence to conclude that these two channels differ.</p>
 
   <h2>Assumptions and When ANOVA Breaks</h2>
   <ul class="post-points post-points-color">
