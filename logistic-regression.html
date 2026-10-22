@@ -53,41 +53,41 @@
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
-  <h2>From Probability to Log-Odds: How Logistic Regression Works</h2>
-  <h3>Understanding Odds and Log-Odds</h3>
+  <h2>From Probability to Logit: How Logistic Regression Works</h2>
+  <h3>Understanding Odds and Logit</h3>
   <ul class="post-points post-points-color">
     <li>Odds: The ratio of the probability that an event occurs to the probability that it does not occur: (p/(1-p)).</li>
     <li>Log-odds (logit): The logarithm of the odds.</li>
-    <li>The logistic regression model: It expresses the log-odds as a linear combination of predictors and their coefficients.</li>
+    <li>The logistic regression model: It expresses the logit as a linear combination of predictors and their coefficients.</li>
   </ul>
   <h3>From Probability to Logit</h3>
-  <p>The key idea is that logistic regression still uses a linear model, but it models the log-odds rather than the probability directly.</p>
+  <p>The key idea is that logistic regression still uses a linear model, but it models the logit rather than the probability directly.</p>
   <p>The general formula is:</p>
   <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = log( <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span> ) = <em>β</em><sub>0</sub> + <em>β</em><sub>1</sub><em>X</em><sub>1</sub> + <em>β</em><sub>2</sub><em>X</em><sub>2</sub> + ⋯ + <em>β</em><sub>n</sub><em>X</em><sub>n</sub></strong></p>
-  <p>Here, <em>p</em> is the probability of the event occurring, the <em>X</em>'s are the predictors, and the <em>β</em>'s are the coefficients estimated from the data. The intercept <em>β</em><sub>0</sub> represents the log-odds when all predictors equal zero, while each coefficient describes how the log-odds change when its predictor increases by one unit, holding the other predictors constant.</p>
+  <p>Here, <em>p</em> is the probability of the event occurring, the <em>X</em>'s are the predictors, and the <em>β</em>'s are the coefficients estimated from the data. The intercept <em>β</em><sub>0</sub> represents the logit when all predictors equal zero, while each coefficient describes how the logit changes when its predictor increases by one unit, holding the other predictors constant.</p>
   <p>In our churn example, we use just one predictor: the number of support tickets opened last month. Our illustrative model is:</p>
   <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8X</strong></p>
   <p>The coefficients −4 and 0.8 are estimated from historical customer data during model training.</p>
   <ul class="post-points post-points-color">
-    <li>−4 is the intercept: the predicted log-odds of cancellation for a customer with zero support tickets.</li>
-    <li>0.8 is the slope: each additional ticket increases the predicted log-odds of cancellation by 0.8.</li>
+    <li>−4 is the intercept: the predicted logit of cancellation for a customer with zero support tickets.</li>
+    <li>0.8 is the slope: each additional ticket increases the predicted logit of cancellation by 0.8.</li>
   </ul>
   <p>Let's calculate the prediction for a customer with six support tickets.</p>
-  <p><strong>Step 1: Calculate the log-odds</strong></p>
+  <p><strong>Step 1: Calculate the logit</strong></p>
   <p class="post-formula post-formula-plain"><strong>−4 + 0.8 × 6 = 0.8</strong></p>
-  <p><strong>Step 2: Convert log-odds into odds</strong></p>
-  <p class="post-formula post-formula-plain"><strong>odds = e<sup>log-odds</sup></strong></p>
+  <p><strong>Step 2: Convert the logit into odds</strong></p>
+  <p class="post-formula post-formula-plain"><strong>odds = e<sup>logit</sup></strong></p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>The odds of cancellation are approximately 2.23 to 1.</p>
   <p><strong>Step 3: Convert odds into probability</strong></p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>odds</span><span>1 + odds</span></span></strong></p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>2.23</span><span>1 + 2.23</span></span> ≈ 0.69</strong></p>
   <p>The predicted probability of cancellation is approximately 69%.</p>
-  <p>Why model log-odds in the first place? Probabilities are restricted to values between 0 and 1, whereas log-odds can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
+  <p>Why model the logit in the first place? Probabilities are restricted to values between 0 and 1, whereas the logit can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit(p)</sup></span></span></strong></p>
-  <p>The result is the familiar S-shaped curve: a straight line on the log-odds scale becomes a nonlinear relationship on the probability scale.</p>
+  <p>The result is the familiar S-shaped curve: a straight line on the logit scale becomes a nonlinear relationship on the probability scale.</p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
-    <thead><tr><th>Support tickets</th><th>Log-odds</th><th>Probability of cancellation</th></tr></thead>
+    <thead><tr><th>Support tickets</th><th>Logit</th><th>Probability of cancellation</th></tr></thead>
     <tbody>
       <tr><td>0</td><td>−4.0</td><td>2%</td></tr>
       <tr><td>3</td><td>−1.6</td><td>17%</td></tr>
@@ -96,15 +96,15 @@
       <tr><td>8</td><td>2.4</td><td>92%</td></tr>
     </tbody>
   </table></div>
-  <p>When log-odds equal zero, the odds are 1 to 1, corresponding to a probability of 50%. Positive log-odds indicate that cancellation is more likely than staying; negative log-odds indicate the opposite.</p>
+  <p>When the logit equals zero, the odds are 1 to 1, corresponding to a probability of 50%. A positive logit indicates that cancellation is more likely than staying; a negative logit indicates the opposite.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 10 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 4 to 4, with the 6-ticket customer marked at 0.8. On the right, the same model on the probability scale is a red S-curve from about 2% to about 98%, with the 6-ticket customer marked at 69%." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 2</span> The same model on two scales: a constant change in log-odds per ticket becomes a probability that changes fast in the middle and slowly at the ends. Illustrative data.</figcaption>
+    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 10 support tickets. On the left, the logit of cancelling rises as a straight blue line from minus 4 to 4, with the 6-ticket customer marked at 0.8. On the right, the same model on the probability scale is a red S-curve from about 2% to about 98%, with the 6-ticket customer marked at 69%." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 2</span> The same model on two scales: a constant change in the logit per ticket becomes a probability that changes fast in the middle and slowly at the ends. Illustrative data.</figcaption>
   </figure>
-  <p><strong>The key takeaway:</strong> Logistic regression fits a straight line to the log-odds, then transforms those values into probabilities between 0 and 1.</p>
+  <p><strong>The key takeaway:</strong> Logistic regression fits a straight line to the logit, then transforms those values into probabilities between 0 and 1.</p>
 
   <h2>Reading the Coefficients as Odds Ratios</h2>
-  <p>The coefficient 0.8 tells us how much the log-odds change with each additional support ticket. But log-odds are not particularly intuitive to interpret.</p>
+  <p>The coefficient 0.8 tells us how much the logit changes with each additional support ticket. But the logit is not particularly intuitive to interpret.</p>
   <p>To make the coefficient easier to understand, we exponentiate it:</p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
     <span>This gives us the odds ratio.</span></p>
@@ -130,7 +130,7 @@
     <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 to 3 tickets are not flagged. A customer with 4 tickets is flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 4 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
   </figure>
-  <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the log-odds equal 0 (Chart 4).</p>
+  <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the logit equal 0 (Chart 4).</p>
   <figure class="post-fig">
     <img src="images/regression/logistic-chart4.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with horizontal threshold lines at 0.5 and 0.2 and vertical lines dropping to the decision boundaries at 5 tickets and 3.3 tickets. The background is blue left of 3.3 tickets (not flagged), yellow between 3.3 and 5 tickets (flagged at 0.2 only) and red beyond 5 tickets (flagged at both thresholds)." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 4</span> A decision boundary is the ticket count where the curve crosses the threshold. A lower threshold moves the boundary to the left, so more customers are flagged. Illustrative data.</figcaption>
@@ -148,7 +148,7 @@
   <ul class="post-points post-points-color">
     <li><strong>Binary outcome.</strong> In standard binary logistic regression, the target has two possible outcomes, such as cancelled or stayed.</li>
     <li><strong>Independent observations.</strong> Each observation should be independent of the others, unless the model explicitly accounts for dependencies.</li>
-    <li><strong>Linearity in the log-odds.</strong> The relationship between each continuous predictor and the log-odds should be appropriately modeled. This does not mean the relationship with probability must be linear.</li>
+    <li><strong>Linearity in the logit.</strong> The relationship between each continuous predictor and the logit should be appropriately modeled. This does not mean the relationship with probability must be linear.</li>
     <li><strong>Little to no multicollinearity.</strong> Predictors should not be excessively correlated with one another, as this can make individual coefficients difficult to estimate precisely.</li>
     <li><strong>Enough outcome events.</strong> The model needs sufficient cancellations relative to its complexity. A traditional rule of thumb is around ten events per predictor, but this is only a rough guideline; the required sample size depends on several factors.</li>
   </ul>
@@ -167,7 +167,7 @@
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
     <ul class="post-points post-points-color">
       <li>Logistic regression predicts the <strong>probability</strong> of a yes/no outcome, always between 0 and 1.</li>
-      <li>It is a straight line on the <strong>log-odds</strong> scale, converted back into an S-shaped curve.</li>
+      <li>It is a straight line on the <strong>logit</strong> scale, converted back into an S-shaped curve.</li>
       <li><strong>e raised to a coefficient is the odds ratio.</strong> Here, 2.2 means the odds more than double per extra ticket. It is not a change in probability.</li>
       <li>A <strong>threshold</strong> turns probabilities into decisions, and the best threshold depends on the business cost of each kind of mistake.</li>
     </ul>
