@@ -54,43 +54,29 @@
   </figure>
 
   <h2>From Probability to Odds to Log-Odds</h2>
-  <p>The key idea is that logistic regression does not abandon the linear model. It models a straight-line relationship on the <strong>log-odds scale</strong> rather than directly on the probability scale.</p>
-
-  <h3>1. Where does the straight line come from?</h3>
-  <p>Imagine we have historical data from customers who either cancelled or stayed, along with the number of support tickets they opened last month. Logistic regression uses this data to estimate two coefficients: an intercept and a slope.</p>
-  <p>For our illustrative example, suppose the fitted model is:</p>
-  <p class="post-formula post-formula-plain"><strong>Log-odds = −4 + 0.8 × tickets</strong></p>
-  <p>Where do these numbers come from?</p>
+  <p>The key idea is that logistic regression still uses a linear model, but it models the log-odds rather than the probability directly.</p>
+  <p>The general formula is:</p>
+  <p class="post-formula post-formula-plain"><strong>ln( <span class="frac"><span>p</span><span>1 − p</span></span> ) = β<sub>0</sub> + β<sub>1</sub>X<sub>1</sub> + β<sub>2</sub>X<sub>2</sub> + ⋯ + β<sub>n</sub>X<sub>n</sub></strong></p>
+  <p>Here, <em>p</em> is the probability of the event occurring, the <em>X</em>'s are the predictors, and the <em>β</em>'s are the coefficients estimated from the data. The intercept <em>β</em><sub>0</sub> represents the log-odds when all predictors equal zero, while each coefficient describes how the log-odds change when its predictor increases by one unit, holding the other predictors constant.</p>
+  <p>In our churn example, we use just one predictor: the number of support tickets opened last month. Our illustrative model is:</p>
+  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8X</strong></p>
+  <p>The coefficients −4 and 0.8 are estimated from historical customer data during model training.</p>
   <ul class="post-points post-points-color">
-    <li><strong>−4 is the intercept.</strong> It represents the predicted log-odds of cancellation when a customer has zero support tickets.</li>
-    <li><strong>0.8 is the slope.</strong> It means that each additional support ticket increases the predicted log-odds of cancellation by 0.8.</li>
+    <li>−4 is the intercept: the predicted log-odds of cancellation for a customer with zero support tickets.</li>
+    <li>0.8 is the slope: each additional ticket increases the predicted log-odds of cancellation by 0.8.</li>
   </ul>
-  <p>These coefficients are estimated from the historical data during model training. They are not chosen arbitrarily by the analyst, although we use illustrative values here to explain how the model works.</p>
-
-  <h3>2. Calculate the log-odds</h3>
-  <p>Suppose a customer opened six support tickets last month. We substitute six into the equation:</p>
-  <p class="post-formula post-formula-plain"><strong>Log-odds = −4 + 0.8 × 6 = 0.8</strong></p>
-  <p>The model predicts log-odds of 0.8 for this customer.</p>
-  <p>But what does 0.8 actually mean? Log-odds are difficult to interpret directly, so we transform them into odds and then into a probability.</p>
-
-  <h3>3. From log-odds to odds to probability</h3>
-  <p><strong>Step 1: Log-odds to odds</strong></p>
-  <p>Exponentiating the log-odds gives us the odds:</p>
-  <p class="post-formula post-formula-plain"><strong>Odds = e<sup>0.8</sup> ≈ 2.23</strong></p>
+  <p>Let's calculate the prediction for a customer with six support tickets.</p>
+  <p><strong>Step 1: Calculate the log-odds</strong></p>
+  <p class="post-formula post-formula-plain"><strong>−4 + 0.8 × 6 = 0.8</strong></p>
+  <p><strong>Step 2: Convert log-odds into odds</strong></p>
+  <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>The odds of cancellation are approximately 2.23 to 1.</p>
-  <p><strong>Step 2: Odds to probability</strong></p>
-  <p>We convert the odds into a probability:</p>
-  <p class="post-formula post-formula-plain"><strong>Probability = odds ÷ (1 + odds)</strong></p>
-  <p>For our customer:</p>
-  <p class="post-formula post-formula-plain"><strong>Probability = 2.23 ÷ (1 + 2.23) ≈ 0.69, or 69%</strong></p>
-  <p>The model therefore estimates a 69% probability that this customer will cancel.</p>
-
-  <h3>4. Why use log-odds?</h3>
-  <p>Probabilities are restricted to values between 0 and 1, which makes them unsuitable for an unrestricted straight-line model. Log-odds, however, can range from negative infinity to positive infinity.</p>
-  <p>Logistic regression can therefore model the log-odds as a straight line and then convert the result back into a valid probability using the logistic function:</p>
-  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−log-odds</sup></span></span></strong></p>
-  <p>This transformation produces the familiar S-shaped curve.</p>
-  <p>The table shows the predictions from our illustrative model:</p>
+  <p><strong>Step 3: Convert odds into probability</strong></p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>2.23</span><span>1 + 2.23</span></span> ≈ 0.69</strong></p>
+  <p>The predicted probability of cancellation is approximately 69%.</p>
+  <p>Why model log-odds in the first place? Probabilities are restricted to values between 0 and 1, whereas log-odds can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit(p)</sup></span></span></strong></p>
+  <p>The result is the familiar S-shaped curve: a straight line on the log-odds scale becomes a nonlinear relationship on the probability scale.</p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
     <thead><tr><th>Support tickets</th><th>Log-odds</th><th>Probability of cancellation</th></tr></thead>
     <tbody>
