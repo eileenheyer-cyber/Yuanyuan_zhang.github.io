@@ -168,17 +168,26 @@
   </table></div>
 
   <h3>Step 3: Find the p-value</h3>
-  <p>If H<sub>0</sub> is true, F follows an F distribution. Its shape depends on two degrees of freedom: 2 for the numerator and 57 for the denominator.</p>
-  <p>At a significance level of 5%, the critical value for 2 and 57 degrees of freedom is 3.16. Our statistic of 5.95 is above it.</p>
+  <p>If the null hypothesis is true, the F-statistic follows an F-distribution. Its shape depends on two degrees of freedom: 2 for the numerator and 57 for the denominator.</p>
+  <p>At a significance level of 5%, the critical F-value is approximately 3.16. Our observed F-statistic of 5.95 exceeds this threshold, suggesting a statistically significant result.</p>
+
+  <p style="font-size:0.9rem"><strong>What does the p-value tell us?</strong></p>
+  <p>The p-value is the probability of obtaining an F-statistic at least as large as the observed value, assuming the null hypothesis is true.</p>
+  <p>In our example, the p-value is approximately 0.0045, or 0.45%. In the chart, this is the small area under the curve to the right of the observed F-statistic.</p>
   <figure class="post-fig">
     <img src="images/anova/chart-3-f-distribution.svg" alt="Density curve of the F distribution with 2 and 57 degrees of freedom, falling steeply from 1 at zero. A dashed line marks the critical value 3.16. A red line marks the observed F of 5.95, with a very small shaded area to its right." loading="lazy">
     <figcaption><span>Chart 3</span> Almost all of the curve lies to the left of our result. Only a thin sliver of area, 0.45%, sits at or beyond F = 5.95, which means this result would be rare if the channels had the same true average.</figcaption>
   </figure>
-  <p>The p-value is approximately 0.0045. It was determined using Python. If all three channels really had the same average, an F value this large or larger would appear in about 4 or 5 of 1,000 samples.</p>
+  <p>If all three marketing channels truly had the same population mean order value, an F-statistic of 5.95 or greater would occur in approximately 4–5 out of 1,000 repeated samples under the model assumptions.</p>
 
-  <h3>Step 4: Make a conclusion</h3>
-  <p>The p-value of about 0.0045 is below α = 0.05, so we reject H<sub>0</sub>. The data give evidence that at least one channel has a different average order value.</p>
-  <p>How large is the effect? The between-group share of the total variation is 2,878.6 ÷ 16,678.2 = 0.17 (called <strong>η²</strong>, “eta squared”). The channel explains about 17% of the differences in order values. The other 83% is variation within channels.</p>
+  <h3>Step 4: Draw a Conclusion</h3>
+  <p>The p-value of approximately 0.0045 is below our significance level of 0.05, so we reject the null hypothesis.</p>
+  <p>There is statistically significant evidence that not all three marketing channels have the same population mean order value. However, we still do not know which specific channels differ.</p>
+
+  <p style="font-size:0.9rem"><strong>How large is the effect?</strong></p>
+  <p>Statistical significance does not tell us how substantial the differences are. To assess the effect size, we calculate eta-squared (η²), which measures the proportion of total variation associated with the marketing channel.</p>
+  <p>In our example, eta-squared is approximately 0.17, meaning that about 17% of the observed variation in order values is associated with differences between marketing channels. The remaining 83% is variation within the channels.</p>
+  <p>This helps us understand the magnitude of the effect, beyond simply knowing that the result is statistically significant.</p>
 
   <h2>What a Significant Result Does Not Tell You</h2>
   <ul class="post-points post-points-color">
