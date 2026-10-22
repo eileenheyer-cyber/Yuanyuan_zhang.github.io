@@ -82,6 +82,7 @@
   </figure>
   <p>The F-statistic puts the two types of variation into one ratio:</p>
   <p class="post-formula"><strong>F = <span class="frac"><span>Between-group mean square (MSB)</span><span>Within-group mean square (MSW)</span></span></strong></p>
+  <p>Here, <strong>MSB</strong> is the mean square between groups and <strong>MSW</strong> is the mean square within groups. Each is a sum of squares divided by its degrees of freedom, which we calculate step by step below.</p>
   <p>If all groups share the same population mean, the F-statistic is generally around 1. The larger F becomes, the stronger the evidence against the null hypothesis — because the variation between group means is large relative to the variation within groups.</p>
   <p>A large F-statistic does not automatically mean the result is statistically significant. We need the F-distribution and its degrees of freedom to determine the p-value.</p>
 
@@ -203,19 +204,19 @@
   <h2>Which Groups Differ? Post-Hoc Tests</h2>
   <p>ANOVA tells us whether there is evidence that not all group means are equal, but it does not identify which groups differ. To investigate individual pairs, we can use a <strong>post-hoc test</strong>.</p>
   <p>A common choice is <strong>Tukey’s HSD (Honestly Significant Difference)</strong>. It compares all pairs of group means while controlling the family-wise error rate — the probability of making at least one Type I error across the set of comparisons.</p>
-  <p>For our three marketing channels, we compare email vs. social, search vs. email, and search vs. social.</p>
+  <p>For our three marketing channels, we compare search with email, social with email, and social with search. Each difference is the first group’s average minus the second’s, so a negative value means the first group has the lower average.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Comparison</th><th>Difference in sample means</th><th>Adjusted p-value</th></tr></thead>
     <tbody>
-      <tr><td>Email – Social</td><td>€11.15</td><td>0.069</td></tr>
       <tr><td>Search – Email</td><td>€5.50</td><td>0.507</td></tr>
-      <tr><td>Search – Social</td><td>€16.65</td><td>0.004</td></tr>
+      <tr><td>Social – Email</td><td>−€11.15</td><td>0.069</td></tr>
+      <tr><td>Social – Search</td><td>−€16.65</td><td>0.004</td></tr>
     </tbody>
   </table></div>
-  <p>At a significance level of 0.05, only the difference between search and social is statistically significant. The adjusted p-values for the other two comparisons exceed 0.05.</p>
+  <p>At a significance level of 0.05, only the difference between social and search is statistically significant: social orders average €16.65 less than search orders. The adjusted p-values for the other two comparisons exceed 0.05.</p>
   <figure class="post-fig">
-    <img src="images/anova/chart-4-tukey-intervals.svg" alt="Three horizontal intervals showing differences in average order value with 95 percent intervals. Email minus social and search minus email cross zero. Search minus social, shown in red, lies entirely above zero." loading="lazy">
-    <figcaption><span>Chart 4</span> An interval that crosses zero means the data cannot rule out “no difference”. Only search and social are clearly apart. Search orders are about €5 to €28 higher than social orders.</figcaption>
+    <img src="images/anova/chart-4-tukey-intervals.svg" alt="Three horizontal intervals showing differences in average order value with 95 percent intervals. Search minus email and social minus email cross zero. Social minus search, shown in red, lies entirely below zero." loading="lazy">
+    <figcaption><span>Chart 4</span> An interval that crosses zero means the data cannot rule out “no difference”. Only social and search are clearly apart. Social orders are about €5 to €28 lower than search orders.</figcaption>
   </figure>
   <p>The confidence intervals in the chart tell the same story: an interval that crosses zero includes the possibility of no difference, while an interval entirely above or below zero indicates a statistically significant difference at the corresponding confidence level.</p>
 
@@ -297,6 +298,16 @@ posthoc = pairwise_tukeyhsd(
 print(posthoc)
 
 # F = 5.95, p = 0.0045</code></pre>
+  <p>The Tukey output looks like this:</p>
+  <pre class="post-code post-code-out"><code> Multiple Comparison of Means - Tukey HSD, FWER=0.05 
+=====================================================
+group1 group2 meandiff p-adj   lower    upper  reject
+-----------------------------------------------------
+ Email Search      5.5 0.5072  -6.3404 17.3404  False
+ Email Social   -11.15 0.0689 -22.9904  0.6904  False
+Search Social   -16.65 0.0037 -28.4904 -4.8096   True
+-----------------------------------------------------</code></pre>
+  <p>In this printout, <code>meandiff</code> is the mean of group2 minus the mean of group1. So the second row reads: social orders average €11.15 less than email orders. Only the last row has <code>reject = True</code>.</p>
   <p>The ANOVA result indicates a statistically significant difference between the channel means. Tukey’s HSD identifies which pairs differ significantly after adjusting for multiple comparisons.</p>
 
   <h3>Two-way ANOVA</h3>
