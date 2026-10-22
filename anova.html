@@ -83,8 +83,10 @@
     <img src="images/anova/chart-1-between-within.svg" alt="Two strip plots with three groups each on the same axis. In panel A the three group means are close together and the orders are widely spread, F is 0.6. In panel B the means are far apart and the orders are tightly spread, F is 52." loading="lazy">
     <figcaption><span>Chart 1</span> The same kind of spread can mean very different things. In A the gaps between averages are small compared with the noise, so they could easily be chance. In B they are much larger than the noise, so chance is a poor explanation. The F value measures exactly this ratio. Illustrative data.</figcaption>
   </figure>
-  <p>The F statistic puts the two kinds of variation into one ratio:</p>
-  <p class="post-formula"><strong>F = <span class="frac"><span>variation between groups</span><span>variation within groups</span></span></strong><span>If all groups share the same true average, F is close to 1. The larger F gets, the harder it is to explain the gaps by chance.</span></p>
+  <p>The F-statistic puts the two types of variation into one ratio:</p>
+  <p class="post-formula"><strong>F = <span class="frac"><span>Between-group mean square (MSB)</span><span>Within-group mean square (MSW)</span></span></strong></p>
+  <p>If all groups share the same population mean, the F-statistic is generally around 1. The larger F becomes, the stronger the evidence against the null hypothesis — because the variation between group means is large relative to the variation within groups.</p>
+  <p>A large F-statistic does not automatically mean the result is statistically significant. We need the F-distribution and its degrees of freedom to determine the p-value.</p>
 
   <h2>One-Way ANOVA, Step by Step</h2>
   <p>We compare 60 orders from three marketing channels, 20 per channel. The figures are illustrative and based on simulated data, not a real retailer.</p>
