@@ -75,9 +75,11 @@
   <p><strong>Step 1: Calculate the log-odds</strong></p>
   <p class="post-formula post-formula-plain"><strong>−4 + 0.8 × 6 = 0.8</strong></p>
   <p><strong>Step 2: Convert log-odds into odds</strong></p>
+  <p class="post-formula post-formula-plain"><strong>odds = e<sup>log-odds</sup></strong></p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>The odds of cancellation are approximately 2.23 to 1.</p>
   <p><strong>Step 3: Convert odds into probability</strong></p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>odds</span><span>1 + odds</span></span></strong></p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>2.23</span><span>1 + 2.23</span></span> ≈ 0.69</strong></p>
   <p>The predicted probability of cancellation is approximately 69%.</p>
   <p>Why model log-odds in the first place? Probabilities are restricted to values between 0 and 1, whereas log-odds can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
