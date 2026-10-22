@@ -325,18 +325,21 @@ Residual                9285.7000  54.0      NaN     NaN</code></pre>
   <p>For each effect, a p-value below 0.05 indicates statistically significant evidence against its null hypothesis.</p>
   <p>The code assumes that the dataset contains the columns <code>channel</code>, <code>customer</code> and <code>value</code>, with one row per order.</p>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2>How to Explain the Results to Stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“In our last 60 orders, the three marketing channels did not bring in orders of the same value. Search orders averaged €71.60, email orders €66.10 and social orders €54.95. The ANOVA test indicates that gaps this large are unlikely to be explained by random variation alone. The one difference we can clearly confirm is between search and social, about €17.”</p>
-    <p class="post-callout-q">“The test does not tell us why. It also shows that customer type matters: email works very well for returning customers (€80.50) but not for new ones (€51.70). The business question is whether we should use email to keep existing customers buying and search to win new ones.”</p>
+    <p class="post-callout-q">“Across our 60 orders, average order value differed across the three marketing channels. The one-way ANOVA found statistically significant evidence of a difference (F = 5.95, p = 0.0045). Tukey’s post-hoc test showed that the difference between search and social was statistically significant, at approximately €16.65 per order. The other two pairwise differences were not statistically significant after adjustment.”</p>
+    <p class="post-callout-q">“The two-way ANOVA revealed another important insight: customer type matters, and the effect of marketing channel depends on whether customers are new or returning. Email had the highest average order value among returning customers (€80.50), while search performed best among new customers (€68.70).”</p>
+    <p class="post-callout-q">“These findings can help us develop more targeted marketing strategies. However, average order value alone does not establish which channel generates the most profit or causes customers to spend more.”</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>ANOVA tests whether the averages of three or more groups are equal, by comparing the variation between groups with the variation within groups. A large F ratio and a small p-value mean that at least one group differs.</p>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key Takeaways</p>
   <ul class="post-points post-points-color" style="margin:10px 0 0">
-    <li><strong>Post-hoc tests</strong> such as Tukey’s HSD show which groups differ, without inflating the false-alarm risk.</li>
-    <li><strong>Two-way ANOVA</strong> adds a second factor and tests the interaction between the two.</li>
+    <li><strong>ANOVA tests for differences.</strong> It compares variation between groups with variation within groups to determine whether the observed differences are statistically significant.</li>
+    <li><strong>Post-hoc tests identify the differences.</strong> Tukey’s HSD compares individual pairs while controlling the overall false-positive risk.</li>
+    <li><strong>Two-way ANOVA reveals interactions.</strong> It tests two factors and whether the effect of one depends on the other.</li>
+    <li><strong>Statistical significance is not business impact.</strong> Consider effect size, actual differences in euros, assumptions and profitability before making decisions.</li>
   </ul>
-  <p style="margin-top:12px">A significant result does not show why groups differ or how much the difference matters. Check the size of the effect and the assumptions before drawing conclusions.</p></div>
+  <p style="margin-top:12px"><strong>The main lesson:</strong> Statistical analysis does not end with a p-value. The goal is to translate the results into meaningful business insights without claiming more than the data can support.</p></div>
 
   <h2>Related posts</h2>
   <ul class="post-points post-points-color">
