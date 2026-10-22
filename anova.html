@@ -224,22 +224,6 @@
   <p>An unadjusted test is a regular test whose p-value is used as it is, without correcting for the number of comparisons being made. Running multiple unadjusted tests increases the risk of false positives. Tukey’s HSD accounts for the multiple comparisons, helping keep the overall family-wise error rate at the chosen significance level.</p>
   <p>In this example, the unadjusted email-versus-social comparison has a p-value of approximately 0.037, but the Tukey-adjusted p-value is 0.069. After accounting for the multiple comparisons, we do not have sufficient evidence to conclude that these two channels differ.</p>
 
-  <h2>Assumptions and When ANOVA Breaks</h2>
-  <p>Classical one-way ANOVA relies on several assumptions. Checking them helps us decide whether its results are reliable.</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Independent observations.</strong> Each observation should be independent of the others. For example, repeated orders from the same customer may violate this assumption because those orders can be correlated.</li>
-    <li><strong>Approximately normal residuals.</strong> Within each group, the residuals — the differences between individual observations and their group mean — should be approximately normally distributed. ANOVA can tolerate moderate deviations, particularly with sufficiently large and balanced groups.</li>
-    <li><strong>Similar population variances.</strong> The population variances should be approximately equal across groups. A practical first step is to compare the groups’ standard deviations and use a formal test, such as Levene’s test, when appropriate.</li>
-  </ul>
-
-  <p style="font-size:0.9rem"><strong>What if the assumptions are violated?</strong></p>
-  <p>The appropriate alternative depends on which assumption is violated.</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Unequal variances:</strong> Welch’s ANOVA compares group means without requiring equal population variances.</li>
-    <li><strong>Strong non-normality or influential outliers:</strong> Investigate the data and consider whether a nonparametric alternative, such as the Kruskal–Wallis test, is appropriate. This test compares group distributions and is not generally a direct test of means.</li>
-  </ul>
-  <p>The goal is not to force the data to satisfy the assumptions, but to choose a method appropriate for the data and research question.</p>
-
   <h2>Two-Way ANOVA: Adding a Second Factor</h2>
   <p>So far the customer type was ignored. Of our 60 orders, 30 came from new and 30 from returning customers, evenly spread over the channels (10 in each combination). Two-way ANOVA tests the channel, the customer type and their interaction at once.</p>
   <div class="post-table-wrap"><table class="post-table">
@@ -270,6 +254,22 @@
   </ul>
   <p><strong>The business takeaway:</strong> Marketing strategies should account for customer segments rather than treating all customers alike.</p>
   <p>These results show associations, not necessarily causal effects. With only 10 orders per channel–customer combination, the findings should be interpreted with appropriate caution.</p>
+
+  <h2>Assumptions and When ANOVA Breaks</h2>
+  <p>Classical one-way ANOVA relies on several assumptions. Checking them helps us decide whether its results are reliable.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Independent observations.</strong> Each observation should be independent of the others. For example, repeated orders from the same customer may violate this assumption because those orders can be correlated.</li>
+    <li><strong>Approximately normal residuals.</strong> Within each group, the residuals — the differences between individual observations and their group mean — should be approximately normally distributed. ANOVA can tolerate moderate deviations, particularly with sufficiently large and balanced groups.</li>
+    <li><strong>Similar population variances.</strong> The population variances should be approximately equal across groups. A practical first step is to compare the groups’ standard deviations and use a formal test, such as Levene’s test, when appropriate.</li>
+  </ul>
+
+  <p style="font-size:0.9rem"><strong>What if the assumptions are violated?</strong></p>
+  <p>The appropriate alternative depends on which assumption is violated.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Unequal variances:</strong> Welch’s ANOVA compares group means without requiring equal population variances.</li>
+    <li><strong>Strong non-normality or influential outliers:</strong> Investigate the data and consider whether a nonparametric alternative, such as the Kruskal–Wallis test, is appropriate. This test compares group distributions and is not generally a direct test of means.</li>
+  </ul>
+  <p>The goal is not to force the data to satisfy the assumptions, but to choose a method appropriate for the data and research question.</p>
 
   <h2>Coding ANOVA in Python</h2>
   <p>Python can calculate the F-statistic, p-value and post-hoc comparisons automatically. We do not need to calculate them by hand.</p>
