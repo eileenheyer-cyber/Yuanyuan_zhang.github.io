@@ -46,8 +46,8 @@
   <p>The relationship between support tickets and churn may also be nonlinear. Moving from zero to one ticket might make little difference, while the probability of cancellation could rise sharply across a middle range. At higher ticket counts, the probability may begin to level off.</p>
   <p>This is the pattern logistic regression is designed to capture: an <strong>S-shaped curve</strong>, also called a sigmoid curve (Chart 1).</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 60 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls below 0 near zero tickets and rises above 1 beyond about 11 tickets, while a red S-shaped curve stays between 0 and 1." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The S-curve flattens near the ends and stays inside. Illustrative data.</figcaption>
+    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 60 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls below 0 near zero tickets and rises above 1 beyond about 11 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
   <h2>From Probability to Odds to Log-Odds</h2>
@@ -107,7 +107,7 @@
   <p>However, 0.5 is a common default, not a universal rule.</p>
   <p>Suppose losing a customer costs the company ten times as much as making a retention offer. In that case, missing a customer who eventually cancels may be much more expensive than contacting someone who would have stayed. A lower threshold, such as 0.2, might therefore be more appropriate. In our example, that would flag customers with two or more tickets.</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 12 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 and 1 tickets are not flagged. Customers with 2, 3 and 4 tickets are flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 12 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 and 1 tickets are not flagged. Customers with 2, 3 and 4 tickets are flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 2 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
   </figure>
   <p>Lowering the threshold generally identifies more potential churners, but it also increases the number of customers contacted unnecessarily.</p>
