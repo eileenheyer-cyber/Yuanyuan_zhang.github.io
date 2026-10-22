@@ -56,7 +56,7 @@
   <h2>From Probability to Odds to Log-Odds</h2>
   <p>The key idea is that logistic regression still uses a linear model, but it models the log-odds rather than the probability directly.</p>
   <p>The general formula is:</p>
-  <p class="post-formula post-formula-plain"><strong>ln( <span class="frac"><span>p</span><span>1 − p</span></span> ) = β<sub>0</sub> + β<sub>1</sub>X<sub>1</sub> + β<sub>2</sub>X<sub>2</sub> + ⋯ + β<sub>n</sub>X<sub>n</sub></strong></p>
+  <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = log( <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span> ) = <em>β</em><sub>0</sub> + <em>β</em><sub>1</sub><em>X</em><sub>1</sub> + <em>β</em><sub>2</sub><em>X</em><sub>2</sub> + ⋯ + <em>β</em><sub>n</sub><em>X</em><sub>n</sub></strong></p>
   <p>Here, <em>p</em> is the probability of the event occurring, the <em>X</em>'s are the predictors, and the <em>β</em>'s are the coefficients estimated from the data. The intercept <em>β</em><sub>0</sub> represents the log-odds when all predictors equal zero, while each coefficient describes how the log-odds change when its predictor increases by one unit, holding the other predictors constant.</p>
   <p>In our churn example, we use just one predictor: the number of support tickets opened last month. Our illustrative model is:</p>
   <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8X</strong></p>
