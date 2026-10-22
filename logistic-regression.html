@@ -57,38 +57,42 @@
   <p>The key idea is that logistic regression does not abandon the linear model. It models a straight-line relationship on the <strong>log-odds scale</strong> rather than directly on the probability scale.</p>
 
   <h3>1. Where does the straight line come from?</h3>
-  <p>For our illustrative example, suppose the model is:</p>
-  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × tickets</strong></p>
-  <p>Here, the logit is the log-odds of cancelling, and p is the probability of cancelling. What do the two numbers mean?</p>
+  <p>Imagine we have historical data from customers who either cancelled or stayed, along with the number of support tickets they opened last month. Logistic regression uses this data to estimate two coefficients: an intercept and a slope.</p>
+  <p>For our illustrative example, suppose the fitted model is:</p>
+  <p class="post-formula post-formula-plain"><strong>Log-odds = −4 + 0.8 × tickets</strong></p>
+  <p>Where do these numbers come from?</p>
   <ul class="post-points post-points-color">
-    <li><strong>−4 is the starting point.</strong> It is the logit for a customer with zero support tickets.</li>
-    <li><strong>0.8 is the slope.</strong> Each additional support ticket raises the logit by 0.8.</li>
+    <li><strong>−4 is the intercept.</strong> It represents the predicted log-odds of cancellation when a customer has zero support tickets.</li>
+    <li><strong>0.8 is the slope.</strong> It means that each additional support ticket increases the predicted log-odds of cancellation by 0.8.</li>
   </ul>
+  <p>These coefficients are estimated from the historical data during model training. They are not chosen arbitrarily by the analyst, although we use illustrative values here to explain how the model works.</p>
 
   <h3>2. Calculate the log-odds</h3>
-  <p>Suppose a customer opened six support tickets last month. We put six into the equation:</p>
-  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × 6 = 0.8</strong></p>
-  <p>The model gives a log-odds (logit) of 0.8 for this customer. But what does 0.8 actually mean? Log-odds are difficult to interpret directly, so we transform them into odds and then into a probability.</p>
+  <p>Suppose a customer opened six support tickets last month. We substitute six into the equation:</p>
+  <p class="post-formula post-formula-plain"><strong>Log-odds = −4 + 0.8 × 6 = 0.8</strong></p>
+  <p>The model predicts log-odds of 0.8 for this customer.</p>
+  <p>But what does 0.8 actually mean? Log-odds are difficult to interpret directly, so we transform them into odds and then into a probability.</p>
 
   <h3>3. From log-odds to odds to probability</h3>
-  <p><strong>Step 1: Log-odds to odds.</strong> Exponentiating the log-odds gives the odds:</p>
-  <p class="post-formula post-formula-plain"><strong>Odds = e<sup>0.8</sup> ≈ 2.2</strong></p>
-  <p>The odds of cancelling are about 2.2 to 1. Odds compare the probability of cancelling with the probability of staying (not cancelling):</p>
-  <p class="post-formula post-formula-plain"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
-    <span>Here, p is the probability of cancelling.</span></p>
-  <p><strong>Step 2: Odds to probability.</strong> We convert the odds into a probability:</p>
-  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>odds</span><span>1 + odds</span></span></strong></p>
+  <p><strong>Step 1: Log-odds to odds</strong></p>
+  <p>Exponentiating the log-odds gives us the odds:</p>
+  <p class="post-formula post-formula-plain"><strong>Odds = e<sup>0.8</sup> ≈ 2.23</strong></p>
+  <p>The odds of cancellation are approximately 2.23 to 1.</p>
+  <p><strong>Step 2: Odds to probability</strong></p>
+  <p>We convert the odds into a probability:</p>
+  <p class="post-formula post-formula-plain"><strong>Probability = odds ÷ (1 + odds)</strong></p>
   <p>For our customer:</p>
-  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>2.2</span><span>1 + 2.2</span></span> ≈ 0.69</strong></p>
-  <p>The model estimates a 69% probability that this customer will cancel.</p>
+  <p class="post-formula post-formula-plain"><strong>Probability = 2.23 ÷ (1 + 2.23) ≈ 0.69, or 69%</strong></p>
+  <p>The model therefore estimates a 69% probability that this customer will cancel.</p>
 
   <h3>4. Why use log-odds?</h3>
-  <p>A probability is stuck between 0 and 1, so a straight line does not fit it. Unlike probabilities, log-odds can take any value, from negative infinity to positive infinity. Logistic regression therefore models the log-odds as a straight line and converts the result back into a valid probability with the <strong>logistic function</strong>, also known as the sigmoid function:</p>
-  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit</sup></span></span></strong>
-    <span>This compresses any logit value into a probability between 0 and 1, producing the S-shaped curve.</span></p>
-  <p>The table shows the predictions of our illustrative model:</p>
+  <p>Probabilities are restricted to values between 0 and 1, which makes them unsuitable for an unrestricted straight-line model. Log-odds, however, can range from negative infinity to positive infinity.</p>
+  <p>Logistic regression can therefore model the log-odds as a straight line and then convert the result back into a valid probability using the logistic function:</p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−log-odds</sup></span></span></strong></p>
+  <p>This transformation produces the familiar S-shaped curve.</p>
+  <p>The table shows the predictions from our illustrative model:</p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
-    <thead><tr><th>Tickets</th><th>Log-odds</th><th>Probability</th></tr></thead>
+    <thead><tr><th>Support tickets</th><th>Log-odds</th><th>Probability of cancellation</th></tr></thead>
     <tbody>
       <tr><td>0</td><td>−4.0</td><td>2%</td></tr>
       <tr><td>3</td><td>−1.6</td><td>17%</td></tr>
@@ -97,12 +101,12 @@
       <tr><td>8</td><td>2.4</td><td>92%</td></tr>
     </tbody>
   </table></div>
-  <p>When the log-odds equal zero, the odds are 1 to 1, corresponding to a probability of 50%. Positive log-odds indicate that cancellation is more likely than staying; negative log-odds indicate the opposite.</p>
+  <p>When log-odds equal zero, the odds are 1 to 1, corresponding to a probability of 50%. Positive log-odds indicate that cancellation is more likely than staying; negative log-odds indicate the opposite.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 10 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 4 to 4, with the 6-ticket customer marked at 0.8. On the right, the same model on the probability scale is a red S-curve from about 2% to about 98%, with the 6-ticket customer marked at 69%." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The same model on two scales: a constant change in log-odds per ticket becomes a probability that changes fast in the middle and slowly at the ends. Illustrative data.</figcaption>
   </figure>
-  <p>The important takeaway is that <strong>logistic regression is linear on the log-odds scale, not on the probability scale</strong>.</p>
+  <p><strong>The key takeaway:</strong> Logistic regression fits a straight line to the log-odds, then transforms those values into probabilities between 0 and 1.</p>
 
   <h2>Reading the Coefficients as Odds Ratios</h2>
   <p>The coefficient 0.8 tells us how much the log-odds change with each additional support ticket. But log-odds are not particularly intuitive to interpret.</p>
