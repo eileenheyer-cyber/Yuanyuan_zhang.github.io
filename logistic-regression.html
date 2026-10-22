@@ -36,8 +36,7 @@
 
   <p>What if the outcome you want to predict is not a number, but a yes or no?</p>
   <p>A customer either cancels a subscription or stays. A transaction either defaults or does not. A patient either develops a condition or does not.</p>
-  <p>These are examples of <strong>binary outcomes</strong>, and predicting them requires a different approach from predicting sales or revenue. Ordinary linear regression is not designed for this task.</p>
-  <p>This is where logistic regression comes in. Instead of predicting the outcome directly, it estimates the <strong>probability</strong> of an event occurring, a number between 0 and 1, and allows us to turn that probability into a yes-or-no decision.</p>
+  <p>Logistic regression is designed for exactly these kinds of questions. Instead of predicting the outcome directly, it estimates the <strong>probability</strong> of an event occurring, giving us a value between 0 and 1 that can be used to make a yes-or-no decision.</p>
   <p>In this post, we use a simple customer churn example with one predictor: the number of support tickets a customer opened last month. It builds on <a href="simple-linear-regression.html">Simple Linear Regression</a> and the framework introduced in <a href="glm.html">Generalized Linear Models</a>.</p>
 
   <h2>Why a Straight Line Fails for Yes/No Outcomes</h2>
