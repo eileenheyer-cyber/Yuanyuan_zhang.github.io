@@ -181,13 +181,14 @@
   <p>If all three marketing channels truly had the same population mean order value, an F-statistic of 5.95 or greater would occur in approximately 4–5 out of 1,000 repeated samples under the model assumptions.</p>
 
   <h3>Step 4: Draw a Conclusion</h3>
-  <p>The p-value of approximately 0.0045 is below our significance level of 0.05, so we reject the null hypothesis.</p>
-  <p>There is statistically significant evidence that not all three marketing channels have the same population mean order value. However, we still do not know which specific channels differ.</p>
+  <p>The p-value of approximately 0.0045 is below our significance level of 0.05, so we reject the null hypothesis. There is statistically significant evidence that not all three marketing channels have the same population mean order value. However, we still do not know which specific channels differ.</p>
 
   <p style="font-size:0.9rem"><strong>How large is the effect?</strong></p>
-  <p>Statistical significance does not tell us how substantial the differences are. To assess the effect size, we calculate eta-squared (η²), which measures the proportion of total variation associated with the marketing channel.</p>
-  <p>In our example, eta-squared is approximately 0.17, meaning that about 17% of the observed variation in order values is associated with differences between marketing channels. The remaining 83% is variation within the channels.</p>
-  <p>This helps us understand the magnitude of the effect, beyond simply knowing that the result is statistically significant.</p>
+  <p>To understand the magnitude of the difference, we calculate eta-squared (η²), which measures the proportion of total variation associated with the marketing channel.</p>
+  <p class="post-formula"><strong>η² = <span class="frac"><span>SSB</span><span>SST</span></span> = <span class="frac"><span>2,878.6</span><span>16,678.2</span></span> ≈ 0.173</strong></p>
+  <p>Eta-squared is approximately 0.17, meaning that 17.3% of the observed variation in order values is associated with differences between marketing channels. The remaining 82.7% is variation within the channels.</p>
+  <p>The p-value tells us that the differences are statistically significant, while eta-squared helps us understand their magnitude. Together, they provide a more complete picture of the results.</p>
+  <p>To identify which specific channels differ, we can perform post-hoc comparisons, such as Tukey’s HSD.</p>
 
   <h2>What a Significant Result Does Not Tell You</h2>
   <ul class="post-points post-points-color">
