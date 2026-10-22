@@ -47,22 +47,22 @@
   <p>There is another challenge. The relationship between support tickets and cancellation may not follow a straight line. Going from zero to one ticket might make little difference, while the probability of cancellation could rise sharply as the number of tickets increases. At higher ticket counts, the probability may begin to level off.</p>
   <p>Logistic regression models this pattern using an <strong>S-shaped curve</strong>, also called a sigmoid curve (Chart 1).</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 70 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls just below 0 at zero tickets and rises above 1 beyond about 13 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart1.svg" alt="Scatter plot of 70 customers by support tickets last month, with blue points at 0 for customers who stayed and red points at 1 for customers who cancelled. A dashed straight line falls below 0 at zero tickets and rises above 1 beyond about 9 tickets, while the fitted red S-shaped logistic curve stays between 0 and 1 and does not pass through every point." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
   <h2>From Probability to Odds to Log-Odds</h2>
   <p>The key idea is that logistic regression does not abandon the linear model. Instead, it models a straight-line relationship on a different scale: the <strong>log-odds scale</strong>.</p>
-  <p>The process has three steps. Consider a customer with eight support tickets whose predicted probability of cancelling is approximately 0.77.</p>
+  <p>The process has three steps. Consider a customer with six support tickets whose predicted probability of cancelling is approximately 0.69.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Probability:</strong> The chance of cancellation, between 0 and 1. Here, it is 0.77, or 77%.</li>
-    <li><strong>Odds:</strong> The ratio of the probability of cancelling to the probability of staying. The odds are 0.77 ÷ 0.23 ≈ 3.3. In other words, the odds of cancelling are about 3.3 to 1.</li>
-    <li><strong>Log-odds:</strong> The natural logarithm of the odds. Here, ln(3.3) ≈ 1.2.</li>
+    <li><strong>Probability:</strong> The chance of cancellation, between 0 and 1. Here, it is 0.69, or 69%.</li>
+    <li><strong>Odds:</strong> The ratio of the probability of cancelling to the probability of staying. The odds are 0.69 ÷ 0.31 ≈ 2.2. In other words, the odds of cancelling are about 2.2 to 1.</li>
+    <li><strong>Log-odds:</strong> The natural logarithm of the odds. Here, ln(2.2) ≈ 0.8.</li>
   </ul>
   <p class="post-formula"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
     <span>Here, p is the probability of cancelling.</span></p>
   <p>Unlike probabilities, log-odds can take any value, from negative infinity to positive infinity. This allows logistic regression to model them with a straight line:</p>
-  <p class="post-formula"><strong>Log-odds = −2 + 0.4 × tickets</strong>
+  <p class="post-formula"><strong>Log-odds = −4 + 0.8 × tickets</strong>
     <span>Illustrative coefficients for the churn example.</span></p>
   <p>The model then transforms the log-odds back into a probability using the <strong>logistic function</strong>, also known as the sigmoid function:</p>
   <p class="post-formula"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−log-odds</sup></span></span></strong>
@@ -70,33 +70,33 @@
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
     <thead><tr><th>Tickets</th><th>Log-odds</th><th>Probability</th></tr></thead>
     <tbody>
-      <tr><td>0</td><td>−2.0</td><td>12%</td></tr>
-      <tr><td>2</td><td>−1.2</td><td>23%</td></tr>
+      <tr><td>0</td><td>−4.0</td><td>2%</td></tr>
+      <tr><td>3</td><td>−1.6</td><td>17%</td></tr>
       <tr><td>5</td><td>0.0</td><td>50%</td></tr>
-      <tr><td>8</td><td>1.2</td><td>77%</td></tr>
-      <tr><td>10</td><td>2.0</td><td>88%</td></tr>
+      <tr><td>6</td><td>0.8</td><td>69%</td></tr>
+      <tr><td>8</td><td>2.4</td><td>92%</td></tr>
     </tbody>
   </table></div>
   <p>When the log-odds equal zero, the odds are 1 to 1, corresponding to a probability of 50%. Positive log-odds indicate that cancellation is more likely than staying; negative log-odds indicate the opposite.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 16 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 2 to about 4.4, with the 8-ticket customer marked at 1.2. On the right, the same model on the probability scale is a red S-curve from 12% to about 99%, with the 8-ticket customer marked at 77%." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart2.svg" alt="Two side-by-side charts over 0 to 10 support tickets. On the left, log-odds of cancelling rise as a straight blue line from minus 4 to 4, with the 6-ticket customer marked at 0.8. On the right, the same model on the probability scale is a red S-curve from about 2% to about 98%, with the 6-ticket customer marked at 69%." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 2</span> The same model on two scales: a constant change in log-odds per ticket becomes a probability that changes fast in the middle and slowly at the ends. Illustrative data.</figcaption>
   </figure>
   <p>The important takeaway is that <strong>logistic regression is linear on the log-odds scale, not on the probability scale</strong>.</p>
 
   <h2>Reading the Coefficients as Odds Ratios</h2>
-  <p>The coefficient 0.4 tells us how much the log-odds change with each additional support ticket. But log-odds are not particularly intuitive to interpret.</p>
+  <p>The coefficient 0.8 tells us how much the log-odds change with each additional support ticket. But log-odds are not particularly intuitive to interpret.</p>
   <p>To make the coefficient easier to understand, we exponentiate it:</p>
-  <p class="post-formula"><strong>e<sup>0.4</sup> ≈ 1.49</strong>
+  <p class="post-formula"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
     <span>This gives us the odds ratio.</span></p>
-  <p>Each additional support ticket multiplies the odds of cancellation by approximately 1.49, representing a 49% increase in the odds, assuming the model remains unchanged.</p>
+  <p>Each additional support ticket multiplies the odds of cancellation by approximately 2.2, so the odds more than double, assuming the model remains unchanged.</p>
   <ul class="post-points post-points-color">
     <li>An odds ratio <strong>above 1</strong> means the predictor increases the odds of the event.</li>
     <li>An odds ratio <strong>below 1</strong> means the predictor decreases the odds of the event.</li>
     <li>An odds ratio <strong>equal to 1</strong> means the predictor does not change the odds.</li>
   </ul>
   <p>One important distinction: <strong>an odds ratio is not a change in probability</strong>.</p>
-  <p>For example, increasing the ticket count from three to four raises the predicted probability from approximately 31% to 40%, an increase of 9 percentage points. Increasing it from seven to eight raises the probability from approximately 69% to 77%, an increase of 8 percentage points.</p>
+  <p>For example, increasing the ticket count from four to five raises the predicted probability from approximately 31% to 50%, an increase of 19 percentage points. Increasing it from seven to eight raises the probability from approximately 83% to 92%, an increase of 9 percentage points.</p>
   <p>The odds are multiplied by the same factor in both cases, but the probability changes by a different amount depending on the starting point.</p>
   <p>This is why interpreting logistic regression coefficients requires distinguishing between odds and probabilities.</p>
 
@@ -104,16 +104,16 @@
   <p>Logistic regression produces a probability, but a business often needs a concrete action: should the retention team contact this customer or not?</p>
   <p>This is where a <strong>decision threshold</strong> comes in.</p>
   <p>A threshold converts the predicted probability into a classification. With a threshold of 0.5, customers with a predicted probability of at least 50% are flagged as likely to cancel.</p>
-  <p>In our example, a customer with eight tickets has a predicted probability of 77% and is flagged, while a customer with three tickets has a probability of approximately 31% and is not. With this particular model, a threshold of 0.5 corresponds to flagging customers with five or more tickets (Chart 3).</p>
+  <p>In our example, a customer with eight tickets has a predicted probability of 92% and is flagged, while a customer with three tickets has a probability of approximately 17% and is not. With this particular model, a threshold of 0.5 corresponds to flagging customers with five or more tickets (Chart 3).</p>
   <p>However, 0.5 is a common default, not a universal rule.</p>
-  <p>Suppose losing a customer costs the company ten times as much as making a retention offer. In that case, missing a customer who eventually cancels may be much more expensive than contacting someone who would have stayed. A lower threshold, such as 0.2, might therefore be more appropriate. In our example, that would flag customers with two or more tickets.</p>
+  <p>Suppose losing a customer costs the company ten times as much as making a retention offer. In that case, missing a customer who eventually cancels may be much more expensive than contacting someone who would have stayed. A lower threshold, such as 0.2, might therefore be more appropriate. In our example, that would flag customers with four or more tickets.</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 16 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 and 1 tickets are not flagged. Customers with 2, 3 and 4 tickets are flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 2 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
+    <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 to 3 tickets are not flagged. A customer with 4 tickets is flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 4 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
   </figure>
   <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the log-odds equal 0 (Chart 4).</p>
   <figure class="post-fig">
-    <img src="images/regression/logistic-chart4.svg" alt="The S-shaped probability curve for 0 to 16 support tickets with horizontal threshold lines at 0.5 and 0.2 and vertical lines dropping to the decision boundaries at 5 tickets and 1.5 tickets. The background is blue left of 1.5 tickets (not flagged), yellow between 1.5 and 5 tickets (flagged at 0.2 only) and red beyond 5 tickets (flagged at both thresholds)." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <img src="images/regression/logistic-chart4.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with horizontal threshold lines at 0.5 and 0.2 and vertical lines dropping to the decision boundaries at 5 tickets and 3.3 tickets. The background is blue left of 3.3 tickets (not flagged), yellow between 3.3 and 5 tickets (flagged at 0.2 only) and red beyond 5 tickets (flagged at both thresholds)." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 4</span> A decision boundary is the ticket count where the curve crosses the threshold. A lower threshold moves the boundary to the left, so more customers are flagged. Illustrative data.</figcaption>
   </figure>
   <p>Lowering the threshold generally identifies more potential churners, but it also increases the number of customers contacted unnecessarily.</p>
@@ -140,7 +140,7 @@
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">&#8220;In this example, customers with no support tickets last month have an estimated 12% probability of cancelling. At five tickets, the estimated probability reaches 50%, and at eight tickets, it rises to 77%. Each additional ticket multiplies the odds of cancellation by approximately 1.49.</p>
+    <p class="post-callout-q">&#8220;In this example, customers with no support tickets last month have an estimated 2% probability of cancelling. At five tickets, the estimated probability reaches 50%, and at eight tickets, it rises to 92%. Each additional ticket multiplies the odds of cancellation by approximately 2.2.</p>
     <p class="post-callout-q">Using a 0.5 threshold, the model flags customers with five or more tickets. The retention team can use this information to prioritize outreach, while evaluating whether this threshold makes sense given the costs of missed cancellations and unnecessary retention offers.&#8221;</p>
   </div>
   <p>This explanation connects the statistical model to the business question: <strong>Which customers should we prioritize to reduce churn?</strong></p>
@@ -149,7 +149,7 @@
     <ul class="post-points post-points-color">
       <li>Logistic regression predicts the <strong>probability</strong> of a yes/no outcome, always between 0 and 1.</li>
       <li>It is a straight line on the <strong>log-odds</strong> scale, converted back into an S-shaped curve.</li>
-      <li><strong>e raised to a coefficient is the odds ratio.</strong> Here, 1.49 means about 49% higher odds per extra ticket. It is not a change in probability.</li>
+      <li><strong>e raised to a coefficient is the odds ratio.</strong> Here, 2.2 means the odds more than double per extra ticket. It is not a change in probability.</li>
       <li>A <strong>threshold</strong> turns probabilities into decisions, and the best threshold depends on the business cost of each kind of mistake.</li>
     </ul>
   </div>
