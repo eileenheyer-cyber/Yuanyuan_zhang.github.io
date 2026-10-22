@@ -54,30 +54,39 @@
   </figure>
 
   <h2>From Probability to Odds to Log-Odds</h2>
-  <p>The key idea is that logistic regression does not abandon the linear model. Instead, it models a straight-line relationship on a different scale: the <strong>log-odds scale</strong>.</p>
-  <p>The model does not start with a probability. For a customer with six support tickets, it first calculates the log-odds from the straight line, then converts them into odds, and finally into a probability:</p>
+  <p>The key idea is that logistic regression does not abandon the linear model. It models a straight-line relationship on the <strong>log-odds scale</strong> rather than directly on the probability scale.</p>
+
+  <h3>1. Where does the straight line come from?</h3>
+  <p>For our illustrative example, suppose the model is:</p>
+  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × tickets</strong></p>
+  <p>Here, the logit is the log-odds of cancelling, and p is the probability of cancelling. What do the two numbers mean?</p>
   <ul class="post-points post-points-color">
-    <li><strong>Log-odds:</strong> −4 + 0.8 × 6 = 0.8</li>
-    <li><strong>Odds:</strong> e<sup>0.8</sup> ≈ 2.2</li>
-    <li><strong>Probability:</strong> 2.2 ÷ (1 + 2.2) ≈ 0.69, or 69%</li>
+    <li><strong>−4 is the starting point.</strong> It is the logit for a customer with zero support tickets.</li>
+    <li><strong>0.8 is the slope.</strong> Each additional support ticket raises the logit by 0.8.</li>
   </ul>
-  <p>Reading these steps in the other direction is how we make sense of the result:</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Probability:</strong> The chance of cancellation, between 0 and 1. Here, it is 0.69, or 69%.</li>
-    <li><strong>Odds:</strong> The ratio of the probability of cancelling to the probability of staying (not cancelling). The odds are 0.69 ÷ 0.31 ≈ 2.2. In other words, the odds of cancelling are about 2.2 to 1.</li>
-    <li><strong>Log-odds (logit):</strong> The natural logarithm of the odds. Here, ln(2.2) ≈ 0.8.</li>
-  </ul>
+
+  <h3>2. Calculate the log-odds</h3>
+  <p>Suppose a customer opened six support tickets last month. We put six into the equation:</p>
+  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × 6 = 0.8</strong></p>
+  <p>The model gives a log-odds (logit) of 0.8 for this customer. But what does 0.8 actually mean? Log-odds are difficult to interpret directly, so we transform them into odds and then into a probability.</p>
+
+  <h3>3. From log-odds to odds to probability</h3>
+  <p><strong>Step 1: Log-odds to odds.</strong> Exponentiating the log-odds gives the odds:</p>
+  <p class="post-formula post-formula-plain"><strong>Odds = e<sup>0.8</sup> ≈ 2.2</strong></p>
+  <p>The odds of cancelling are about 2.2 to 1. Odds compare the probability of cancelling with the probability of staying (not cancelling):</p>
   <p class="post-formula post-formula-plain"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
     <span>Here, p is the probability of cancelling.</span></p>
-  <p class="post-formula post-formula-plain"><strong>logit(p) = ln( <span class="frac"><span>p</span><span>1 − p</span></span> )</strong>
-    <span>The logit, or log-odds, is the natural logarithm of the odds.</span></p>
-  <p>Why do we need the logit? We want a simple straight-line formula. But a probability is stuck between 0 and 1, so a straight line does not fit it. Unlike probabilities, the logit can take any value, from negative infinity to positive infinity, so logistic regression uses a straight line on this scale:</p>
-  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × tickets</strong>
-    <span>For a customer with 6 tickets: −4 + 0.8 × 6 = 0.8.</span></p>
-  <p>In this example, −4 is the starting point: the logit for a customer with no tickets. The 0.8 means that each additional ticket raises the logit by 0.8.</p>
-  <p>A logit of 0.8 is hard to interpret, so the model converts it back into a probability with the <strong>logistic function</strong>, also known as the sigmoid function. This is the reverse of the steps above:</p>
+  <p><strong>Step 2: Odds to probability.</strong> We convert the odds into a probability:</p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>odds</span><span>1 + odds</span></span></strong></p>
+  <p>For our customer:</p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>2.2</span><span>1 + 2.2</span></span> ≈ 0.69</strong></p>
+  <p>The model estimates a 69% probability that this customer will cancel.</p>
+
+  <h3>4. Why use log-odds?</h3>
+  <p>A probability is stuck between 0 and 1, so a straight line does not fit it. Unlike probabilities, log-odds can take any value, from negative infinity to positive infinity. Logistic regression therefore models the log-odds as a straight line and converts the result back into a valid probability with the <strong>logistic function</strong>, also known as the sigmoid function:</p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit</sup></span></span></strong>
-    <span>This compresses any logit value into a probability between 0 and 1, producing the S-shaped curve. For 6 tickets: 1 ÷ (1 + e<sup>−0.8</sup>) ≈ 0.69, or 69%.</span></p>
+    <span>This compresses any logit value into a probability between 0 and 1, producing the S-shaped curve.</span></p>
+  <p>The table shows the predictions of our illustrative model:</p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
     <thead><tr><th>Tickets</th><th>Log-odds</th><th>Probability</th></tr></thead>
     <tbody>
