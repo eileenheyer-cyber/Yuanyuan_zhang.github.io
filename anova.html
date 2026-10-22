@@ -270,34 +270,55 @@
   <p><strong>The business takeaway:</strong> Marketing strategies should account for customer segments rather than treating all customers alike.</p>
   <p>These results show associations, not necessarily causal effects. With only 10 orders per channel–customer combination, the findings should be interpreted with appropriate caution.</p>
 
-  <h2>Coding</h2>
-  <p>You do not have to calculate the F statistic by hand. The <code>f_oneway()</code> function from <code>scipy.stats</code> runs the one-way test, and <code>tukey_hsd()</code> runs the post-hoc comparisons. The data frame <code>orders</code> has one row per order, with the columns channel, customer and value.</p>
+  <h2>Coding ANOVA in Python</h2>
+  <p>Python can calculate the F-statistic, p-value and post-hoc comparisons automatically. We do not need to calculate them by hand.</p>
+
+  <h3>One-way ANOVA</h3>
+  <p>We use <code>scipy.stats.f_oneway()</code> to test whether the mean order value differs across the three marketing channels. Tukey’s HSD then identifies which pairs differ, while accounting for multiple comparisons.</p>
   <pre class="post-code"><code>import pandas as pd
 from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 
-orders = pd.read_csv("orders.csv")   # columns: channel, customer, value
+orders = pd.read_csv("orders.csv")
 
-groups = [g["value"] for _, g in orders.groupby("channel")]
+groups = [
+    group["value"].to_numpy()
+    for _, group in orders.groupby("channel")
+]
+
 result = stats.f_oneway(*groups)
 print(f"F = {result.statistic:.2f}, p = {result.pvalue:.4f}")
 
-print(stats.tukey_hsd(*groups))
-print(stats.levene(*groups))
+posthoc = pairwise_tukeyhsd(
+    endog=orders["value"],
+    groups=orders["channel"],
+    alpha=0.05
+)
+print(posthoc)
 
-# F = 5.95, p = 0.0045
-# Levene test for equal spread: p = 0.18</code></pre>
-  <p>The groups are sorted alphabetically, so in the Tukey output 0 = Email, 1 = Search and 2 = Social. The result matches our calculation: F = 5.95 and p = 0.0045. Only the pair 1 − 2 (Search − Social) has an adjusted p-value below 0.05.</p>
-  <p>For two-way ANOVA we use the <code>statsmodels</code> package. The formula <code>channel * customer</code> includes both main effects and their interaction.</p>
+# F = 5.95, p = 0.0045</code></pre>
+  <p>The ANOVA result indicates a statistically significant difference between the channel means. Tukey’s HSD identifies which pairs differ significantly after adjusting for multiple comparisons.</p>
+
+  <h3>Two-way ANOVA</h3>
+  <p>To investigate both marketing channel and customer type, we use <code>statsmodels</code>. The formula <code>C(channel) * C(customer)</code> includes both main effects and their interaction.</p>
   <pre class="post-code"><code>import statsmodels.api as sm
 from statsmodels.formula.api import ols
 
-model = ols("value ~ C(channel) * C(customer)", data=orders).fit()
-print(sm.stats.anova_lm(model, typ=2).round(4))</code></pre>
-  <pre class="post-code post-code-out"><code>                        sum_sq    df        F  PR(&gt;F)
-C(channel)              2878.6333   2.0   8.3702  0.0007
-C(customer)             2788.0167   1.0  16.2134  0.0002
-C(channel):C(customer)  1725.8333   2.0   5.0182  0.0100
-Residual                9285.7000  54.0      NaN     NaN</code></pre>
+model = ols(
+    "value ~ C(channel) * C(customer)",
+    data=orders
+).fit()
+
+results = sm.stats.anova_lm(model, typ=2)
+print(results.round(4))</code></pre>
+  <p>The output contains an F-statistic and p-value for each effect:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Channel:</strong> tests whether average order value differs across marketing channels.</li>
+    <li><strong>Customer type:</strong> tests whether new and returning customers have different average order values.</li>
+    <li><strong>Interaction:</strong> tests whether the channel effect depends on customer type.</li>
+  </ul>
+  <p>For each effect, a p-value below 0.05 indicates statistically significant evidence against its null hypothesis.</p>
+  <p>The code assumes that the dataset contains the columns <code>channel</code>, <code>customer</code> and <code>value</code>, with one row per order.</p>
 
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
