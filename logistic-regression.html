@@ -73,12 +73,12 @@
     <li>0.8 is the slope: each additional ticket increases the predicted logit of cancellation by 0.8.</li>
   </ul>
   <p>Let's calculate the prediction for a customer with six support tickets.</p>
-  <p>Step 1: Calculate the logit</p>
+  <p><em>Step 1: Calculate the logit</em></p>
   <p class="post-formula post-formula-plain"><strong>−4 + 0.8 × 6 = 0.8</strong></p>
-  <p>Step 2: Convert the logit into odds</p>
+  <p><em>Step 2: Convert the logit into odds</em></p>
   <p class="post-formula post-formula-plain"><strong>odds = e<sup>logit</sup> = e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>The odds of cancellation are approximately 2.23 to 1.</p>
-  <p>Step 3: Convert odds into probability</p>
+  <p><em>Step 3: Convert odds into probability</em></p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>odds</span><span>1 + odds</span></span> = <span class="frac"><span>2.23</span><span>1 + 2.23</span></span> ≈ 0.69</strong></p>
   <p>The predicted probability of cancellation is approximately 69%.</p>
   <p>Why model the logit in the first place? Probabilities are restricted to values between 0 and 1, whereas the logit can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
