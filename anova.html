@@ -261,12 +261,14 @@
       <tr><td>Channel × customer type</td><td>5.02</td><td>0.0100</td></tr>
     </tbody>
   </table></div>
+  <h3>Interpreting the Results</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Channel and customer type both matter.</strong> Returning customers spend about €13.60 more on average than new customers (€71.03 vs. €57.40).</li>
-    <li><strong>The interaction is significant.</strong> Email lifts the order value of returning customers by €28.80 compared with new customers, social by only €6.30 and search by €5.80.</li>
-    <li><strong>Read the interaction first.</strong> If it is significant, “which channel is best?” has no single answer. For new customers search is best (€68.70). For returning customers email is best (€80.50).</li>
+    <li><strong>Both factors matter.</strong> Marketing channel (F = 8.37, p = 0.0007) and customer type (F = 16.21, p = 0.0002) have statistically significant effects on average order value.</li>
+    <li><strong>The interaction is significant.</strong> With F = 5.02 and p = 0.0100, the effect of marketing channel depends on customer type.</li>
+    <li><strong>There is no universal best channel.</strong> Search has the highest average order value among new customers (€68.70), while email performs best among returning customers (€80.50).</li>
+    <li><strong>The business takeaway:</strong> Marketing strategies should account for customer segments rather than treating all customers alike.</li>
   </ul>
-  <p>The channel effect is stronger here (F = 8.37) than in the one-way test (F = 5.95). Customer type explains part of the variation that was left over as noise before, which makes the channel differences easier to see.</p>
+  <p>These results show associations, not necessarily causal effects. With only 10 orders per channel–customer combination, the findings should be interpreted with appropriate caution.</p>
 
   <h2>Coding</h2>
   <p>You do not have to calculate the F statistic by hand. The <code>f_oneway()</code> function from <code>scipy.stats</code> runs the one-way test, and <code>tukey_hsd()</code> runs the post-hoc comparisons. The data frame <code>orders</code> has one row per order, with the columns channel, customer and value.</p>
