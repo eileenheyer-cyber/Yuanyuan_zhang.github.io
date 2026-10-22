@@ -69,10 +69,10 @@
   </ul>
   <p class="post-formula post-formula-plain"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
     <span>Here, p is the probability of cancelling.</span></p>
-  <p class="post-formula post-formula-plain"><strong>Logit = ln( <span class="frac"><span>p</span><span>1 − p</span></span> )</strong>
+  <p class="post-formula post-formula-plain"><strong>logit(p) = ln( <span class="frac"><span>p</span><span>1 − p</span></span> )</strong>
     <span>The logit, or log-odds, is the natural logarithm of the odds.</span></p>
   <p>Why do we need the logit? We want a simple straight-line formula. But a probability is stuck between 0 and 1, so a straight line does not fit it. Unlike probabilities, the logit can take any value, from negative infinity to positive infinity, so logistic regression uses a straight line on this scale:</p>
-  <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × tickets</strong>
+  <p class="post-formula post-formula-plain"><strong>logit(p) = −4 + 0.8 × tickets</strong>
     <span>For a customer with 6 tickets: −4 + 0.8 × 6 = 0.8. The coefficients −4 and 0.8 are illustrative. In practice, software estimates them from past customers.</span></p>
   <p>A logit of 0.8 is hard to interpret, so the model converts it back into a probability with the <strong>logistic function</strong>, also known as the sigmoid function. This is the reverse of the steps above:</p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit</sup></span></span></strong>
