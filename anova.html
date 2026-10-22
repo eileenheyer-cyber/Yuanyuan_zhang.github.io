@@ -186,6 +186,7 @@
   <p style="font-size:0.9rem"><strong>How large is the effect?</strong></p>
   <p>To understand the magnitude of the difference, we calculate eta-squared (η²), which measures the proportion of total variation associated with the marketing channel.</p>
   <p class="post-formula"><strong>η² = <span class="frac"><span>SSB</span><span>SST</span></span> = <span class="frac"><span>2,878.6</span><span>16,678.2</span></span> ≈ 0.173</strong></p>
+  <div class="post-note"><p class="post-note-l">What is SST?</p><p>SST is the total sum of squares. It measures all the variation in the order values, ignoring which channel an order came from: we take the distance of each of the 60 orders from the overall mean of €64.22, square it and add everything up. In our example SST is 16,678.2. It consists of the between-group part (SSB, 2,878.6) and the within-group part (SSW, 13,799.6). Eta-squared is the share of SST that comes from SSB.</p></div>
   <p>Eta-squared is approximately 0.17, meaning that 17.3% of the observed variation in order values is associated with differences between marketing channels. The remaining 82.7% is variation within the channels.</p>
   <p>The p-value tells us that the differences are statistically significant, while eta-squared helps us understand their magnitude. Together, they provide a more complete picture of the results.</p>
   <p>To identify which specific channels differ, we can perform post-hoc comparisons, such as Tukey’s HSD.</p>
