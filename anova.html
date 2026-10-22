@@ -192,11 +192,13 @@
   <p>To identify which specific channels differ, we can perform post-hoc comparisons, such as Tukey’s HSD.</p>
 
   <h2>What a Significant Result Does Not Tell You</h2>
+  <p>A statistically significant ANOVA result is only the beginning. It tells us that not all group means are equal, but it leaves three important questions unanswered.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Which groups differ.</strong> ANOVA says that the averages are not all equal. It does not say whether email differs from social, or only search from social.</li>
-    <li><strong>Why they differ.</strong> The channels may reach different audiences. A higher average in search does not prove that search makes people spend more.</li>
-    <li><strong>That the difference matters.</strong> With thousands of orders, even a tiny gap becomes significant. Look at η² and the size of the differences in euros, not only at the p-value.</li>
+    <li><strong>Which groups differ?</strong> ANOVA does not identify the specific differences between email, social media and search. Post-hoc tests, such as Tukey’s HSD, help us determine which pairs of groups differ significantly.</li>
+    <li><strong>Why do they differ?</strong> A difference in average order value does not establish causation. Marketing channels may reach different audiences, and other factors may influence how much customers spend. A higher average for search does not prove that search causes customers to spend more.</li>
+    <li><strong>Does the difference matter?</strong> Statistical significance does not tell us whether a difference is practically meaningful. With large samples, even small differences can become statistically significant. Consider the effect size, such as eta-squared (η²), alongside the actual differences in order value.</li>
   </ul>
+  <p>The goal is not simply to find a significant p-value. It is to understand the size, meaning and limitations of the observed differences.</p>
 
   <h2>Which Groups Differ? Post-Hoc Tests</h2>
   <p>To find out which channels differ, we compare the pairs after ANOVA with a <strong>post-hoc test</strong>. A common choice is <strong>Tukey’s HSD</strong>. It compares every pair, but adjusts the p-values and intervals for the fact that we make three comparisons. This keeps the overall false-alarm risk at 5%, which is the problem from the start of this post.</p>
