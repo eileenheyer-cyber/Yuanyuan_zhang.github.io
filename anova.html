@@ -224,12 +224,20 @@
   <p>In this example, the unadjusted email-versus-social comparison has a p-value of approximately 0.037, but the Tukey-adjusted p-value is 0.069. After accounting for the multiple comparisons, we do not have sufficient evidence to conclude that these two channels differ.</p>
 
   <h2>Assumptions and When ANOVA Breaks</h2>
+  <p>Classical one-way ANOVA relies on several assumptions. Checking them helps us decide whether its results are reliable.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Independent observations.</strong> Each order should come from a different customer. If the same customer appears many times, the orders are not independent.</li>
-    <li><strong>Roughly normal residuals.</strong> The differences between orders and their channel average should be roughly bell-shaped. With about 20 or more observations per group, ANOVA tolerates moderate deviations.</li>
-    <li><strong>Similar spread in all groups.</strong> A common rule of thumb is that the largest standard deviation should be less than twice the smallest. Here it is €19.01 against €13.15, about 1.4 times. Levene’s test agrees (p = 0.18).</li>
+    <li><strong>Independent observations.</strong> Each observation should be independent of the others. For example, repeated orders from the same customer may violate this assumption because those orders can be correlated.</li>
+    <li><strong>Approximately normal residuals.</strong> Within each group, the residuals — the differences between individual observations and their group mean — should be approximately normally distributed. ANOVA can tolerate moderate deviations, particularly with sufficiently large and balanced groups.</li>
+    <li><strong>Similar population variances.</strong> The population variances should be approximately equal across groups. A practical first step is to compare the groups’ standard deviations and use a formal test, such as Levene’s test, when appropriate.</li>
   </ul>
-  <p>If the assumptions fail, there are alternatives. <strong>Welch’s ANOVA</strong> handles groups with unequal spread. The <strong>Kruskal–Wallis test</strong> compares groups without assuming a normal shape, which helps with strongly skewed data or extreme outliers.</p>
+
+  <p style="font-size:0.9rem"><strong>What if the assumptions are violated?</strong></p>
+  <p>The appropriate alternative depends on which assumption is violated.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Unequal variances:</strong> Welch’s ANOVA compares group means without requiring equal population variances.</li>
+    <li><strong>Strong non-normality or influential outliers:</strong> Investigate the data and consider whether a nonparametric alternative, such as the Kruskal–Wallis test, is appropriate. This test compares group distributions and is not generally a direct test of means.</li>
+  </ul>
+  <p>The goal is not to force the data to satisfy the assumptions, but to choose a method appropriate for the data and research question.</p>
 
   <h2>Two-Way ANOVA: Adding a Second Factor</h2>
   <p>So far the customer type was ignored. Of our 60 orders, 30 came from new and 30 from returning customers, evenly spread over the channels (10 in each combination). Two-way ANOVA tests the channel, the customer type and their interaction at once.</p>
