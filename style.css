@@ -1866,6 +1866,9 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 
 /* Stacked fractions in formulas */
 .post-formula.post-formula-plain > strong { font-weight: 400; }
+.post-formula.post-formula-plain { margin: 14px 0 18px; padding: 10px 16px; }
+.post-formula.post-formula-plain > strong { font-size: 1.05rem; }
+.post-formula.post-formula-plain > span { margin-top: 4px; font-size: 0.82rem; }
 .post-formula .frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .15em; line-height: 1.25; font-size: 1em; color: inherit; }
 .post-formula .frac > span { display: block; margin: 0; padding: 0 .3em; font-size: inherit; color: inherit; }
 .post-formula .frac > span:first-child { border-bottom: 1.5px solid currentColor; padding-bottom: .1em; }
