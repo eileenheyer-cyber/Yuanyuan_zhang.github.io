@@ -55,17 +55,11 @@
 
   <h2>From Probability to Odds to Log-Odds</h2>
   <p>The key idea is that logistic regression does not abandon the linear model. Instead, it models a straight-line relationship on a different scale: the <strong>log-odds scale</strong>.</p>
-  <p>Three terms are central to this idea:</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Odds:</strong> The ratio of the probability that an event occurs to the probability that it does not occur: p ÷ (1 − p).</li>
-    <li><strong>Log-odds (logit):</strong> The natural logarithm of the odds. Taking the logarithm transforms odds, which range from 0 to infinity, into values ranging from negative to positive infinity.</li>
-    <li><strong>The logistic regression model:</strong> It models the log-odds as a linear combination of the predictors and their coefficients, then transforms the result back into a probability between 0 and 1.</li>
-  </ul>
   <p>The process has three steps. Consider a customer with six support tickets whose predicted probability of cancelling is approximately 0.69.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Probability:</strong> The chance of cancellation. Here, it is 0.69, or 69%.</li>
-    <li><strong>Odds:</strong> The probability of cancelling divided by the probability of staying: 0.69 ÷ 0.31 ≈ 2.2. In other words, the odds of cancelling are about 2.2 to 1.</li>
-    <li><strong>Log-odds:</strong> The natural logarithm of the odds: ln(2.2) ≈ 0.8.</li>
+    <li><strong>Probability:</strong> The chance of cancellation, between 0 and 1. Here, it is 0.69, or 69%.</li>
+    <li><strong>Odds:</strong> The ratio of the probability of cancelling to the probability of staying. The odds are 0.69 ÷ 0.31 ≈ 2.2. In other words, the odds of cancelling are about 2.2 to 1.</li>
+    <li><strong>Log-odds:</strong> The natural logarithm of the odds. Here, ln(2.2) ≈ 0.8.</li>
   </ul>
   <p class="post-formula"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
     <span>Here, p is the probability of cancelling.</span></p>
