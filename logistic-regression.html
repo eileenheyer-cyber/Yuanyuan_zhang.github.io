@@ -53,7 +53,13 @@
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
-  <h2>From Probability to Odds to Log-Odds</h2>
+  <h2>From Probability to Log-Odds: How Logistic Regression Works</h2>
+  <h3>Understanding Logit and Odds</h3>
+  <ul class="post-points post-points-color">
+    <li>Odds represent the ratio of the probability of an event occurring to it not occurring (p / (1-p)).</li>
+    <li>The logit function is the natural logarithm of the odds and is used to relate independent variables linearly to the probability of the outcome.</li>
+    <li>The logistic regression model expresses the logit of the probability as a linear combination of the independent variables and their coefficients.</li>
+  </ul>
   <p>The key idea is that logistic regression still uses a linear model, but it models the log-odds rather than the probability directly.</p>
   <p>The general formula is:</p>
   <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = log( <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span> ) = <em>β</em><sub>0</sub> + <em>β</em><sub>1</sub><em>X</em><sub>1</sub> + <em>β</em><sub>2</sub><em>X</em><sub>2</sub> + ⋯ + <em>β</em><sub>n</sub><em>X</em><sub>n</sub></strong></p>
