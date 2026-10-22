@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261021c">
+  <link rel="stylesheet" href="style.css?v=20261022a">
 </head>
 <body>
 
@@ -55,20 +55,28 @@
 
   <h2>From Probability to Odds to Log-Odds</h2>
   <p>The key idea is that logistic regression does not abandon the linear model. Instead, it models a straight-line relationship on a different scale: the <strong>log-odds scale</strong>.</p>
-  <p>The process has three steps. Consider a customer with six support tickets whose predicted probability of cancelling is approximately 0.69.</p>
+  <p>The model does not start with a probability. For a customer with six support tickets, it first calculates the log-odds from the straight line, then converts them into odds, and finally into a probability:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Log-odds:</strong> −4 + 0.8 × 6 = 0.8</li>
+    <li><strong>Odds:</strong> e<sup>0.8</sup> ≈ 2.2</li>
+    <li><strong>Probability:</strong> 2.2 ÷ (1 + 2.2) ≈ 0.69, or 69%</li>
+  </ul>
+  <p>Reading these steps in the other direction is how we make sense of the result:</p>
   <ul class="post-points post-points-color">
     <li><strong>Probability:</strong> The chance of cancellation, between 0 and 1. Here, it is 0.69, or 69%.</li>
     <li><strong>Odds:</strong> The ratio of the probability of cancelling to the probability of staying (not cancelling). The odds are 0.69 ÷ 0.31 ≈ 2.2. In other words, the odds of cancelling are about 2.2 to 1.</li>
-    <li><strong>Log-odds:</strong> The natural logarithm of the odds. Here, ln(2.2) ≈ 0.8.</li>
+    <li><strong>Log-odds (logit):</strong> The natural logarithm of the odds. Here, ln(2.2) ≈ 0.8.</li>
   </ul>
-  <p class="post-formula"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
+  <p class="post-formula post-formula-plain"><strong>Odds = <span class="frac"><span>p</span><span>1 − p</span></span></strong>
     <span>Here, p is the probability of cancelling.</span></p>
-  <p>Unlike probabilities, log-odds can take any value, from negative infinity to positive infinity. This allows logistic regression to model them with a straight line:</p>
-  <p class="post-formula"><strong>Log-odds = −4 + 0.8 × tickets</strong>
-    <span>Illustrative coefficients for the churn example.</span></p>
-  <p>The model then transforms the log-odds back into a probability using the <strong>logistic function</strong>, also known as the sigmoid function:</p>
-  <p class="post-formula"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−log-odds</sup></span></span></strong>
-    <span>This compresses any log-odds value into a probability between 0 and 1, producing the S-shaped curve.</span></p>
+  <p class="post-formula post-formula-plain"><strong>Logit = ln( <span class="frac"><span>p</span><span>1 − p</span></span> )</strong>
+    <span>The logit, or log-odds, is the natural logarithm of the odds.</span></p>
+  <p>Why do we need the logit? We want a simple straight-line formula. But a probability is stuck between 0 and 1, so a straight line does not fit it. Unlike probabilities, the logit can take any value, from negative infinity to positive infinity, so logistic regression uses a straight line on this scale:</p>
+  <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × tickets</strong>
+    <span>For a customer with 6 tickets: −4 + 0.8 × 6 = 0.8. The coefficients −4 and 0.8 are illustrative. In practice, software estimates them from past customers.</span></p>
+  <p>A logit of 0.8 is hard to interpret, so the model converts it back into a probability with the <strong>logistic function</strong>, also known as the sigmoid function. This is the reverse of the steps above:</p>
+  <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit</sup></span></span></strong>
+    <span>This compresses any logit value into a probability between 0 and 1, producing the S-shaped curve. For 6 tickets: 1 ÷ (1 + e<sup>−0.8</sup>) ≈ 0.69, or 69%.</span></p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
     <thead><tr><th>Tickets</th><th>Log-odds</th><th>Probability</th></tr></thead>
     <tbody>
@@ -89,7 +97,7 @@
   <h2>Reading the Coefficients as Odds Ratios</h2>
   <p>The coefficient 0.8 tells us how much the log-odds change with each additional support ticket. But log-odds are not particularly intuitive to interpret.</p>
   <p>To make the coefficient easier to understand, we exponentiate it:</p>
-  <p class="post-formula"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
+  <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
     <span>This gives us the odds ratio.</span></p>
   <p>Each additional support ticket multiplies the odds of cancellation by approximately 2.2, so the odds more than double, assuming the model remains unchanged.</p>
   <ul class="post-points post-points-color">
