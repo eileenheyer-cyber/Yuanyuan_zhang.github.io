@@ -126,7 +126,7 @@
   <p>For each channel, we calculate the squared difference between every order value and its channel’s mean. We then add all these squared differences across the three groups.</p>
   <p class="post-formula"><strong>SSW = Σ<sub>i=1</sub><sup>k</sup> Σ<sub>j=1</sub><sup>n<sub>i</sub></sup> (x<sub>ij</sub> − x&#772;<sub>i</sub>)²</strong></p>
   <p>In our example:</p>
-  <p class="post-formula"><strong>SSW = 6,863.8 (Email) + 3,285.0 (Social) + 3,650.8 (Search) = 13,799.6</strong><span>Each number is the sum of the 20 squared differences between the order values of one channel and that channel’s own mean.</span></p>
+  <p class="post-formula"><strong>(x<sub>1</sub> − 66.10)² + (x<sub>2</sub> − 66.10)² + … + (x<sub>20</sub> − 66.10)² = 6,863.80<br>(x<sub>1</sub> − 54.95)² + (x<sub>2</sub> − 54.95)² + … + (x<sub>20</sub> − 54.95)² = 3,284.95<br>(x<sub>1</sub> − 71.60)² + (x<sub>2</sub> − 71.60)² + … + (x<sub>20</sub> − 71.60)² = 3,650.80<br>SSW = 6,863.80 + 3,284.95 + 3,650.80 = 13,799.55 ≈ 13,799.6</strong><span>In each line, x<sub>1</sub> to x<sub>20</sub> are the 20 order values of one channel, and the number after the minus sign is that channel’s mean order value.</span></p>
   <p>A larger SSW indicates greater variation among individual orders within the groups.</p>
 
   <p style="font-size:0.9rem"><strong>3. Why Do We Divide by Degrees of Freedom?</strong></p>
