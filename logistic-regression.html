@@ -144,23 +144,27 @@
   </ul>
   <p>Why is the increase smaller for Customer B?</p>
   <p>Customer B already has a high probability of cancellation. There is less room for the probability to increase before reaching 100%. Customer A starts at a lower probability, so the same change in odds produces a larger increase in probability.</p>
+  <figure class="post-fig">
+    <img src="images/regression/logistic-chart-odds-vs-probability.svg" alt="A red S-shaped curve of predicted cancellation probability over 0 to 10 support tickets. Customer A, going from 4 to 5 tickets, moves from 31% to 50%, a rise of 19 points. Customer B, going from 7 to 8 tickets, moves from 83% to 92%, a rise of 9 points. Both steps multiply the odds by 2.23." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 3</span> Each extra ticket multiplies the odds by 2.23, but the S-curve is steep in the middle and flat near the top, so the same step adds 19 points for Customer A and only 9 points for Customer B. Illustrative data.</figcaption>
+  </figure>
   <p>This illustrates an important feature of logistic regression: <em>each additional support ticket has the same effect on the logit, but its effect on probability depends on the customer's starting point.</em></p>
 
   <h2>From Probability to Prediction: Thresholds and Decision Boundaries</h2>
   <p>Logistic regression produces a probability, but a business often needs a concrete action: should the retention team contact this customer or not?</p>
   <p>This is where a <strong>decision threshold</strong> comes in.</p>
   <p>A threshold converts the predicted probability into a classification. With a threshold of 0.5, customers with a predicted probability of at least 50% are flagged as likely to cancel.</p>
-  <p>In our example, a customer with eight tickets has a predicted probability of 92% and is flagged, while a customer with three tickets has a probability of approximately 17% and is not. With this particular model, a threshold of 0.5 corresponds to flagging customers with five or more tickets (Chart 3).</p>
+  <p>In our example, a customer with eight tickets has a predicted probability of 92% and is flagged, while a customer with three tickets has a probability of approximately 17% and is not. With this particular model, a threshold of 0.5 corresponds to flagging customers with five or more tickets (Chart 4).</p>
   <p>However, 0.5 is a common default, not a universal rule.</p>
   <p>Suppose losing a customer costs the company ten times as much as making a retention offer. In that case, missing a customer who eventually cancels may be much more expensive than contacting someone who would have stayed. A lower threshold, such as 0.2, might therefore be more appropriate. In our example, that would flag customers with four or more tickets.</p>
   <figure class="post-fig">
     <img src="images/regression/logistic-chart3.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with dashed horizontal lines at thresholds 0.5 and 0.2. Customers with 0 to 3 tickets are not flagged. A customer with 4 tickets is flagged only at threshold 0.2. Customers with 5 or more tickets are flagged at both thresholds. The lines are labelled with the ticket counts each threshold flags." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 3</span> Lowering the threshold from 0.5 to 0.2 flags customers from 4 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
+    <figcaption><span>Chart 4</span> Lowering the threshold from 0.5 to 0.2 flags customers from 4 tickets instead of 5. The right threshold depends on what a miss costs compared with an unneeded offer. Illustrative data.</figcaption>
   </figure>
-  <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the logit equal 0 (Chart 4).</p>
+  <p>The ticket count where the predicted probability crosses a threshold is called the <strong>decision boundary</strong>. Customers on one side of it are flagged, and customers on the other side are not. For a threshold of 0.5, the boundary is at 5 tickets, where the logit equal 0 (Chart 5).</p>
   <figure class="post-fig">
     <img src="images/regression/logistic-chart4.svg" alt="The S-shaped probability curve for 0 to 10 support tickets with horizontal threshold lines at 0.5 and 0.2 and vertical lines dropping to the decision boundaries at 5 tickets and 3.3 tickets. The background is blue left of 3.3 tickets (not flagged), yellow between 3.3 and 5 tickets (flagged at 0.2 only) and red beyond 5 tickets (flagged at both thresholds)." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 4</span> A decision boundary is the ticket count where the curve crosses the threshold. A lower threshold moves the boundary to the left, so more customers are flagged. Illustrative data.</figcaption>
+    <figcaption><span>Chart 5</span> A decision boundary is the ticket count where the curve crosses the threshold. A lower threshold moves the boundary to the left, so more customers are flagged. Illustrative data.</figcaption>
   </figure>
   <p>Lowering the threshold generally identifies more potential churners, but it also increases the number of customers contacted unnecessarily.</p>
   <p>These mistakes have names:</p>
