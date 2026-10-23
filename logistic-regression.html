@@ -39,7 +39,35 @@
   <p>Logistic regression is designed for exactly these kinds of questions. Instead of predicting the outcome directly, it estimates the <strong>probability</strong> of an event occurring, giving us a value between 0 and 1 that can be used to make a yes-or-no decision.</p>
   <p>In this post, we use a simple customer churn example with one predictor: the number of support tickets a customer opened last month. It builds on <a href="simple-linear-regression.html">Simple Linear Regression</a> and the framework introduced in <a href="glm.html">Generalized Linear Models</a>.</p>
 
-  <h2>Why a Straight Line Fails for Yes/No Outcomes</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <p><strong>Contents</strong></p>
+  <ul class="post-points">
+    <li><a href="#why-a-straight-line-fails-for-yes-no-outcomes">Why a Straight Line Fails for Yes/No Outcomes</a></li>
+    <li><a href="#from-probability-to-logit-how-logistic-regressio">From Probability to Logit: How Logistic Regression Works</a>
+      <ul class="post-points">
+        <li><a href="#understanding-odds-and-logit">Understanding Odds and Logit</a></li>
+        <li><a href="#from-probability-to-logit">From Probability to Logit</a></li>
+      </ul>
+    </li>
+    <li><a href="#interpreting-coefficients-maximum-likelihood-and">Interpreting Coefficients: Maximum Likelihood and Odds Ratios</a>
+      <ul class="post-points">
+        <li><a href="#model-fitting-using-maximum-likelihood-estimatio">Model Fitting Using Maximum Likelihood Estimation (MLE)</a></li>
+        <li><a href="#interpreting-logistic-regression-coefficients">Interpreting Logistic Regression Coefficients</a></li>
+        <li><a href="#odds-ratio-vs-change-in-probability">Odds Ratio vs. Change in Probability</a></li>
+      </ul>
+    </li>
+    <li><a href="#from-probability-to-prediction-thresholds-and-de">From Probability to Prediction: Thresholds and Decision Boundaries</a></li>
+    <li><a href="#assumptions-and-common-pitfalls">Assumptions and Common Pitfalls</a>
+      <ul class="post-points">
+        <li><a href="#key-assumptions-of-binomial-logistic-regression">Key Assumptions of Binomial Logistic Regression</a></li>
+      </ul>
+    </li>
+    <li><a href="#evaluating-a-logistic-regression-model">Evaluating a Logistic Regression Model</a></li>
+    <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+  </ul>
+
+  <h2 id="why-a-straight-line-fails-for-yes-no-outcomes" style="scroll-margin-top:90px">Why a Straight Line Fails for Yes/No Outcomes</h2>
   <p>Imagine a subscription company approaching a customer's renewal date. The company wants to know: <strong>Will this customer renew their subscription or cancel?</strong></p>
   <p>The answer has only two possible outcomes: stay or cancel. The company also knows how many support tickets the customer opened last month. Could this information help predict whether they will leave?</p>
   <p>Ordinary linear regression is not designed for this kind of prediction.</p>
@@ -53,8 +81,8 @@
     <figcaption><span>Chart 1</span> A straight line drifts outside 0% to 100%, which no probability can do. The fitted S-curve stays inside because it estimates a probability for each ticket count, not a value for each customer. Illustrative data.</figcaption>
   </figure>
 
-  <h2>From Probability to Logit: How Logistic Regression Works</h2>
-  <h3>Understanding Odds and Logit</h3>
+  <h2 id="from-probability-to-logit-how-logistic-regressio" style="scroll-margin-top:90px">From Probability to Logit: How Logistic Regression Works</h2>
+  <h3 id="understanding-odds-and-logit" style="scroll-margin-top:90px">Understanding Odds and Logit</h3>
   <ul class="post-points post-points-color">
     <li>Odds: The ratio of the probability that an event occurs to the probability that it does not occur.
       <p class="post-formula post-formula-plain"><strong>Odds = <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span></strong></p>
@@ -66,7 +94,7 @@
       <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = <em>β</em><sub>0</sub> + <em>β</em><sub>1</sub><em>X</em><sub>1</sub> + <em>β</em><sub>2</sub><em>X</em><sub>2</sub> + ⋯ + <em>β</em><sub>n</sub><em>X</em><sub>n</sub></strong></p>
     </li>
   </ul>
-  <h3>From Probability to Logit</h3>
+  <h3 id="from-probability-to-logit" style="scroll-margin-top:90px">From Probability to Logit</h3>
   <p>The key idea is that logistic regression still uses a linear model, but it models the logit rather than the probability directly.</p>
   <p>The general formula is:</p>
   <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = log( <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span> ) = <em>β</em><sub>0</sub> + <em>β</em><sub>1</sub><em>X</em><sub>1</sub> + <em>β</em><sub>2</sub><em>X</em><sub>2</sub> + ⋯ + <em>β</em><sub>n</sub><em>X</em><sub>n</sub></strong></p>
@@ -111,15 +139,15 @@
     <p class="post-formula post-formula-plain" style="background:none;border:0;padding:0;margin:12px 0 2px"><strong>σ(z) = <span class="frac"><span>1</span><span>1 + e<sup>−z</sup></span></span></strong></p>
   </div>
 
-  <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
-  <h3>Model Fitting Using Maximum Likelihood Estimation (MLE)</h3>
+  <h2 id="interpreting-coefficients-maximum-likelihood-and" style="scroll-margin-top:90px">Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
+  <h3 id="model-fitting-using-maximum-likelihood-estimatio" style="scroll-margin-top:90px">Model Fitting Using Maximum Likelihood Estimation (MLE)</h3>
   <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. How can we find the coefficients that best fit these observations?</p>
   <p>Maximum Likelihood Estimation (MLE) <strong>finds the coefficient values that make the observed outcomes most likely</strong> under the logistic regression model.</p>
   <p>For example, suppose the estimated model is:</p>
   <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × support tickets</strong></p>
   <p>MLE evaluates how well different coefficient values explain the observed outcomes. A model receives a higher likelihood when it assigns high probabilities to customers who actually cancelled and low probabilities to those who stayed. MLE uses numerical optimization to find the coefficient values that maximize the likelihood of the entire dataset.</p>
 
-  <h3>Interpreting Logistic Regression Coefficients</h3>
+  <h3 id="interpreting-logistic-regression-coefficients" style="scroll-margin-top:90px">Interpreting Logistic Regression Coefficients</h3>
   <p>Each coefficient represents the change in the logit of the outcome for a one-unit increase in the corresponding predictor, holding other variables constant.</p>
   <p>However, the logit is not particularly intuitive. To make the coefficients easier to interpret, we can exponentiate them to obtain odds ratios:</p>
   <p class="post-formula post-formula-plain"><strong>Odds Ratio = e<sup><em>β</em></sup></strong>
@@ -133,7 +161,7 @@
   <p>Example: In our model, the coefficient for support tickets is 0.8. The corresponding odds ratio is:</p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>This means that each additional support ticket multiplies the odds of cancellation by approximately 2.23. For example, if a customer’s odds are 1 to 1, one more ticket raises them to 2.23 to 1. That is an increase of about 123% (2.23 − 1 = 1.23), holding other variables constant.</p>
-  <h3>Odds Ratio vs. Change in Probability</h3>
+  <h3 id="odds-ratio-vs-change-in-probability" style="scroll-margin-top:90px">Odds Ratio vs. Change in Probability</h3>
   <p>The same change in odds does not produce the same change in probability.</p>
   <p>Imagine two customers:</p>
   <ul class="post-points post-points-color">
@@ -148,7 +176,7 @@
   </figure>
   <p>This illustrates an important feature of logistic regression: <em>each additional support ticket has the same effect on the logit, but its effect on probability depends on the customer's starting point.</em></p>
 
-  <h2>From Probability to Prediction: Thresholds and Decision Boundaries</h2>
+  <h2 id="from-probability-to-prediction-thresholds-and-de" style="scroll-margin-top:90px">From Probability to Prediction: Thresholds and Decision Boundaries</h2>
   <p>Logistic regression predicts the probability of an outcome, but a business often needs a concrete action: should the retention team contact a customer who may cancel their subscription?</p>
   <p>This is where a <strong>decision threshold</strong> comes in. It converts a predicted probability into a classification.</p>
   <p>With a threshold of 0.5, customers with a predicted probability of at least 50% are classified as likely to cancel. In our example, a customer with eight support tickets has a predicted cancellation probability of 92% and is classified as likely to cancel, while a customer with three tickets has a probability of approximately 17% and is not. With this model, a threshold of 0.5 means classifying customers with five or more tickets as likely to cancel (Chart 4).</p>
@@ -172,8 +200,8 @@
   </ul>
   <p>The best threshold depends on the business objective and the relative costs of these errors. Model evaluation helps us compare these trade-offs, which I will cover in a separate post.</p>
 
-  <h2>Assumptions and Common Pitfalls</h2>
-  <h3>Key Assumptions of Binomial Logistic Regression</h3>
+  <h2 id="assumptions-and-common-pitfalls" style="scroll-margin-top:90px">Assumptions and Common Pitfalls</h2>
+  <h3 id="key-assumptions-of-binomial-logistic-regression" style="scroll-margin-top:90px">Key Assumptions of Binomial Logistic Regression</h3>
   <ul class="post-points post-points-color">
     <li>There is a linear relationship between each independent variable (X) and the logit (log-odds) of the probability that the dependent variable (Y) equals 1.</li>
     <li>Observations are independent, meaning the probability of observing multiple data points is the product of their individual probabilities.</li>
@@ -185,11 +213,11 @@
   <p>Second, if a predictor perfectly separates customers who cancel from those who stay, the model may struggle to estimate finite coefficients. This is known as <strong>complete separation</strong>.</p>
   <p>Understanding these limitations helps us avoid treating a model's predictions as automatically reliable.</p>
 
-  <h2>Evaluating a Logistic Regression Model</h2>
+  <h2 id="evaluating-a-logistic-regression-model" style="scroll-margin-top:90px">Evaluating a Logistic Regression Model</h2>
   <p>Fitting the model is only half the job. Before the retention team relies on the predictions, we need to know how well the model separates customers who cancel from customers who stay. That depends on the threshold we choose. The same model gives different numbers of correct and incorrect classifications at 0.5 and at 0.2.</p>
   <p>Metrics such as accuracy, precision, recall and the ROC curve measure these trade-offs. They are the topic of the next post: <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a>.</p>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2 id="how-to-explain-it-to-stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">&#8220;In this example, customers with no support tickets last month have an estimated 2% probability of cancelling. At five tickets, the estimated probability reaches 50%, and at eight tickets, it rises to 92%. Each additional ticket multiplies the odds of cancellation by approximately 2.2.</p>
     <p class="post-callout-q">Using a 0.5 threshold, the model flags customers with five or more tickets. The retention team can use this information to prioritize outreach, while evaluating whether this threshold makes sense given the costs of missed cancellations and unnecessary retention offers.&#8221;</p>
