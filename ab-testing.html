@@ -223,6 +223,36 @@
   <p>Therefore, the 95% confidence interval is approximately:</p>
   <p class="post-formula post-formula-plain"><strong>0.006 ± 0.0042 = [0.0018, 0.0102]</strong></p>
   <p>Expressed in percentage points, the interval ranges from <strong>+0.18 to +1.02 percentage points</strong>.</p>
+  <p>The same calculation in Python:</p>
+  <pre class="post-code"><code>import numpy as np
+from scipy import stats
+
+# Data from the example
+n_a, n_b = 22_000, 22_000
+x_a, x_b = 1_100, 1_232            # conversions
+
+# Conversion rates
+p_a = x_a / n_a                    # 0.05
+p_b = x_b / n_b                    # 0.056
+
+# Step 1: difference
+diff = p_b - p_a                   # 0.006
+
+# Step 2: standard error and 95% confidence interval
+se = np.sqrt(p_a * (1 - p_a) / n_a + p_b * (1 - p_b) / n_b)
+z = stats.norm.ppf(0.975)          # 1.96
+margin = z * se
+
+low, high = diff - margin, diff + margin
+
+print(f"Difference:      {diff:.4f}")
+print(f"Standard error:  {se:.5f}")
+print(f"Margin of error: {margin:.4f}")
+print(f"95% CI:          [{low:.4f}, {high:.4f}]")</code></pre>
+  <pre class="post-code post-code-out"><code>Difference:      0.0060
+Standard error:  0.00214
+Margin of error: 0.0042
+95% CI:          [0.0018, 0.0102]</code></pre>
 
   <h3>Step 3: Interpret the result</h3>
   <p>The entire confidence interval lies above zero, indicating that the treatment group's conversion rate is statistically significantly higher at the 5% significance level, using the corresponding two-sided test.</p>
