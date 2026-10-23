@@ -49,7 +49,7 @@
   </ul>
   <p>Randomization does not eliminate every source of bias, but it provides a stronger basis for determining whether a change actually improves performance.</p>
 
-  <h2>How to design an A/B test</h2>
+  <h2>Designing an A/B test</h2>
   <p>This is a common interview question. A clean answer walks through five steps: variables, hypothesis, metrics, assigning users to groups, and analysis of the results. The running example below is a messaging app that wants to test group video calling.</p>
 
   <h3>Step 1: Define your variables</h3>
@@ -96,7 +96,7 @@
     </ol>
   </div>
 
-  <h3>Step 4: Assign users to treatment and control groups</h3>
+  <h3>Step 4: Design the experiment and assign users</h3>
   <p>An A/B test is a controlled experiment. The treatment is the change being tested, and users are split into two groups:</p>
   <ul class="post-points">
     <li><strong>Control group</strong> continues with the existing experience (1:1 video calling).</li>
@@ -133,18 +133,6 @@
   </ul>
   <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile users make far fewer calls than desktop users. With a small sample, pure randomization could by chance put more desktop users in one group and distort the comparison. To prevent this, block by device: split users into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the feature caused it and not the device.</p>
 
-  <h3>Sample size and test duration</h3>
-  <p>A test needs enough users to detect a meaningful effect. The required sample size depends on four factors:</p>
-  <ul class="post-points">
-    <li><strong>Significance level (α).</strong> The probability of a Type I error: concluding that a difference exists when the null hypothesis is true. It is commonly set at 5%.</li>
-    <li><strong>Statistical power.</strong> The probability of detecting a specified effect when it truly exists. It is commonly set at 80%, corresponding to a 20% risk of missing that effect (a Type II error). This is a convention that balances reliability against cost: higher power requires more users, so 80% is often chosen unless missing a real effect would be especially costly.</li>
-    <li><strong>Minimum detectable effect (MDE).</strong> The smallest improvement the experiment is designed to detect. Smaller effects generally require larger samples.</li>
-    <li><strong>Baseline and variability.</strong> The expected starting value of the metric and how much it varies. For conversion rates, the baseline conversion rate affects the required sample size. For continuous metrics, greater variability generally requires more users.</li>
-  </ul>
-  <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), a significance level of 5%, and 80% power, you need approximately 22,000 users per group. If you want to detect a larger improvement of 1 percentage point (5.0% → 6.0%), approximately 8,000 users per group may be sufficient.</p>
-  <p><strong>Duration</strong> depends on the required sample size and the time needed to capture representative user behavior. Estimate it in advance, taking into account traffic, purchase cycles, and weekly patterns. Run the experiment until the planned sample size and minimum duration are reached. Avoid stopping early simply because the results look promising: repeatedly checking results and stopping as soon as they become significant can increase the false-positive rate unless an appropriate sequential testing method is used.</p>
-  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly explain which group is the control and which is the treatment, how users are assigned, and what you are comparing. Also consider network effects, where one user's treatment can influence another user's behavior. For example, assigning interacting friends to different groups may introduce interference. In such cases, randomizing groups of related users together may be more appropriate.</p></div>
-
   <h3>Checklist for reducing bias</h3>
   <p>Before launching an A/B test, ask yourself:</p>
   <ul class="post-points">
@@ -156,7 +144,19 @@
     <li>✅ Have I verified that the allocation matches the intended split?</li>
   </ul>
 
-  <h3>Step 5: Analyse results and draw conclusions</h3>
+  <h3>Step 5: Determine sample size and test duration</h3>
+  <p>A test needs enough users to detect a meaningful effect. The required sample size depends on four factors:</p>
+  <ul class="post-points">
+    <li><strong>Significance level (α).</strong> The probability of a Type I error: concluding that a difference exists when the null hypothesis is true. It is commonly set at 5%.</li>
+    <li><strong>Statistical power.</strong> The probability of detecting a specified effect when it truly exists. It is commonly set at 80%, corresponding to a 20% risk of missing that effect (a Type II error). This is a convention that balances reliability against cost: higher power requires more users, so 80% is often chosen unless missing a real effect would be especially costly.</li>
+    <li><strong>Minimum detectable effect (MDE).</strong> The smallest improvement the experiment is designed to detect. Smaller effects generally require larger samples.</li>
+    <li><strong>Baseline and variability.</strong> The expected starting value of the metric and how much it varies. For conversion rates, the baseline conversion rate affects the required sample size. For continuous metrics, greater variability generally requires more users.</li>
+  </ul>
+  <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), a significance level of 5%, and 80% power, you need approximately 22,000 users per group. If you want to detect a larger improvement of 1 percentage point (5.0% → 6.0%), approximately 8,000 users per group may be sufficient.</p>
+  <p><strong>Duration</strong> depends on the required sample size and the time needed to capture representative user behavior. Estimate it in advance, taking into account traffic, purchase cycles, and weekly patterns. Run the experiment until the planned sample size and minimum duration are reached. Avoid stopping early simply because the results look promising: repeatedly checking results and stopping as soon as they become significant can increase the false-positive rate unless an appropriate sequential testing method is used.</p>
+  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly explain which group is the control and which is the treatment, how users are assigned, and what you are comparing. Also consider network effects, where one user's treatment can influence another user's behavior. For example, assigning interacting friends to different groups may introduce interference. In such cases, randomizing groups of related users together may be more appropriate.</p></div>
+
+  <h2>Analyzing A/B test results</h2>
   <p>The question to ask: <em>"Did B perform better because of our change, is the improvement large enough to matter, and did it avoid causing other problems?"</em></p>
 
   <div class="post-table-wrap"><table class="post-table">
@@ -171,6 +171,21 @@
       <tr><td>7</td><td>Decision</td><td>Treatment wins, no clear difference, or treatment loses.</td></tr>
     </tbody>
   </table></div>
+
+  <h3>Measure the observed effect</h3>
+  <p>Imagine an online shop testing a redesigned checkout button. The experiment runs until both groups reach the planned sample size.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Metric</th><th>Control (A)</th><th>Treatment (B)</th></tr></thead>
+    <tbody>
+      <tr><td>Users</td><td>22,000</td><td>22,000</td></tr>
+      <tr><td>Conversions</td><td>1,100</td><td>1,232</td></tr>
+      <tr><td>Conversion rate</td><td>5.0%</td><td>5.6%</td></tr>
+    </tbody>
+  </table></div>
+  <p>The treatment group has a conversion rate 0.6 percentage points higher than the control group. But is this difference statistically significant, or could it be explained by random variation?</p>
+
+  <p>The estimated effect is the treatment conversion rate minus the control conversion rate:</p>
+  <p class="post-formula post-formula-plain"><strong>Difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
 
   <h3>Effect size: absolute vs relative</h3>
   <ul class="post-points">
@@ -193,23 +208,7 @@
     <figcaption><span>Chart 5</span> How the confidence interval relates to the decision (illustrative).</figcaption>
   </figure>
 
-  <h2>A worked example: From data to decision</h2>
-  <p>Imagine an online shop testing a redesigned checkout button. The experiment runs until both groups reach the planned sample size.</p>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Metric</th><th>Control (A)</th><th>Treatment (B)</th></tr></thead>
-    <tbody>
-      <tr><td>Users</td><td>22,000</td><td>22,000</td></tr>
-      <tr><td>Conversions</td><td>1,100</td><td>1,232</td></tr>
-      <tr><td>Conversion rate</td><td>5.0%</td><td>5.6%</td></tr>
-    </tbody>
-  </table></div>
-  <p>The treatment group has a conversion rate 0.6 percentage points higher than the control group. But is this difference statistically significant, or could it be explained by random variation?</p>
-
-  <h3>Step 1: Calculate the difference</h3>
-  <p>The estimated effect is the treatment conversion rate minus the control conversion rate:</p>
-  <p class="post-formula post-formula-plain"><strong>Difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
-
-  <h3>Step 2: Calculate the 95% confidence interval</h3>
+  <h3>Calculating the 95% confidence interval</h3>
   <p>For two independent conversion rates, an approximate 95% confidence interval for the difference is:</p>
   <p class="post-formula post-formula-plain"><strong>Confidence interval = (p̂<sub>B</sub> − p̂<sub>A</sub>) ± 1.96 × SE</strong></p>
   <p>Where the standard error (SE) is:</p>
@@ -255,11 +254,11 @@ Standard error:  0.00214
 Margin of error: 0.0042
 95% CI:          [0.0018, 0.0102]</code></pre>
 
-  <h3>Step 3: Interpret the result</h3>
+  <h3>Interpreting the confidence interval</h3>
   <p>The entire confidence interval lies above zero, indicating that the treatment group's conversion rate is statistically significantly higher at the 5% significance level, using the corresponding two-sided test.</p>
   <p>The interval also communicates uncertainty: although the observed improvement is 0.6 percentage points, the data are compatible with a range of positive effects.</p>
 
-  <h3>Step 4: Make the business decision</h3>
+  <h2>From statistical results to business decisions</h2>
   <p>The results support rolling out the redesigned button, provided the improvement is commercially worthwhile and no guardrail metrics show unacceptable harm.</p>
   <p>However, statistical significance does not automatically mean business success. The team should also consider implementation costs, expected additional conversions, revenue impact, and any unintended consequences.</p>
 
