@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261023a">
+  <link rel="stylesheet" href="style.css?v=20261023b">
 </head>
 <body>
 
@@ -40,28 +40,15 @@
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
 
-  <p><strong>Contents</strong></p>
-  <ul class="post-points">
-    <li><a href="#why-ab-testing">Why do we need A/B testing?</a></li>
-    <li><a href="#designing">Designing an A/B test</a>
-      <ul class="post-points">
-        <li><a href="#step-1">Step 1: Define your variables</a></li>
-        <li><a href="#step-2">Step 2: Formulate your hypothesis</a></li>
-        <li><a href="#step-3">Step 3: Choose metrics</a></li>
-        <li><a href="#step-4">Step 4: Design the experiment and assign users</a></li>
-        <li><a href="#step-5">Step 5: Determine sample size and test duration</a></li>
-      </ul>
-    </li>
-    <li><a href="#analyzing">Analyzing A/B test results</a>
-      <ul class="post-points">
-        <li><a href="#validity">Check validity first</a></li>
-        <li><a href="#observed-effect">Measure the observed effect</a></li>
-        <li><a href="#p-value">Statistical significance and the p-value</a></li>
-        <li><a href="#confidence-intervals">Confidence intervals</a></li>
-      </ul>
-    </li>
-    <li><a href="#decisions">From statistical results to business decisions</a></li>
-  </ul>
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-ab-testing">Why do we need A/B testing?</a></li>
+      <li><details><summary><a href="#designing">Designing an A/B test</a></summary><ul><li><a href="#step-1">Step 1: Define your variables</a></li><li><a href="#step-2">Step 2: Formulate your hypothesis</a></li><li><a href="#step-3">Step 3: Choose metrics</a></li><li><a href="#step-4">Step 4: Design the experiment and assign users</a></li><li><a href="#step-5">Step 5: Determine sample size and test duration</a></li></ul></details></li>
+      <li><details><summary><a href="#analyzing">Analyzing A/B test results</a></summary><ul><li><a href="#validity">Check validity first</a></li><li><a href="#observed-effect">Measure the observed effect</a></li><li><a href="#p-value">Statistical significance and the p-value</a></li><li><a href="#confidence-intervals">Confidence intervals</a></li></ul></details></li>
+      <li><a href="#decisions">From statistical results to business decisions</a></li>
+    </ul>
+  </div>
 
   <h2 id="why-ab-testing" style="scroll-margin-top:90px">Why do we need A/B testing?</h2>
   <p>An observed improvement doesn't necessarily mean a change caused it.</p>

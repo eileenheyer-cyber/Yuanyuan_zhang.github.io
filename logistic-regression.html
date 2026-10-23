@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261023a">
+  <link rel="stylesheet" href="style.css?v=20261023b">
 </head>
 <body>
 
@@ -41,31 +41,18 @@
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
 
-  <p><strong>Contents</strong></p>
-  <ul class="post-points">
-    <li><a href="#why-a-straight-line-fails-for-yes-no-outcomes">Why a Straight Line Fails for Yes/No Outcomes</a></li>
-    <li><a href="#from-probability-to-logit-how-logistic-regressio">From Probability to Logit: How Logistic Regression Works</a>
-      <ul class="post-points">
-        <li><a href="#understanding-odds-and-logit">Understanding Odds and Logit</a></li>
-        <li><a href="#from-probability-to-logit">From Probability to Logit</a></li>
-      </ul>
-    </li>
-    <li><a href="#interpreting-coefficients-maximum-likelihood-and">Interpreting Coefficients: Maximum Likelihood and Odds Ratios</a>
-      <ul class="post-points">
-        <li><a href="#model-fitting-using-maximum-likelihood-estimatio">Model Fitting Using Maximum Likelihood Estimation (MLE)</a></li>
-        <li><a href="#interpreting-logistic-regression-coefficients">Interpreting Logistic Regression Coefficients</a></li>
-        <li><a href="#odds-ratio-vs-change-in-probability">Odds Ratio vs. Change in Probability</a></li>
-      </ul>
-    </li>
-    <li><a href="#from-probability-to-prediction-thresholds-and-de">From Probability to Prediction: Thresholds and Decision Boundaries</a></li>
-    <li><a href="#assumptions-and-common-pitfalls">Assumptions and Common Pitfalls</a>
-      <ul class="post-points">
-        <li><a href="#key-assumptions-of-binomial-logistic-regression">Key Assumptions of Binomial Logistic Regression</a></li>
-      </ul>
-    </li>
-    <li><a href="#evaluating-a-logistic-regression-model">Evaluating a Logistic Regression Model</a></li>
-    <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
-  </ul>
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-a-straight-line-fails-for-yes-no-outcomes">Why a Straight Line Fails for Yes/No Outcomes</a></li>
+      <li><a href="#from-probability-to-logit-how-logistic-regressio">From Probability to Logit: How Logistic Regression Works</a><ul><li><a href="#understanding-odds-and-logit">Understanding Odds and Logit</a></li><li><a href="#from-probability-to-logit">From Probability to Logit</a></li></ul></li>
+      <li><a href="#interpreting-coefficients-maximum-likelihood-and">Interpreting Coefficients: Maximum Likelihood and Odds Ratios</a><ul><li><a href="#model-fitting-using-maximum-likelihood-estimatio">Model Fitting Using Maximum Likelihood Estimation (MLE)</a></li><li><a href="#interpreting-logistic-regression-coefficients">Interpreting Logistic Regression Coefficients</a></li><li><a href="#odds-ratio-vs-change-in-probability">Odds Ratio vs. Change in Probability</a></li></ul></li>
+      <li><a href="#from-probability-to-prediction-thresholds-and-de">From Probability to Prediction: Thresholds and Decision Boundaries</a></li>
+      <li><a href="#assumptions-and-common-pitfalls">Assumptions and Common Pitfalls</a><ul><li><a href="#key-assumptions-of-binomial-logistic-regression">Key Assumptions of Binomial Logistic Regression</a></li></ul></li>
+      <li><a href="#evaluating-a-logistic-regression-model">Evaluating a Logistic Regression Model</a></li>
+      <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+    </ul>
+  </div>
 
   <h2 id="why-a-straight-line-fails-for-yes-no-outcomes" style="scroll-margin-top:90px">Why a Straight Line Fails for Yes/No Outcomes</h2>
   <p>Imagine a subscription company approaching a customer's renewal date. The company wants to know: <strong>Will this customer renew their subscription or cancel?</strong></p>

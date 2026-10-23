@@ -1902,3 +1902,22 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-summary .ps-hl2:first-child { border-radius: 4px 0 0 4px; }
 .post-summary .ps-key td { font-weight: 700; }
 .post-table.post-table-center th, .post-table.post-table-center td { text-align: center; padding-left: 14px; }
+
+/* Table of contents box for long posts: numbered sections, drop-down for sections with more than three sub-headings */
+.post .post-toc { margin: 24px 0 8px; padding: 20px 24px; background: var(--surface-alt); border: 1px solid var(--line); border-radius: 12px; }
+.post .post-toc-title { margin: 0 0 12px; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.post .post-toc ul { list-style: none; margin: 0; padding: 0; }
+.post .post-toc > ul { counter-reset: toc; }
+.post .post-toc > ul > li { counter-increment: toc; position: relative; margin: 0 0 10px; padding-left: 2em; }
+.post .post-toc > ul > li:last-child { margin-bottom: 0; }
+.post .post-toc > ul > li::before { content: counter(toc); position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700; }
+.post .post-toc a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.post .post-toc a:hover { text-decoration: underline; }
+.post .post-toc ul ul { margin: 4px 0 2px; }
+.post .post-toc ul ul li { margin: 2px 0; padding: 0; font-size: .9rem; }
+.post .post-toc ul ul a { font-weight: 400; color: var(--muted); }
+.post .post-toc ul ul a:hover { color: var(--ink); }
+.post .post-toc details summary { display: flex; align-items: baseline; gap: 8px; list-style: none; cursor: pointer; }
+.post .post-toc details summary::-webkit-details-marker { display: none; }
+.post .post-toc details summary::after { content: ""; flex: none; width: 7px; height: 7px; margin-left: 2px; border-right: 1.6px solid var(--accent); border-bottom: 1.6px solid var(--accent); transform: rotate(45deg) translateY(-2px); transition: transform .15s; }
+.post .post-toc details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
