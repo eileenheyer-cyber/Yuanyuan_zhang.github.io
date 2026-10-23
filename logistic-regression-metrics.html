@@ -149,7 +149,7 @@ print(recall)
     <figcaption><span>Chart 2</span> The precision–recall trade-off. As the decision threshold increases, precision generally rises while recall tends to fall. At a threshold of 0.5, the model achieves approximately 0.82 precision and 0.90 recall. The optimal threshold depends on the relative costs of false positives and false negatives.</figcaption>
   </figure>
   <p>The exact trade-off depends on the model's predicted probabilities and the dataset. There is no universally optimal threshold—<strong>the right choice depends on the business objective and the relative costs of false positives and false negatives.</strong></p>
-  <p>For example, a company with limited resources for retention campaigns may prioritise precision to avoid unnecessary spending. A company focused on identifying as many potential churners as possible may prioritise recall, even if this means contacting more customers who would have stayed.</p>
+  <p>For example, a company with limited resources for retention campaigns may prioritise precision (higher threshold) to avoid unnecessary spending. A company focused on identifying as many potential churners as possible may prioritise recall (lower threshold), even if this means contacting more customers who would have stayed.</p>
   <p>But what if both precision and recall matter? This is where the F1 score becomes useful.</p>
 
   <h3>F1 Score</h3>
