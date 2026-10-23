@@ -112,8 +112,12 @@
   </div>
 
   <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
-  <h3>Maximum Likelihood Estimation (MLE): A Simple Explanation</h3>
-  <p>Maximum Likelihood Estimation (MLE) is a method for finding the parameter values that make the observed data most likely under a statistical model.</p>
+  <h3>Model Fitting Using Maximum Likelihood Estimation (MLE)</h3>
+  <ul class="post-points post-points-color">
+    <li>MLE estimates the beta coefficients (<em>β</em>) that maximize the likelihood of the model producing the observed data.</li>
+    <li>The likelihood is the probability of observing the actual data given a set of beta parameters.</li>
+    <li>The best logistic regression model is the one that maximizes this likelihood.</li>
+  </ul>
   <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. MLE estimates the intercept and slope of the logistic regression model from these observations.</p>
   <p>For example, suppose the estimated model is:</p>
   <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × support tickets</strong></p>
