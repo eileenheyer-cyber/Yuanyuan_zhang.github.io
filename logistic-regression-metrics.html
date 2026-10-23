@@ -263,10 +263,10 @@ print(auc)</code></pre>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
     <ul class="post-points post-points-color">
-      <li>The <strong>confusion matrix</strong> is the foundation: it shows the four possible outcomes of classification, including both kinds of mistake.</li>
-      <li><strong>Accuracy</strong> measures overall correctness, <strong>precision</strong> evaluates the reliability of positive predictions, and <strong>recall</strong> measures how many actual positives the model identifies. The <strong>F1 score</strong> combines the last two.</li>
-      <li>The <strong>ROC curve and AUC</strong> evaluate the model's ranking performance across thresholds. An AUC of 0.85 does not mean 85% of predictions are correct.</li>
-      <li>Each metric answers a different question and none tells the complete story alone. A good model is not simply one with a high score, but one whose performance meets the needs of the problem it was built to solve.</li>
+      <li>The <strong>confusion matrix</strong> is the foundation of classification evaluation. It shows the four possible outcomes: true positives, true negatives, false positives and false negatives.</li>
+      <li><strong>Accuracy</strong> measures overall correctness, <strong>precision</strong> tells us how reliable positive predictions are, and <strong>recall</strong> measures how many actual positive cases the model identifies. The <strong>F1 score</strong> balances precision and recall.</li>
+      <li>The <strong>ROC curve and AUC</strong> evaluate the model's ability to distinguish between positive and negative cases across decision thresholds. An AUC of 0.85 does not mean that 85% of predictions are correct.</li>
+      <li>No single metric tells the whole story. The right choice depends on the business objective and the costs of different mistakes. A good model is not simply one with a high score, but one whose performance meets the needs of the problem it was built to solve.</li>
     </ul>
   </div>
 
