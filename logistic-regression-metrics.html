@@ -139,10 +139,10 @@ print(recall)
   <p>However, increasing recall often comes at a cost: the model may also flag more customers who would not have churned, reducing precision. This trade-off depends on the decision threshold and is central to choosing the right model for a business problem.</p>
 
   <h3>The Precision–Recall Trade-off</h3>
-  <p>Precision focuses on the reliability of positive predictions. Recall focuses on the proportion of actual positive cases identified. Changing the decision threshold can shift the balance between them (Chart 2).</p>
+  <p>Precision measures how reliable positive predictions are, while recall measures how many actual positive cases the model identifies. Adjusting the decision threshold changes the balance between these two metrics.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Lowering the threshold.</strong> More customers are classified as potential churners. The model identifies more actual churners, so recall generally increases, but false positives may increase, potentially reducing precision.</li>
-    <li><strong>Raising the threshold.</strong> Fewer customers are classified as potential churners. The model makes fewer positive predictions, so precision may increase, but recall may decrease because some actual churners are missed.</li>
+    <li><strong>Lowering the threshold.</strong> More customers are classified as potential churners. Recall generally increases because fewer actual churners are missed, but precision may decrease as more customers who would have stayed are incorrectly flagged.</li>
+    <li><strong>Raising the threshold.</strong> Fewer customers are classified as potential churners. Precision may increase because positive predictions become more selective, but recall may decrease as more actual churners are missed.</li>
   </ul>
   <figure class="post-fig">
     <img src="images/logistic-regression-metrics/chart-2-precision-recall-threshold.svg" alt="Step lines of precision in blue and recall in red against the decision threshold from 0 to 1. Recall starts at 1.0 and falls to 0 as the threshold rises. Precision starts near 0.5 and rises to 1.0. A dashed vertical line at threshold 0.5 marks precision 0.82 and recall 0.90." loading="lazy" style="width:100%;height:auto;background:#fff">
