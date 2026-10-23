@@ -111,7 +111,10 @@
     <p class="post-formula post-formula-plain" style="background:none;border:0;padding:0;margin:12px 0 2px"><strong>σ(z) = <span class="frac"><span>1</span><span>1 + e<sup>−z</sup></span></span></strong></p>
   </div>
 
-  <h2>Reading the Coefficients as Odds Ratios</h2>
+  <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
+  <div class="post-note post-note-explain post-note-plain"><p class="post-note-l">How are the coefficients found?</p>
+    <p>Linear regression finds its coefficients with least squares. Logistic regression uses <strong>maximum likelihood estimation (MLE)</strong>: it chooses the coefficients that make the observed outcomes, who cancelled and who stayed, as likely as possible under the model.</p>
+  </div>
   <p>The coefficient 0.8 tells us how much the logit changes with each additional support ticket. But the logit is not particularly intuitive to interpret.</p>
   <p>To make the coefficient easier to understand, we exponentiate it:</p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
