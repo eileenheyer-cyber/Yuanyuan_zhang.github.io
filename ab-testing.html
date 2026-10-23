@@ -107,7 +107,8 @@
     <img src="images/ab-testing/chart-2-random-split.svg" alt="Eligible users are randomly assigned to group A, the control with 1:1 video calling, or group B, the treatment with group video calling" loading="lazy" width="800" height="340">
     <figcaption><span>Chart 2</span> Random assignment: every eligible user has the same chance of landing in either group.</figcaption>
   </figure>
-  <p><strong>Who is eligible?</strong> Before assigning anyone, decide which users the test is about. Include only users who could actually be affected by the change. For group video calling, that means users who have the app and can start a call, not people who never open it. The eligibility rule should be defined <em>before</em> the test starts and applied to both groups in the same way. Otherwise the groups may differ for reasons that have nothing to do with the feature.</p>
+  <p><strong>Who is eligible?</strong> Before assigning users to a group, define who should be included in the experiment. Include only users who could realistically be affected by the change. For a checkout experiment, this might mean users who reach the checkout page, rather than all visitors to the website.</p>
+  <p>Define the eligibility criteria before the experiment starts and apply them consistently to both groups. Otherwise, differences in who enters each group could distort the results and make it harder to isolate the effect of the redesigned button.</p>
 
   <h3>Key principle: randomization</h3>
   <p>Randomization is important because it:</p>
