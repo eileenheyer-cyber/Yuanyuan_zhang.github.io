@@ -216,6 +216,10 @@ plt.show()</code></pre>
 
   <h3>AUC: Area Under the ROC Curve</h3>
   <p>The Area Under the ROC Curve, commonly called ROC-AUC, summarises the ROC curve in a single number. Its value generally ranges from 0 to 1, assuming the positive class is scored in the intended direction. How should we interpret AUC?</p>
+  <figure class="post-fig">
+    <img src="images/logistic-regression-metrics/chart-4-auc.svg" alt="The ROC curve for 20 customers as a blue step curve with the whole area below it shaded blue and labelled area under the curve, AUC = 0.88. A dashed diagonal marks random guessing." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 4</span> AUC is the shaded area under the ROC curve. A model that ranks every churner above every stayer fills the whole square (AUC = 1.0), while random guessing follows the diagonal and covers half of it (AUC = 0.5). Our model covers 0.88 of the square.</figcaption>
+  </figure>
   <ul class="post-points post-points-color">
     <li><strong>AUC = 0.5.</strong> The model has discrimination comparable to random ranking.</li>
     <li><strong>AUC closer to 1.</strong> The model generally ranks positive cases above negative cases more effectively.</li>
