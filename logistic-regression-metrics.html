@@ -70,7 +70,7 @@
   <h2>The Confusion Matrix: Where the Metrics Come From</h2>
   <p>A confusion matrix compares a model's predictions with the actual outcomes. It shows not only how many predictions were correct, but also which types of mistakes the model made (Chart 1).</p>
   <figure class="post-fig">
-    <img src="images/logistic-regression-metrics/chart-1-confusion-matrix.svg" alt="Confusion matrix for 20 customers with actual outcome on the rows and predicted outcome on the columns. Actual churners: 9 predicted to churn (true positives) and 1 predicted to stay (false negative). Actual stayers: 2 predicted to churn (false positives) and 8 predicted to stay (true negatives). The two correct cells, 9 and 8, are shaded darker blue." loading="lazy" style="width:100%;max-width:340px;height:auto;background:#fff;display:block;margin:0 auto">
+    <img src="images/logistic-regression-metrics/chart-1-confusion-matrix.svg" alt="Confusion matrix for 20 customers, labeled 0 for stay and 1 for churn, with actual outcome on the rows and predicted outcome on the columns. Actual 0: 8 predicted 0 (true negatives) and 2 predicted 1 (false positives). Actual 1: 1 predicted 0 (false negative) and 9 predicted 1 (true positives). The two correct cells, 8 and 9, are shaded darker blue." loading="lazy" style="width:100%;max-width:340px;height:auto;background:#fff;display:block;margin:0 auto">
     <figcaption><span>Chart 1</span> The dark cells on the diagonal are correct predictions. The two light cells are the two kinds of mistake: one churner the model missed and two loyal customers it flagged by mistake. Illustrative data.</figcaption>
   </figure>
   <p>The four cells represent four possible outcomes:</p>
@@ -106,7 +106,7 @@ print(cm)</code></pre>
       <tr><td>Actual Churn (1)</td><td>FN = 1</td><td>TP = 9</td></tr>
     </tbody>
   </table></div>
-  <p>The matrix contains exactly the same information as Chart 1. Only the layout differs. Now that we understand the four outcomes, we can use them to calculate different evaluation metrics.</p>
+  <p>Chart 1 uses this same layout, so the table and the chart show identical numbers. Now that we understand the four outcomes, we can use them to calculate different evaluation metrics.</p>
 
   <h2>Evaluating Predictions at a Fixed Threshold</h2>
   <p>The following metrics evaluate the predictions generated at one particular decision threshold, here 0.5.</p>
