@@ -203,7 +203,7 @@ print(f1)
   <p>AUC is particularly useful when comparing models because it evaluates their ability to rank cases across decision thresholds rather than focusing on a single threshold.</p>
   <p><strong>An AUC of 0.85 does not mean that 85% of predictions are correct.</strong> Instead, it means that, for a randomly selected positive case and a randomly selected negative case, the model assigns the positive case a higher score approximately 85% of the time, counting ties as half.</p>
 
-  <h3 class="post-h3-small">What AUC Doesn't Tell Us</h3>
+  <h3>What AUC Doesn't Tell Us</h3>
   <p>A model can have a high ROC-AUC but still perform poorly at a particular decision threshold. For example, it might rank customers effectively but flag too many customers who would have stayed, resulting in unnecessary retention costs.</p>
   <p>AUC therefore complements accuracy, precision, recall and F1 score rather than replacing them. These metrics help evaluate performance at a specific threshold, while ROC-AUC summarises discrimination across thresholds.</p>
   <p>One further consideration is class imbalance. When positive cases are rare, ROC-AUC may not fully reflect how useful positive predictions are in practice. In such situations, the Precision–Recall (PR) curve and its associated area can provide additional insight into precision and recall for the positive class.</p>
