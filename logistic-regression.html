@@ -175,13 +175,12 @@
   <p>The best threshold depends on the business objective and the relative costs of these errors. Model evaluation helps us compare these trade-offs, which I will cover in a separate post.</p>
 
   <h2>Assumptions and Common Pitfalls</h2>
-  <p>Logistic regression makes different assumptions from linear regression. The most important ones to understand are:</p>
+  <h3>Key Assumptions of Binomial Logistic Regression</h3>
   <ul class="post-points post-points-color">
-    <li><strong>Binary outcome.</strong> In standard binary logistic regression, the target has two possible outcomes, such as cancelled or stayed.</li>
-    <li><strong>Independent observations.</strong> Each observation should be independent of the others, unless the model explicitly accounts for dependencies.</li>
-    <li><strong>Linearity in the logit.</strong> The relationship between each continuous predictor and the logit should be appropriately modeled. This does not mean the relationship with probability must be linear.</li>
-    <li><strong>Little to no multicollinearity.</strong> Predictors should not be excessively correlated with one another, as this can make individual coefficients difficult to estimate precisely.</li>
-    <li><strong>Enough outcome events.</strong> The model needs sufficient cancellations relative to its complexity. A traditional rule of thumb is around ten events per predictor, but this is only a rough guideline; the required sample size depends on several factors.</li>
+    <li>There is a linear relationship between each independent variable (X) and the logit (log-odds) of the probability that the dependent variable (Y) equals 1.</li>
+    <li>Observations are independent, meaning the probability of observing multiple data points is the product of their individual probabilities.</li>
+    <li>There is little to no multicollinearity among independent variables, so they should not be highly correlated.</li>
+    <li>There are no extreme outliers in the dataset, as outliers can affect model validity.</li>
   </ul>
   <p>Two additional pitfalls are worth watching for.</p>
   <p>First, if very few customers cancel, a model that always predicts “stays” may achieve high accuracy while failing to identify the customers the business cares about. This is especially important when evaluating imbalanced datasets.</p>
