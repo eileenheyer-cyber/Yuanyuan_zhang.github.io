@@ -192,7 +192,7 @@
     <figcaption><span>Chart 5</span> How the confidence interval relates to the decision (illustrative).</figcaption>
   </figure>
 
-  <h3>A worked example: From data to decision</h3>
+  <h2>A worked example: From data to decision</h2>
   <p>Imagine an online shop testing a redesigned checkout button. The experiment runs until both groups reach the planned sample size.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Control (A)</th><th>Treatment (B)</th></tr></thead>
@@ -204,11 +204,11 @@
   </table></div>
   <p>The treatment group has a conversion rate 0.6 percentage points higher than the control group. But is this difference statistically significant, or could it be explained by random variation?</p>
 
-  <h4>Step 1: Calculate the difference</h4>
+  <h3>Step 1: Calculate the difference</h3>
   <p>The estimated effect is the treatment conversion rate minus the control conversion rate:</p>
   <p class="post-formula post-formula-plain"><strong>Difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
 
-  <h4>Step 2: Calculate the 95% confidence interval</h4>
+  <h3>Step 2: Calculate the 95% confidence interval</h3>
   <p>For two independent conversion rates, an approximate 95% confidence interval for the difference is:</p>
   <p class="post-formula post-formula-plain"><strong>Confidence interval = (p̂<sub>B</sub> − p̂<sub>A</sub>) ± 1.96 × SE</strong></p>
   <p>Where the standard error (SE) is:</p>
@@ -224,11 +224,11 @@
   <p class="post-formula post-formula-plain"><strong>0.006 ± 0.0042 = [0.0018, 0.0102]</strong></p>
   <p>Expressed in percentage points, the interval ranges from <strong>+0.18 to +1.02 percentage points</strong>.</p>
 
-  <h4>Step 3: Interpret the result</h4>
+  <h3>Step 3: Interpret the result</h3>
   <p>The entire confidence interval lies above zero, indicating that the treatment group's conversion rate is statistically significantly higher at the 5% significance level, using the corresponding two-sided test.</p>
   <p>The interval also communicates uncertainty: although the observed improvement is 0.6 percentage points, the data are compatible with a range of positive effects.</p>
 
-  <h4>Step 4: Make the business decision</h4>
+  <h3>Step 4: Make the business decision</h3>
   <p>The results support rolling out the redesigned button, provided the improvement is commercially worthwhile and no guardrail metrics show unacceptable harm.</p>
   <p>However, statistical significance does not automatically mean business success. The team should also consider implementation costs, expected additional conversions, revenue impact, and any unintended consequences.</p>
 
