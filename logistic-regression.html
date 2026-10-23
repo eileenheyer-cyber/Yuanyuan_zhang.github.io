@@ -56,10 +56,14 @@
   <h2>From Probability to Logit: How Logistic Regression Works</h2>
   <h3>Understanding Odds and Logit</h3>
   <ul class="post-points post-points-color">
-    <li>Odds: The ratio of the probability that an event occurs to the probability that it does not occur: (p/(1-p)).</li>
-    <li>Log-odds (logit): The logarithm of the odds.</li>
-    <li>The logistic regression model: It expresses the logit as a linear combination of predictors and their coefficients.</li>
+    <li>Odds: The ratio of the probability that an event occurs to the probability that it does not occur.
+      <p class="post-formula post-formula-plain"><strong>odds = <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span></strong></p>
+    </li>
+    <li>Log-odds (logit): The logarithm of the odds.
+      <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = log( <span class="frac"><span><em>p</em></span><span>1 − <em>p</em></span></span> )</strong></p>
+    </li>
   </ul>
+  <p>The logistic regression model: It expresses the logit as a linear combination of predictors and their coefficients.</p>
   <h3>From Probability to Logit</h3>
   <p>The key idea is that logistic regression still uses a linear model, but it models the logit rather than the probability directly.</p>
   <p>The general formula is:</p>
