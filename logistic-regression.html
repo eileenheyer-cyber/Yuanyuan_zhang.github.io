@@ -114,15 +114,16 @@
   <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
   <h3>Maximum Likelihood Estimation (MLE): A Simple Explanation</h3>
   <p>Maximum Likelihood Estimation (MLE) is a method for finding the parameter values that make the observed data most likely under a statistical model.</p>
-  <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. MLE helps us estimate the intercept and slope of the logistic regression model.</p>
-  <p>For example, suppose we use the following model:</p>
-  <p class="post-formula post-formula-plain"><strong>Logits = −4 + 0.8 × support tickets</strong></p>
-  <p>The values −4 and 0.8 are illustrative coefficients. In practice, MLE estimates these values from the observed data.</p>
+  <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. MLE estimates the intercept and slope of the logistic regression model from these observations.</p>
+  <p>For example, suppose the estimated model is:</p>
+  <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × support tickets</strong></p>
+  <p>The values −4 and 0.8 are illustrative coefficients. In practice, MLE estimates them from the observed data.</p>
   <p>How does it work? MLE evaluates how well different coefficient values explain the observed outcomes. If a model assigns a high probability to customers who actually cancelled and a low probability to those who stayed, it receives a higher likelihood. If its predictions contradict the observed outcomes, its likelihood decreases.</p>
-  <p>MLE searches for the coefficient values that maximize the likelihood of the entire dataset. In logistic regression, this is typically done using numerical optimization rather than testing every possible combination.</p>
-  <h3>Interpreting Coefficients Obtained from MLE</h3>
-  <p>In logistic regression, Maximum Likelihood Estimation (MLE) estimates the coefficients that best explain the observed data. Each coefficient represents the change in the logit of the outcome for a one-unit increase in the corresponding predictor, holding other variables constant.</p>
-  <p>To make coefficients easier to interpret, we can exponentiate them to obtain odds ratios:</p>
+  <p>MLE searches for the coefficient values that maximize the likelihood of the entire dataset. In logistic regression, this is typically achieved through numerical optimization.</p>
+
+  <h3>Interpreting Logistic Regression Coefficients</h3>
+  <p>Each coefficient represents the change in the logit of the outcome for a one-unit increase in the corresponding predictor, holding other variables constant.</p>
+  <p>However, the logit is not particularly intuitive. To make the coefficients easier to interpret, we can exponentiate them to obtain odds ratios:</p>
   <p class="post-formula post-formula-plain"><strong>Odds Ratio = e<sup><em>β</em></sup></strong></p>
   <p>The odds ratio tells us how the odds of the outcome change when a predictor increases by one unit:</p>
   <ul class="post-points post-points-color">
@@ -130,13 +131,13 @@
     <li>Odds ratio &lt; 1: The odds of the outcome decrease.</li>
     <li>Odds ratio = 1: The odds remain unchanged.</li>
   </ul>
-  <p>Example: Suppose the coefficient for the number of support tickets is 0.5. The corresponding odds ratio is:</p>
-  <p class="post-formula post-formula-plain"><strong>e<sup>0.5</sup> ≈ 1.65</strong></p>
-  <p>This means that each additional support ticket is associated with approximately 65% higher odds of cancellation, holding other variables constant. This does not mean the probability of cancellation increases by 65%; the change in probability depends on the customer's initial probability.</p>
-  <p>One important distinction: <strong>an odds ratio is not a change in probability</strong>.</p>
-  <p>For example, increasing the ticket count from four to five raises the predicted probability from approximately 31% to 50%, an increase of 19 percentage points. Increasing it from seven to eight raises the probability from approximately 83% to 92%, an increase of 9 percentage points.</p>
+  <p>Example: In our model, the coefficient for support tickets is 0.8. The corresponding odds ratio is:</p>
+  <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
+  <p>This means that each additional support ticket multiplies the odds of cancellation by approximately 2.23, or increases them by about 123%, holding other variables constant.</p>
+  <p>An important distinction: an odds ratio is not a change in probability.</p>
+  <p>For example, increasing the ticket count from four to five raises the predicted probability of cancellation from approximately 31% to 50%—an increase of 19 percentage points. Increasing it from seven to eight raises the probability from approximately 83% to 92%—an increase of only 9 percentage points.</p>
   <p>The odds are multiplied by the same factor in both cases, but the probability changes by a different amount depending on the starting point.</p>
-  <p>This is why interpreting logistic regression coefficients requires distinguishing between odds and probabilities.</p>
+  <p>The key takeaway: Logistic regression has a constant effect on the logit for each additional ticket, but its effect on probability varies depending on the customer's initial probability of cancellation.</p>
 
   <h2>Turning a Probability into a Decision</h2>
   <p>Logistic regression produces a probability, but a business often needs a concrete action: should the retention team contact this customer or not?</p>
