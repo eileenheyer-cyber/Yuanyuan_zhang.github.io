@@ -124,7 +124,8 @@
   <h3>Interpreting Logistic Regression Coefficients</h3>
   <p>Each coefficient represents the change in the logit of the outcome for a one-unit increase in the corresponding predictor, holding other variables constant.</p>
   <p>However, the logit is not particularly intuitive. To make the coefficients easier to interpret, we can exponentiate them to obtain odds ratios:</p>
-  <p class="post-formula post-formula-plain"><strong>Odds Ratio = e<sup><em>β</em></sup></strong></p>
+  <p class="post-formula post-formula-plain"><strong>Odds Ratio = e<sup><em>β</em></sup></strong>
+    <span><em>β</em> is the predictor's coefficient. e<sup><em>β</em></sup> is the factor by which the odds change per one-unit increase.</span></p>
   <p>The odds ratio tells us how the odds of the outcome change when a predictor increases by one unit:</p>
   <ul class="post-points post-points-color">
     <li>Odds ratio &gt; 1: The odds of the outcome increase.</li>
