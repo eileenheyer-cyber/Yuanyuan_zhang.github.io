@@ -168,13 +168,20 @@ print(f1)
   <h2>Evaluating Model Performance Across Thresholds</h2>
 
   <h3>ROC Curve</h3>
-  <p>The Receiver Operating Characteristic (ROC) curve illustrates the relationship between the true positive rate and the false positive rate across different decision thresholds. Remember that recall is the same as the true positive rate:</p>
+  <p>The Receiver Operating Characteristic (ROC) curve evaluates how well a classification model distinguishes between positive and negative cases across different decision thresholds.</p>
+  <p>It plots the true positive rate (TPR) against the false positive rate (FPR). Recall is another name for TPR:</p>
   <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>TP</span><span>TP + FN</span></span></strong></p>
   <p>The false positive rate measures the proportion of actual negative cases incorrectly classified as positive:</p>
   <p class="post-formula post-formula-plain"><strong>FPR = <span class="frac"><span>FP</span><span>FP + TN</span></span></strong></p>
-  <p>For our model, at the original threshold:</p>
-  <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>9</span><span>10</span></span> = 0.9 &nbsp;&nbsp; FPR = <span class="frac"><span>2</span><span>10</span></span> = 0.2</strong></p>
-  <p>The ROC curve plots the true positive rate on the y-axis against the false positive rate on the x-axis. Each point corresponds to a different decision threshold. As we change the threshold, the model produces different classifications, resulting in different combinations of true positives and false positives (Chart 3).</p>
+
+  <h3 class="post-h3-small">Applying the Metrics to Our Churn Model</h3>
+  <p>At the original decision threshold of 0.5, our confusion matrix gives us:</p>
+  <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>9</span><span>10</span></span> = 0.90 &nbsp;&nbsp; FPR = <span class="frac"><span>2</span><span>10</span></span> = 0.20</strong></p>
+  <p>This means the model identifies 90% of actual churners while incorrectly flagging 20% of customers who would have stayed.</p>
+
+  <h3 class="post-h3-small">How to Read the ROC Curve</h3>
+  <p>The ROC curve plots the true positive rate on the y-axis against the false positive rate on the x-axis. Each point represents the model's performance at a different decision threshold.</p>
+  <p>As the threshold changes, the model classifies different customers as potential churners, changing both the true positive rate and the false positive rate (Chart 3).</p>
   <figure class="post-fig">
     <img src="images/logistic-regression-metrics/chart-3-roc-curve.svg" alt="ROC curve for 20 customers. The blue step curve rises quickly from the bottom-left corner toward the top-left, well above the dashed diagonal that marks random guessing. A red dot at false positive rate 0.2 and true positive rate 0.9 marks the 0.5 threshold. The shaded area under the curve is labelled AUC = 0.88." loading="lazy" style="width:100%;height:auto;background:#fff">
     <figcaption><span>Chart 3</span> The curve bows toward the top-left corner, so the model catches most churners before it raises many false alarms. The red dot is the 0.5 threshold from the confusion matrix; every other threshold is another point on the same curve. Illustrative probabilities for the 20 customers.</figcaption>
@@ -185,7 +192,7 @@ print(f1)
     <li><strong>Along the diagonal.</strong> The model performs approximately like random ranking.</li>
     <li><strong>Below the diagonal.</strong> The ranking is worse than random in the usual interpretation, although reversing the score direction can change this.</li>
   </ul>
-  <p>The ROC curve helps us understand the trade-off between identifying positive cases and incorrectly flagging negative cases across thresholds.</p>
+  <p>The goal is to achieve a high true positive rate while keeping the false positive rate low. The ROC curve helps us understand this trade-off across thresholds rather than evaluating the model at just one threshold.</p>
 
   <h3>Calculating the ROC curve in Python</h3>
   <p>Scikit-learn provides <code>RocCurveDisplay</code> to calculate and visualise the ROC curve. Importantly, the ROC curve requires probability scores or decision scores rather than only the final binary predictions.</p>
