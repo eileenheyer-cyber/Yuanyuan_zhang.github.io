@@ -124,7 +124,8 @@ print(precision)
   <p>However, precision doesn't tell us how many actual churners the model fails to identify. To measure that, we need recall.</p>
 
   <h3>Recall</h3>
-  <p>Recall measures the proportion of actual positive cases correctly identified by the model. For our churn model, it answers: <strong>of all the customers who actually churned, how many did the model identify?</strong></p>
+  <p>Recall measures the proportion of actual positive cases that the model correctly identifies. For our churn model, it answers: <strong>of all the customers who actually churned, how many did the model identify?</strong></p>
+  <p>A high recall means the model misses fewer actual churners, making it particularly useful when failing to identify a customer at risk of leaving is costly.</p>
   <p class="post-formula post-formula-plain"><strong>Recall = <span class="frac"><span>TP</span><span>TP + FN</span></span> = <span class="frac"><span>9</span><span>9 + 1</span></span> = <span class="frac"><span>9</span><span>10</span></span> = 0.9</strong></p>
   <p>Our model achieves a recall of <strong>90%</strong>. It successfully identified nine of the ten customers who churned. In Python:</p>
   <pre class="post-code"><code>from sklearn.metrics import recall_score
