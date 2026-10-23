@@ -133,16 +133,16 @@
   <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile users make far fewer calls than desktop users. With a small sample, pure randomization could by chance put more desktop users in one group and distort the comparison. To prevent this, block by device: split users into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the feature caused it and not the device.</p>
 
   <h3>Sample size and test duration</h3>
-  <p>A test needs enough users to detect a real effect, and the number depends on four things:</p>
+  <p>A test needs enough users to detect a meaningful effect. The required sample size depends on four factors:</p>
   <ul class="post-points">
-    <li><strong>Significance level (α).</strong> The accepted risk of a false positive, which means calling a change a win when it has no real effect. It is usually 5%.</li>
-    <li><strong>Statistical power.</strong> The chance of detecting a real effect when one exists. It is usually set at 80%, so there is a 20% risk of missing a real improvement (a false negative).</li>
-    <li><strong>Minimum detectable effect (MDE).</strong> The smallest improvement that would matter to the business. Smaller effects need more users.</li>
-    <li><strong>Baseline and variability.</strong> How much the metric already moves around. A noisy metric needs more users.</li>
+    <li><strong>Significance level (α).</strong> The probability of a Type I error: concluding that a difference exists when the null hypothesis is true. It is commonly set at 5%.</li>
+    <li><strong>Statistical power.</strong> The probability of detecting a specified effect when it truly exists. It is commonly set at 80%, corresponding to a 20% risk of missing that effect (a Type II error).</li>
+    <li><strong>Minimum detectable effect (MDE).</strong> The smallest improvement the experiment is designed to detect. Smaller effects generally require larger samples.</li>
+    <li><strong>Baseline and variability.</strong> The expected starting value of the metric and how much it varies. For conversion rates, the baseline conversion rate affects the required sample size. For continuous metrics, greater variability generally requires more users.</li>
   </ul>
-  <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), α = 5% and 80% power, you need roughly 22,000 users in <em>each</em> group. If you only care about a bigger lift of 1 percentage point (5.0% → 6.0%), roughly 8,000 per group is enough.</p>
-  <p><strong>Duration</strong> follows from the sample size. Run the test until you reach it, and cover at least one or two full weeks so that weekday and weekend behaviour are both included. Decide the sample size and duration in advance and don't stop the test early because the result looks good. Repeatedly peeking at results makes false positives much more likely.</p>
-  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly state who is in control vs treatment, how users are assigned, and what you are comparing. Also consider network effects. For example, if a group of friends interacts frequently, assigning them to different groups can introduce bias. Where possible, group related users together to minimize interference.</p></div>
+  <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), a significance level of 5%, and 80% power, you need approximately 22,000 users per group. If you want to detect a larger improvement of 1 percentage point (5.0% → 6.0%), approximately 8,000 users per group may be sufficient.</p>
+  <p><strong>Duration</strong> depends on the required sample size and the time needed to capture representative user behavior. Estimate it in advance, taking into account traffic, purchase cycles, and weekly patterns. Run the experiment until the planned sample size and minimum duration are reached. Avoid stopping early simply because the results look promising: repeatedly checking results and stopping as soon as they become significant can increase the false-positive rate unless an appropriate sequential testing method is used.</p>
+  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly explain which group is the control and which is the treatment, how users are assigned, and what you are comparing. Also consider network effects, where one user's treatment can influence another user's behavior. For example, assigning interacting friends to different groups may introduce interference. In such cases, randomizing groups of related users together may be more appropriate.</p></div>
 
   <h3>Checklist for reducing bias</h3>
   <p>Before launching an A/B test, ask yourself:</p>
