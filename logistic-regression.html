@@ -84,6 +84,10 @@
   <p>Why model the logit in the first place? Probabilities are restricted to values between 0 and 1, whereas the logit can take any real value. This allows logistic regression to model a linear relationship and then transform the result back into a valid probability using the logistic function:</p>
   <p class="post-formula post-formula-plain"><strong>p = <span class="frac"><span>1</span><span>1 + e<sup>−logit(p)</sup></span></span></strong></p>
   <p>The result is the familiar S-shaped curve: a straight line on the logit scale becomes a nonlinear relationship on the probability scale.</p>
+  <div class="post-note post-note-explain post-note-plain"><p class="post-note-l">Sigmoid function</p>
+    <p>The logistic function is a special case of the sigmoid function, which turns any number z into a value between 0 and 1. In logistic regression, z is the logit.</p>
+    <p class="post-formula post-formula-plain" style="background:none;border:0;padding:0;margin:12px 0 2px"><strong>σ(z) = <span class="frac"><span>1</span><span>1 + e<sup>−z</sup></span></span></strong></p>
+  </div>
   <div class="post-table-wrap post-table-narrow" style="max-width: 360px;"><table class="post-table">
     <thead><tr><th>Support tickets</th><th>Logit</th><th>Probability of cancellation</th></tr></thead>
     <tbody>
