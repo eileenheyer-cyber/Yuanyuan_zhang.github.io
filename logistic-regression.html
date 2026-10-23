@@ -113,17 +113,12 @@
 
   <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
   <h3>Model Fitting Using Maximum Likelihood Estimation (MLE)</h3>
-  <ul class="post-points post-points-color">
-    <li>MLE estimates the beta coefficients (<em>β</em>) that maximize the likelihood of the model producing the observed data.</li>
-    <li>The likelihood is the probability of observing the actual data given a set of beta parameters.</li>
-    <li>The best logistic regression model is the one that maximizes this likelihood.</li>
-  </ul>
-  <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. MLE estimates the intercept and slope of the logistic regression model from these observations.</p>
+  <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. How can we find the coefficients that best fit these observations?</p>
+  <p>Maximum Likelihood Estimation (MLE) finds the coefficient values that make the observed outcomes most likely under the logistic regression model.</p>
   <p>For example, suppose the estimated model is:</p>
   <p class="post-formula post-formula-plain"><strong>Logit = −4 + 0.8 × support tickets</strong></p>
   <p>The values −4 and 0.8 are illustrative coefficients. In practice, MLE estimates them from the observed data.</p>
-  <p>How does it work? MLE evaluates how well different coefficient values explain the observed outcomes. <em>If a model assigns a high probability to customers who actually cancelled and a low probability to those who stayed, it receives a higher likelihood. If its predictions contradict the observed outcomes, its likelihood decreases.</em></p>
-  <p>MLE searches for the coefficient values that maximize the likelihood of the entire dataset. In logistic regression, this is typically achieved through numerical optimization.</p>
+  <p>MLE evaluates how well different coefficient values explain the observed outcomes. A model receives a higher likelihood when it assigns high probabilities to customers who actually cancelled and low probabilities to those who stayed. MLE uses numerical optimization to find the coefficient values that maximize the likelihood of the entire dataset.</p>
 
   <h3>Interpreting Logistic Regression Coefficients</h3>
   <p>Each coefficient represents the change in the logit of the outcome for a one-unit increase in the corresponding predictor, holding other variables constant.</p>
