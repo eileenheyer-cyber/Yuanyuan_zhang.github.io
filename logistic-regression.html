@@ -188,6 +188,10 @@
   <p>Second, if a predictor perfectly separates customers who cancel from those who stay, the model may struggle to estimate finite coefficients. This is known as <strong>complete separation</strong>.</p>
   <p>Understanding these limitations helps us avoid treating a model's predictions as automatically reliable.</p>
 
+  <h2>Evaluating a Logistic Regression Model</h2>
+  <p>Fitting the model is only half the job. Before the retention team relies on the predictions, we need to know how well the model separates customers who cancel from customers who stay. That depends on the threshold we choose. The same model gives different numbers of correct and incorrect classifications at 0.5 and at 0.2.</p>
+  <p>Metrics such as accuracy, precision, recall and the ROC curve measure these trade-offs. They are the topic of the next post: <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a>.</p>
+
   <h2>How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">&#8220;In this example, customers with no support tickets last month have an estimated 2% probability of cancelling. At five tickets, the estimated probability reaches 50%, and at eight tickets, it rises to 92%. Each additional ticket multiplies the odds of cancellation by approximately 2.2.</p>
