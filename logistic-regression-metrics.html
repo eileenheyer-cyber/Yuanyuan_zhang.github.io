@@ -120,8 +120,8 @@ precision = precision_score(y_true, y_pred)
 
 print(precision)
 # 0.8182</code></pre>
-  <p>Precision becomes particularly important <strong>when false positives are costly</strong>. For example, suppose a company offers personal discounts to customers predicted to churn. If the model incorrectly identifies customers who were going to stay anyway, the company may spend money unnecessarily. A model with higher precision can help reduce these unnecessary interventions.</p>
-  <p>However, precision doesn't tell us how many actual churners the model missed. For that, we need recall.</p>
+  <p>Precision is particularly important <strong>when false positives are costly</strong>. Imagine a company offering discounts to customers predicted to churn. If the model incorrectly flags customers who would have stayed anyway, the company may waste money on unnecessary retention campaigns. Higher precision means a greater proportion of flagged customers are actual churners, helping the company target its resources more effectively.</p>
+  <p>However, precision doesn't tell us how many actual churners the model fails to identify. To measure that, we need recall.</p>
 
   <h3>Recall</h3>
   <p>Recall measures the proportion of actual positive cases correctly identified by the model. For our churn model, it answers: <strong>of all the customers who actually churned, how many did the model identify?</strong></p>
