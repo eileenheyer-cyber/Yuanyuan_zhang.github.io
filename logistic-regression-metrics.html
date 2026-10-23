@@ -93,6 +93,7 @@
   <p>Our model correctly classified 17 out of 20 customers, giving it an accuracy of <strong>85%</strong>. In Python:</p>
   <pre class="post-code"><code>from sklearn.metrics import accuracy_score
 
+# 1 = churn, 0 = stay: first 10 customers actually churned, last 10 stayed
 y_true = [1] * 10 + [0] * 10
 
 y_pred = (
