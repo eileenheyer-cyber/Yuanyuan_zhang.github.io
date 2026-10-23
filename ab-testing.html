@@ -53,26 +53,27 @@
   <p>This is a common interview question. A clean answer walks through five steps: variables, hypothesis, metrics, assigning users to groups, and analysis of the results. The running example below is a messaging app that wants to test group video calling.</p>
 
   <h3>Step 1: Define your variables</h3>
-  <p>Start by naming the cause you want to test and the effect you want to measure. This keeps the experiment focused on one relationship.</p>
+  <p>Start by naming the cause you want to test and the effect you want to measure. This keeps the experiment focused on one relationship. In our example, an online shop wants to know whether a redesigned checkout button leads to more purchases.</p>
   <ul class="post-points">
-    <li><strong>Independent variable.</strong> The cause, the thing you deliberately change. It is not influenced by anything else in the experiment. Here: whether a user has access to group video calling.</li>
-    <li><strong>Dependent variable.</strong> The effect, the outcome you measure. Its value is expected to change because of the independent variable. Here: the number of calls per user.</li>
+    <li><strong>Independent variable.</strong> The cause, the thing you deliberately change. It is not influenced by anything else in the experiment. Here: the design of the checkout button.</li>
+    <li><strong>Dependent variable.</strong> The effect, the outcome you measure. Its value is expected to change because of the independent variable. Here: the conversion rate, meaning the share of visitors who complete a purchase.</li>
   </ul>
+  <p>The two versions are the <strong>control (A)</strong>, the existing button, and the <strong>treatment (B)</strong>, the redesigned button. Everything else stays the same, so any difference in conversion can be traced back to the button.</p>
   <p>A more complex test might compare several versions of the feature, or several settings of the same feature. The logic stays the same: you change the independent variable and watch what happens to the dependent variable.</p>
 
   <h3>Step 2: Formulate your hypothesis</h3>
-  <p>A good experiment starts with a clear, testable hypothesis: a statement that connects the feature to an expected outcome. A strong hypothesis has three parts:</p>
+  <p>A good experiment starts with a clear, testable hypothesis: a statement that connects the change to an expected outcome. A strong hypothesis has three parts:</p>
   <ul class="post-points">
-    <li><strong>The change.</strong> What are you introducing?</li>
-    <li><strong>The expected impact.</strong> What do you think will happen?</li>
-    <li><strong>The metric.</strong> How will you measure it?</li>
+    <li><strong>The change.</strong> What are you introducing? Here: a redesigned checkout button.</li>
+    <li><strong>The expected impact.</strong> What do you think will happen? Here: more visitors complete their purchase.</li>
+    <li><strong>The metric.</strong> How will you measure it? Here: the conversion rate.</li>
   </ul>
   <p>For the statistical test later on, the hypothesis is written as a pair of competing statements:</p>
   <ul class="post-points">
-    <li><strong>Null hypothesis (H0).</strong> The change has no effect. Group video calling does not change the number of calls per user.</li>
-    <li><strong>Alternative hypothesis (Ha).</strong> The change does have an effect. Group video calling increases the number of calls per user.</li>
+    <li><strong>Null hypothesis (H0).</strong> The change has no effect. The conversion rates of the two buttons are equal.</li>
+    <li><strong>Alternative hypothesis (Ha).</strong> The change has an effect. The conversion rates of the two buttons are different.</li>
   </ul>
-  <p>The test then asks whether the data give enough evidence to reject the null hypothesis.</p>
+  <p>The test then asks whether the data give enough evidence to reject the null hypothesis. Even if B looks better, this does not prove the alternative hypothesis: the test only shows whether the observed difference would be surprising if there were no real difference.</p>
 
   <h3>Step 3: Choose metrics</h3>
   <p>The goal is not simply to track activity, but to measure whether the change achieves its intended objective without negatively affecting other important outcomes.</p>
