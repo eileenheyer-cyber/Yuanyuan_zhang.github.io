@@ -63,22 +63,20 @@
     <li><a href="#decisions">From statistical results to business decisions</a></li>
   </ul>
 
-  <p>Throughout this post, we follow one example: an online shop testing whether a redesigned checkout button (B) increases conversion compared with the existing button (A).</p>
-  <p>How can we tell whether the new button genuinely improves conversion, rather than simply reflecting a random fluctuation?</p>
-
   <h2 id="why-ab-testing" style="scroll-margin-top:90px">Why do we need A/B testing?</h2>
-  <p><strong>Statistical inference helps determine whether a difference is likely to be genuine before a decision is made.</strong></p>
-  <p>A change in performance does not necessarily mean that a design change caused it. Statistical inference uses sample data to assess whether the observed difference is consistent with random variation or provides evidence of a real effect. A well-designed experiment, in turn, helps establish whether that effect can be attributed to the change being tested.</p>
-  <p>Imagine an online shop changes its checkout button to green. The following week, its conversion rate rises from 5.0% to 5.6%. Did the new button cause the improvement? Not necessarily. Conversion rates fluctuate naturally, and the same week might include a sale or a holiday.</p>
-  <p>A/B testing helps address two important problems:</p>
+  <p>An observed improvement doesn't necessarily mean a change caused it.</p>
+  <p>Imagine an online shop changes its checkout button to green. The following week, its conversion rate rises from 5.0% to 5.6%. The new button looks like a success—but what if the increase was caused by a seasonal promotion or simply random variation?</p>
+  <p>This is the challenge of measuring the impact of a change. Two problems can make the results misleading:</p>
   <ul class="post-points">
-    <li><strong>Confounding variables.</strong> The conversion rate increased after the button changed, but a concurrent sale might be responsible. In an A/B test, both versions run at the same time, so external factors such as the sale are more likely to affect both groups similarly.</li>
-    <li><strong>Selection bias.</strong> If customers could choose which button to see, those who selected the new version might already be more likely to buy. In an A/B test, users are randomly assigned to the control or treatment group, reducing systematic differences between them.</li>
+    <li><strong>Confounding variables.</strong> Other factors, such as a promotion or holiday, may influence conversion rates at the same time as the design change. Comparing results from different periods makes it difficult to separate their effects.</li>
+    <li><strong>Selection bias.</strong> If users can choose which version they see, those who select the new button might already be more likely to buy. The groups would differ before the experiment even begins.</li>
   </ul>
-  <p>Randomization does not eliminate every source of bias, but it provides a stronger basis for determining whether a change actually improves performance.</p>
+  <p>A/B testing addresses these problems by randomly assigning eligible users to two versions and running them simultaneously. This makes the groups more comparable and helps isolate the effect of the change.</p>
+  <p>Statistical inference then helps us evaluate the evidence: Is the observed difference consistent with random variation, or does it provide evidence that the new version performs differently?</p>
+  <p>Together, controlled experimentation and statistical inference help businesses make decisions based on evidence rather than assumptions.</p>
 
   <h2 id="designing" style="scroll-margin-top:90px">Designing an A/B test</h2>
-  <p>This is a common interview question. A clean answer walks through five steps: define the variables, formulate the hypothesis, choose metrics, design the experiment and assign users, and determine the sample size and test duration. The running example is the checkout button test from the introduction. Analyzing the results comes afterwards, once the data have been collected.</p>
+  <p>This is a common interview question. A clean answer walks through five steps: define the variables, formulate the hypothesis, choose metrics, design the experiment and assign users, and determine the sample size and test duration. The running example is the checkout button test from the previous section. Analyzing the results comes afterwards, once the data have been collected.</p>
 
   <h3 id="step-1" style="scroll-margin-top:90px">Step 1: Define your variables</h3>
   <p>Start by naming the cause you want to test and the effect you want to measure. This keeps the experiment focused on one relationship. In our example, an online shop wants to know whether a redesigned checkout button leads to more purchases.</p>
