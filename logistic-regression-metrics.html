@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Common Logistic Regression Metrics – Yuanyuan Zhang</title>
-  <meta name="description" content="How to evaluate a logistic regression model: confusion matrix, accuracy, precision, recall and the ROC curve.">
+  <meta name="description" content="How to evaluate a logistic regression model: confusion matrix, accuracy, precision, recall, F1 score, ROC curve and AUC, with one customer churn example.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,11 +34,247 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">Common Logistic Regression Metrics</h1>
 
-  <p>This post is in progress.</p>
+  <p>Imagine building a logistic regression model to predict customer churn. After evaluating its predictions, you discover that it achieves 85% accuracy.</p>
+  <p>Sounds good, right?</p>
+  <p>But what if the model misses half of the customers who are about to leave? Or what if it incorrectly flags hundreds of loyal customers as potential churners?</p>
+  <p>Suddenly, 85% accuracy doesn't tell the whole story.</p>
+  <p>Evaluating a classification model requires more than a single number. Different metrics measure different aspects of performance, and choosing the right one depends on the problem you're trying to solve.</p>
+  <p>In this post, we explore how to evaluate a logistic regression model, from understanding its classification errors to assessing its ability to distinguish between classes. We use a simple customer churn example throughout to understand how evaluation metrics work, how they relate to one another, and how to choose the right metric for a given business problem. It builds on <a href="logistic-regression.html">Logistic Regression</a>, where the churn model is introduced.</p>
+
+  <h2>How Logistic Regression Makes a Decision</h2>
+  <p>Before evaluating a logistic regression model, let's understand how it makes predictions.</p>
+  <p>Unlike linear regression, which predicts a continuous numerical value, logistic regression estimates the probability that an observation belongs to a particular class. For example, a customer churn model might estimate that a customer has an 80% probability of cancelling their subscription.</p>
+  <p>But a probability isn't yet a classification. To convert probabilities into binary predictions, we introduce a <strong>decision threshold</strong>. A common default is 0.5:</p>
+  <ul class="post-points post-points-color">
+    <li>Probability ≥ 0.5 → predict churn.</li>
+    <li>Probability &lt; 0.5 → predict no churn.</li>
+  </ul>
+  <p>The threshold determines how the model translates probabilities into decisions. It is a setting we can adjust depending on our objectives.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Lowering the threshold to 0.3</strong> means that more customers will be classified as potential churners. This may help us identify more customers who eventually leave, but it can also increase false alarms.</li>
+    <li><strong>Raising the threshold to 0.7</strong> makes the model more conservative about predicting churn. This may reduce false alarms, but it can also cause the model to miss customers who actually leave.</li>
+  </ul>
+  <p><strong>The key idea:</strong> the decision threshold influences the predictions, and the predictions determine the evaluation metrics.</p>
+  <p>Let's see how this works with a concrete example. Imagine our model evaluates 20 customers: 10 actually churned and 10 stayed. After applying a decision threshold of 0.5, the model produces the following results:</p>
+  <div class="post-table-wrap"><table class="post-table post-table-center">
+    <thead><tr><th>Customer outcome</th><th>Number of customers</th></tr></thead>
+    <tbody>
+      <tr><td>Correctly identified churners</td><td>9</td></tr>
+      <tr><td>Churners incorrectly predicted to stay</td><td>1</td></tr>
+      <tr><td>Customers incorrectly predicted to churn</td><td>2</td></tr>
+      <tr><td>Correctly identified customers who stayed</td><td>8</td></tr>
+    </tbody>
+  </table></div>
+  <p>These four outcomes form the foundation of the confusion matrix.</p>
+
+  <h2>The Confusion Matrix: Where the Metrics Come From</h2>
+  <p>A confusion matrix compares a model's predictions with the actual outcomes. It shows not only how many predictions were correct, but also which types of mistakes the model made (Chart 1).</p>
+  <figure class="post-fig">
+    <img src="images/logistic-regression-metrics/chart-1-confusion-matrix.svg" alt="Confusion matrix for 20 customers with actual outcome on the rows and predicted outcome on the columns. Actual churners: 9 predicted to churn (true positives) and 1 predicted to stay (false negative). Actual stayers: 2 predicted to churn (false positives) and 8 predicted to stay (true negatives). The two correct cells, 9 and 8, are shaded darker blue." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 1</span> The dark cells on the diagonal are correct predictions. The two light cells are the two kinds of mistake: one churner the model missed and two loyal customers it flagged by mistake. Illustrative data.</figcaption>
+  </figure>
+  <p>The four cells represent four possible outcomes:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>True Positive (TP) = 9.</strong> The model predicted that nine customers would churn, and all nine actually churned.</li>
+    <li><strong>False Negative (FN) = 1.</strong> One customer actually churned, but the model predicted that they would stay.</li>
+    <li><strong>False Positive (FP) = 2.</strong> The model predicted that two customers would churn, but both stayed.</li>
+    <li><strong>True Negative (TN) = 8.</strong> The model correctly predicted that eight customers would stay.</li>
+  </ul>
+  <p>These outcomes reveal something that accuracy alone cannot show: a model can make different types of mistakes, and those mistakes may have different consequences. Missing a customer who is about to cancel might mean losing an opportunity to retain them. Incorrectly flagging a loyal customer might mean wasting resources on an unnecessary retention campaign. The confusion matrix makes these errors visible.</p>
+
+  <h3>Calculating the confusion matrix in Python</h3>
+  <p>Using scikit-learn, we can calculate the confusion matrix directly:</p>
+  <pre class="post-code"><code>from sklearn.metrics import confusion_matrix
+
+y_true = [1] * 10 + [0] * 10
+
+y_pred = (
+    [1] * 9 + [0] * 1 +
+    [1] * 2 + [0] * 8
+)
+
+cm = confusion_matrix(y_true, y_pred)
+
+print(cm)</code></pre>
+  <pre class="post-code post-code-out"><code>[[8 2]
+ [1 9]]</code></pre>
+  <p>By default, scikit-learn orders the classes as <code>[0, 1]</code>. Rows represent actual classes, while columns represent predicted classes. Therefore, the matrix above uses this layout, with the negative class first:</p>
+  <div class="post-table-wrap"><table class="post-table post-table-center">
+    <thead><tr><th>Actual / Predicted</th><th>Predicted Stay (0)</th><th>Predicted Churn (1)</th></tr></thead>
+    <tbody>
+      <tr><td>Actual Stay (0)</td><td>TN = 8</td><td>FP = 2</td></tr>
+      <tr><td>Actual Churn (1)</td><td>FN = 1</td><td>TP = 9</td></tr>
+    </tbody>
+  </table></div>
+  <p>The matrix contains exactly the same information as Chart 1. Only the layout differs. Now that we understand the four outcomes, we can use them to calculate different evaluation metrics.</p>
+
+  <h2>Evaluating Predictions at a Fixed Threshold</h2>
+  <p>The following metrics evaluate the predictions generated at one particular decision threshold, here 0.5.</p>
+
+  <h3>Accuracy</h3>
+  <p>Accuracy measures the proportion of all predictions that are correct. In other words, it answers the question: <strong>how often did the model make the correct prediction?</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Accuracy = <span class="frac"><span>TP + TN</span><span>TP + TN + FP + FN</span></span> = <span class="frac"><span>9 + 8</span><span>20</span></span> = 0.85</strong></p>
+  <p>Our model correctly classified 17 out of 20 customers, giving it an accuracy of <strong>85%</strong>. In Python:</p>
+  <pre class="post-code"><code>from sklearn.metrics import accuracy_score
+
+accuracy = accuracy_score(y_true, y_pred)
+
+print(accuracy)
+# 0.85</code></pre>
+  <p>Accuracy is easy to understand and useful when the classes are reasonably balanced and different types of errors have similar consequences. However, it can be misleading when the classes are imbalanced.</p>
+  <p>Imagine a dataset in which only 5% of customers churn. A model that predicts that every customer will stay would achieve 95% accuracy, despite failing to identify a single churner. The model appears successful based on accuracy alone, but it is useless for identifying customers at risk of leaving. This is why we need additional metrics.</p>
+
+  <h3>Precision</h3>
+  <p>Precision measures how many predicted positive cases are actually positive. For our churn model, it answers: <strong>of all the customers predicted to churn, how many actually churned?</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Precision = <span class="frac"><span>TP</span><span>TP + FP</span></span> = <span class="frac"><span>9</span><span>9 + 2</span></span> = <span class="frac"><span>9</span><span>11</span></span> ≈ 0.818</strong></p>
+  <p>Our model achieves a precision of approximately <strong>81.8%</strong>. This means that around 81.8% of the customers flagged as potential churners actually churned. In Python:</p>
+  <pre class="post-code"><code>from sklearn.metrics import precision_score
+
+precision = precision_score(y_true, y_pred)
+
+print(precision)
+# 0.8182</code></pre>
+  <p>Precision becomes particularly important when false positives are costly. For example, suppose a company offers personal discounts to customers predicted to churn. If the model incorrectly identifies customers who were going to stay anyway, the company may spend money unnecessarily. A model with higher precision can help reduce these unnecessary interventions.</p>
+  <p>However, precision doesn't tell us how many actual churners the model missed. For that, we need recall.</p>
+
+  <h3>Recall</h3>
+  <p>Recall measures the proportion of actual positive cases correctly identified by the model. For our churn model, it answers: <strong>of all the customers who actually churned, how many did the model identify?</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Recall = <span class="frac"><span>TP</span><span>TP + FN</span></span> = <span class="frac"><span>9</span><span>9 + 1</span></span> = <span class="frac"><span>9</span><span>10</span></span> = 0.9</strong></p>
+  <p>Our model achieves a recall of <strong>90%</strong>. It successfully identified nine of the ten customers who churned. In Python:</p>
+  <pre class="post-code"><code>from sklearn.metrics import recall_score
+
+recall = recall_score(y_true, y_pred)
+
+print(recall)
+# 0.9</code></pre>
+  <p>Recall is also known as <strong>sensitivity</strong> or the <strong>true positive rate (TPR)</strong>. It is especially important when false negatives are costly. For example, if a company wants to identify as many potential churners as possible, missing a customer who is about to leave may be more costly than contacting a customer who would have stayed anyway. In this situation, recall may be more important than precision.</p>
+  <p>But there is a challenge: improving recall can sometimes reduce precision.</p>
+
+  <h3>The Precision–Recall Trade-off</h3>
+  <p>Precision focuses on the reliability of positive predictions. Recall focuses on the proportion of actual positive cases identified. Changing the decision threshold can shift the balance between them (Chart 2).</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Lowering the threshold.</strong> More customers are classified as potential churners. The model identifies more actual churners, so recall generally increases, but false positives may increase, potentially reducing precision.</li>
+    <li><strong>Raising the threshold.</strong> Fewer customers are classified as potential churners. The model makes fewer positive predictions, so precision may increase, but recall may decrease because some actual churners are missed.</li>
+  </ul>
+  <figure class="post-fig">
+    <img src="images/logistic-regression-metrics/chart-2-precision-recall-threshold.svg" alt="Step lines of precision in blue and recall in red against the decision threshold from 0 to 1. Recall starts at 1.0 and falls to 0 as the threshold rises. Precision starts near 0.5 and rises to 1.0. A dashed vertical line at threshold 0.5 marks precision 0.82 and recall 0.90." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 2</span> A stricter threshold makes the model more careful (precision rises) but lets more churners slip through (recall falls). No threshold is best on both at once. Illustrative probabilities for the 20 customers.</figcaption>
+  </figure>
+  <p>The exact changes depend on the model's predicted probabilities and the dataset, but this is the general pattern. There is no universally optimal threshold. The right choice depends on the business objective and the relative costs of false positives and false negatives. For example, a company with limited resources for retention campaigns may prefer higher precision. A company that considers every missed churner costly may prioritise recall.</p>
+  <p>But what if both precision and recall matter? This is where the F1 score becomes useful.</p>
+
+  <h3>F1 Score</h3>
+  <p>The F1 score combines precision and recall into a single metric using their harmonic mean.</p>
+  <p class="post-formula post-formula-plain"><strong>F1 = 2 × <span class="frac"><span>Precision × Recall</span><span>Precision + Recall</span></span> = 2 × <span class="frac"><span>0.8182 × 0.9</span><span>0.8182 + 0.9</span></span> ≈ 0.857</strong></p>
+  <p>Our model achieves an F1 score of approximately <strong>85.7%</strong>. In Python:</p>
+  <pre class="post-code"><code>from sklearn.metrics import f1_score
+
+f1 = f1_score(y_true, y_pred)
+
+print(f1)
+# 0.8571</code></pre>
+  <p>The F1 score is useful when we want to balance precision and recall, particularly when the positive class is more important than the negative class. However, it has limitations. It does not account for true negatives, and it treats precision and recall symmetrically. If false positives and false negatives have substantially different business costs, the F1 score may not reflect the objective perfectly. In such cases, it is often better to examine precision and recall separately or consider a metric that assigns different importance to them.</p>
+  <p>So far, we've evaluated the model's predictions at one particular threshold. But what if we want to understand how well the model distinguishes between churners and non-churners across different thresholds? That's where the ROC curve comes in.</p>
+
+  <h2>Evaluating Model Performance Across Thresholds</h2>
+
+  <h3>ROC Curve</h3>
+  <p>The Receiver Operating Characteristic (ROC) curve illustrates the relationship between the true positive rate and the false positive rate across different decision thresholds. Remember that recall is the same as the true positive rate:</p>
+  <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>TP</span><span>TP + FN</span></span></strong></p>
+  <p>The false positive rate measures the proportion of actual negative cases incorrectly classified as positive:</p>
+  <p class="post-formula post-formula-plain"><strong>FPR = <span class="frac"><span>FP</span><span>FP + TN</span></span></strong></p>
+  <p>For our model, at the original threshold:</p>
+  <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>9</span><span>10</span></span> = 0.9 &nbsp;&nbsp; FPR = <span class="frac"><span>2</span><span>10</span></span> = 0.2</strong></p>
+  <p>The ROC curve plots the true positive rate on the y-axis against the false positive rate on the x-axis. Each point corresponds to a different decision threshold. As we change the threshold, the model produces different classifications, resulting in different combinations of true positives and false positives (Chart 3).</p>
+  <figure class="post-fig">
+    <img src="images/logistic-regression-metrics/chart-3-roc-curve.svg" alt="ROC curve for 20 customers. The blue step curve rises quickly from the bottom-left corner toward the top-left, well above the dashed diagonal that marks random guessing. A red dot at false positive rate 0.2 and true positive rate 0.9 marks the 0.5 threshold. The shaded area under the curve is labelled AUC = 0.88." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 3</span> The curve bows toward the top-left corner, so the model catches most churners before it raises many false alarms. The red dot is the 0.5 threshold from the confusion matrix; every other threshold is another point on the same curve. Illustrative probabilities for the 20 customers.</figcaption>
+  </figure>
+  <p><strong>How should we read the curve?</strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>Closer to the top-left corner.</strong> The model achieves a high true positive rate with a low false positive rate, indicating better discrimination.</li>
+    <li><strong>Along the diagonal.</strong> The model performs approximately like random ranking.</li>
+    <li><strong>Below the diagonal.</strong> The ranking is worse than random in the usual interpretation, although reversing the score direction can change this.</li>
+  </ul>
+  <p>The ROC curve helps us understand the trade-off between identifying positive cases and incorrectly flagging negative cases across thresholds.</p>
+
+  <h3>Calculating the ROC curve in Python</h3>
+  <p>Scikit-learn provides <code>RocCurveDisplay</code> to calculate and visualise the ROC curve. Importantly, the ROC curve requires probability scores or decision scores rather than only the final binary predictions.</p>
+  <pre class="post-code"><code>import matplotlib.pyplot as plt
+
+from sklearn.metrics import RocCurveDisplay
+from sklearn.linear_model import LogisticRegression
+
+# Fit a logistic regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Obtain probabilities for the positive class
+y_proba = model.predict_proba(X_test)[:, 1]
+
+# Plot the ROC curve
+RocCurveDisplay.from_predictions(y_test, y_proba)
+
+plt.show()</code></pre>
+  <p>Here, <code>predict_proba()</code> returns the estimated probability for each class. Selecting <code>[:, 1]</code> extracts the probability of the positive class, assumed here to represent churn. The ROC curve uses these probability scores to evaluate the model across different thresholds.</p>
+
+  <h3>AUC: Area Under the ROC Curve</h3>
+  <p>The Area Under the ROC Curve, commonly called ROC-AUC, summarises the ROC curve in a single number. Its value generally ranges from 0 to 1, assuming the positive class is scored in the intended direction. How should we interpret AUC?</p>
+  <ul class="post-points post-points-color">
+    <li><strong>AUC = 0.5.</strong> The model has discrimination comparable to random ranking.</li>
+    <li><strong>AUC closer to 1.</strong> The model generally ranks positive cases above negative cases more effectively.</li>
+    <li><strong>AUC = 1.0.</strong> The model perfectly separates the positive and negative cases in terms of their scores.</li>
+  </ul>
+  <p>AUC is particularly useful when comparing models because it evaluates their ranking ability across thresholds rather than focusing on one specific threshold.</p>
+  <p>However, there is an important distinction: <strong>an AUC of 0.85 does not mean that 85% of predictions are correct.</strong> Instead, ROC-AUC can be interpreted as the probability that the model assigns a higher score to a randomly selected positive case than to a randomly selected negative case, with ties conventionally contributing half.</p>
+  <p>A model can have a high ROC-AUC but still perform poorly at a particular threshold. For example, the model might rank customers effectively but use a threshold that produces too many false positives for the company's needs. AUC therefore complements accuracy, precision, recall and F1 rather than replacing them. We can calculate ROC-AUC directly with scikit-learn:</p>
+  <pre class="post-code"><code>from sklearn.metrics import roc_auc_score
+
+auc = roc_auc_score(y_test, y_proba)
+
+print(auc)</code></pre>
+  <p>The result is a single value summarising the model's ability to distinguish between positive and negative cases.</p>
+  <p>One additional consideration is class imbalance. When positive cases are rare, ROC-AUC may not fully communicate how useful positive predictions are in practice. A <strong>Precision–Recall curve and its associated area, PR-AUC</strong>, can provide a more informative view of positive-class performance in such situations.</p>
+
+  <h2>Which Metric Should You Use?</h2>
+  <p>We've explored several metrics, but which one should you prioritise? The answer depends on what the model is supposed to achieve and which mistakes matter most.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Accuracy.</strong> Classes are reasonably balanced and error costs are similar. It measures the overall proportion of correct predictions.</li>
+    <li><strong>Precision.</strong> False positives are costly. It focuses on the reliability of positive predictions.</li>
+    <li><strong>Recall.</strong> False negatives are costly. It measures how many actual positive cases are identified.</li>
+    <li><strong>F1 score.</strong> Both precision and recall matter. It combines the two.</li>
+    <li><strong>ROC-AUC.</strong> You want to compare discrimination across thresholds. It summarises ranking performance across all thresholds.</li>
+    <li><strong>Precision–Recall curve and PR-AUC.</strong> Positive cases are very rare. It focuses on precision and recall for the positive class.</li>
+  </ul>
+  <p>Consider a few practical examples:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Customer churn prediction.</strong> If the company wants to identify as many potential churners as possible, recall may be the priority. If retention campaigns are expensive, precision may matter more.</li>
+    <li><strong>Fraud detection.</strong> Missing a fraudulent transaction can be costly, making recall important. However, excessive false alarms can disrupt legitimate transactions, so precision also matters.</li>
+    <li><strong>Medical screening.</strong> Missing a person with a serious condition can have significant consequences. Recall may therefore be prioritised, while precision remains important for managing unnecessary follow-up tests.</li>
+    <li><strong>Comparing classification models.</strong> ROC-AUC can help compare how well models rank positive cases above negative cases across thresholds. When positive cases are rare, PR-AUC can provide additional insight into the quality of positive predictions.</li>
+  </ul>
+  <p>The central lesson is that <strong>metric selection should follow the problem, not the other way around.</strong> Before choosing a metric, ask:</p>
+  <ul class="post-points post-points-color">
+    <li>Which type of error is more costly?</li>
+    <li>Are the classes balanced or imbalanced?</li>
+    <li>Do we need a reliable ranking, accurate classifications, or both?</li>
+    <li>What trade-off between false positives and false negatives is acceptable?</li>
+  </ul>
+  <p>These questions help translate model evaluation into meaningful business decisions.</p>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
+    <ul class="post-points post-points-color">
+      <li>The <strong>confusion matrix</strong> is the foundation: it shows the four possible outcomes of classification, including both kinds of mistake.</li>
+      <li><strong>Accuracy</strong> measures overall correctness, <strong>precision</strong> evaluates the reliability of positive predictions, and <strong>recall</strong> measures how many actual positives the model identifies. The <strong>F1 score</strong> combines the last two.</li>
+      <li>The <strong>ROC curve and AUC</strong> evaluate the model's ranking performance across thresholds. An AUC of 0.85 does not mean 85% of predictions are correct.</li>
+      <li>Each metric answers a different question and none tells the complete story alone. A good model is not simply one with a high score, but one whose performance meets the needs of the problem it was built to solve.</li>
+    </ul>
+  </div>
 
   <h2>Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="logistic-regression.html">Logistic Regression</a> How to predict a yes/no outcome as a probability and choose a decision threshold.</li>
+    <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> The matching metrics for predicting a number instead of a category.</li>
   </ul>
 
 </article>
