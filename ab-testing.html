@@ -192,6 +192,46 @@
     <figcaption><span>Chart 5</span> How the confidence interval relates to the decision (illustrative).</figcaption>
   </figure>
 
+  <h3>A worked example: From data to decision</h3>
+  <p>Imagine an online shop testing a redesigned checkout button. The experiment runs until both groups reach the planned sample size.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Metric</th><th>Control (A)</th><th>Treatment (B)</th></tr></thead>
+    <tbody>
+      <tr><td>Users</td><td>22,000</td><td>22,000</td></tr>
+      <tr><td>Conversions</td><td>1,100</td><td>1,232</td></tr>
+      <tr><td>Conversion rate</td><td>5.0%</td><td>5.6%</td></tr>
+    </tbody>
+  </table></div>
+  <p>The treatment group has a conversion rate 0.6 percentage points higher than the control group. But is this difference statistically significant, or could it be explained by random variation?</p>
+
+  <h4>Step 1: Calculate the difference</h4>
+  <p>The estimated effect is the treatment conversion rate minus the control conversion rate:</p>
+  <p class="post-formula post-formula-plain"><strong>Difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
+
+  <h4>Step 2: Calculate the 95% confidence interval</h4>
+  <p>For two independent conversion rates, an approximate 95% confidence interval for the difference is:</p>
+  <p class="post-formula post-formula-plain"><strong>Confidence interval = (p̂<sub>B</sub> − p̂<sub>A</sub>) ± 1.96 × SE</strong></p>
+  <p>Where the standard error (SE) is:</p>
+  <p class="post-formula post-formula-plain"><strong>SE = √( <span class="frac"><span>p̂<sub>A</sub>(1 − p̂<sub>A</sub>)</span><span>n<sub>A</sub></span></span> + <span class="frac"><span>p̂<sub>B</sub>(1 − p̂<sub>B</sub>)</span><span>n<sub>B</sub></span></span> )</strong></p>
+  <p>Here, p̂<sub>A</sub> and p̂<sub>B</sub> are the observed conversion rates, while n<sub>A</sub> and n<sub>B</sub> are the sample sizes.</p>
+  <p>Substituting the values gives:</p>
+  <ul class="post-points">
+    <li>Estimated difference: 0.006</li>
+    <li>Standard error: approximately 0.00215</li>
+    <li>Margin of error: 1.96 × 0.00215 ≈ 0.0042</li>
+  </ul>
+  <p>Therefore, the 95% confidence interval is approximately:</p>
+  <p class="post-formula post-formula-plain"><strong>0.006 ± 0.0042 = [0.0018, 0.0102]</strong></p>
+  <p>Expressed in percentage points, the interval ranges from <strong>+0.18 to +1.02 percentage points</strong>.</p>
+
+  <h4>Step 3: Interpret the result</h4>
+  <p>The entire confidence interval lies above zero, indicating that the treatment group's conversion rate is statistically significantly higher at the 5% significance level, using the corresponding two-sided test.</p>
+  <p>The interval also communicates uncertainty: although the observed improvement is 0.6 percentage points, the data are compatible with a range of positive effects.</p>
+
+  <h4>Step 4: Make the business decision</h4>
+  <p>The results support rolling out the redesigned button, provided the improvement is commercially worthwhile and no guardrail metrics show unacceptable harm.</p>
+  <p>However, statistical significance does not automatically mean business success. The team should also consider implementation costs, expected additional conversions, revenue impact, and any unintended consequences.</p>
+
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
     <ul class="post-points" style="margin:8px 0 0">
       <li><strong>Randomize.</strong> Random assignment makes the groups comparable, so a difference can be attributed to the change and not to a confounder.</li>
