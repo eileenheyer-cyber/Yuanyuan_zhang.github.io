@@ -179,20 +179,18 @@ print(f1)
   <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>9</span><span>10</span></span> = 0.90 &nbsp;&nbsp; FPR = <span class="frac"><span>2</span><span>10</span></span> = 0.20</strong></p>
   <p>This means the model identifies 90% of actual churners while incorrectly flagging 20% of customers who would have stayed.</p>
 
-  <h3 class="post-h3-small">How to Read the ROC Curve</h3>
-  <p>The ROC curve plots the true positive rate on the y-axis against the false positive rate on the x-axis. Each point represents the model's performance at a different decision threshold.</p>
-  <p>As the threshold changes, the model classifies different customers as potential churners, changing both the true positive rate and the false positive rate (Chart 3).</p>
-  <figure class="post-fig">
-    <img src="images/logistic-regression-metrics/chart-3-roc-curve.svg" alt="ROC curve for 20 customers. The blue step curve rises quickly from the bottom-left corner toward the top-left, well above the dashed diagonal that marks random guessing. A red dot at false positive rate 0.2 and true positive rate 0.9, labelled threshold 0.5, marks the model at that threshold. The shaded area under the curve is labelled AUC = 0.88." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 3</span> ROC curve for our customer churn model. The curve lies above the diagonal reference line, indicating better-than-random discrimination. The AUC of 0.88 suggests that the model generally ranks a randomly selected customer who churns higher than a randomly selected customer who stays. The shaded area under the curve is the AUC. The red point shows the model's performance at a decision threshold of 0.5.</figcaption>
-  </figure>
-  <p><strong>How should we read the curve?</strong></p>
+  <p><strong>How should we read the curve (Chart 3)?</strong></p>
   <ul class="post-points post-points-color">
     <li><strong>Closer to the top-left corner.</strong> The model achieves a high true positive rate with a low false positive rate, indicating better discrimination.</li>
     <li><strong>Along the diagonal.</strong> The model performs approximately like random ranking.</li>
     <li><strong>Below the diagonal.</strong> The ranking is worse than random in the usual interpretation, although reversing the score direction can change this.</li>
   </ul>
   <p>The goal is to achieve a high true positive rate while keeping the false positive rate low. The ROC curve helps us understand this trade-off across thresholds rather than evaluating the model at just one threshold.</p>
+
+  <figure class="post-fig">
+    <img src="images/logistic-regression-metrics/chart-3-roc-curve.svg" alt="ROC curve for 20 customers. The blue step curve rises quickly from the bottom-left corner toward the top-left, well above the dashed diagonal that marks random guessing. A red dot at false positive rate 0.2 and true positive rate 0.9, labelled threshold 0.5, marks the model at that threshold. The shaded area under the curve is labelled AUC = 0.88." loading="lazy" style="width:100%;height:auto;background:#fff">
+    <figcaption><span>Chart 3</span> ROC curve for our customer churn model. The curve lies above the diagonal reference line, indicating better-than-random discrimination. The AUC of 0.88 suggests that the model generally ranks a randomly selected customer who churns higher than a randomly selected customer who stays. The shaded area under the curve is the AUC. The red point shows the model's performance at a decision threshold of 0.5.</figcaption>
+  </figure>
 
   <h3 class="post-h3-small">AUC: Area Under the ROC Curve</h3>
   <p>The Area Under the ROC Curve (ROC-AUC) summarises the ROC curve in a single number, typically ranging from 0 to 1. It measures how well a model distinguishes between positive and negative cases based on their predicted scores.</p>
