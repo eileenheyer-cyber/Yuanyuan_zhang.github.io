@@ -75,16 +75,17 @@
   <p>The test then asks whether the data give enough evidence to reject the null hypothesis.</p>
 
   <h3>Step 3: Choose metrics</h3>
-  <p>The goal is not to track activity, but to measure whether the feature is delivering real value.</p>
+  <p>The goal is not simply to track activity, but to measure whether the change achieves its intended objective without negatively affecting other important outcomes.</p>
   <ul class="post-points">
-    <li><strong>Primary metric.</strong> Directly reflects the success of your hypothesis. For example, average time spent per user or number of calls per user when the hypothesis is about increasing engagement.</li>
-    <li><strong>Supporting metrics.</strong> Provide context and help explain why the primary metric changed. Examples: average order value, bounce rate, or session duration (if conversion rate is measured).</li>
-    <li><strong>Guardrail metrics.</strong> Ensure you don't improve one aspect of the product while harming another.</li>
+    <li><strong>Primary metric.</strong> The main measure used to evaluate the hypothesis. Choose one primary metric before the experiment begins. For example, if the hypothesis is that a redesigned checkout increases purchases, the primary metric could be the conversion rate.</li>
+    <li><strong>Supporting metrics.</strong> Provide additional context and help explain the results. For example, average order value can reveal whether customers spend more per order, while session duration may offer insights into changes in user behavior.</li>
+    <li><strong>Guardrail metrics.</strong> Monitor potential negative side effects. For example, a redesigned checkout might increase conversion while also increasing the payment error rate or reducing average order value.</li>
   </ul>
   <figure class="post-fig">
-    <img src="images/ab-testing/chart-1-metrics.svg" alt="Three cards: a primary metric that shows whether the feature delivered value, supporting metrics that explain why it changed, and guardrail metrics that check nothing else got worse" loading="lazy" width="800" height="300">
-    <figcaption><span>Chart 1</span> The three kinds of metrics and the question each one answers (examples).</figcaption>
+    <img src="images/ab-testing/chart-1-metrics.svg?v=2" alt="Three cards for a checkout experiment: a primary metric (conversion rate) that shows whether the change achieved its goal, supporting metrics (average order value) that explain what else changed, and guardrail metrics (payment error rate) that check nothing important got worse" loading="lazy" width="800" height="300">
+    <figcaption><span>Chart 1</span> The three kinds of metrics and the question each one answers, using a checkout experiment as the example.</figcaption>
   </figure>
+  <p>Choose the primary metric before running the experiment. If you examine many metrics and select whichever one looks best afterward, you increase the risk of finding an apparently positive result by chance. Defining the primary metric in advance helps prevent this problem.</p>
   <div class="post-note"><p class="post-note-l">Before running an A/B test, ask</p>
     <ol class="post-points" style="margin:8px 0 0">
       <li>What decision am I trying to make?</li>
