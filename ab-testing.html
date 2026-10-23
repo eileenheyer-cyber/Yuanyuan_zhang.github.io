@@ -105,7 +105,7 @@
     <img src="images/ab-testing/chart-2-random-split.svg" alt="Eligible users are randomly assigned to group A, the control with 1:1 video calling, or group B, the treatment with group video calling" loading="lazy" width="800" height="340">
     <figcaption><span>Chart 2</span> Random assignment: every eligible user has the same chance of landing in either group.</figcaption>
   </figure>
-  <p>An important decision is who to include in the experiment.</p>
+  <p><strong>Who is eligible?</strong> Before assigning anyone, decide which users the test is about. Include only users who could actually be affected by the change. For group video calling, that means users who have the app and can start a call, not people who never open it. The eligibility rule should be defined <em>before</em> the test starts and applied to both groups in the same way. Otherwise the groups may differ for reasons that have nothing to do with the feature.</p>
 
   <h3>Key principle: randomization</h3>
   <p>Randomization is important because it:</p>
@@ -130,7 +130,16 @@
   </ul>
   <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile users make far fewer calls than desktop users. With a small sample, pure randomization could by chance put more desktop users in one group and distort the comparison. To prevent this, block by device: split users into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the feature caused it and not the device.</p>
 
-  <p>Also think about how long to run the experiment. The duration should be long enough to capture typical user behavior, but not so long that it delays decision-making.</p>
+  <h3>Sample size and test duration</h3>
+  <p>A test needs enough users to detect a real effect, and the number depends on four things:</p>
+  <ul class="post-points">
+    <li><strong>Significance level (α).</strong> The accepted risk of a false positive, which means calling a change a win when it has no real effect. It is usually 5%.</li>
+    <li><strong>Statistical power.</strong> The chance of detecting a real effect when one exists. It is usually set at 80%, so there is a 20% risk of missing a real improvement (a false negative).</li>
+    <li><strong>Minimum detectable effect (MDE).</strong> The smallest improvement that would matter to the business. Smaller effects need more users.</li>
+    <li><strong>Baseline and variability.</strong> How much the metric already moves around. A noisy metric needs more users.</li>
+  </ul>
+  <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), α = 5% and 80% power, you need roughly 22,000 users in <em>each</em> group. If you only care about a bigger lift of 1 percentage point (5.0% → 6.0%), roughly 8,000 per group is enough.</p>
+  <p><strong>Duration</strong> follows from the sample size. Run the test until you reach it, and cover at least one or two full weeks so that weekday and weekend behaviour are both included. Decide the sample size and duration in advance and don't stop the test early because the result looks good. Repeatedly peeking at results makes false positives much more likely.</p>
   <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly state who is in control vs treatment, how users are assigned, and what you are comparing. Also consider network effects. For example, if a group of friends interacts frequently, assigning them to different groups can introduce bias. Where possible, group related users together to minimize interference.</p></div>
 
   <h3>Checklist for reducing bias</h3>
