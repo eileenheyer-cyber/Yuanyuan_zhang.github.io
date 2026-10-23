@@ -34,12 +34,10 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">Common Logistic Regression Metrics</h1>
 
-  <p>Imagine building a logistic regression model to predict customer churn. After evaluating its predictions, you discover that it achieves 85% accuracy.</p>
-  <p>Sounds good, right?</p>
-  <p>But what if the model misses half of the customers who are about to leave? Or what if it incorrectly flags hundreds of loyal customers as potential churners?</p>
-  <p>Suddenly, 85% accuracy doesn't tell the whole story.</p>
-  <p>Evaluating a classification model requires more than a single number. Different metrics measure different aspects of performance, and choosing the right one depends on the problem you're trying to solve.</p>
-  <p>In this post, we explore how to evaluate a logistic regression model, from understanding its classification errors to assessing its ability to distinguish between classes. We use a simple customer churn example throughout to understand how evaluation metrics work, how they relate to one another, and how to choose the right metric for a given business problem. It builds on <a href="logistic-regression.html">Logistic Regression</a>, where the churn model is introduced.</p>
+  <p>Imagine building a logistic regression model to predict customer churn. It achieves 85% accuracy. Sounds good, right?</p>
+  <p>But what if it misses many customers who are about to leave or incorrectly flags loyal customers as potential churners? Accuracy alone doesn't tell the whole story.</p>
+  <p>In this article, we'll explore common classification metrics, from the confusion matrix to precision, recall, ROC curves and AUC. Using a customer churn example, we'll see how these metrics work and how to choose the right one for a given business problem.</p>
+  <p>This article builds on <a href="logistic-regression.html">Logistic Regression</a>, where the churn model is introduced.</p>
 
   <h2>How Logistic Regression Makes a Decision</h2>
   <p>Before evaluating a logistic regression model, let's understand how it makes predictions.</p>
