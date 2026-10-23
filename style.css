@@ -1901,3 +1901,4 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-summary .ps-hl2 { background: rgba(63, 111, 208, 0.22); }
 .post-summary .ps-hl2:first-child { border-radius: 4px 0 0 4px; }
 .post-summary .ps-key td { font-weight: 700; }
+.post-table.post-table-center th, .post-table.post-table-center td { text-align: center; padding-left: 14px; }
