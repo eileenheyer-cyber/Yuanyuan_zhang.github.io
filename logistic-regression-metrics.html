@@ -236,30 +236,32 @@ print(auc)</code></pre>
   <p>The result is a single value summarising the model's ability to distinguish between positive and negative cases.</p>
 
   <h2>Which Metric Should You Use?</h2>
-  <p>We've explored several metrics, but which one should you prioritise? The answer depends on what the model is supposed to achieve and which mistakes matter most.</p>
+  <p>We've explored several evaluation metrics, but which one should you prioritise? It depends on what the model is designed to achieve and which mistakes matter most.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Accuracy.</strong> Classes are reasonably balanced and error costs are similar. It measures the overall proportion of correct predictions.</li>
-    <li><strong>Precision.</strong> False positives are costly. It focuses on the reliability of positive predictions.</li>
-    <li><strong>Recall.</strong> False negatives are costly. It measures how many actual positive cases are identified.</li>
-    <li><strong>F1 score.</strong> Both precision and recall matter. It combines the two.</li>
-    <li><strong>ROC-AUC.</strong> You want to compare discrimination across thresholds. It summarises ranking performance across all thresholds.</li>
-    <li><strong>Precision–Recall curve and PR-AUC.</strong> Positive cases are very rare. It focuses on precision and recall for the positive class.</li>
+    <li><strong>Accuracy.</strong> Use it when classes are reasonably balanced and false positives and false negatives have similar costs. It measures the proportion of correct predictions.</li>
+    <li><strong>Precision.</strong> Prioritise it when false positives are costly. It tells you how many positive predictions are actually positive.</li>
+    <li><strong>Recall.</strong> Prioritise it when false negatives are costly. It measures how many actual positive cases the model correctly identifies.</li>
+    <li><strong>F1 score.</strong> Use it when both precision and recall matter. It combines the two into a single score using their harmonic mean.</li>
+    <li><strong>ROC-AUC.</strong> Use it to compare models' ability to distinguish between positive and negative cases across decision thresholds.</li>
+    <li><strong>Precision–Recall curve and PR-AUC.</strong> Consider these when positive cases are rare. They provide insight into the trade-off between precision and recall across thresholds.</li>
   </ul>
-  <p>Consider a few practical examples:</p>
+
+  <h3>Putting It into Practice</h3>
+  <p>Let's revisit our customer churn example and consider a few other applications.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Customer churn prediction.</strong> If the company wants to identify as many potential churners as possible, recall may be the priority. If retention campaigns are expensive, precision may matter more.</li>
-    <li><strong>Fraud detection.</strong> Missing a fraudulent transaction can be costly, making recall important. However, excessive false alarms can disrupt legitimate transactions, so precision also matters.</li>
-    <li><strong>Medical screening.</strong> Missing a person with a serious condition can have significant consequences. Recall may therefore be prioritised, while precision remains important for managing unnecessary follow-up tests.</li>
-    <li><strong>Comparing classification models.</strong> ROC-AUC can help compare how well models rank positive cases above negative cases across thresholds. When positive cases are rare, PR-AUC can provide additional insight into the quality of positive predictions.</li>
+    <li><strong>Customer churn prediction.</strong> If the goal is to identify as many potential churners as possible, recall may be the priority. If retention campaigns are expensive, precision becomes more important because the company wants to avoid targeting customers who would stay anyway.</li>
+    <li><strong>Fraud detection.</strong> Missing fraudulent transactions can be costly, making recall important. However, too many false alarms can disrupt legitimate transactions, so precision matters too.</li>
+    <li><strong>Medical screening.</strong> Missing a person with a serious condition can have significant consequences. Recall may therefore be prioritised, while precision remains important for limiting unnecessary follow-up tests.</li>
+    <li><strong>Comparing classification models.</strong> ROC-AUC helps compare models' ability to rank positive cases above negative cases across thresholds. When positive cases are rare, PR-AUC can provide additional insight into how well the models identify the positive class.</li>
   </ul>
-  <p>The central lesson is that <strong>metric selection should follow the problem, not the other way around.</strong> Before choosing a metric, ask:</p>
+  <p><strong>Metric selection should follow the problem, not the other way around.</strong> Before choosing a metric, ask yourself:</p>
   <ul class="post-points post-points-color">
     <li>Which type of error is more costly?</li>
     <li>Are the classes balanced or imbalanced?</li>
-    <li>Do we need a reliable ranking, accurate classifications, or both?</li>
-    <li>What trade-off between false positives and false negatives is acceptable?</li>
+    <li>Do I need reliable positive predictions, high coverage of actual positive cases, or both?</li>
+    <li>Am I evaluating predictions at a specific threshold or comparing models across thresholds?</li>
   </ul>
-  <p>These questions help translate model evaluation into meaningful business decisions.</p>
+  <p>These questions help translate model evaluation into meaningful business decisions. The best metric is not necessarily the one with the highest score, but the one that best reflects the problem you are trying to solve.</p>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
     <ul class="post-points post-points-color">
