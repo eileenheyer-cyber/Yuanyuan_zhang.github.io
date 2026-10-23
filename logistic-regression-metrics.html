@@ -167,7 +167,7 @@ print(f1)
 
   <h2>Evaluating Model Performance Across Thresholds</h2>
 
-  <h3>ROC Curve</h3>
+  <h3>ROC Curve and AUC</h3>
   <p>The Receiver Operating Characteristic (ROC) curve evaluates how well a classification model distinguishes between positive and negative cases across different decision thresholds.</p>
   <p>It plots the true positive rate (TPR) against the false positive rate (FPR). Recall is another name for TPR:</p>
   <p class="post-formula post-formula-plain"><strong>TPR = <span class="frac"><span>TP</span><span>TP + FN</span></span></strong></p>
@@ -184,7 +184,7 @@ print(f1)
   <p>As the threshold changes, the model classifies different customers as potential churners, changing both the true positive rate and the false positive rate (Chart 3).</p>
   <figure class="post-fig">
     <img src="images/logistic-regression-metrics/chart-3-roc-curve.svg" alt="ROC curve for 20 customers. The blue step curve rises quickly from the bottom-left corner toward the top-left, well above the dashed diagonal that marks random guessing. A red dot at false positive rate 0.2 and true positive rate 0.9, labelled threshold 0.5, marks the model at that threshold. The shaded area under the curve is labelled AUC = 0.88." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 3</span> ROC curve for our customer churn model. The curve lies above the diagonal reference line, indicating better-than-random discrimination. The AUC of 0.88 suggests that the model generally ranks a randomly selected customer who churns higher than a randomly selected customer who stays. The red point shows the model's performance at a decision threshold of 0.5.</figcaption>
+    <figcaption><span>Chart 3</span> ROC curve for our customer churn model. The curve lies above the diagonal reference line, indicating better-than-random discrimination. The AUC of 0.88 suggests that the model generally ranks a randomly selected customer who churns higher than a randomly selected customer who stays. The shaded area under the curve is the AUC. The red point shows the model's performance at a decision threshold of 0.5.</figcaption>
   </figure>
   <p><strong>How should we read the curve?</strong></p>
   <ul class="post-points post-points-color">
@@ -194,7 +194,19 @@ print(f1)
   </ul>
   <p>The goal is to achieve a high true positive rate while keeping the false positive rate low. The ROC curve helps us understand this trade-off across thresholds rather than evaluating the model at just one threshold.</p>
 
-  <h3>Calculating the ROC curve in Python</h3>
+  <h3 class="post-h3-small">AUC: Area Under the ROC Curve</h3>
+  <p>The Area Under the ROC Curve, commonly called ROC-AUC, summarises the ROC curve in a single number. Its value generally ranges from 0 to 1, assuming the positive class is scored in the intended direction. The shaded area in Chart 3 is the AUC. How should we interpret it?</p>
+  <ul class="post-points post-points-color">
+    <li><strong>AUC = 0.5.</strong> The model has discrimination comparable to random ranking.</li>
+    <li><strong>AUC closer to 1.</strong> The model generally ranks positive cases above negative cases more effectively.</li>
+    <li><strong>AUC = 1.0.</strong> The model perfectly separates the positive and negative cases in terms of their scores.</li>
+  </ul>
+  <p>AUC is particularly useful when comparing models because it evaluates their ranking ability across thresholds rather than focusing on one specific threshold.</p>
+  <p>However, there is an important distinction: <strong>an AUC of 0.85 does not mean that 85% of predictions are correct.</strong> Instead, ROC-AUC can be interpreted as the probability that the model assigns a higher score to a randomly selected positive case than to a randomly selected negative case, with ties conventionally contributing half.</p>
+  <p>A model can have a high ROC-AUC but still perform poorly at a particular threshold. For example, the model might rank customers effectively but use a threshold that produces too many false positives for the company's needs. AUC therefore complements accuracy, precision, recall and F1 rather than replacing them.</p>
+  <p>One additional consideration is class imbalance. When positive cases are rare, ROC-AUC may not fully communicate how useful positive predictions are in practice. A <strong>Precision–Recall curve and its associated area, PR-AUC</strong>, can provide a more informative view of positive-class performance in such situations.</p>
+
+  <h3>Calculating the ROC Curve and AUC in Python</h3>
   <p>Scikit-learn provides <code>RocCurveDisplay</code> to calculate and visualise the ROC curve. Importantly, the ROC curve requires probability scores or decision scores rather than only the final binary predictions.</p>
   <pre class="post-code"><code>import matplotlib.pyplot as plt
 
@@ -213,28 +225,13 @@ RocCurveDisplay.from_predictions(y_test, y_proba)
 
 plt.show()</code></pre>
   <p>Here, <code>predict_proba()</code> returns the estimated probability for each class. Selecting <code>[:, 1]</code> extracts the probability of the positive class, assumed here to represent churn. The ROC curve uses these probability scores to evaluate the model across different thresholds.</p>
-
-  <h3>AUC: Area Under the ROC Curve</h3>
-  <p>The Area Under the ROC Curve, commonly called ROC-AUC, summarises the ROC curve in a single number. Its value generally ranges from 0 to 1, assuming the positive class is scored in the intended direction. How should we interpret AUC?</p>
-  <figure class="post-fig">
-    <img src="images/logistic-regression-metrics/chart-4-auc.svg" alt="The ROC curve for 20 customers as a blue step curve with the whole area below it shaded blue and labelled area under the curve, AUC = 0.88. A dashed diagonal marks random guessing." loading="lazy" style="width:100%;height:auto;background:#fff">
-    <figcaption><span>Chart 4</span> AUC is the shaded area under the ROC curve. A model that ranks every churner above every stayer fills the whole square (AUC = 1.0), while random guessing follows the diagonal and covers half of it (AUC = 0.5). Our model covers 0.88 of the square.</figcaption>
-  </figure>
-  <ul class="post-points post-points-color">
-    <li><strong>AUC = 0.5.</strong> The model has discrimination comparable to random ranking.</li>
-    <li><strong>AUC closer to 1.</strong> The model generally ranks positive cases above negative cases more effectively.</li>
-    <li><strong>AUC = 1.0.</strong> The model perfectly separates the positive and negative cases in terms of their scores.</li>
-  </ul>
-  <p>AUC is particularly useful when comparing models because it evaluates their ranking ability across thresholds rather than focusing on one specific threshold.</p>
-  <p>However, there is an important distinction: <strong>an AUC of 0.85 does not mean that 85% of predictions are correct.</strong> Instead, ROC-AUC can be interpreted as the probability that the model assigns a higher score to a randomly selected positive case than to a randomly selected negative case, with ties conventionally contributing half.</p>
-  <p>A model can have a high ROC-AUC but still perform poorly at a particular threshold. For example, the model might rank customers effectively but use a threshold that produces too many false positives for the company's needs. AUC therefore complements accuracy, precision, recall and F1 rather than replacing them. We can calculate ROC-AUC directly with scikit-learn:</p>
+  <p>To calculate the AUC from the same probabilities, we can use <code>roc_auc_score</code>:</p>
   <pre class="post-code"><code>from sklearn.metrics import roc_auc_score
 
 auc = roc_auc_score(y_test, y_proba)
 
 print(auc)</code></pre>
   <p>The result is a single value summarising the model's ability to distinguish between positive and negative cases.</p>
-  <p>One additional consideration is class imbalance. When positive cases are rare, ROC-AUC may not fully communicate how useful positive predictions are in practice. A <strong>Precision–Recall curve and its associated area, PR-AUC</strong>, can provide a more informative view of positive-class performance in such situations.</p>
 
   <h2>Which Metric Should You Use?</h2>
   <p>We've explored several metrics, but which one should you prioritise? The answer depends on what the model is supposed to achieve and which mistakes matter most.</p>
