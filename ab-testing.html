@@ -39,13 +39,15 @@
   <p>Instead of relying on intuition, teams use A/B testing to make evidence-based decisions about website design, marketing campaigns, and customer experiences. Performance is evaluated using metrics such as conversion rate, click-through rate, and average revenue per user. Statistical analysis helps determine whether an observed difference reflects a genuine effect or could be explained by random variation.</p>
 
   <h2>Why do we need A/B testing?</h2>
-  <p>Observed differences between two versions may simply be due to random chance. Statistical inference helps determine whether a difference is likely to be genuine before a decision is made.</p>
-  <p>Imagine an online shop changes its checkout button to green. In the following week, the conversion rate rises from 5.0% to 5.6%. Did the button cause this? Not necessarily. Conversion rates move up and down from week to week by chance, and that week might also have included a sale or a holiday.</p>
-  <p>The two problems A/B testing is exceptionally good at solving are:</p>
+  <p><strong>Statistical inference helps determine whether a difference is likely to be genuine before a decision is made.</strong></p>
+  <p>A change in performance does not necessarily mean that a change in design caused it. Statistical inference helps us distinguish genuine effects from random variation, while a well-designed experiment helps isolate the cause.</p>
+  <p>Imagine an online shop changes its checkout button to green. The following week, its conversion rate rises from 5.0% to 5.6%. Did the new button cause the improvement? Not necessarily. Conversion rates fluctuate naturally, and the same week might include a sale or a holiday.</p>
+  <p>A/B testing helps address two important problems:</p>
   <ul class="post-points">
-    <li><strong>Confusing correlation with causation</strong> (spurious correlation). The conversion rate rose after the button change, but the sale may be the real reason. In an A/B test, both versions run at the same time, so the sale affects both groups equally.</li>
-    <li><strong>Selection bias.</strong> If customers could choose the new button themselves, the ones who choose it might be the keenest buyers anyway. In an A/B test, users are assigned to a version randomly, so neither group is favored from the start.</li>
+    <li><strong>Confounding variables.</strong> The conversion rate increased after the button changed, but a concurrent sale might be responsible. In an A/B test, both versions run at the same time, so external factors such as the sale are more likely to affect both groups similarly.</li>
+    <li><strong>Selection bias.</strong> If customers could choose which button to see, those who selected the new version might already be more likely to buy. In an A/B test, users are randomly assigned to the control or treatment group, reducing systematic differences between them.</li>
   </ul>
+  <p>Randomization does not eliminate every source of bias, but it provides a stronger basis for determining whether a change actually improves performance.</p>
 
   <h2>How to design an A/B test</h2>
   <p>This is a common interview question. A clean answer walks through five steps: variables, hypothesis, metrics, assigning users to groups, and analysis of the results. The running example below is a messaging app that wants to test group video calling.</p>
