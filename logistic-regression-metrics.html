@@ -106,8 +106,9 @@ accuracy = accuracy_score(y_true, y_pred)
 
 print(accuracy)
 # 0.85</code></pre>
-  <p>Accuracy is easy to understand and useful when the classes are reasonably balanced and different types of errors have similar consequences. However, it can be misleading when the classes are imbalanced.</p>
-  <p>Imagine a dataset in which only 5% of customers churn. A model that predicts that every customer will stay would achieve 95% accuracy, despite failing to identify a single churner. The model appears successful based on accuracy alone, but it is useless for identifying customers at risk of leaving. This is why we need additional metrics.</p>
+  <p>Accuracy is easy to interpret and useful when classes are reasonably balanced and false positives and false negatives have similar costs. However, it can be misleading when one class is much more common than the other.</p>
+  <p>Imagine a dataset where only 5% of customers churn. A model that predicts every customer will stay would achieve 95% accuracy—without identifying a single customer who actually churns.</p>
+  <p>Despite its impressive accuracy, the model fails at its primary objective: identifying customers at risk of leaving. This is why accuracy should not be evaluated in isolation, especially when working with imbalanced datasets.</p>
 
   <h3>Precision</h3>
   <p>Precision measures how many predicted positive cases are actually positive. For our churn model, it answers: <strong>of all the customers predicted to churn, how many actually churned?</strong></p>
