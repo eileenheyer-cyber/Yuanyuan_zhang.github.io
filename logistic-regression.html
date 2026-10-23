@@ -112,9 +112,14 @@
   </div>
 
   <h2>Interpreting Coefficients: Maximum Likelihood and Odds Ratios</h2>
-  <div class="post-note post-note-explain post-note-plain"><p class="post-note-l">How are the coefficients found?</p>
-    <p>Linear regression finds its coefficients with least squares. Logistic regression uses <strong>maximum likelihood estimation (MLE)</strong>: it chooses the coefficients that make the observed outcomes, who cancelled and who stayed, as likely as possible under the model.</p>
-  </div>
+  <h3>Maximum Likelihood Estimation (MLE): A Simple Explanation</h3>
+  <p>Maximum Likelihood Estimation (MLE) is a method for finding the parameter values that make the observed data most likely under a statistical model.</p>
+  <p>Imagine we know how many support tickets each customer opened last month and whether they cancelled their subscription or stayed. MLE helps us estimate the intercept and slope of the logistic regression model.</p>
+  <p>For example, suppose we use the following model:</p>
+  <p class="post-formula post-formula-plain"><strong>Logits = −4 + 0.8 × support tickets</strong></p>
+  <p>The values −4 and 0.8 are illustrative coefficients. In practice, MLE estimates these values from the observed data.</p>
+  <p>How does it work? MLE evaluates how well different coefficient values explain the observed outcomes. If a model assigns a high probability to customers who actually cancelled and a low probability to those who stayed, it receives a higher likelihood. If its predictions contradict the observed outcomes, its likelihood decreases.</p>
+  <p>MLE searches for the coefficient values that maximize the likelihood of the entire dataset. In logistic regression, this is typically done using numerical optimization rather than testing every possible combination.</p>
   <p>The coefficient 0.8 tells us how much the logit changes with each additional support ticket. But the logit is not particularly intuitive to interpret.</p>
   <p>To make the coefficient easier to understand, we exponentiate it:</p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.2</strong>
