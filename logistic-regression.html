@@ -135,10 +135,15 @@
   <p>Example: In our model, the coefficient for support tickets is 0.8. The corresponding odds ratio is:</p>
   <p class="post-formula post-formula-plain"><strong>e<sup>0.8</sup> ≈ 2.23</strong></p>
   <p>This means that each additional support ticket multiplies the odds of cancellation by approximately 2.23. For example, if a customer’s odds are 1 to 1, one more ticket raises them to 2.23 to 1. That is an increase of about 123% (2.23 − 1 = 1.23), holding other variables constant.</p>
-  <p>An important distinction: an odds ratio is not a change in probability.</p>
-  <p>For example, increasing the ticket count from four to five raises the predicted probability of cancellation from approximately 31% to 50%—an increase of 19 percentage points. Increasing it from seven to eight raises the probability from approximately 83% to 92%—an increase of only 9 percentage points.</p>
-  <p>The odds are multiplied by the same factor in both cases, but the probability changes by a different amount depending on the starting point.</p>
-  <p>The key takeaway: Logistic regression has a constant effect on the logit for each additional ticket, but its effect on probability varies depending on the customer's initial probability of cancellation.</p>
+  <p>The same change in odds does not produce the same change in probability.</p>
+  <p>Imagine two customers:</p>
+  <ul class="post-points post-points-color">
+    <li>Customer A: Their probability of cancellation increases from 31% to 50% when they open one additional support ticket.</li>
+    <li>Customer B: Their probability increases from 83% to 92% after opening one additional ticket.</li>
+  </ul>
+  <p>Why is the increase smaller for Customer B?</p>
+  <p>Customer B already has a high probability of cancellation. There is less room for the probability to increase before reaching 100%. Customer A starts at a lower probability, so the same change in odds produces a larger increase in probability.</p>
+  <p>This illustrates an important feature of logistic regression: each additional support ticket has the same effect on the logit, but its effect on probability depends on the customer's starting point.</p>
 
   <h2>Turning a Probability into a Decision</h2>
   <p>Logistic regression produces a probability, but a business often needs a concrete action: should the retention team contact this customer or not?</p>
