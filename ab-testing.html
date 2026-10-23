@@ -38,7 +38,37 @@
   <p>A/B testing is a controlled experiment that compares two versions of a website, app, or marketing message, differing in one specific change, to determine which performs better. By randomly assigning users to a control group (A) or a treatment group (B), businesses can measure the impact of that change.</p>
   <p>Instead of relying on intuition, teams use A/B testing to make evidence-based decisions about website design, marketing campaigns, and customer experiences. Performance is evaluated using metrics such as conversion rate, click-through rate, and average revenue per user. Statistical analysis helps determine whether an observed difference reflects a genuine effect or could be explained by random variation.</p>
 
-  <h2>Why do we need A/B testing?</h2>
+  <p>Throughout this post, we follow one example: an online shop wants to test whether a redesigned checkout button increases its conversion rate.</p>
+  <ul class="post-points">
+    <li><strong>A (control).</strong> The existing checkout button.</li>
+    <li><strong>B (treatment).</strong> The redesigned checkout button.</li>
+  </ul>
+  <p>How can we tell whether the new button genuinely improves conversion, rather than simply reflecting a random fluctuation?</p>
+
+  <p><strong>Contents</strong></p>
+  <ul class="post-points">
+    <li><a href="#why-ab-testing">Why do we need A/B testing?</a></li>
+    <li><a href="#designing">Designing an A/B test</a>
+      <ul class="post-points">
+        <li><a href="#step-1">Step 1: Define your variables</a></li>
+        <li><a href="#step-2">Step 2: Formulate your hypothesis</a></li>
+        <li><a href="#step-3">Step 3: Choose metrics</a></li>
+        <li><a href="#step-4">Step 4: Design the experiment and assign users</a></li>
+        <li><a href="#step-5">Step 5: Determine sample size and test duration</a></li>
+      </ul>
+    </li>
+    <li><a href="#analyzing">Analyzing A/B test results</a>
+      <ul class="post-points">
+        <li><a href="#validity">Check validity first</a></li>
+        <li><a href="#observed-effect">Measure the observed effect</a></li>
+        <li><a href="#p-value">Statistical significance and the p-value</a></li>
+        <li><a href="#confidence-intervals">Confidence intervals</a></li>
+      </ul>
+    </li>
+    <li><a href="#decisions">From statistical results to business decisions</a></li>
+  </ul>
+
+  <h2 id="why-ab-testing" style="scroll-margin-top:90px">Why do we need A/B testing?</h2>
   <p><strong>Statistical inference helps determine whether a difference is likely to be genuine before a decision is made.</strong></p>
   <p>A change in performance does not necessarily mean that a design change caused it. Statistical inference uses sample data to assess whether the observed difference is consistent with random variation or provides evidence of a real effect. A well-designed experiment, in turn, helps establish whether that effect can be attributed to the change being tested.</p>
   <p>Imagine an online shop changes its checkout button to green. The following week, its conversion rate rises from 5.0% to 5.6%. Did the new button cause the improvement? Not necessarily. Conversion rates fluctuate naturally, and the same week might include a sale or a holiday.</p>
@@ -49,10 +79,10 @@
   </ul>
   <p>Randomization does not eliminate every source of bias, but it provides a stronger basis for determining whether a change actually improves performance.</p>
 
-  <h2>Designing an A/B test</h2>
-  <p>This is a common interview question. A clean answer walks through five steps: variables, hypothesis, metrics, assigning users to groups, and analysis of the results. The running example below is a messaging app that wants to test group video calling.</p>
+  <h2 id="designing" style="scroll-margin-top:90px">Designing an A/B test</h2>
+  <p>This is a common interview question. A clean answer walks through five steps: define the variables, formulate the hypothesis, choose metrics, design the experiment and assign users, and determine the sample size and test duration. The running example is the checkout button test from the introduction. Analyzing the results comes afterwards, once the data have been collected.</p>
 
-  <h3>Step 1: Define your variables</h3>
+  <h3 id="step-1" style="scroll-margin-top:90px">Step 1: Define your variables</h3>
   <p>Start by naming the cause you want to test and the effect you want to measure. This keeps the experiment focused on one relationship. In our example, an online shop wants to know whether a redesigned checkout button leads to more purchases.</p>
   <ul class="post-points">
     <li><strong>Independent variable.</strong> The cause, the thing you deliberately change. It is not influenced by anything else in the experiment. Here: the design of the checkout button.</li>
@@ -61,7 +91,7 @@
   <p>The two versions are the <strong>control (A)</strong>, the existing button, and the <strong>treatment (B)</strong>, the redesigned button. Everything else stays the same, so any difference in conversion can be traced back to the button.</p>
   <p>A more complex test might compare several versions of the feature, or several settings of the same feature. The logic stays the same: you change the independent variable and watch what happens to the dependent variable.</p>
 
-  <h3>Step 2: Formulate your hypothesis</h3>
+  <h3 id="step-2" style="scroll-margin-top:90px">Step 2: Formulate your hypothesis</h3>
   <p>A good experiment starts with a clear, testable hypothesis: a statement that connects the change to an expected outcome. A strong hypothesis has three parts:</p>
   <ul class="post-points">
     <li><strong>The change.</strong> What are you introducing? Here: a redesigned checkout button.</li>
@@ -75,7 +105,7 @@
   </ul>
   <p>The test then asks whether the data give enough evidence to reject the null hypothesis. Even if B looks better, this does not prove the alternative hypothesis: the test only shows whether the observed difference would be surprising if there were no real difference.</p>
 
-  <h3>Step 3: Choose metrics</h3>
+  <h3 id="step-3" style="scroll-margin-top:90px">Step 3: Choose metrics</h3>
   <p>The goal is not simply to track activity, but to measure whether the change achieves its intended objective without negatively affecting other important outcomes.</p>
   <ul class="post-points">
     <li><strong>Primary metric.</strong> The main measure used to evaluate the hypothesis. Choose one primary metric before the experiment begins. For example, if the hypothesis is that a redesigned checkout increases purchases, the primary metric could be the conversion rate.</li>
@@ -97,16 +127,16 @@
     </ol>
   </div>
 
-  <h3>Step 4: Design the experiment and assign users</h3>
-  <p>An A/B test is a controlled experiment. The treatment is the change being tested, and users are split into two groups:</p>
+  <h3 id="step-4" style="scroll-margin-top:90px">Step 4: Design the experiment and assign users</h3>
+  <p>An A/B test is a controlled experiment. The treatment is the change being tested, and eligible users are split into two groups:</p>
   <ul class="post-points">
-    <li><strong>Control group</strong> continues with the existing experience (1:1 video calling).</li>
-    <li><strong>Treatment group</strong> gets access to the new feature (group video calling).</li>
+    <li><strong>Control group</strong> continues with the existing experience (the existing checkout button).</li>
+    <li><strong>Treatment group</strong> sees the change (the redesigned checkout button).</li>
   </ul>
-  <p>The difference in the metric between the two groups is the measured effect of the treatment. For example, if the treatment group averages 4.4 calls per user and the control group 4.0, the feature added 0.4 calls per user. This only works if exposure to the feature is the only meaningful difference between the groups. If the treatment group happened to contain mostly power users, you could not tell whether the feature or the user mix caused the gap.</p>
+  <p>The difference in the metric between the two groups is the measured effect of the treatment. For example, if 5.6% of the treatment group and 5.0% of the control group complete a purchase, the new button added 0.6 percentage points. This only works if exposure to the button is the only meaningful difference between the groups. If the treatment group happened to contain mostly repeat buyers, you could not tell whether the button or the user mix caused the gap.</p>
   <figure class="post-fig">
-    <img src="images/ab-testing/chart-2-random-split.svg" alt="Eligible users are randomly assigned to group A, the control with 1:1 video calling, or group B, the treatment with group video calling" loading="lazy" width="800" height="340">
-    <figcaption><span>Chart 2</span> Random assignment: every eligible user has the same chance of landing in either group.</figcaption>
+    <img src="images/ab-testing/chart-2-random-split.svg?v=2" alt="Eligible checkout visitors are randomly assigned to group A, the control with the existing button, or group B, the treatment with the redesigned button" loading="lazy" width="800" height="340">
+    <figcaption><span>Chart 2</span> Random assignment: every eligible visitor has the same chance of landing in either group.</figcaption>
   </figure>
   <p><strong>Who is eligible?</strong> Before assigning users to a group, define who should be included in the experiment. Include only users who could realistically be affected by the change. For a checkout experiment, this might mean users who reach the checkout page, rather than all visitors to the website.</p>
   <p>Define the eligibility criteria before the experiment starts and apply them consistently to both groups. Otherwise, differences in who enters each group could distort the results and make it harder to isolate the effect of the redesigned button.</p>
@@ -122,8 +152,8 @@
   </ul>
   <div class="post-note"><p class="post-note-l">Why it matters</p><p>Without randomization, it's difficult to know whether the change caused the result or whether some other factor did. Such a factor is called a confounder, and confounders can lead to incorrect conclusions about cause and effect.</p>
     <figure class="post-fig">
-      <img src="images/ab-testing/chart-3-randomization.svg" alt="Bar chart: when users choose their group, 70 percent of the treatment group are heavy users versus 25 percent of control; with random assignment the shares are about 45 and 47 percent" loading="lazy" width="800" height="320">
-      <figcaption><span>Chart 3</span> Illustrative data. If heavy users pick the new feature themselves, the groups differ before the test starts. Random assignment evens them out.</figcaption>
+      <img src="images/ab-testing/chart-3-randomization.svg?v=2" alt="Bar chart: when users choose their group, 70 percent of the treatment group are repeat buyers versus 25 percent of control; with random assignment the shares are about 45 and 47 percent" loading="lazy" width="800" height="320">
+      <figcaption><span>Chart 3</span> Illustrative data. If repeat buyers pick the new button themselves, the groups differ before the test starts. Random assignment evens them out.</figcaption>
     </figure>
   </div>
 
@@ -132,7 +162,17 @@
     <li><strong>Completely randomized design.</strong> Every user is assigned to control or treatment by a random process, for example a random number generated for each user ID. It is simple and works well when the sample is large.</li>
     <li><strong>Randomized block design.</strong> You first sort users into blocks of similar users, then randomize within each block. It is used to handle known nuisance factors.</li>
   </ul>
-  <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile users make far fewer calls than desktop users. With a small sample, pure randomization could by chance put more desktop users in one group and distort the comparison. To prevent this, block by device: split users into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the feature caused it and not the device.</p>
+  <p>A nuisance factor is something that affects the outcome but is not what you are testing. Suppose mobile visitors convert much less often than desktop visitors. With a small sample, pure randomization could by chance put more desktop visitors in one group and distort the comparison. To prevent this, block by device: split visitors into mobile and desktop, then randomize within each block. If a difference appears inside a block, you can be more confident that the button caused it and not the device.</p>
+
+  <h3>What could go wrong?</h3>
+  <p>Even a well-designed split can fail in practice. Watch for:</p>
+  <ul class="post-points">
+    <li><strong>Unequal exposure.</strong> One group sees the button more often than the other, for example because of a technical bug. The difference in exposure could be mistaken for an effect of the design.</li>
+    <li><strong>Missing data.</strong> If purchases are not recorded for part of one group, the comparison is distorted.</li>
+    <li><strong>Users who saw both versions.</strong> If the same person sees A on one device and B on another, the groups are no longer separate.</li>
+    <li><strong>Interference between users.</strong> One user's treatment can influence another user's behavior.</li>
+  </ul>
+  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly explain which group is the control and which is the treatment, how users are assigned, and what you are comparing. Also consider network effects, where one user's treatment can influence another user's behavior. For example, assigning interacting friends to different groups may introduce interference. In such cases, randomizing groups of related users together may be more appropriate.</p></div>
 
   <h3>Checklist for reducing bias</h3>
   <p>Before launching an A/B test, ask yourself:</p>
@@ -145,7 +185,7 @@
     <li>✅ Have I verified that the allocation matches the intended split?</li>
   </ul>
 
-  <h3>Step 5: Determine sample size and test duration</h3>
+  <h3 id="step-5" style="scroll-margin-top:90px">Step 5: Determine sample size and test duration</h3>
   <p>A test needs enough users to detect a meaningful effect. The required sample size depends on four factors:</p>
   <ul class="post-points">
     <li><strong>Significance level (α).</strong> The probability of a Type I error: concluding that a difference exists when the null hypothesis is true. It is commonly set at 5%.</li>
@@ -155,9 +195,9 @@
   </ul>
   <p>For example, with a baseline conversion rate of 5.0%, an MDE of 0.6 percentage points (5.0% → 5.6%), a significance level of 5%, and 80% power, you need approximately 22,000 users per group. If you want to detect a larger improvement of 1 percentage point (5.0% → 6.0%), approximately 8,000 users per group may be sufficient.</p>
   <p><strong>Duration</strong> depends on the required sample size and the time needed to capture representative user behavior. Estimate it in advance, taking into account traffic, purchase cycles, and weekly patterns. Run the experiment until the planned sample size and minimum duration are reached. Avoid stopping early simply because the results look promising: repeatedly checking results and stopping as soon as they become significant can increase the false-positive rate unless an appropriate sequential testing method is used.</p>
-  <div class="post-note"><p class="post-note-l">Pro tip</p><p>In interviews, clearly explain which group is the control and which is the treatment, how users are assigned, and what you are comparing. Also consider network effects, where one user's treatment can influence another user's behavior. For example, assigning interacting friends to different groups may introduce interference. In such cases, randomizing groups of related users together may be more appropriate.</p></div>
+  <p>With the sample size, the duration and the stopping rule fixed in advance, the experiment is fully planned. The next section looks at what happens once the data have been collected.</p>
 
-  <h2>Analyzing A/B test results</h2>
+  <h2 id="analyzing" style="scroll-margin-top:90px">Analyzing A/B test results</h2>
   <p>The question to ask: <em>"Did B perform better because of our change, is the improvement large enough to matter, and did it avoid causing other problems?"</em></p>
 
   <div class="post-table-wrap"><table class="post-table">
@@ -173,8 +213,11 @@
     </tbody>
   </table></div>
 
-  <h3>Measure the observed effect</h3>
-  <p>Imagine an online shop testing a redesigned checkout button. The experiment runs until both groups reach the planned sample size.</p>
+  <h3 id="validity" style="scroll-margin-top:90px">Check validity first</h3>
+  <p>Before looking at any results, verify that the experiment ran as planned: the split matches the intended allocation, there is no missing data, and no users saw both versions. If the experiment was not run correctly, the results cannot be trusted.</p>
+
+  <h3 id="observed-effect" style="scroll-margin-top:90px">Measure the observed effect</h3>
+  <p>Now suppose the experiment has run until both groups reached the planned sample size of 22,000 users. The results are:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Control (A)</th><th>Treatment (B)</th></tr></thead>
     <tbody>
@@ -184,24 +227,25 @@
     </tbody>
   </table></div>
   <p>The treatment group has a conversion rate 0.6 percentage points higher than the control group. But is this difference statistically significant, or could it be explained by random variation?</p>
-
-  <p>The estimated effect is the treatment conversion rate minus the control conversion rate:</p>
-  <p class="post-formula post-formula-plain"><strong>Difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
-
-  <h3>Effect size: absolute vs relative</h3>
+  <p>The estimated effect can be expressed in two ways:</p>
   <ul class="post-points">
-    <li><strong>Absolute improvement.</strong> The difference between the groups.</li>
-    <li><strong>Relative improvement.</strong> The percentage increase compared with the original.</li>
+    <li><strong>Absolute improvement.</strong> The difference between the groups, here +0.6 percentage points.</li>
+    <li><strong>Relative improvement.</strong> The percentage increase compared with the original, here +12%.</li>
   </ul>
-
+  <p class="post-formula post-formula-plain"><strong>Absolute difference = 5.6% − 5.0% = +0.6 percentage points</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Relative improvement = <span class="frac"><span>5.6% − 5.0%</span><span>5.0%</span></span> = +12%</strong></p>
+  <p>Both matter: the absolute difference shows the change in percentage points, while the relative improvement shows how large that change is compared with the original conversion rate.</p>
   <figure class="post-fig">
     <img src="images/ab-testing/chart-4-effect-size.svg" alt="Bars showing a conversion rate of 5.0 percent for control and 5.6 percent for treatment, an absolute difference of 0.6 percentage points and a relative improvement of 12 percent" loading="lazy" width="800" height="320">
     <figcaption><span>Chart 4</span> Illustrative numbers: the same result as an absolute and as a relative improvement.</figcaption>
   </figure>
-  <h3>Statistical significance and the p-value</h3>
-  <p>If there were actually no difference between A and B, how likely is it to observe a difference this large? If that is unlikely (commonly p &lt; 0.05), the difference is considered statistically significant.</p>
 
-  <h3>Confidence intervals</h3>
+  <h3 id="p-value" style="scroll-margin-top:90px">Statistical significance and the p-value</h3>
+  <p>If there were actually no difference between A and B, how likely is it to observe a difference this large? If that is unlikely (commonly p &lt; 0.05), the difference is considered statistically significant.</p>
+  <p>In our example, a two-sided z-test for two proportions gives p ≈ 0.005, well below the 5% threshold. We therefore reject the null hypothesis that the two conversion rates are equal. If the p-value had been above 0.05, we would fail to reject it, which is not the same as proving that the button has no effect.</p>
+  <p>Be careful with interpretation: the p-value is not the probability that the result occurred by chance, and it is not the probability that the null hypothesis is true.</p>
+
+  <h3 id="confidence-intervals" style="scroll-margin-top:90px">Confidence intervals</h3>
   <p>A confidence interval shows the range of plausible effects. It tells us, for example: based on this experiment, the true improvement is plausibly between 0.40% and 0.80%.</p>
 
   <figure class="post-fig">
@@ -259,9 +303,32 @@ Margin of error: 0.0042
   <p>The entire confidence interval lies above zero, indicating that the treatment group's conversion rate is statistically significantly higher at the 5% significance level, using the corresponding two-sided test.</p>
   <p>The interval also communicates uncertainty: although the observed improvement is 0.6 percentage points, the data are compatible with a range of positive effects.</p>
 
-  <h2>From statistical results to business decisions</h2>
-  <p>The results support rolling out the redesigned button, provided the improvement is commercially worthwhile and no guardrail metrics show unacceptable harm.</p>
-  <p>However, statistical significance does not automatically mean business success. The team should also consider implementation costs, expected additional conversions, revenue impact, and any unintended consequences.</p>
+  <h2 id="decisions" style="scroll-margin-top:90px">From statistical results to business decisions</h2>
+  <p>Statistical analysis is not the final objective. The business needs to decide what to do.</p>
+
+  <h3>Is the improvement meaningful?</h3>
+  <p>Statistical significance does not automatically mean business success. An increase of 0.6 percentage points means about 6 additional purchases per 1,000 checkout visitors. Whether that is worth it depends on the business. The team should consider:</p>
+  <ul class="post-points">
+    <li><strong>Additional purchases.</strong> How many extra conversions the change generates.</li>
+    <li><strong>Revenue and profit.</strong> What those purchases are worth.</li>
+    <li><strong>Costs.</strong> Implementation and maintenance of the new design.</li>
+    <li><strong>Persistence.</strong> Whether the improvement lasts after rollout.</li>
+  </ul>
+
+  <h3>Check the guardrail metrics</h3>
+  <p>Return to the metrics chosen in Step 3. The redesigned button might increase conversion while also increasing the payment error rate or reducing the average order value. A successful experiment meets its primary objective without unacceptable negative side effects.</p>
+
+  <h3>Make the decision</h3>
+  <p>In our example, the results support rolling out the redesigned button, provided the improvement is commercially worthwhile and no guardrail metrics show unacceptable harm. In general, there are three possible outcomes:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Result</th><th>Possible decision</th></tr></thead>
+    <tbody>
+      <tr><td>Positive effect, sufficiently valuable, guardrails acceptable</td><td>Roll out the change</td></tr>
+      <tr><td>Inconclusive result</td><td>Gather more evidence or reconsider the experiment</td></tr>
+      <tr><td>Negative effect or unacceptable harm</td><td>Reject or redesign the change</td></tr>
+    </tbody>
+  </table></div>
+  <p>An inconclusive result does not automatically mean the experiment should be extended. If the planned sample size has already been reached, additional data should only be collected under a new, prespecified analysis plan.</p>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaways</p>
     <ul class="post-points" style="margin:8px 0 0">
