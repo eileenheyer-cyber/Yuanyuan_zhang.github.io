@@ -1921,3 +1921,11 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post .post-toc details summary::-webkit-details-marker { display: none; }
 .post .post-toc details summary::after { content: ""; flex: none; width: 7px; height: 7px; margin-left: 2px; border-right: 1.6px solid var(--accent); border-bottom: 1.6px solid var(--accent); transform: rotate(45deg) translateY(-2px); transition: transform .15s; }
 .post .post-toc details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+
+.post .post-more { margin: 20px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-alt); }
+.post .post-more summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; font-weight: 600; color: var(--ink); cursor: pointer; list-style: none; }
+.post .post-more summary::-webkit-details-marker { display: none; }
+.post .post-more summary::after { content: ""; flex: none; width: 7px; height: 7px; border-right: 1.6px solid var(--accent); border-bottom: 1.6px solid var(--accent); transform: rotate(45deg) translateY(-2px); transition: transform .15s; }
+.post .post-more[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+.post .post-more-body { padding: 0 20px 8px; }
+.post .post-more-body .post-formula { background: var(--surface); }
