@@ -189,12 +189,15 @@ result = stats.ttest_ind_from_stats(
 print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <div class="post-more">
-    <p class="post-more-title">Where do the 68.4 degrees of freedom come from?</p>
-    <p>Welch’s t-test calculates the degrees of freedom from the data instead of assuming equal variances. First, find the variance of each group’s average:</p>
-    <p class="post-formula"><strong><span style="display:block;margin:<span style="display:block;">A (new page) = <span class="frac"><span>12<sup>2</sup></span><span>36</span></span> = <span class="frac"><span>144</span><span>36</span></span> = 4.00</span><span style="display:block;margin-top:14px;">B (old page) = <span class="frac"><span>10<sup>2</sup></span><span>40</span></span> = <span class="frac"><span>100</span><span>40</span></span> = 2.50</span></strong></p>
-    <p>Then put them into the formula:</p>
-    <p class="post-formula"><strong><span style="display:block;margin:<span style="display:block;">df = <span class="frac"><span>(A + B)<sup>2</sup></span><span><span class="frac"><span>A<sup>2</sup></span><span>n<sub>new</sub> − 1</span></span> + <span class="frac"><span>B<sup>2</sup></span><span>n<sub>old</sub> − 1</span></span></span></span></span><span style="display:block;margin-top:14px;">df = <span class="frac"><span>6.50<sup>2</sup></span><span><span class="frac"><span>4.00<sup>2</sup></span><span>35</span></span> + <span class="frac"><span>2.50<sup>2</sup></span><span>39</span></span></span></span> = <span class="frac"><span>42.25</span><span>0.617</span></span> ≈ 68.4</span></strong></p>
-    <p>A regular t-test would use 74 (40 + 36 − 2). Welch’s is slightly smaller when the groups differ in spread, so the test is a little more cautious.</p>
+    <p class="post-more-title">Welch’s t-test</p>
+    <p>Welch’s t-test is a statistical test used to compare the averages of two independent groups when we cannot assume that their populations have equal variances.</p>
+    <p>For example, we can use it to compare the average order values of customers using the old and new checkout pages.</p>
+    <p>The key difference is:</p>
+    <ul class="post-points post-points-color">
+      <li><strong>Student’s t-test:</strong> Assumes both populations have equal variances.</li>
+      <li><strong>Welch’s t-test:</strong> Does not require equal population variances.</li>
+    </ul>
+    <p>Welch’s t-test also calculates the degrees of freedom based on the sample sizes and variability of both groups. This is why our example gives 68.4 degrees of freedom rather than a whole number.</p>
   </div>
 
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
