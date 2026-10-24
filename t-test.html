@@ -202,28 +202,35 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   </div>
 
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
-  <p>The shop also tracked 30 customers who ordered both before and after the redesign. Now there are not two groups, but one group measured twice.</p>
-  <p>The key step is to calculate the change for each customer (after minus before). The test then works with these differences:</p>
+  <p>The shop tracked 30 customers who placed orders both before and after the checkout redesign. Instead of comparing two independent groups, we compare each customer’s order value across the two measurements.</p>
+  <p><strong>The key idea:</strong> Calculate the change for each customer by subtracting their order value before the redesign from their order value after it.</p>
+  <p>Our data gives us three values:</p>
   <ul class="post-points post-points-color">
     <li>Number of customers: n = 30</li>
-    <li>Mean difference: d&#772; = €3.60</li>
-    <li>Standard deviation of the differences: s<sub>d</sub> = €8.00</li>
+    <li>Mean change: d&#772; = €3.60</li>
+    <li>Standard deviation of the changes: s<sub>d</sub> = €8.00</li>
   </ul>
-  <p>A paired t-test is simply a one-sample t-test on these differences, with 0 as the reference value:</p>
+  <p>A paired t-test tests whether the average change differs significantly from zero. It is equivalent to a one-sample t-test applied to the individual differences.</p>
+  <p>The hypotheses are:</p>
   <ul class="post-points post-points-color">
-    <li><strong>H<sub>0</sub>:</strong> The population mean difference is 0: μ<sub>d</sub> = 0</li>
-    <li><strong>H<sub>1</sub>:</strong> The population mean difference is not 0: μ<sub>d</sub> ≠ 0</li>
+    <li><strong>H<sub>0</sub>:</strong> The population mean change is zero: μ<sub>d</sub> = 0</li>
+    <li><strong>H<sub>1</sub>:</strong> The population mean change is not zero: μ<sub>d</sub> ≠ 0</li>
   </ul>
-  <p class="post-formula"><strong>SE = <span class="frac"><span>s<sub>d</sub></span><span>√n</span></span> = <span class="frac"><span>8.00</span><span>√30</span></span> = 1.46</strong></p>
-  <p class="post-formula"><strong>t = <span class="frac"><span>d&#772;</span><span>SE</span></span> = <span class="frac"><span>3.60</span><span>1.46</span></span> = 2.46</strong></p>
-  <p>With df = n − 1 = 29, the two-sided p-value is approximately 0.020. Because 0.020 &lt; 0.05, we reject H<sub>0</sub>. The 95% confidence interval for the population mean difference is approximately €0.61 to €6.59.</p>
+  <p><em>Calculate the Result</em></p>
+  <p>The standard error measures how much the average change would vary across samples:</p>
+  <p class="post-formula"><strong>SE = <span class="frac"><span>s<sub>d</sub></span><span>√n</span></span> = <span class="frac"><span>8</span><span>√30</span></span> ≈ 1.46</strong></p>
+  <p>The t-statistic compares the observed average change with zero:</p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>d&#772;</span><span>SE</span></span> = <span class="frac"><span>3.60</span><span>1.46</span></span> ≈ 2.46</strong></p>
+  <p>With 29 degrees of freedom, the two-sided p-value is approximately 0.020.</p>
+  <p>Because p = 0.020 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order value changed. The estimated mean increase is €3.60, with a 95% confidence interval of approximately €0.61 to €6.59.</p>
   <figure class="post-fig">
     <img src="images/t-test/chart-6-paired-customers.svg" alt="Slope chart of 30 customers. Each thin blue line connects a customer's order value before and after the redesign. A thick red line connects the mean of 50.00 euros before to 53.60 euros after." loading="lazy">
     <figcaption><span>Chart 6</span> Customers differ a lot in what they spend, but most lines rise a little. The paired test looks at each customer’s own change, not at the spread between customers.</figcaption>
   </figure>
-  <p>Why does pairing matter? Customers differ a lot: some always spend around €20, others €90. This variation is in both measurements, so it cancels out when we look at each customer’s own change.</p>
-  <p>Now imagine we ignored the pairing and treated the 30 “before” orders and the 30 “after” orders as two independent groups. With order values varying by about €15 between customers, the same €3.60 difference would give t = 0.93 and p = 0.36, which is no evidence of a change at all. The data is the same; only the test is different.</p>
-  <div class="post-note"><p class="post-note-l">Pairing comes from the design, not from the result</p><p>Use a paired test only when each observation in one measurement has a natural partner in the other, such as the same customer, the same store or the same device. Do not pair observations afterwards just because it makes the p-value smaller.</p></div>
+  <p><em>Why Does Pairing Matter?</em></p>
+  <p>Customers have different spending habits. Some spend €20 per order, while others spend €90. When we compare the same customers before and after the redesign, we focus on how much each person changed rather than how much customers differ from one another.</p>
+  <p>This can make it easier to detect a change that would be harder to identify if we treated the measurements as two independent groups.</p>
+  <div class="post-note"><p class="post-note-l">Important</p><p>A statistically significant change does not automatically mean the redesign caused it. Other factors may also have influenced customer spending.</p></div>
   <p><em>Python</em></p>
   <pre class="post-code"><code>import numpy as np
 from scipy import stats
