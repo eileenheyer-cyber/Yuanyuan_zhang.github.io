@@ -54,24 +54,25 @@
   </div>
 
   <h2 id="what-it-measures" style="scroll-margin-top:90px">What a t-Test Measures</h2>
-  <p>Imagine two shops with the same average order value of €54.80.</p>
-  <p>In the first, almost every order is between €50 and €60. In the second, orders range from €10 to €200.</p>
-  <p>The average is identical. But the evidence behind that average is very different.</p>
-  <p>A €4.80 gap above the target is more convincing when orders are tightly clustered. When orders vary widely, the same gap could easily be explained by random sampling variation.</p>
-  <p>A t-test makes this comparison explicit. It relates the difference we observed to the amount of variation we would expect from random sampling:</p>
-  <p class="post-formula"><strong>t = <span class="frac"><span>observed difference</span><span>standard error</span></span></strong></p>
+  <p>Imagine two online shops. Both have an average order value of €54.80, but their orders look very different.</p>
   <ul class="post-points post-points-color">
-    <li><strong>Observed difference</strong> — the signal: how far the sample average is from the reference value, or how far two sample averages are from each other.</li>
-    <li><strong>Standard error</strong> — the noise: how much a sample average would typically vary from sample to sample.</li>
+    <li><strong>Shop A:</strong> Most orders are between €50 and €60.</li>
+    <li><strong>Shop B:</strong> Orders range from €10 to €200.</li>
   </ul>
-  <p>The standard error becomes smaller when we have more observations or less variability.</p>
-  <p>So:</p>
-  <p class="post-formula"><strong>Large difference + little noise → large |t| → stronger evidence against H<sub>0</sub></strong></p>
-  <p>The p-value then tells us how unusual a t-statistic this extreme would be if the null hypothesis were true.</p>
+  <p>Both shops have the same average, but Shop B has much greater variation in order values.</p>
   <figure class="post-fig">
-    <img src="images/t-test/chart-1-same-gap.svg" alt="Two strip plots of 36 order values each with the same mean of 54.80 euros and a dashed target line at 50 euros. In panel A the orders sit tightly around the mean. In panel B they are spread from about 28 to 118 euros." loading="lazy">
+    <img src="images/t-test/chart-1-same-gap.svg" alt="Two strip plots of 36 order values each with the same mean of 54.80 euros and a dashed target line at 50 euros. In Shop A the orders sit tightly around the mean. In Shop B they are spread from 10 to about 200 euros." loading="lazy">
     <figcaption><span>Chart 1</span> The same gap is more convincing when the observations are consistent.</figcaption>
   </figure>
+  <p>Now suppose the target average order value is €50. Both shops are €4.80 above the target. But is this difference large enough to suggest that the true average order value is different from €50, or could it be due to random variation in the orders collected?</p>
+  <p>A t-test helps answer this question by comparing the observed difference with the variation we would expect from random sampling.</p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>Observed difference</span><span>Standard error</span></span></strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>Observed difference:</strong> How far the sample average is from the target, or how far apart two sample averages are.</li>
+    <li><strong>Standard error:</strong> How much the sample average would typically vary across different samples.</li>
+  </ul>
+  <p>A larger difference and a smaller standard error produce a larger absolute t-value. This provides stronger evidence against the null hypothesis.</p>
+  <p>The p-value tells us how likely it would be to obtain a t-value at least as extreme as the one observed if the null hypothesis were true.</p>
 
   <h2 id="three-types" style="scroll-margin-top:90px">Three Types of t-Tests</h2>
   <p>At this point, the natural question is:</p>
