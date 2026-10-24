@@ -190,14 +190,13 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <div class="post-more">
     <p class="post-more-title">Welch’s t-test</p>
-    <p>Welch’s t-test is a statistical test used to compare the averages of two independent groups when we cannot assume that their populations have equal variances.</p>
-    <p>For example, we can use it to compare the average order values of customers using the old and new checkout pages.</p>
-    <p>The key difference is:</p>
+    <p>Welch’s t-test compares the averages of two independent groups when we cannot assume that their populations have equal variances. In our example, it compares the average order values of customers using the old and new checkout pages.</p>
+    <p>The key difference:</p>
     <ul class="post-points post-points-color">
       <li><strong>Student’s t-test:</strong> Assumes both populations have equal variances.</li>
-      <li><strong>Welch’s t-test:</strong> Does not require equal population variances.</li>
+      <li><strong>Welch’s t-test:</strong> Does not require equal population variances, which makes it the safer default.</li>
     </ul>
-    <p>Welch’s t-test also calculates the degrees of freedom based on the sample sizes and variability of both groups. This is why our example gives 68.4 degrees of freedom rather than a whole number.</p>
+    <p>Welch’s t-test calculates the degrees of freedom from the sample sizes and variability of both groups. This is why our example gives 68.4 degrees of freedom instead of the 74 (40 + 36 − 2) that Student’s t-test would use.</p>
   </div>
 
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
