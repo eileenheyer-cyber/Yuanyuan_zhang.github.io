@@ -72,6 +72,10 @@
     <li><strong>Standard error:</strong> How much the sample average would typically vary across different samples.</li>
   </ul>
   <p>A larger difference and a smaller standard error produce a larger absolute t-value. This provides stronger evidence against the null hypothesis.</p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-2-signal-vs-noise.svg" alt="Horizontal bars of the absolute t-value for the same 4.80 euro gap. Shop A with consistent orders reaches about 12, far beyond the dashed critical value of 2.03. Shop B with widely spread orders reaches about 0.7, well short of it." loading="lazy">
+    <figcaption><span>Chart 2</span> The same €4.80 gap gives very different evidence: with consistent orders it is far beyond the critical value, with widely spread orders it falls short.</figcaption>
+  </figure>
   <p>The p-value tells us how likely it would be to obtain a t-value at least as extreme as the one observed if the null hypothesis were true.</p>
 
   <h2 id="three-types" style="scroll-margin-top:90px">Three Types of t-Tests</h2>
@@ -113,8 +117,8 @@
   <p>For t = 2.40 and 35 degrees of freedom, the two-sided p-value is approximately 0.022.</p>
   <p>In other words, if the true population mean were actually €50, observing a t-statistic at least this extreme would be fairly unlikely.</p>
   <figure class="post-fig">
-    <img src="images/t-test/chart-2-t-distribution.svg" alt="Density curve of the t distribution with 35 degrees of freedom. The tails beyond the critical values of minus 2.03 and 2.03 are shaded. A red line marks the observed t of 2.40 inside the right rejection region." loading="lazy">
-    <figcaption><span>Chart 2</span> The observed t of 2.40 falls inside the rejection region, so a gap this large would be unusual if the population mean were €50.</figcaption>
+    <img src="images/t-test/chart-3-t-distribution.svg" alt="Density curve of the t distribution with 35 degrees of freedom. The tails beyond the critical values of minus 2.03 and 2.03 are shaded. A red line marks the observed t of 2.40 inside the right rejection region." loading="lazy">
+    <figcaption><span>Chart 3</span> The observed t of 2.40 falls inside the rejection region, so a gap this large would be unusual if the population mean were €50.</figcaption>
   </figure>
   <p><em>Step 4: Draw a conclusion</em></p>
   <p>Because:</p>
@@ -159,8 +163,8 @@ ci = (x_bar - t_crit * se, x_bar + t_crit * se)</code></pre>
   <p>Because 0.026 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order values differ. The 95% confidence interval for the difference is approximately €0.71 to €10.89, which excludes 0.</p>
   <p>Student’s t-test would give almost the same result here (t = 2.30, p = 0.024), because the two standard deviations are similar. The choice matters more when the groups differ a lot in size and variability.</p>
   <figure class="post-fig">
-    <img src="images/t-test/chart-3-two-groups.svg" alt="Two group averages with 95 percent confidence intervals: 49.00 euros for the old checkout page and 54.80 euros for the new page. The intervals overlap slightly." loading="lazy">
-    <figcaption><span>Chart 3</span> The intervals of the two groups overlap a little, but that does not settle the question. The test looks at the difference between the averages, and its interval (€0.71 to €10.89) excludes 0.</figcaption>
+    <img src="images/t-test/chart-4-two-groups.svg" alt="Two group averages with 95 percent confidence intervals: 49.00 euros for the old checkout page and 54.80 euros for the new page. The intervals overlap slightly." loading="lazy">
+    <figcaption><span>Chart 4</span> The intervals of the two groups overlap a little, but that does not settle the question. The test looks at the difference between the averages, and its interval (€0.71 to €10.89) excludes 0.</figcaption>
   </figure>
   <p><em>Python</em></p>
   <pre class="post-code"><code>from scipy import stats
@@ -190,8 +194,8 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p class="post-formula"><strong>t = <span class="frac"><span>d&#772;</span><span>SE</span></span> = <span class="frac"><span>3.60</span><span>1.46</span></span> = 2.46</strong></p>
   <p>With df = n − 1 = 29, the two-sided p-value is approximately 0.020. Because 0.020 &lt; 0.05, we reject H<sub>0</sub>. The 95% confidence interval for the population mean difference is approximately €0.61 to €6.59.</p>
   <figure class="post-fig">
-    <img src="images/t-test/chart-4-paired-customers.svg" alt="Slope chart of 30 customers. Each thin blue line connects a customer's order value before and after the redesign. A thick red line connects the mean of 50.00 euros before to 53.60 euros after." loading="lazy">
-    <figcaption><span>Chart 4</span> Customers differ a lot in what they spend, but most lines rise a little. The paired test looks at each customer’s own change, not at the spread between customers.</figcaption>
+    <img src="images/t-test/chart-5-paired-customers.svg" alt="Slope chart of 30 customers. Each thin blue line connects a customer's order value before and after the redesign. A thick red line connects the mean of 50.00 euros before to 53.60 euros after." loading="lazy">
+    <figcaption><span>Chart 5</span> Customers differ a lot in what they spend, but most lines rise a little. The paired test looks at each customer’s own change, not at the spread between customers.</figcaption>
   </figure>
   <p>Why does pairing matter? Customers differ a lot: some always spend around €20, others €90. This variation is in both measurements, so it cancels out when we look at each customer’s own change.</p>
   <p>Now imagine we ignored the pairing and treated the 30 “before” orders and the 30 “after” orders as two independent groups. With order values varying by about €15 between customers, the same €3.60 difference would give t = 0.93 and p = 0.36, which is no evidence of a change at all. The data is the same; only the test is different.</p>
@@ -223,8 +227,8 @@ ci = (d_bar - t_crit * se, d_bar + t_crit * se)</code></pre>
   <h2 id="choosing" style="scroll-margin-top:90px">How to Choose the Right t-Test</h2>
   <p>Two questions are enough to pick the right test: <em>What are you comparing?</em> and, if there are two sets of measurements, <em>are they linked?</em></p>
   <figure class="post-fig">
-    <img src="images/t-test/chart-5-decision-tree.svg" alt="Decision tree. One group against a known value leads to the one-sample t-test. Two sets of measurements lead to a question: if the same customers were measured twice, use the paired t-test, otherwise the two-sample t-test with Welch's correction. Three or more groups lead to ANOVA." loading="lazy">
-    <figcaption><span>Chart 5</span> The data structure decides the test, not the result you hope for. Linked measurements need a paired test; three or more groups need <a href="anova.html">ANOVA</a>.</figcaption>
+    <img src="images/t-test/chart-6-decision-tree.svg" alt="Decision tree. One group against a known value leads to the one-sample t-test. Two sets of measurements lead to a question: if the same customers were measured twice, use the paired t-test, otherwise the two-sample t-test with Welch's correction. Three or more groups lead to ANOVA." loading="lazy">
+    <figcaption><span>Chart 6</span> The data structure decides the test, not the result you hope for. Linked measurements need a paired test; three or more groups need <a href="anova.html">ANOVA</a>.</figcaption>
   </figure>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to Explain It to Stakeholders</h2>
