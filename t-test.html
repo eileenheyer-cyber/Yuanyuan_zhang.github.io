@@ -192,7 +192,7 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Welch’s t-test</p>
-    <p>Welch’s t-test compares the averages of two independent groups when we cannot assume that their populations have equal variances. In our example, it compares the average order values of customers using the old and new checkout pages.</p>
+    <p>Welch’s t-test compares the averages of two independent groups when we cannot assume that their populations have equal variances.</p>
     <p>The key difference:</p>
     <ul class="post-points post-points-color">
       <li><strong>Student’s t-test:</strong> Assumes both populations have equal variances.</li>
