@@ -79,20 +79,22 @@
   <p>The p-value tells us how likely it would be to obtain a t-value at least as extreme as the one observed if the null hypothesis were true.</p>
 
   <h2 id="three-types" style="scroll-margin-top:90px">Three Types of t-Tests</h2>
-  <p>At this point, the natural question is:</p>
-  <p>What exactly are we comparing?</p>
-  <p>That determines which t-test to use.</p>
+  <p>The right t-test depends on what you want to compare.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Test</th><th>Question</th><th>Example</th></tr></thead>
     <tbody>
-      <tr><td>One&#8209;sample</td><td>Does one population mean differ from a known value?</td><td>Is average order value different from the €50 target?</td></tr>
-      <tr><td>Two&#8209;sample</td><td>Do two independent groups have different population means?</td><td>Do customers using the new checkout spend differently from those using the old one?</td></tr>
-      <tr><td>Paired</td><td>Does the mean change between two measurements of the same units?</td><td>Did the same customers spend differently before and after the redesign?</td></tr>
+      <tr><td><strong>One-sample t-test</strong></td><td>Is a population mean different from a target value?</td><td>Is the average order value different from €50?</td></tr>
+      <tr><td><strong>Independent two-sample t-test</strong></td><td>Are the population means of two independent groups different?</td><td>Do customers using the new checkout spend differently from customers using the old checkout?</td></tr>
+      <tr><td><strong>Paired t-test</strong></td><td>Is the average difference between two related measurements different from zero?</td><td>Did the same customers spend differently before and after the redesign?</td></tr>
     </tbody>
   </table></div>
-  <p>The key distinction is therefore not simply the number of groups.</p>
-  <p>It is:</p>
-  <p>What are the observations, and how are they related to each other?</p>
+  <p><strong>How do you choose?</strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>One group vs. a target:</strong> Use a one-sample t-test.</li>
+    <li><strong>Two independent groups:</strong> Use an independent two-sample t-test.</li>
+    <li><strong>The same people measured twice, or matched pairs:</strong> Use a paired t-test.</li>
+  </ul>
+  <p>The key is to look at how your data was collected. Were you comparing one group with a target, two separate groups, or two measurements linked to the same people?</p>
   <h3 id="one-sample" style="scroll-margin-top:90px">One-Sample t-Test: Is Our Average Order Value Different From the Target?</h3>
   <p>Your shop has 36 orders after the redesign:</p>
   <ul class="post-points post-points-color">
