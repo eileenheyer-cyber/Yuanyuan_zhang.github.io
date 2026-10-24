@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261024e">
+  <link rel="stylesheet" href="style.css?v=20261024f">
 </head>
 <body>
 
@@ -190,8 +190,8 @@ result = stats.ttest_ind_from_stats(
 
 print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
-  <div class="post-more">
-    <p class="post-more-title">Welch’s t-test</p>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Welch’s t-test</p>
     <p>Welch’s t-test compares the averages of two independent groups when we cannot assume that their populations have equal variances. In our example, it compares the average order values of customers using the old and new checkout pages.</p>
     <p>The key difference:</p>
     <ul class="post-points post-points-color">
