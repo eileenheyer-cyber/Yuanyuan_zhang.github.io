@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261024b">
+  <link rel="stylesheet" href="style.css?v=20261024c">
 </head>
 <body>
 
@@ -190,17 +190,11 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <div class="post-more">
     <p class="post-more-title">Where do the 68.4 degrees of freedom come from?</p>
-    <div>
-      <p>Welch’s t-test does not assume equal variances, so it calculates the degrees of freedom from the data. First, find the variance of each group’s average:</p>
-      <p>New page:</p>
-      <p class="post-formula"><strong>A = <span class="frac"><span>12<sup>2</sup></span><span>36</span></span> = <span class="frac"><span>144</span><span>36</span></span> = 4.00</strong></p>
-      <p>Old page:</p>
-      <p class="post-formula"><strong>B = <span class="frac"><span>10<sup>2</sup></span><span>40</span></span> = <span class="frac"><span>100</span><span>40</span></span> = 2.50</strong></p>
-      <p>Then put them into the formula:</p>
-      <p class="post-formula"><strong>df = <span class="frac"><span>(A + B)<sup>2</sup></span><span><span class="frac"><span>A<sup>2</sup></span><span>n<sub>new</sub> − 1</span></span> + <span class="frac"><span>B<sup>2</sup></span><span>n<sub>old</sub> − 1</span></span></span></span></strong></p>
-      <p class="post-formula"><strong>df = <span class="frac"><span>6.50<sup>2</sup></span><span><span class="frac"><span>4.00<sup>2</sup></span><span>35</span></span> + <span class="frac"><span>2.50<sup>2</sup></span><span>39</span></span></span></span> = <span class="frac"><span>42.25</span><span>0.617</span></span> ≈ 68.4</strong></p>
-      <p>A regular t-test would use 74 degrees of freedom (40 + 36 − 2). Welch’s gives a slightly smaller number when the groups differ in spread, which makes the test a little more cautious.</p>
-    </div>
+    <p>Welch’s t-test calculates the degrees of freedom from the data instead of assuming equal variances. First, find the variance of each group’s average:</p>
+    <p class="post-formula"><strong><span style="display:block;margin:<span style="display:block;">A (new page) = <span class="frac"><span>12<sup>2</sup></span><span>36</span></span> = <span class="frac"><span>144</span><span>36</span></span> = 4.00</span><span style="display:block;margin-top:14px;">B (old page) = <span class="frac"><span>10<sup>2</sup></span><span>40</span></span> = <span class="frac"><span>100</span><span>40</span></span> = 2.50</span></strong></p>
+    <p>Then put them into the formula:</p>
+    <p class="post-formula"><strong><span style="display:block;margin:<span style="display:block;">df = <span class="frac"><span>(A + B)<sup>2</sup></span><span><span class="frac"><span>A<sup>2</sup></span><span>n<sub>new</sub> − 1</span></span> + <span class="frac"><span>B<sup>2</sup></span><span>n<sub>old</sub> − 1</span></span></span></span></span><span style="display:block;margin-top:14px;">df = <span class="frac"><span>6.50<sup>2</sup></span><span><span class="frac"><span>4.00<sup>2</sup></span><span>35</span></span> + <span class="frac"><span>2.50<sup>2</sup></span><span>39</span></span></span></span> = <span class="frac"><span>42.25</span><span>0.617</span></span> ≈ 68.4</span></strong></p>
+    <p>A regular t-test would use 74 (40 + 36 − 2). Welch’s is slightly smaller when the groups differ in spread, so the test is a little more cautious.</p>
   </div>
 
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
