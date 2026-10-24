@@ -139,17 +139,17 @@
   <pre class="post-code"><code>import numpy as np
 from scipy import stats
 
-# Our sample: number of orders, sample mean, sample standard deviation, target
+# Sample: orders, mean, standard deviation, target
 n, x_bar, s, mu_0 = 36, 54.80, 12.00, 50
 
-se = s / np.sqrt(n)                  # standard error = 2.00
-t = (x_bar - mu_0) / se              # t-statistic = 2.40
-df = n - 1                           # degrees of freedom = 35
-p = 2 * stats.t.sf(abs(t), df)       # two-sided p-value = 0.022
+se = s / np.sqrt(n)                # standard error = 2.00
+t = (x_bar - mu_0) / se            # t-statistic = 2.40
+df = n - 1                         # degrees of freedom = 35
+p = 2 * stats.t.sf(abs(t), df)     # two-sided p-value = 0.022
 
-t_crit = stats.t.ppf(0.975, df)      # critical value for a 95% interval = 2.03
-ci = (x_bar - t_crit * se,           # lower limit of the 95% confidence interval = 50.74
-      x_bar + t_crit * se)           # upper limit = 58.86</code></pre>
+t_crit = stats.t.ppf(0.975, df)    # critical value (95%) = 2.03
+ci = (x_bar - t_crit * se,         # lower limit of 95% CI = 50.74
+      x_bar + t_crit * se)         # upper limit of 95% CI = 58.86</code></pre>
 
   <h3 id="two-sample" style="scroll-margin-top:90px">Two-Sample t-Test: Old vs. New Checkout Page</h3>
   <p>Now let’s compare the average order value before and after the checkout redesign. The two groups contain different customers, so we treat them as independent samples.</p>
