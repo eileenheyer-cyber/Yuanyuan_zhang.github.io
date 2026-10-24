@@ -191,14 +191,14 @@ result = stats.ttest_ind_from_stats(
 print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <div class="post-note post-note-plain post-note-concept">
-    <p class="post-note-l">Welch’s t-test</p>
-    <p>Welch’s t-test compares the averages of two independent groups when we cannot assume that their populations have equal variances.</p>
+    <p class="post-note-l">Welch’s t-Test</p>
+    <p>Welch’s t-test compares the means of two independent groups without assuming that their populations have equal variances.</p>
     <p>The key difference:</p>
     <ul class="post-points post-points-color">
-      <li><strong>Student’s t-test:</strong> Assumes both populations have equal variances.</li>
-      <li><strong>Welch’s t-test:</strong> Does not require equal population variances, which makes it the safer default.</li>
+      <li><strong>Student’s t-test:</strong> Assumes equal population variances.</li>
+      <li><strong>Welch’s t-test:</strong> Allows unequal population variances, making it a safer default in most situations.</li>
     </ul>
-    <p>Welch’s t-test calculates the degrees of freedom from the sample sizes and variability of both groups. This is why our example gives 68.4 degrees of freedom instead of the 74 (40 + 36 − 2) that Student’s t-test would use.</p>
+    <p>Welch’s t-test adjusts the degrees of freedom based on the sample sizes and variability of both groups. In our example, this results in 68.4 degrees of freedom, compared with 74 (40 + 36 − 2) under Student’s t-test. Unlike Student’s t-test, Welch’s method can produce non-integer degrees of freedom.</p>
   </div>
 
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
