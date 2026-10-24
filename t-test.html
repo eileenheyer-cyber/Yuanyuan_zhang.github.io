@@ -138,20 +138,108 @@ p = 2 * stats.t.sf(abs(t), df)
 t_crit = stats.t.ppf(0.975, df)
 ci = (x_bar - t_crit * se, x_bar + t_crit * se)</code></pre>
   <h3 id="two-sample" style="scroll-margin-top:90px">Two-Sample t-Test: Old vs. New Checkout Page</h3>
-  <p>[Text follows]</p>
+  <p>Now suppose the shop also has data from the old checkout page. Every order comes from a different customer, so the two groups are independent:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Old page:</strong> n = 40, x&#772; = €49.00, s = €10.00</li>
+    <li><strong>New page:</strong> n = 36, x&#772; = €54.80, s = €12.00</li>
+  </ul>
+  <p>The classic version, Student’s t-test, assumes that both groups have the same variance. In practice, that is rarely guaranteed. Here, the standard deviations are already different: €12.00 for the new page and €10.00 for the old one.</p>
+  <p><strong>Welch’s t-test</strong> does not make this assumption and rarely performs worse, so it is the safer default.</p>
+  <p>The hypotheses compare the two population means:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>H<sub>0</sub>:</strong> The population mean order values are equal: μ<sub>new</sub> = μ<sub>old</sub></li>
+    <li><strong>H<sub>1</sub>:</strong> The population mean order values differ: μ<sub>new</sub> ≠ μ<sub>old</sub></li>
+  </ul>
+  <p>The standard error now combines the noise of both groups:</p>
+  <p class="post-formula"><strong>SE = √(<span class="frac"><span>s<sub>new</sub><sup>2</sup></span><span>n<sub>new</sub></span></span> + <span class="frac"><span>s<sub>old</sub><sup>2</sup></span><span>n<sub>old</sub></span></span>) = √(<span class="frac"><span>12<sup>2</sup></span><span>36</span></span> + <span class="frac"><span>10<sup>2</sup></span><span>40</span></span>) = √(4.00 + 2.50) = 2.55</strong></p>
+  <p>The t-statistic divides the difference between the two sample averages by this standard error:</p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>x&#772;<sub>new</sub> − x&#772;<sub>old</sub></span><span>SE</span></span> = <span class="frac"><span>54.80 − 49.00</span><span>2.55</span></span> = 2.27</strong></p>
+  <p>Welch’s test adjusts the degrees of freedom to the variances and group sizes. Here, software calculates about 68.4 degrees of freedom, and the two-sided p-value is approximately 0.026.</p>
+  <p>Because 0.026 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order values differ. The 95% confidence interval for the difference is approximately €0.71 to €10.89, which excludes 0.</p>
+  <p>Student’s t-test would give almost the same result here (t = 2.30, p = 0.024), because the two standard deviations are similar. The choice matters more when the groups differ a lot in size and variability.</p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-3-two-groups.svg" alt="Two group averages with 95 percent confidence intervals: 49.00 euros for the old checkout page and 54.80 euros for the new page. The intervals overlap slightly." loading="lazy">
+    <figcaption><span>Chart 3</span> The intervals of the two groups overlap a little, but that does not settle the question. The test looks at the difference between the averages, and its interval (€0.71 to €10.89) excludes 0.</figcaption>
+  </figure>
+  <p><em>Python</em></p>
+  <pre class="post-code"><code>from scipy import stats
+
+result = stats.ttest_ind_from_stats(
+    mean1=54.80, std1=12.00, nobs1=36,   # new page
+    mean2=49.00, std2=10.00, nobs2=40,   # old page
+    equal_var=False                      # Welch's t-test
+)
+
+print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
+  <p>With the raw order values in two columns, <code>stats.ttest_ind(new, old, equal_var=False)</code> gives the same result.</p>
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
-  <p>[Text follows]</p>
+  <p>The shop also tracked 30 customers who ordered both before and after the redesign. Now there are not two groups, but one group measured twice.</p>
+  <p>The key step is to calculate the change for each customer (after minus before). The test then works with these differences:</p>
+  <ul class="post-points post-points-color">
+    <li>Number of customers: n = 30</li>
+    <li>Mean difference: d&#772; = €3.60</li>
+    <li>Standard deviation of the differences: s<sub>d</sub> = €8.00</li>
+  </ul>
+  <p>A paired t-test is simply a one-sample t-test on these differences, with 0 as the reference value:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>H<sub>0</sub>:</strong> The population mean difference is 0: μ<sub>d</sub> = 0</li>
+    <li><strong>H<sub>1</sub>:</strong> The population mean difference is not 0: μ<sub>d</sub> ≠ 0</li>
+  </ul>
+  <p class="post-formula"><strong>SE = <span class="frac"><span>s<sub>d</sub></span><span>√n</span></span> = <span class="frac"><span>8.00</span><span>√30</span></span> = 1.46</strong></p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>d&#772;</span><span>SE</span></span> = <span class="frac"><span>3.60</span><span>1.46</span></span> = 2.46</strong></p>
+  <p>With df = n − 1 = 29, the two-sided p-value is approximately 0.020. Because 0.020 &lt; 0.05, we reject H<sub>0</sub>. The 95% confidence interval for the population mean difference is approximately €0.61 to €6.59.</p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-4-paired-customers.svg" alt="Slope chart of 30 customers. Each thin blue line connects a customer's order value before and after the redesign. A thick red line connects the mean of 50.00 euros before to 53.60 euros after." loading="lazy">
+    <figcaption><span>Chart 4</span> Customers differ a lot in what they spend, but most lines rise a little. The paired test looks at each customer’s own change, not at the spread between customers.</figcaption>
+  </figure>
+  <p>Why does pairing matter? Customers differ a lot: some always spend around €20, others €90. This variation is in both measurements, so it cancels out when we look at each customer’s own change.</p>
+  <p>Now imagine we ignored the pairing and treated the 30 “before” orders and the 30 “after” orders as two independent groups. With order values varying by about €15 between customers, the same €3.60 difference would give t = 0.93 and p = 0.36, which is no evidence of a change at all. The data is the same; only the test is different.</p>
+  <div class="post-note"><p class="post-note-l">Pairing comes from the design, not from the result</p><p>Use a paired test only when each observation in one measurement has a natural partner in the other, such as the same customer, the same store or the same device. Do not pair observations afterwards just because it makes the p-value smaller.</p></div>
+  <p><em>Python</em></p>
+  <pre class="post-code"><code>import numpy as np
+from scipy import stats
+
+n, d_bar, s_d = 30, 3.60, 8.00
+
+se = s_d / np.sqrt(n)
+t = d_bar / se
+df = n - 1
+p = 2 * stats.t.sf(abs(t), df)         # 0.020
+
+t_crit = stats.t.ppf(0.975, df)
+ci = (d_bar - t_crit * se, d_bar + t_crit * se)</code></pre>
+  <p>With the raw order values of the same customers, <code>stats.ttest_rel(after, before)</code> gives the same result.</p>
 
   <h2 id="assumptions" style="scroll-margin-top:90px">Assumptions and What to Do When They Fail</h2>
-  <p>[Text follows]</p>
+  <p>A t-test gives trustworthy p-values only if its assumptions are reasonably met. Four checks cover most business data:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Independent observations.</strong> Each value should not influence another. If one customer places five orders and all five enter the sample as separate observations, the sample behaves as if it were larger than it is. Fix: average the orders per customer first, or use a paired design when you compare the same customers over time.</li>
+    <li><strong>Roughly normal averages.</strong> The test needs the sample average to be roughly normally distributed. With about 30 or more observations, the <a href="central-limit-theorem.html">Central Limit Theorem</a> usually takes care of this, even if individual orders are skewed. With smaller samples, check a histogram or a Q-Q plot (see <a href="normal-distribution.html">Normal Distribution</a>). In a paired test, this applies to the differences, not to the raw values.</li>
+    <li><strong>No dominating outliers.</strong> Order values are often right-skewed. A single €2,000 order can pull an average and inflate the standard deviation. First check whether it is a real order. If the skew is strong and the sample is small, use a log transformation or a rank-based test: the Mann-Whitney U test for two independent groups, or the Wilcoxon signed-rank test for paired data.</li>
+    <li><strong>Equal variances (Student’s version only).</strong> Student’s two-sample t-test assumes equal variances in both groups. Welch’s t-test removes this assumption, which is why it is the default.</li>
+  </ul>
 
   <h2 id="choosing" style="scroll-margin-top:90px">How to Choose the Right t-Test</h2>
-  <p>[Text follows]</p>
+  <p>Two questions are enough to pick the right test: <em>What are you comparing?</em> and, if there are two sets of measurements, <em>are they linked?</em></p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-5-decision-tree.svg" alt="Decision tree. One group against a known value leads to the one-sample t-test. Two sets of measurements lead to a question: if the same customers were measured twice, use the paired t-test, otherwise the two-sample t-test with Welch's correction. Three or more groups lead to ANOVA." loading="lazy">
+    <figcaption><span>Chart 5</span> The data structure decides the test, not the result you hope for. Linked measurements need a paired test; three or more groups need <a href="anova.html">ANOVA</a>.</figcaption>
+  </figure>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to Explain It to Stakeholders</h2>
-  <p>[Text follows]</p>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“In the first week after the redesign, the average order value was €54.80, compared with our target of €50. A one-sample t-test shows that this gap is unlikely to be random variation (t = 2.40, p = 0.022).”</p>
+    <p class="post-callout-q">“Compared with the old checkout page, the new one has a higher average order value, by €5.80 per order. A two-sample t-test finds statistically significant evidence of a difference (p = 0.026), but the plausible range is wide: between about €0.70 and €10.90 per order. Among 30 customers who ordered both before and after, the average order grew by €3.60 (p = 0.020).”</p>
+    <p class="post-callout-q">“All three tests point in the same direction, but they show a difference, not its cause. Seasonality or a promotion could play a role. To know whether the redesign really drives higher order values, we need an A/B test.”</p>
+  </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key Takeaway</p><p>[Text follows]</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key Takeaways</p>
+  <ul class="post-points post-points-color" style="margin:10px 0 0">
+    <li><strong>A t-test compares signal with noise.</strong> It divides the observed difference by the standard error to judge whether the difference is larger than random variation would produce.</li>
+    <li><strong>The data structure picks the test.</strong> One group against a known value: one-sample. Two independent groups: two-sample (Welch). The same units measured twice: paired.</li>
+    <li><strong>Check the assumptions.</strong> Independence, roughly normal averages and no dominating outliers matter more than the exact formula.</li>
+    <li><strong>Significance is not impact.</strong> A small p-value shows that a difference is unlikely to be random, not that it is large, profitable or caused by the change.</li>
+  </ul></div>
 
   <h2>Related posts</h2>
   <ul class="post-points post-points-color">
