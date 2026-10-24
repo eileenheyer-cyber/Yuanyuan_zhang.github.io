@@ -35,7 +35,10 @@
   <p class="overline">Inference &amp; experiments</p>
   <h1 class="post-title">The t-Test: Comparing Averages in One or Two Groups</h1>
 
-  <p>[Intro text follows]</p>
+  <p>Your online shop redesigned its checkout page. In the first week after the launch, 36 orders came in with an average order value of €54.80. The target has always been €50.</p>
+  <p>Is that €4.80 difference a real shift—or could it simply be random variation in the orders you happened to receive?</p>
+  <p>A t-test helps answer exactly this question: is a difference between an average and a reference value, or between two averages, larger than we would reasonably expect from random variation?</p>
+  <p>In this post, we’ll look at the three main versions of the t-test and, more importantly, when each one is the right tool. For how the t-test differs from the z-test, see <a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
 
@@ -51,12 +54,89 @@
   </div>
 
   <h2 id="what-it-measures" style="scroll-margin-top:90px">What a t-Test Measures</h2>
-  <p>[Text follows]</p>
+  <p>Imagine two shops with the same average order value of €54.80.</p>
+  <p>In the first, almost every order is between €50 and €60. In the second, orders range from €10 to €200.</p>
+  <p>The average is identical. But the evidence behind that average is very different.</p>
+  <p>A €4.80 gap above the target is more convincing when orders are tightly clustered. When orders vary widely, the same gap could easily be explained by random sampling variation.</p>
+  <p>A t-test makes this comparison explicit. It relates the difference we observed to the amount of variation we would expect from random sampling:</p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>observed difference</span><span>standard error</span></span></strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>Observed difference</strong> — the signal: how far the sample average is from the reference value, or how far two sample averages are from each other.</li>
+    <li><strong>Standard error</strong> — the noise: how much a sample average would typically vary from sample to sample.</li>
+  </ul>
+  <p>The standard error becomes smaller when we have more observations or less variability.</p>
+  <p>So:</p>
+  <p class="post-formula"><strong>Large difference + little noise → large |t| → stronger evidence against H<sub>0</sub></strong></p>
+  <p>The p-value then tells us how unusual a t-statistic this extreme would be if the null hypothesis were true.</p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-1-same-gap.svg" alt="Two strip plots of 36 order values each with the same mean of 54.80 euros and a dashed target line at 50 euros. In panel A the orders sit tightly around the mean. In panel B they are spread from about 28 to 118 euros." loading="lazy">
+    <figcaption><span>Chart 1</span> The same gap is more convincing when the observations are consistent.</figcaption>
+  </figure>
 
   <h2 id="three-types" style="scroll-margin-top:90px">Three Types of t-Tests</h2>
-  <p>[Text follows]</p>
+  <p>At this point, the natural question is:</p>
+  <p>What exactly are we comparing?</p>
+  <p>That determines which t-test to use.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Test</th><th>Question</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>One&#8209;sample</td><td>Does one population mean differ from a known value?</td><td>Is average order value different from the €50 target?</td></tr>
+      <tr><td>Two&#8209;sample</td><td>Do two independent groups have different population means?</td><td>Do customers using the new checkout spend differently from those using the old one?</td></tr>
+      <tr><td>Paired</td><td>Does the mean change between two measurements of the same units?</td><td>Did the same customers spend differently before and after the redesign?</td></tr>
+    </tbody>
+  </table></div>
+  <p>The key distinction is therefore not simply the number of groups.</p>
+  <p>It is:</p>
+  <p>What are the observations, and how are they related to each other?</p>
   <h3 id="one-sample" style="scroll-margin-top:90px">One-Sample t-Test: Is Our Average Order Value Different From the Target?</h3>
-  <p>[Text follows]</p>
+  <p>Your shop has 36 orders after the redesign:</p>
+  <ul class="post-points post-points-color">
+    <li>Sample mean: x&#772; = €54.80</li>
+    <li>Sample standard deviation: s = €12.00</li>
+    <li>Target: μ<sub>0</sub> = €50</li>
+  </ul>
+  <p><em>Step 1: State the hypotheses</em></p>
+  <ul class="post-points post-points-color">
+    <li><strong>H<sub>0</sub>:</strong> The population mean order value equals the target: μ = 50</li>
+    <li><strong>H<sub>1</sub>:</strong> The population mean order value differs from the target: μ ≠ 50</li>
+  </ul>
+  <p><em>Step 2: Calculate the test statistic</em></p>
+  <p>First, calculate the standard error:</p>
+  <p class="post-formula"><strong>SE = <span class="frac"><span>s</span><span>√n</span></span> = <span class="frac"><span>12</span><span>√36</span></span> = 2.00</strong></p>
+  <p>Then calculate the t-statistic:</p>
+  <p class="post-formula"><strong>t = <span class="frac"><span>x&#772; − μ<sub>0</sub></span><span>SE</span></span> = <span class="frac"><span>54.80 − 50</span><span>2.00</span></span> = 2.40</strong></p>
+  <p>So our observed mean is 2.4 standard errors above the target.</p>
+  <p><em>Step 3: Find the p-value</em></p>
+  <p>Because we estimated the population standard deviation from the sample, we use a t-distribution with:</p>
+  <p class="post-formula"><strong>df = n − 1 = 35</strong></p>
+  <p>For t = 2.40 and 35 degrees of freedom, the two-sided p-value is approximately 0.022.</p>
+  <p>In other words, if the true population mean were actually €50, observing a t-statistic at least this extreme would be fairly unlikely.</p>
+  <figure class="post-fig">
+    <img src="images/t-test/chart-2-t-distribution.svg" alt="Density curve of the t distribution with 35 degrees of freedom. The tails beyond the critical values of minus 2.03 and 2.03 are shaded. A red line marks the observed t of 2.40 inside the right rejection region." loading="lazy">
+    <figcaption><span>Chart 2</span> The observed t of 2.40 falls inside the rejection region, so a gap this large would be unusual if the population mean were €50.</figcaption>
+  </figure>
+  <p><em>Step 4: Draw a conclusion</em></p>
+  <p>Because:</p>
+  <p class="post-formula"><strong>p = 0.022 &lt; 0.05</strong></p>
+  <p>we reject H<sub>0</sub>.</p>
+  <p>There is statistically significant evidence that the population mean order value differs from €50.</p>
+  <p>The 95% confidence interval is approximately:</p>
+  <p class="post-formula"><strong>€50.74 ≤ μ ≤ €58.86</strong></p>
+  <p>Because €50 is outside this interval, the confidence interval leads to the same conclusion as the hypothesis test.</p>
+  <div class="post-note"><p class="post-note-l">Statistical significance ≠ business significance.</p><p>The estimated difference is €4.80 per order. Whether that is meaningful or profitable depends on margins, costs, and—most importantly—whether the checkout redesign actually caused the change. That’s where an <a href="ab-testing.html">A/B test</a> comes in.</p></div>
+  <p><em>Python</em></p>
+  <pre class="post-code"><code>import numpy as np
+from scipy import stats
+
+n, x_bar, s, mu_0 = 36, 54.80, 12.00, 50
+
+se = s / np.sqrt(n)
+t = (x_bar - mu_0) / se
+df = n - 1
+p = 2 * stats.t.sf(abs(t), df)
+
+t_crit = stats.t.ppf(0.975, df)
+ci = (x_bar - t_crit * se, x_bar + t_crit * se)</code></pre>
   <h3 id="two-sample" style="scroll-margin-top:90px">Two-Sample t-Test: Old vs. New Checkout Page</h3>
   <p>[Text follows]</p>
   <h3 id="paired" style="scroll-margin-top:90px">Paired t-Test: The Same Customers Before and After the Redesign</h3>
