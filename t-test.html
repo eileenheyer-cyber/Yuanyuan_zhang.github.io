@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261024a">
+  <link rel="stylesheet" href="style.css?v=20261024b">
 </head>
 <body>
 
@@ -170,9 +170,9 @@ ci = (x_bar - t_crit * se, x_bar + t_crit * se)</code></pre>
   <p class="post-formula"><strong>t = <span class="frac"><span>54.80 − 49.00</span><span>2.55</span></span> = 2.27</strong></p>
   <p><em>Interpret the Result</em></p>
   <p>Welch’s t-test gives approximately 68.4 degrees of freedom and a two-sided p-value of 0.026.</p>
-  <details class="post-more">
-    <summary>Where do the 68.4 degrees of freedom come from?</summary>
-    <div class="post-more-body">
+  <div class="post-more">
+    <p class="post-more-title">Where do the 68.4 degrees of freedom come from?</p>
+    <div>
       <p>Welch’s t-test does not assume equal variances, so it calculates the degrees of freedom from the data. First, find the variance of each group’s average:</p>
       <p>New page:</p>
       <p class="post-formula"><strong>A = <span class="frac"><span>12<sup>2</sup></span><span>36</span></span> = <span class="frac"><span>144</span><span>36</span></span> = 4.00</strong></p>
@@ -183,7 +183,7 @@ ci = (x_bar - t_crit * se, x_bar + t_crit * se)</code></pre>
       <p class="post-formula"><strong>df = <span class="frac"><span>6.50<sup>2</sup></span><span><span class="frac"><span>4.00<sup>2</sup></span><span>35</span></span> + <span class="frac"><span>2.50<sup>2</sup></span><span>39</span></span></span></span> = <span class="frac"><span>42.25</span><span>0.617</span></span> ≈ 68.4</strong></p>
       <p>A regular t-test would use 74 degrees of freedom (40 + 36 − 2). Welch’s gives a slightly smaller number when the groups differ in spread, which makes the test a little more cautious.</p>
     </div>
-  </details>
+  </div>
   
   <p>Because p = 0.026 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order values differ.</p>
   <p>The estimated difference is €5.80 per order, with a 95% confidence interval of approximately €0.71 to €10.89.</p>
