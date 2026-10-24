@@ -113,6 +113,7 @@
   <p>Then calculate the t-statistic:</p>
   <p class="post-formula"><strong>t = <span class="frac"><span>x&#772; − μ<sub>0</sub></span><span>SE</span></span> = <span class="frac"><span>54.80 − 50</span><span>2.00</span></span> = 2.40</strong></p>
   <p>The observed mean is 2.40 standard errors above the target.</p>
+  <p>We calculate t because the €4.80 gap alone does not tell us whether it is large or small. Dividing it by the standard error expresses the gap in units of random variation, so we can check how unusual it is in the t-distribution.</p>
   <p><em>Step 3: Find the p-value</em></p>
   <p>Because we estimate the population standard deviation from the sample, we use a t-distribution with 35 degrees of freedom:</p>
   <p class="post-formula"><strong>df = n − 1 = 35</strong></p>
@@ -170,6 +171,7 @@ ci = (x_bar - t_crit * se,         # lower limit of 95% CI = 50.74
   <p class="post-formula"><strong>SE = √(<span class="frac"><span>s<sub>new</sub><sup>2</sup></span><span>n<sub>new</sub></span></span> + <span class="frac"><span>s<sub>old</sub><sup>2</sup></span><span>n<sub>old</sub></span></span>) = 2.55</strong></p>
   <p>The t-statistic measures the difference between the sample averages relative to this standard error:</p>
   <p class="post-formula"><strong>t = <span class="frac"><span>54.80 − 49.00</span><span>2.55</span></span> = 2.27</strong></p>
+  <p>The difference of €5.80 is 2.27 standard errors away from zero. t puts this gap on the same scale as the random variation in both groups, so the t-distribution can tell us how unusual it is.</p>
   <p><em>Interpret the Result</em></p>
   <p>Welch’s t-test gives approximately 68.4 degrees of freedom and a two-sided p-value of 0.026.</p>
   <p>Because p = 0.026 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order values differ.</p>
@@ -221,6 +223,7 @@ print(result.statistic, result.pvalue)   # 2.27, 0.026</code></pre>
   <p class="post-formula"><strong>SE = <span class="frac"><span>s<sub>d</sub></span><span>√n</span></span> = <span class="frac"><span>8</span><span>√30</span></span> ≈ 1.46</strong></p>
   <p>The t-statistic compares the observed average change with zero:</p>
   <p class="post-formula"><strong>t = <span class="frac"><span>d&#772;</span><span>SE</span></span> = <span class="frac"><span>3.60</span><span>1.46</span></span> ≈ 2.46</strong></p>
+  <p>The average change of €3.60 is 2.46 standard errors away from zero. t puts the change on a common scale, so we can check how unusual it is in the t-distribution.</p>
   <p>With 29 degrees of freedom, the two-sided p-value is approximately 0.020.</p>
   <p>Because p = 0.020 &lt; 0.05, we reject H<sub>0</sub>. There is statistically significant evidence that the population mean order value changed. The estimated mean increase is €3.60, with a 95% confidence interval of approximately €0.61 to €6.59.</p>
   <figure class="post-fig">
