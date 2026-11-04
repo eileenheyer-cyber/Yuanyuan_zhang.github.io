@@ -41,7 +41,20 @@
     <p class="post-deck-l"><a href="downloads/Descriptive-Statistics.pdf" target="_blank" rel="noopener">View PDF</a><a href="downloads/Descriptive-Statistics.pptx" download>Download PPTX</a></p>
   </div>
 
-  <h2>Why descriptive statistics matter</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-descriptive-statistics-matter">Why descriptive statistics matter</a></li>
+      <li><details><summary><a href="#1-measures-of-central-tendency">1. Measures of Central Tendency</a></summary><ul><li><a href="#mean-the-mathematical-average">Mean — the mathematical average</a></li><li><a href="#median-the-middle-of-the-data">Median — the middle of the data</a></li><li><a href="#mode-what-happens-most-often">Mode — what happens most often</a></li><li><a href="#mean-median-or-mode">Mean, median or mode?</a></li></ul></details></li>
+      <li><details><summary><a href="#2-measures-of-dispersion">2. Measures of Dispersion</a></summary><ul><li><a href="#range-the-simplest-measure-of-spread">Range — the simplest measure of spread</a></li><li><a href="#variance-average-squared-distance-from-t">Variance — average squared distance from the mean</a></li><li><a href="#standard-deviation-spread-in-the-origina">Standard deviation — spread in the original unit</a></li><li><a href="#business-example-rental-prices">Business example: rental prices</a></li></ul></details></li>
+      <li><details><summary><a href="#3-measures-of-position">3. Measures of Position</a></summary><ul><li><a href="#percentiles">Percentiles</a></li><li><a href="#quartiles">Quartiles</a></li><li><a href="#interquartile-range-iqr">Interquartile Range (IQR)</a></li><li><a href="#five-number-summary">Five-number summary</a></li></ul></details></li>
+      <li><details><summary><a href="#4-putting-everything-together">4. Putting Everything Together</a></summary><ul><li><a href="#the-visual-story">The visual story</a></li></ul></details></li>
+    </ul>
+  </div>
+
+  <h2 id="why-descriptive-statistics-matter" style="scroll-margin-top:90px">Why descriptive statistics matter</h2>
   <p>Before any model, forecast, or dashboard, someone has to understand what the data actually looks like. Descriptive statistics are that first step: they summarize a dataset in a few numbers, so we can see its shape before we draw conclusions.</p>
   <ul class="post-points">
     <li><strong>They make large datasets readable.</strong> A few measures can stand in for thousands of rows.</li>
@@ -50,10 +63,10 @@
     <li><strong>They prepare everything that follows.</strong> Choosing the right chart, model, or business conclusion depends on first knowing the center, spread, and position of the data.</li>
   </ul>
 
-  <h2>1. Measures of Central Tendency</h2>
+  <h2 id="1-measures-of-central-tendency" style="scroll-margin-top:90px">1. Measures of Central Tendency</h2>
   <p>Central tendency describes where the data is concentrated. The three classic measures are the mean, median, and mode. They answer similar questions from different perspectives.</p>
 
-  <h3>Mean — the mathematical average</h3>
+  <h3 id="mean-the-mathematical-average" style="scroll-margin-top:90px">Mean — the mathematical average</h3>
   <p>The mean is calculated by adding all observations and dividing by the number of observations.</p>
   <p class="formula">x̄ = Σxᵢ / n</p>
   <p><strong>Example:</strong> monthly customer spending = €42, €45, €48, €50, €52, €54, €55, €57, €60, €63, €180.</p>
@@ -64,13 +77,13 @@
     </figure>
   <div class="post-note"><p class="post-note-l">Analytical lesson</p><p>The mean uses every observation, so it is sensitive to extreme values and skewed distributions.</p></div>
 
-  <h3>Median — the middle of the data</h3>
+  <h3 id="median-the-middle-of-the-data" style="scroll-margin-top:90px">Median — the middle of the data</h3>
   <p>Order the observations and find the middle value. With an even number of observations, average the two middle values.</p>
   <p>For the same spending data, the median is €54.</p>
   <div class="post-note"><p class="post-note-l">Why it matters</p><p>Most customers in this example spend around €40–€60, while one customer spends €180. The median remains close to the typical customer.</p></div>
   <div class="post-note"><p class="post-note-l">Use it when</p><p>The distribution is skewed or contains meaningful outliers—for example, house prices, salaries, or customer spending.</p></div>
 
-  <h3>Mode — what happens most often</h3>
+  <h3 id="mode-what-happens-most-often" style="scroll-margin-top:90px">Mode — what happens most often</h3>
   <p>The mode is the most frequently occurring value. A dataset can have no mode, one mode, or multiple modes.</p>
   <p><strong>Example:</strong> T-shirt sizes sold = S, M, M, L, M, XL, L, M, S, M. The mode is M.</p>
   <figure class="post-fig">
@@ -79,7 +92,7 @@
     </figure>
   <div class="post-note"><p class="post-note-l">Especially useful for</p><p>Categorical data, where an average may not make sense. For example, the most common payment method can be Credit Card.</p></div>
 
-  <h3>Mean, median or mode?</h3>
+  <h3 id="mean-median-or-mode" style="scroll-margin-top:90px">Mean, median or mode?</h3>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Situation</th><th>Useful measure</th></tr></thead>
     <tbody>
@@ -91,7 +104,7 @@
     </tbody>
   </table></div>
 
-  <h2>2. Measures of Dispersion</h2>
+  <h2 id="2-measures-of-dispersion" style="scroll-margin-top:90px">2. Measures of Dispersion</h2>
   <p>Knowing the center is not enough. Two datasets can have the same mean and completely different levels of variability.</p>
   <p>Store A: €48, €49, €50, €51, €52<br>Store B: €10, €30, €50, €70, €90</p>
   <p>Both have a mean of €50—but Store B is much more spread out.</p>
@@ -101,17 +114,17 @@
     </figure>
   <div class="post-note"><p class="post-note-l">Key idea</p><p>Central tendency tells us where the data is. Dispersion tells us how much the observations vary.</p></div>
 
-  <h3>Range — the simplest measure of spread</h3>
+  <h3 id="range-the-simplest-measure-of-spread" style="scroll-margin-top:90px">Range — the simplest measure of spread</h3>
   <p class="formula">Range = maximum − minimum</p>
   <p>Store A: €52 − €48 = €4. Store B: €90 − €10 = €80.</p>
   <div class="post-note"><p class="post-note-l">Limitation</p><p>The range depends only on the minimum and maximum, so a single extreme observation can change it dramatically.</p></div>
 
-  <h3>Variance — average squared distance from the mean</h3>
+  <h3 id="variance-average-squared-distance-from-t" style="scroll-margin-top:90px">Variance — average squared distance from the mean</h3>
   <p>Variance measures how far observations are from the mean by calculating their squared deviations and averaging them.</p>
   <p class="formula">Sample variance: s² = Σ(xᵢ − x̄)² / (n − 1)</p>
   <p>Squaring prevents positive and negative deviations from cancelling each other out.</p>
 
-  <h3>Standard deviation — spread in the original unit</h3>
+  <h3 id="standard-deviation-spread-in-the-origina" style="scroll-margin-top:90px">Standard deviation — spread in the original unit</h3>
   <p>Standard deviation is the square root of variance. It is often easier to interpret because it returns to the original unit of measurement.</p>
   <p><strong>Example dataset:</strong> 2, 3, 10.</p>
   <p>Mean = 5. Squared deviations = 9, 4, 25. Sample variance = 19. Standard deviation ≈ 4.36.</p>
@@ -120,13 +133,13 @@
       <figcaption><span>Chart 4</span> Three distributions with the same mean and different standard deviations (illustrative). The wider the curve, the greater the spread.</figcaption>
     </figure>
 
-  <h3>Business example: rental prices</h3>
+  <h3 id="business-example-rental-prices" style="scroll-margin-top:90px">Business example: rental prices</h3>
   <p>Two neighborhoods may have similar average rents but very different variability. A neighborhood with a larger standard deviation has a wider spread of rental prices, which can matter when assessing price predictability.</p>
 
-  <h2>3. Measures of Position</h2>
+  <h2 id="3-measures-of-position" style="scroll-margin-top:90px">3. Measures of Position</h2>
   <p>Measures of position tell us where an observation sits relative to the rest of the dataset.</p>
 
-  <h3>Percentiles</h3>
+  <h3 id="percentiles" style="scroll-margin-top:90px">Percentiles</h3>
   <p>Percentiles divide ordered data into 100 parts. A value at the 75th percentile is higher than approximately 75% of observations in the reference dataset.</p>
   <figure class="post-fig">
       <img src="images/descriptive-statistics/chart-5-percentile.svg" alt="A horizontal ladder from percentile 0 to 100 with one observation highlighted at the 75th percentile" loading="lazy" width="800" height="320">
@@ -134,7 +147,7 @@
     </figure>
   <div class="post-note"><p class="post-note-l">Important distinction</p><p>The 75th percentile does not mean 75% correct. It describes relative position, not the percentage of points achieved.</p></div>
 
-  <h3>Quartiles</h3>
+  <h3 id="quartiles" style="scroll-margin-top:90px">Quartiles</h3>
   <p>Quartiles divide the ordered dataset into four parts. Q1 is the 25th percentile, Q2 is the 50th percentile (the median), and Q3 is the 75th percentile.</p>
   <p class="formula">Q1 = 25th percentile | Q2 = median | Q3 = 75th percentile</p>
   <figure class="post-fig">
@@ -142,12 +155,12 @@
       <figcaption><span>Chart 6</span> Quartiles of the customer spending data.</figcaption>
     </figure>
 
-  <h3>Interquartile Range (IQR)</h3>
+  <h3 id="interquartile-range-iqr" style="scroll-margin-top:90px">Interquartile Range (IQR)</h3>
   <p class="formula">IQR = Q3 − Q1</p>
   <p>If Q1 = €35 and Q3 = €78, then IQR = €43. The middle 50% of observations occupy a €43-wide interval.</p>
   <div class="post-note"><p class="post-note-l">Why it matters</p><p>The IQR is less sensitive to extreme values than the full range, making it useful for skewed data and outlier analysis.</p></div>
 
-  <h3>Five-number summary</h3>
+  <h3 id="five-number-summary" style="scroll-margin-top:90px">Five-number summary</h3>
   <p>The five-number summary consists of the minimum, Q1, median, Q3, and maximum.</p>
   <p class="formula">Minimum → Q1 → Median → Q3 → Maximum</p>
   <p>It can be shown as a box plot: the box represents the middle 50%, the line inside the box is the median, and whiskers show the remaining distribution according to the chosen box-plot convention.</p>
@@ -156,7 +169,7 @@
       <figcaption><span>Chart 7</span> Box plot of the customer spending data (n = 11). Whiskers reach the furthest value within 1.5 × IQR of the quartiles; the €180 observation lies beyond that.</figcaption>
     </figure>
 
-  <h2>4. Putting Everything Together</h2>
+  <h2 id="4-putting-everything-together" style="scroll-margin-top:90px">4. Putting Everything Together</h2>
   <p>The real value of descriptive statistics appears when we use several measures together instead of treating each formula as an isolated calculation.</p>
   <p>Customer spending: 42, 45, 48, 50, 52, 54, 55, 57, 60, 63, 180</p>
   <div class="post-table-wrap"><table class="post-table">
@@ -171,7 +184,7 @@
     </tbody>
   </table></div>
 
-  <h3>The visual story</h3>
+  <h3 id="the-visual-story" style="scroll-margin-top:90px">The visual story</h3>
   <p>A useful way to remember descriptive statistics is as a sequence of analytical questions:</p>
   <ul class="post-flow">
     <li><strong>CENTER</strong> → Mean, Median, Mode</li>

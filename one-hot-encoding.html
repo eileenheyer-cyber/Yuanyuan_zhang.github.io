@@ -38,7 +38,20 @@
   <p>A machine-learning model can work with numbers, but it cannot directly interpret these category names as numerical features. Simply assigning Lighting = 1, Furniture = 2, and Home Decor = 3 would introduce an artificial order that doesn't exist.</p>
   <p>One-hot encoding solves this problem by turning each category into its own binary column. Each row receives a 1 for the category it belongs to and a 0 for all other categories. Let's see how this works — and why the way we encode categorical data matters for our model.</p>
 
-  <h2>Why assigning numbers to categories can mislead a model</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-assigning-numbers-to-categories-can-">Why assigning numbers to categories can mislead a model</a></li>
+      <li><details><summary><a href="#the-solution-one-hot-encoding">The solution: One-hot encoding</a></summary><ul><li><a href="#what-does-this-mean-for-a-regression-mod">What does this mean for a regression model?</a></li></ul></details></li>
+      <li><details><summary><a href="#how-to-do-it-in-python">How to do it in Python</a></summary><ul><li><a href="#option-1-pandas-quick-and-good-for-explo">Option 1: pandas (quick and good for exploration)</a></li><li><a href="#option-2-scikit-learn-better-for-real-ml">Option 2: scikit-learn (better for real ML pipelines)</a></li></ul></details></li>
+      <li><a href="#three-things-that-can-go-wrong">Three things that can go wrong</a></li>
+      <li><a href="#when-should-you-use-it">When should you use it?</a></li>
+    </ul>
+  </div>
+
+  <h2 id="why-assigning-numbers-to-categories-can-" style="scroll-margin-top:90px">Why assigning numbers to categories can mislead a model</h2>
   <p>Consider a small order dataset from a home-goods retailer:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Order</th><th>Category</th><th>Revenue (€)</th></tr></thead>
@@ -62,7 +75,7 @@
   </ul>
   <p>For linear regression, representing a nominal category with a single numerical code forces the model to estimate one coefficient for that code. This imposes a particular numerical relationship between the categories instead of allowing each category to have its own effect. Distance-based algorithms, such as k-nearest neighbors, can also interpret the arbitrary distances as meaningful.</p>
 
-  <h2>The solution: One-hot encoding</h2>
+  <h2 id="the-solution-one-hot-encoding" style="scroll-margin-top:90px">The solution: One-hot encoding</h2>
   <p>Instead of assigning each category a single number, we create a separate binary column for each category. A value of 1 indicates that an observation belongs to that category; 0 indicates that it does not.</p>
   <p>Let's apply this to our retail example:</p>
   <div class="post-table-wrap"><table class="post-table">
@@ -75,13 +88,13 @@
   </table></div>
   <p>Each row has exactly one active category, represented by a value of 1, while the remaining category columns contain 0. This is where the name <em>one-hot encoding</em> comes from. Unlike assigning arbitrary numerical labels, this representation does not impose an order or distance between categories.</p>
 
-  <h3>What does this mean for a regression model?</h3>
+  <h3 id="what-does-this-mean-for-a-regression-mod" style="scroll-margin-top:90px">What does this mean for a regression model?</h3>
   <p>The model can now learn a separate coefficient for each category, rather than treating category codes as a single numerical variable.</p>
   <p>For example, a regression model can estimate how revenue differs between Furniture, Lighting, and Home Decor. If we include an intercept, we typically leave one category out as the reference category to avoid perfect multicollinearity.</p>
   <p>One-hot encoding does not guarantee better predictions. It simply gives the model a more appropriate representation of nominal categorical data.</p>
 
-  <h2>How to do it in Python</h2>
-  <h3 class="post-h3-small">Option 1: pandas (quick and good for exploration)</h3>
+  <h2 id="how-to-do-it-in-python" style="scroll-margin-top:90px">How to do it in Python</h2>
+  <h3 id="option-1-pandas-quick-and-good-for-explo" style="scroll-margin-top:90px" class="post-h3-small">Option 1: pandas (quick and good for exploration)</h3>
   <pre class="post-code"><code>import pandas as pd
 
 df = pd.DataFrame({
@@ -93,7 +106,7 @@ df = pd.DataFrame({
 df_encoded = pd.get_dummies(df, columns=["category"], dtype=int)
 print(df_encoded)</code></pre>
 
-  <h3 class="post-h3-small">Option 2: scikit-learn (better for real ML pipelines)</h3>
+  <h3 id="option-2-scikit-learn-better-for-real-ml" style="scroll-margin-top:90px" class="post-h3-small">Option 2: scikit-learn (better for real ML pipelines)</h3>
   <pre class="post-code"><code>from sklearn.preprocessing import OneHotEncoder
 
 encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
@@ -103,14 +116,14 @@ print(encoder.get_feature_names_out())
 # ['category_Furniture' 'category_Home Decor' 'category_Lighting']</code></pre>
   <p>Why prefer scikit-learn for modeling? The encoder <strong>remembers</strong> which categories it saw during training. When new data arrives with a category the model has never seen, <code>handle_unknown="ignore"</code> encodes it as all zeros instead of crashing. With <code>pd.get_dummies</code>, train and test data can end up with different columns, which is a classic source of confusing errors.</p>
 
-  <h2>Three things that can go wrong</h2>
+  <h2 id="three-things-that-can-go-wrong" style="scroll-margin-top:90px">Three things that can go wrong</h2>
   <ul class="post-points post-points-color">
     <li><strong>The dummy variable trap.</strong> With three categories, two dummy columns are sufficient when a regression model includes an intercept. Keeping all three creates perfect multicollinearity. Use <code>drop_first=True</code> in pandas or <code>drop="first"</code> in scikit-learn to leave one category as the reference.</li>
     <li><strong>High cardinality.</strong> Variables such as postal codes or product IDs can contain thousands of unique values. One-hot encoding would create thousands of columns. Consider grouping rare categories into "Other" or using frequency encoding instead.</li>
     <li><strong>Data leakage.</strong> Split your data before fitting the encoder. Fit it on the training set, then transform the test set using the same encoder. This keeps preprocessing consistent and avoids information leaking from the test set.</li>
   </ul>
 
-  <h2>When should you use it?</h2>
+  <h2 id="when-should-you-use-it" style="scroll-margin-top:90px">When should you use it?</h2>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Situation</th><th>Recommendation</th></tr></thead>
     <tbody>
@@ -124,7 +137,7 @@ print(encoder.get_feature_names_out())
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>One-hot encoding is a small step in data preparation, but it shows a bigger principle: how you represent your data decides what your model can learn. Turning text into numbers is easy. Turning it into numbers that don't lie is the actual skill.</p></div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="datenviz-eda.html">Exploratory Data Analysis</a> Look at your categories and distributions before you encode and model them.</li>
     <li><a href="multiple-linear-regression.html">Multiple Linear Regression</a> Where one-hot encoded categories become predictors in a model.</li>

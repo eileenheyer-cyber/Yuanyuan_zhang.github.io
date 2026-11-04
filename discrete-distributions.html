@@ -37,7 +37,20 @@
 
   <p>In <a href="random-variables-distributions.html">Random Variables &amp; Probability Distributions</a> we saw that a discrete variable takes countable values and that its PMF lists the probability of each one. In practice you rarely build a PMF from scratch. Many real situations follow a small set of well-known patterns, and recognising the pattern tells you which model to use. This post covers four of them: uniform, Bernoulli, binomial and Poisson.</p>
 
-  <h2>Uniform distribution</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#uniform-distribution">Uniform distribution</a></li>
+      <li><a href="#bernoulli-distribution">Bernoulli distribution</a></li>
+      <li><a href="#binomial-distribution">Binomial distribution</a></li>
+      <li><a href="#poisson-distribution">Poisson distribution</a></li>
+      <li><a href="#which-distribution-should-i-use">Which distribution should I use?</a></li>
+    </ul>
+  </div>
+
+  <h2 id="uniform-distribution" style="scroll-margin-top:90px">Uniform distribution</h2>
   <p>The uniform distribution describes a situation where <strong>all outcomes are equally likely</strong>. Rolling a die has six outcomes (1 to 6), and each has the same probability: 1 out of 6, or about 16.7%.</p>
   <p>You can show a discrete distribution as a histogram: the possible values of the random variable go on the x-axis, and the probability of each value goes on the y-axis. For a uniform distribution every bar has the same height.</p>
   <figure class="post-fig">
@@ -47,7 +60,7 @@
 
   <div class="post-note"><p class="post-note-l">Where it is used</p><p>Data professionals often use the uniform distribution as a building block for more complex methods, such as Monte Carlo simulations. In a business setting, think of randomly assigning customers to one of several test groups: each group is equally likely. The uniform distribution also exists for continuous variables, not only discrete ones.</p></div>
 
-  <h2>Bernoulli distribution</h2>
+  <h2 id="bernoulli-distribution" style="scroll-margin-top:90px">Bernoulli distribution</h2>
   <p>The Bernoulli distribution models <strong>a single trial with only two possible outcomes</strong>: success or failure. The two outcomes cannot happen at the same time. If the probability of success is p, the probability of failure is 1 − p.</p>
   <p>A classic example is a single coin toss. In business data, it is a single customer who either opens a marketing email or does not. If 30% of customers open it, then p = 0.30 for success and 1 − p = 0.70 for failure.</p>
   <figure class="post-fig">
@@ -57,7 +70,7 @@
 
   <div class="post-note"><p class="post-note-l">Success is just a label</p><p>"Success" and "failure" are labels chosen for convenience. For a coin toss you could call heads the success or tails the success, depending on what your analysis needs. In a fraud model, the "success" is usually the event you are trying to detect, such as a fraudulent transaction.</p></div>
 
-  <h2>Binomial distribution</h2>
+  <h2 id="binomial-distribution" style="scroll-margin-top:90px">Binomial distribution</h2>
   <p>The binomial distribution is the Bernoulli distribution repeated. It models <strong>the number of successes in a fixed number of independent trials</strong>. The only difference is that Bernoulli covers one trial, while the binomial covers n trials. The process behind it is called a binomial experiment, which has four attributes:</p>
   <ul class="post-points">
     <li><strong>Repeated trials.</strong> The experiment consists of a fixed number of trials.</li>
@@ -80,7 +93,7 @@
   </ul>
   <p>In machine learning, the binomial idea is also behind classification: an algorithm can be trained to decide whether a digital image shows a specific animal, like a cat or a dog, or not.</p>
 
-  <h2>Poisson distribution</h2>
+  <h2 id="poisson-distribution" style="scroll-margin-top:90px">Poisson distribution</h2>
   <p>The Poisson distribution models <strong>the number of events that occur in a fixed period of time</strong>. It can also describe events in a fixed space, such as a distance, an area or a volume, but here we focus on time. A Poisson experiment has three attributes:</p>
   <ul class="post-points">
     <li><strong>Countable.</strong> The number of events can be counted.</li>
@@ -102,7 +115,7 @@
     <li>financial transactions per second at a bank.</li>
   </ul>
 
-  <h2>Which distribution should I use?</h2>
+  <h2 id="which-distribution-should-i-use" style="scroll-margin-top:90px">Which distribution should I use?</h2>
   <p>A quick way to choose is to ask what you are counting.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Distribution</th><th>What it models</th><th>Business example</th></tr></thead>

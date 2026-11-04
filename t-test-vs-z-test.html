@@ -36,7 +36,19 @@
 
   <p>You have two versions of something and a number for each. But is the difference meaningful, or could it be due to chance? This article shows how to choose between a t-test and a z-test by starting with the business question, and it builds on <a href="ab-testing.html">A/B Testing</a>, where we compared two versions and evaluated the results.</p>
 
-  <h2>01 — Start with the Business Question</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#01-start-with-the-business-question">01 — Start with the Business Question</a></li>
+      <li><details><summary><a href="#02-understand-why-the-choice-matters">02 — Understand Why the Choice Matters</a></summary><ul><li><a href="#a-simple-way-to-remember-it">A simple way to remember it</a></li></ul></details></li>
+      <li><details><summary><a href="#03-choose-the-right-test">03 — Choose the Right Test</a></summary><ul><li><a href="#welch-s-t-test">Welch's t-test</a></li></ul></details></li>
+      <li><details><summary><a href="#04-apply-it-to-business-analytics">04 — Apply It to Business Analytics</a></summary><ul><li><a href="#comparing-average-revenue">Comparing Average Revenue</a></li><li><a href="#comparing-conversion-rates">Comparing Conversion Rates</a></li></ul></details></li>
+    </ul>
+  </div>
+
+  <h2 id="01-start-with-the-business-question" style="scroll-margin-top:90px">01 — Start with the Business Question</h2>
   <p>Every statistical test starts with what you want to compare. In business analytics, it is usually one of two things:</p>
   <ul class="post-points">
     <li><strong>An average</strong>, such as average order value or revenue per user.</li>
@@ -46,30 +58,30 @@
   <p>A <strong>mean</strong> summarizes numerical values that vary from user to user, such as the amount spent on each order.</p>
   <p>A <strong>proportion</strong> summarizes a binary outcome, such as whether a visitor makes a purchase.</p>
 
-  <h2>02 — Understand Why the Choice Matters</h2>
+  <h2 id="02-understand-why-the-choice-matters" style="scroll-margin-top:90px">02 — Understand Why the Choice Matters</h2>
   <p>For a proportion, variability depends on the proportion itself and the sample size. This allows us to estimate its standard error directly from the data, without separately estimating a population standard deviation as we typically do when testing means.</p>
   <p>When testing a mean, the next question is whether the <strong>population standard deviation</strong> — the true spread of values across the population — is known.</p>
   <p>In practice, it is usually unknown, so we estimate it from the sample. This introduces additional uncertainty, which the <strong>t-distribution</strong> accounts for through its heavier tails, particularly with small samples.</p>
   <p>As the degrees of freedom increase, the t-distribution approaches the standard normal distribution, and the difference between the two becomes negligible. A t-test is therefore generally appropriate for means whenever the population standard deviation is unknown, whatever the sample size.</p>
 
-  <h3>A simple way to remember it</h3>
+  <h3 id="a-simple-way-to-remember-it" style="scroll-margin-top:90px">A simple way to remember it</h3>
   <div class="post-note post-note-plain post-note-explain">
     <p>The z-test is like a detective with a clear case: the population standard deviation is known and the sample is large.</p>
     <p>The t-test is like a detective working with less certain evidence: the population standard deviation is unknown, which is the usual case, and it matters most when the sample is small. The t-test adjusts for that uncertainty, which makes it more flexible in real-world situations.</p>
   </div>
 
-  <h2>03 — Choose the Right Test</h2>
+  <h2 id="03-choose-the-right-test" style="scroll-margin-top:90px">03 — Choose the Right Test</h2>
   <p>Once you know the type of metric, one follow-up question settles the choice.</p>
   <figure class="post-fig">
     <img src="images/t-test-vs-z-test/chart-1-decision-tree.svg" alt="Decision tree. First question: what type of metric are you analyzing? A mean leads to the question whether the population standard deviation is known: yes means a z-test for a mean, no means a t-test, with Welch's t-test as the default for two independent groups. A proportion leads to the question whether there are one or two groups: one means a one-proportion z-test, two means a two-proportion z-test." loading="lazy" width="800" height="586">
     <figcaption><span>Chart 1</span> Choosing the test: first the type of metric, then one follow-up question.</figcaption>
   </figure>
 
-  <h3>Welch's t-test</h3>
+  <h3 id="welch-s-t-test" style="scroll-margin-top:90px">Welch's t-test</h3>
   <div class="post-note post-note-plain post-note-explain"><p>Welch's t-test compares the averages of two independent groups, such as two campaigns, without assuming that both groups have the same spread. The classic t-test combines the two standard deviations into one, which is only valid when they are equal. Welch's test keeps each group's own standard deviation and adjusts the degrees of freedom to match. When the spreads really are equal, it gives almost the same result as the classic test, which is why it is a safe default.</p></div>
 
-  <h2>04 — Apply It to Business Analytics</h2>
-  <h3>Comparing Average Revenue</h3>
+  <h2 id="04-apply-it-to-business-analytics" style="scroll-margin-top:90px">04 — Apply It to Business Analytics</h2>
+  <h3 id="comparing-average-revenue" style="scroll-margin-top:90px">Comparing Average Revenue</h3>
   <ul class="post-points">
     <li><strong>Business question.</strong> Does Campaign B generate more average revenue per customer than Campaign A?</li>
     <li><strong>Data.</strong> Campaign A: 1,000 customers, average revenue €52, standard deviation €30. Campaign B: 1,000 customers, average revenue €56, standard deviation €32.</li>
@@ -78,7 +90,7 @@
     <li><strong>Interpretation.</strong> The €4 difference is statistically significant, so it is unlikely to be due to chance. Whether it is worth the extra cost is a business decision.</li>
   </ul>
 
-  <h3>Comparing Conversion Rates</h3>
+  <h3 id="comparing-conversion-rates" style="scroll-margin-top:90px">Comparing Conversion Rates</h3>
   <ul class="post-points">
     <li><strong>Business question.</strong> Does Version B convert more visitors than Version A?</li>
     <li><strong>Data.</strong> Version A converted 1,000 of 20,000 visitors (5.0%). Version B converted 1,120 of 20,000 (5.6%).</li>

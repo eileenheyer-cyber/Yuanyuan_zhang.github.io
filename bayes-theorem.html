@@ -37,11 +37,26 @@
 
   <p>In <a href="conditional-probability.html">Conditional Probability &amp; Independence</a> we asked how likely B is once A has happened. In practice the question often points the other way: you know how a test or a filter behaves, but you want to know what a result actually means. Bayes’ theorem lets you turn one conditional probability into the other, and it is the idea behind everything from medical tests to spam filters.</p>
 
-  <h2>Prior and posterior probability</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#prior-and-posterior-probability">Prior and posterior probability</a></li>
+      <li><a href="#the-theorem">The theorem</a></li>
+      <li><a href="#the-expanded-formula">The expanded formula</a></li>
+      <li><a href="#why-alert-accuracy-is-tricky">Why alert accuracy is tricky</a></li>
+      <li><a href="#example-fraud-alerts-on-card-payments">Example: fraud alerts on card payments</a></li>
+      <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+      <li><a href="#summary-of-the-formulas">Summary of the formulas</a></li>
+    </ul>
+  </div>
+
+  <h2 id="prior-and-posterior-probability" style="scroll-margin-top:90px">Prior and posterior probability</h2>
   <p>In Bayesian statistics, the <strong>prior probability</strong> is the probability of an event before new data is collected. The <strong>posterior probability</strong> is the updated probability of the event after the new data is taken into account. Bayes’ theorem is the rule for getting from one to the other.</p>
   <p>Say a medical condition is related to age. The prior is the probability that a person has the condition. The posterior is the probability that a person has it, given that they belong to a certain age group.</p>
 
-  <h2>The theorem</h2>
+  <h2 id="the-theorem" style="scroll-margin-top:90px">The theorem</h2>
   <p>For any two events A and B, the probability of A given B equals the probability of B given A, multiplied by the probability of A, divided by the probability of B:</p>
   <figure class="post-fig">
     <img src="images/bayes-theorem/formula-1-bayes.svg" alt="Bayes’ theorem: posterior P(A | B) equals likelihood P(B | A) times prior P(A), divided by evidence P(B)" loading="lazy" width="800" height="340">
@@ -57,7 +72,7 @@
   <p class="formula">Posterior = Likelihood × Prior ÷ Evidence</p>
   <p>One way to read it: you start with a prior belief, P(A), and use new data, the likelihood and the evidence, to turn it into a posterior, P(A | B). It also helps to see that the theorem links two conditional probabilities, "B given A" and "A given B". If you know one of them, Bayes’ theorem helps you find the other.</p>
 
-  <h2>The expanded formula</h2>
+  <h2 id="the-expanded-formula" style="scroll-margin-top:90px">The expanded formula</h2>
   <p>Sometimes you do not know P(B), the evidence, so the basic formula cannot be used directly. The expanded version works it out from probabilities you usually do have. The evidence is the sum of all the ways B can happen: together with A, and together with "not A".</p>
   <p>The easiest way to read the expanded formula is as a question: <em>out of everyone who gets this result, how many are the real thing?</em></p>
   <p class="formula">P(A | B) = true positives ÷ (true positives + false positives)</p>
@@ -71,7 +86,7 @@
     <img src="images/bayes-theorem/formula-2-expanded.svg" alt="Expanded Bayes’ theorem: posterior P(A | B) equals true positives P(A) times P(B | A), divided by true positives plus false positives P(not A) times P(B | not A)" loading="lazy" width="960" height="360">
   </figure>
 
-  <h2>Why alert accuracy is tricky</h2>
+  <h2 id="why-alert-accuracy-is-tricky" style="scroll-margin-top:90px">Why alert accuracy is tricky</h2>
   <p>No test or model is perfect, and it can be wrong in two ways:</p>
   <div class="post-types">
     <div class="post-type"><p class="post-type-l">False positive</p><p class="post-type-t">Alert, but nothing is wrong</p><p>The model raises an alert when there is no problem.</p><p class="post-type-use">Example: a normal payment gets blocked</p></div>
@@ -79,7 +94,7 @@
   </div>
   <p>Fraud filters, spam filters and medical tests all make both mistakes. The expanded theorem takes both kinds of error into account.</p>
 
-  <h2>Example: fraud alerts on card payments</h2>
+  <h2 id="example-fraud-alerts-on-card-payments" style="scroll-margin-top:90px">Example: fraud alerts on card payments</h2>
   <p>Suppose an online shop uses a model that flags suspicious card payments. From past data we know:</p>
   <ul class="post-points">
     <li><strong>Prevalence.</strong> 1% of payments are fraud, so P(fraud) = 0.01.</li>
@@ -98,7 +113,7 @@
 
   <div class="post-note"><p class="post-note-l">Why the prior matters</p><p>An alert moves the probability of fraud from 1% to 31.3%. That is a big update, but it is not the near-certainty many people expect from a model that catches 90% of fraud. If fraud were more common, the same model would be far more convincing. The posterior always depends on both the evidence and where you started.</p></div>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2 id="how-to-explain-it-to-stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">“Our model catches 9 out of 10 fraud cases. But fraud is rare, only about 1 in 100 payments, so even a good model produces many false alarms.</p>
     <p class="post-callout-q">To make that concrete: out of 10,000 payments, we expect about 288 alerts, and only 90 of them are real fraud. So roughly 1 in 3 alerts is real.</p>
@@ -106,7 +121,7 @@
   </div>
   <p>One more honest point to share: the 1%, 90% and 2% come from historical data and can change over time. If the share of fraud changes, the answer changes too, so the calculation should be refreshed with current numbers.</p>
 
-  <h2>Summary of the formulas</h2>
+  <h2 id="summary-of-the-formulas" style="scroll-margin-top:90px">Summary of the formulas</h2>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Version</th><th>Formula</th></tr></thead>
     <tbody>

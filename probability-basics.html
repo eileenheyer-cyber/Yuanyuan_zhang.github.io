@@ -37,8 +37,23 @@
 
   <p>Probability is the language we use to talk about uncertainty. Before any forecast, A/B test or risk estimate, there are three simple building blocks: the random experiment, the outcome and the event.</p>
 
-  <h2>The building blocks</h2>
-  <h3>Random experiment</h3>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#the-building-blocks">The building blocks</a></summary><ul><li><a href="#random-experiment">Random experiment</a></li><li><a href="#outcome">Outcome</a></li><li><a href="#event">Event</a></li></ul></details></li>
+      <li><a href="#the-probability-of-an-event">The probability of an event</a></li>
+      <li><details><summary><a href="#how-to-calculate-it">How to calculate it</a></summary><ul><li><a href="#example-coin-toss">Example: coin toss</a></li><li><a href="#example-die-roll">Example: die roll</a></li></ul></details></li>
+      <li><a href="#probability-notation">Probability notation</a></li>
+      <li><details><summary><a href="#basic-probability-rules">Basic probability rules</a></summary><ul><li><a href="#the-complement-rule">The complement rule</a></li><li><a href="#the-addition-rule">The addition rule</a></li></ul></details></li>
+      <li><a href="#independent-events-the-multiplication-ru">Independent events: the multiplication rule</a></li>
+      <li><a href="#summary-of-the-rules">Summary of the rules</a></li>
+    </ul>
+  </div>
+
+  <h2 id="the-building-blocks" style="scroll-margin-top:90px">The building blocks</h2>
+  <h3 id="random-experiment" style="scroll-margin-top:90px">Random experiment</h3>
   <p>A random experiment is any process whose result can't be predicted with certainty in advance. Tossing a coin or rolling a die are the classic examples: before you do it, you can't know whether you'll get heads or tails, a 3 or a 6. Every random experiment has three things in common:</p>
   <ul class="post-points">
     <li><strong>More than one possible result.</strong> If there is only one, there is nothing to predict.</li>
@@ -46,10 +61,10 @@
     <li><strong>Chance decides.</strong> Which of the possible results happens depends on luck.</li>
   </ul>
 
-  <h3>Outcome</h3>
+  <h3 id="outcome" style="scroll-margin-top:90px">Outcome</h3>
   <p>An outcome is one single result of the experiment. A die has six possible outcomes: 1, 2, 3, 4, 5 and 6.</p>
 
-  <h3>Event</h3>
+  <h3 id="event" style="scroll-margin-top:90px">Event</h3>
   <p>An event is a group of one or more outcomes we care about. "Rolling an even number" is an event made of the outcomes 2, 4 and 6. "Rolling an odd number" is another event: 1, 3 and 5. Probability always belongs to an event: it tells us how likely that group of outcomes is.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Experiment</th><th>Possible outcomes</th><th>Example event</th></tr></thead>
@@ -80,7 +95,7 @@
     </div>
   </div>
 
-  <h2>The probability of an event</h2>
+  <h2 id="the-probability-of-an-event" style="scroll-margin-top:90px">The probability of an event</h2>
   <p>Probability is a number from 0 to 1, or equivalently a percentage from 0% to 100%.</p>
   <ul class="post-points">
     <li><strong>0 (0%)</strong> means the event cannot happen.</li>
@@ -95,17 +110,17 @@
 
   <p>Knowing a probability helps with decisions under uncertainty. With a 10% chance of rain tomorrow you can plan the picnic with confidence. With 90%, you'd better find another day.</p>
 
-  <h2>How to calculate it</h2>
+  <h2 id="how-to-calculate-it" style="scroll-margin-top:90px">How to calculate it</h2>
   <p>When every outcome is equally likely, the probability of an event is the number of outcomes that count as success divided by the total number of possible outcomes. This is called classical probability.</p>
   <p class="formula">P(event) = number of desired outcomes ÷ total number of possible outcomes</p>
   <div class="post-note"><p class="post-note-l">Watch out</p><p>This formula only works when all outcomes are equally likely, as with a fair coin or a fair die. For a loaded die, it would give the wrong answer.</p></div>
 
-  <h3>Example: coin toss</h3>
+  <h3 id="example-coin-toss" style="scroll-margin-top:90px">Example: coin toss</h3>
   <p>A fair coin has two equally likely outcomes, and one of them is heads:</p>
   <p class="formula">P(heads) = 1 ÷ 2 = 0.5 = 50%</p>
   <p>Now take a trick coin with heads on both sides. Every toss shows heads, so P(heads) = 100% and P(tails) = 0%.</p>
 
-  <h3>Example: die roll</h3>
+  <h3 id="example-die-roll" style="scroll-margin-top:90px">Example: die roll</h3>
   <p>To roll a 3 with a fair die, there is one favourable outcome out of six:</p>
   <p class="formula">P(3) = 1 ÷ 6 ≈ 0.167 ≈ 16.7%</p>
   <p>For the event "rolling an even number" there are three favourable outcomes, so P = 3 ÷ 6 = 0.5.</p>
@@ -117,7 +132,7 @@
     </figure>
   </div>
 
-  <h2>Probability notation</h2>
+  <h2 id="probability-notation" style="scroll-margin-top:90px">Probability notation</h2>
   <p>In textbooks and technical documents, probability is written in a compact form. P stands for probability, and capital letters such as A and B name events:</p>
   <ul class="post-points">
     <li><strong>P(A)</strong> is the probability of event A, and <strong>P(B)</strong> the probability of event B.</li>
@@ -126,8 +141,8 @@
     <li>If <strong>P(A) &gt; P(B)</strong>, A is more likely than B. If <strong>P(A) = P(B)</strong>, they are equally likely.</li>
   </ul>
 
-  <h2>Basic probability rules</h2>
-  <h3>The complement rule</h3>
+  <h2 id="basic-probability-rules" style="scroll-margin-top:90px">Basic probability rules</h2>
+  <h3 id="the-complement-rule" style="scroll-margin-top:90px">The complement rule</h3>
   <p>An event either occurs or it doesn't, so the two probabilities always add up to 1. That gives us the complement rule: the probability that an event does not occur is 1 minus the probability that it does.</p>
   <p class="formula">P(A′) = 1 − P(A)</p>
   <p>If the chance of rolling a 6 is 1/6, the chance of <em>not</em> rolling a 6 is 1 − 1/6 = 5/6, about 83.3%. And if there is a 10% chance of rain tomorrow, there is a 90% chance it stays dry.</p>
@@ -136,7 +151,7 @@
     <figcaption><span>Chart 3</span> The complement rule: an event and its complement together fill the whole bar.</figcaption>
   </figure>
 
-  <h3>The addition rule</h3>
+  <h3 id="the-addition-rule" style="scroll-margin-top:90px">The addition rule</h3>
   <p>The addition rule applies to mutually exclusive events. The probability that either A or B occurs is the sum of their individual probabilities:</p>
   <p class="formula">P(A or B) = P(A) + P(B)</p>
   <p><strong>Example:</strong> the probability of rolling a 1 or a 2 is 1/6 + 1/6 = 2/6 = 1/3, about 33.3%.</p>
@@ -147,7 +162,7 @@
 
   <div class="post-note"><p class="post-note-l">If the events can overlap</p><p>When two events can happen together, adding their probabilities counts the overlap twice, so you subtract it once: P(A or B) = P(A) + P(B) − P(A and B). For mutually exclusive events there is no overlap, which is why the simple version works.</p></div>
 
-  <h2>Independent events: the multiplication rule</h2>
+  <h2 id="independent-events-the-multiplication-ru" style="scroll-margin-top:90px">Independent events: the multiplication rule</h2>
   <p>The multiplication rule applies to independent events. The probability that both A and B occur is the product of their probabilities:</p>
   <p class="formula">P(A and B) = P(A) × P(B)</p>
   <p>Typical examples are dice and coins, where one outcome has no influence on the next.</p>
@@ -157,7 +172,7 @@
     <figcaption><span>Chart 5</span> Two coin tosses as a probability tree. Multiplying along the path gives the probability of each combination.</figcaption>
   </figure>
 
-  <h2>Summary of the rules</h2>
+  <h2 id="summary-of-the-rules" style="scroll-margin-top:90px">Summary of the rules</h2>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Rule</th><th>Formula</th><th>Use it when</th></tr></thead>
     <tbody>

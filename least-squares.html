@@ -38,7 +38,20 @@
   <p>Linear regression needs a way to measure how well each line fits. For every data point, we compare the actual value with the value predicted by the line. These differences are called residuals. <strong>Ordinary Least Squares (OLS)</strong> squares each residual and adds them together. The best-fit line is the one with the smallest sum of squared residuals.</p>
   <p>In this post, we’ll explore how this works using the five months of NordHome data introduced in <a href="simple-linear-regression.html">Simple Linear Regression</a>.</p>
 
-  <h2>Error Measurement and Residuals</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#error-measurement-and-residuals">Error Measurement and Residuals</a></summary><ul><li><a href="#why-can-t-we-simply-add-the-residuals">Why Can't We Simply Add the Residuals?</a></li><li><a href="#the-solution-square-the-residuals">The Solution: Square the Residuals</a></li></ul></details></li>
+      <li><a href="#ordinary-least-squares-ols-estimation">Ordinary Least Squares (OLS) Estimation</a></li>
+      <li><a href="#practical-example-trying-different-lines">Practical example: trying different lines</a></li>
+      <li><details><summary><a href="#estimating-the-coefficients">Estimating the Coefficients</a></summary><ul><li><a href="#step-1-calculate-the-slope">Step 1: Calculate the slope</a></li><li><a href="#step-2-calculate-the-intercept">Step 2: Calculate the intercept</a></li><li><a href="#the-resulting-regression-equation">The resulting regression equation</a></li><li><a href="#a-quick-note-on-correlation">A quick note on correlation</a></li></ul></details></li>
+      <li><a href="#what-comes-next">What Comes Next?</a></li>
+    </ul>
+  </div>
+
+  <h2 id="error-measurement-and-residuals" style="scroll-margin-top:90px">Error Measurement and Residuals</h2>
   <p>A regression line rarely passes through every data point. The vertical distance between an observed value and the value predicted by the line is called a <strong>residual</strong>.</p>
   <p class="post-formula"><strong>eᵢ = yᵢ − ŷᵢ</strong>
     <span>Here, yᵢ is the actual value and ŷᵢ is the predicted value.</span></p>
@@ -51,7 +64,7 @@
   <p class="post-formula"><strong>eᵢ = 53 − 55 = −2</strong>
     <span>The model overestimated sales by €2k.</span></p>
 
-  <h3>Why Can't We Simply Add the Residuals?</h3>
+  <h3 id="why-can-t-we-simply-add-the-residuals" style="scroll-margin-top:90px">Why Can't We Simply Add the Residuals?</h3>
   <p>In an ordinary least squares regression with an intercept, the residuals sum to zero. For NordHome, the five residuals are −3, +2, +4, −2 and −1 (Chart 1):</p>
   <p class="post-formula"><strong>−3 + 2 + 4 − 2 − 1 = 0</strong></p>
   <p>Positive and negative errors cancel each other out. As a result, simply adding the residuals does not tell us how well the line fits the data.</p>
@@ -60,14 +73,14 @@
     <figcaption><span>Chart 1</span> NordHome's fitted line with its five residuals in red, labelled in €k as actual minus predicted. Illustrative data.</figcaption>
   </figure>
 
-  <h3>The Solution: Square the Residuals</h3>
+  <h3 id="the-solution-square-the-residuals" style="scroll-margin-top:90px">The Solution: Square the Residuals</h3>
   <p>OLS squares every residual before adding them together. Squaring removes negative signs and gives larger errors more weight. The resulting measure is called the <strong>sum of squared residuals (SSR)</strong>:</p>
   <p class="post-formula"><strong>SSR = Σᵢ₌₁ⁿ (yᵢ − ŷᵢ)²</strong></p>
   <p>For NordHome's fitted line:</p>
   <p class="post-formula"><strong>SSR = 9 + 4 + 16 + 4 + 1 = 34</strong>
     <span>A smaller SSR indicates a closer fit for the same dataset. OLS finds the intercept and slope that minimize this sum.</span></p>
 
-  <h2>Ordinary Least Squares (OLS) Estimation</h2>
+  <h2 id="ordinary-least-squares-ols-estimation" style="scroll-margin-top:90px">Ordinary Least Squares (OLS) Estimation</h2>
   <p>A straight regression line is defined by two coefficients:</p>
   <ul class="post-points post-points-color">
     <li><strong>Intercept (β̂₀):</strong> the predicted value of y when x = 0.</li>
@@ -78,7 +91,7 @@
   <p>The hats indicate that these are estimates calculated from the observed data, rather than the unknown true population parameters.</p>
   <p>OLS chooses the intercept and slope that produce the smallest possible SSR. This is how it identifies the best-fit line for the given data.</p>
 
-  <h2>Practical example: trying different lines</h2>
+  <h2 id="practical-example-trying-different-lines" style="scroll-margin-top:90px">Practical example: trying different lines</h2>
   <p>Before using a formula, test it by hand. Here are three lines for NordHome's data:</p>
   <div class="post-table-wrap post-table-narrow" style="max-width: 460px;"><table class="post-table">
     <thead><tr><th>Line</th><th>Sum of residuals</th><th>SSR</th></tr></thead>
@@ -94,11 +107,11 @@
   </figure>
   <p>The first line sits below every point, so all five residuals are positive and the SSR is large. The second line's residuals nearly cancel out, with a sum of only +1, yet its SSR is still 57. That is exactly why we square the residuals before adding them. The OLS line balances the errors and has the smallest SSR of any straight line: 34. You could keep adjusting the slope and the intercept and watch the SSR change, but you would never get below 34. OLS does that search for you, with a formula instead of trial and error.</p>
 
-  <h2>Estimating the Coefficients</h2>
+  <h2 id="estimating-the-coefficients" style="scroll-margin-top:90px">Estimating the Coefficients</h2>
   <p>OLS finds the line with the smallest sum of squared residuals. But how does it determine the best slope and intercept?</p>
   <p>Rather than testing countless possible lines, OLS uses mathematical formulas to calculate both coefficients directly from the observed data.</p>
 
-  <h3>Step 1: Calculate the slope</h3>
+  <h3 id="step-1-calculate-the-slope" style="scroll-margin-top:90px">Step 1: Calculate the slope</h3>
   <p>The slope tells us how much the model's predicted sales change when advertising spend increases by one unit. OLS calculates it using the deviations of advertising spend and sales from their respective means.</p>
   <p class="post-formula"><strong>β̂₁ = <span class="frac"><span>Σ(xᵢ − x̄)(yᵢ − ȳ)</span><span>Σ(xᵢ − x̄)²</span></span></strong>
     <span>The numerator measures how x and y vary together. The denominator measures how much x varies around its mean.</span></p>
@@ -106,7 +119,7 @@
   <p class="post-formula"><strong>β̂₁ = <span class="frac"><span>114</span><span>22.8</span></span> = 5</strong></p>
   <p>This means that for every additional €1k spent on advertising, the model predicts an increase of €5k in sales. This is the relationship estimated from our five-month sample, not necessarily a causal effect.</p>
 
-  <h3>Step 2: Calculate the intercept</h3>
+  <h3 id="step-2-calculate-the-intercept" style="scroll-margin-top:90px">Step 2: Calculate the intercept</h3>
   <p>Once we know the slope, we can calculate the intercept:</p>
   <p class="post-formula"><strong>β̂₀ = ȳ − β̂₁x̄</strong>
     <span>The intercept ensures that the fitted line passes through the point defined by the mean advertising spend and mean sales.</span></p>
@@ -114,13 +127,13 @@
   <p class="post-formula"><strong>β̂₀ = 46 − (5 × 5.2) = 20</strong></p>
   <p>The estimated intercept is therefore 20, meaning the line predicts sales of €20k when advertising spend is zero. Since zero is outside the observed advertising-spend range in this example, that interpretation should be treated with caution.</p>
 
-  <h3>The resulting regression equation</h3>
+  <h3 id="the-resulting-regression-equation" style="scroll-margin-top:90px">The resulting regression equation</h3>
   <p>Combining the slope and intercept gives us the fitted line:</p>
   <p class="post-formula"><strong>ŷ = 20 + 5x</strong></p>
   <p>This is the line used in our NordHome charts. OLS calculates these coefficients to minimize the sum of squared residuals for the observed data.</p>
   <p>In practice, statistical software performs these calculations almost instantly. Understanding the formulas helps us interpret the coefficients and understand how the model arrives at its predictions.</p>
 
-  <h3>A quick note on correlation</h3>
+  <h3 id="a-quick-note-on-correlation" style="scroll-margin-top:90px">A quick note on correlation</h3>
   <p>Once we have the fitted line, it helps to ask how closely the two variables move together. The <strong>correlation coefficient (r)</strong> measures the strength and direction of their linear relationship, ranging from −1 to +1.</p>
   <ul class="post-points post-points-color">
     <li><strong>Positive correlation:</strong> the variables tend to increase together.</li>
@@ -129,7 +142,7 @@
   </ul>
   <p>For NordHome, r ≈ 0.97 indicates a strong positive linear relationship between advertising spend and sales in our five observations. However, correlation alone does not tell us the exact slope or prove that advertising causes sales to increase.</p>
 
-  <h2>What Comes Next?</h2>
+  <h2 id="what-comes-next" style="scroll-margin-top:90px">What Comes Next?</h2>
   <p>We’ve seen how ordinary least squares finds the best-fitting line by minimising the sum of squared residuals. But a line that fits our data best is not necessarily a model we can fully trust.</p>
   <p>How do we know whether the relationship is reliable? And how can we tell whether the model captures a meaningful pattern rather than just fitting a small sample?</p>
   <p>Next, we’ll explore <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> and <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
@@ -144,7 +157,7 @@
     </ul>
   </div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="simple-linear-regression.html">Simple Linear Regression</a> What the line predicts and what its slope and intercept mean.</li>
     <li><a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a> When you can trust a fitted line, and how to check it.</li>

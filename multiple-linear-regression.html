@@ -40,11 +40,25 @@
 
   <p>Multiple linear regression estimates the relationship between an outcome and several predictors at the same time. This post builds one for net revenue per customer. The numbers come from simulated data for an online retailer, so the patterns are realistic but not from a real company.</p>
 
-  <h2>From One Predictor to Several</h2>
-  <h3>The multiple regression equation</h3>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#from-one-predictor-to-several">From One Predictor to Several</a></summary><ul><li><a href="#the-multiple-regression-equation">The multiple regression equation</a></li><li><a href="#the-model">The model</a></li><li><a href="#what-does-holding-other-predictors-const">What does &ldquo;holding other predictors constant&rdquo; mean?</a></li></ul></details></li>
+      <li><details><summary><a href="#the-data-and-its-preparation">The Data and Its Preparation</a></summary><ul><li><a href="#turning-categories-into-numbers-dummy-va">Turning Categories into Numbers: Dummy Variables</a></li></ul></details></li>
+      <li><details><summary><a href="#interpreting-regression-coefficients">Interpreting Regression Coefficients</a></summary><ul><li><a href="#interaction-terms-in-regression">Interaction Terms in Regression</a></li></ul></details></li>
+      <li><details><summary><a href="#multicollinearity-when-predictors-tell-t">Multicollinearity: When Predictors Tell the Same Story</a></summary><ul><li><a href="#what-is-multicollinearity">What Is Multicollinearity?</a></li><li><a href="#why-is-it-a-problem">Why Is It a Problem?</a></li><li><a href="#what-happens-to-the-regression-coefficie">What Happens to the Regression Coefficients?</a></li><li><a href="#does-multicollinearity-make-the-model-us">Does Multicollinearity Make the Model Useless?</a></li><li><a href="#how-can-we-detect-multicollinearity">How Can We Detect Multicollinearity?</a></li></ul></details></li>
+      <li><details><summary><a href="#does-the-model-hold-up">Does the Model Hold Up?</a></summary><ul><li><a href="#adjusted-r-how-much-variation-does-the-m">Adjusted R&sup2;: How Much Variation Does the Model Explain?</a></li><li><a href="#residuals-do-the-errors-behave-as-expect">Residuals: Do the Errors Behave as Expected?</a></li><li><a href="#new-data-does-it-work-on-customers-it-ha">New Data: Does It Work on Customers It Has Not Seen?</a></li></ul></details></li>
+      <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+    </ul>
+  </div>
+
+  <h2 id="from-one-predictor-to-several" style="scroll-margin-top:90px">From One Predictor to Several</h2>
+  <h3 id="the-multiple-regression-equation" style="scroll-margin-top:90px">The multiple regression equation</h3>
   <p>In <a href="simple-linear-regression.html">Simple Linear Regression</a>, revenue is modeled using one predictor. Multiple Linear Regression extends this idea by including several predictors, each with its own coefficient.</p>
   <p>For an online retailer, net revenue might depend on order frequency, average basket size, and the channel through which the customer was acquired.</p>
-  <h3>The model</h3>
+  <h3 id="the-model" style="scroll-margin-top:90px">The model</h3>
   <div class="post-formula post-formula-sm"><strong><span class="post-hat">Revenue</span> = b<sub>0</sub> + b<sub>1</sub> &times; Orders + b<sub>2</sub> &times; BasketSize</strong>
     <p class="post-formula-lead">Each coefficient represents a different part of the model:</p>
     <ul class="post-points post-points-color">
@@ -52,11 +66,11 @@
       <li><strong>b<sub>1</sub>, b<sub>2</sub> &mdash; Coefficients:</strong> Each coefficient estimates the change in predicted revenue associated with a one-unit increase in its predictor, while the other predictors remain constant.</li>
     </ul>
   </div>
-  <h3>What does &ldquo;holding other predictors constant&rdquo; mean?</h3>
+  <h3 id="what-does-holding-other-predictors-const" style="scroll-margin-top:90px">What does &ldquo;holding other predictors constant&rdquo; mean?</h3>
   <p>Suppose the coefficient for Orders is &euro;40. Two otherwise identical customers differ by one order per year. The model predicts &euro;40 more in annual net revenue for the customer who places the additional order, assuming their basket size, acquisition channel, and other predictors remain unchanged.</p>
   <p>The coefficients are estimated using <a href="least-squares.html">Least Squares</a>. The method finds the values that minimize the sum of squared differences between actual and predicted revenue.</p>
 
-  <h2>The Data and Its Preparation</h2>
+  <h2 id="the-data-and-its-preparation" style="scroll-margin-top:90px">The Data and Its Preparation</h2>
   <p>The outcome is net revenue per customer over the last 12 months, measured in euros (&euro;), after returns and discounts. The model uses three predictors:</p>
   <ul class="post-points post-points-color">
     <li><strong>Orders per year</strong> (numeric): approximately 6 on average, ranging from 1 to 14.</li>
@@ -71,7 +85,7 @@
   </figure>
   <p>Multiple Linear Regression can combine numeric and categorical predictors. Categorical variables must first be encoded numerically so the model can use them.</p>
 
-  <h3>Turning Categories into Numbers: Dummy Variables</h3>
+  <h3 id="turning-categories-into-numbers-dummy-va" style="scroll-margin-top:90px">Turning Categories into Numbers: Dummy Variables</h3>
   <p>Our model includes one categorical predictor: Acquisition Channel. As explained in <a href="one-hot-encoding.html">One-Hot Encoding</a>, categorical variables can be represented using binary columns.</p>
   <p>For this regression model, we use one category as the reference group and create dummy variables for the remaining categories.</p>
   <p>For Acquisition Channel, Organic is the reference category:</p>
@@ -86,7 +100,7 @@
   <p>The model estimates a coefficient for Paid Search and another for Referral. Each coefficient represents the estimated difference in annual net revenue compared with Organic customers, holding the other predictors constant.</p>
   <p>This is how categorical information becomes part of the multiple regression equation.</p>
 
-  <h2>Interpreting Regression Coefficients</h2>
+  <h2 id="interpreting-regression-coefficients" style="scroll-margin-top:90px">Interpreting Regression Coefficients</h2>
   <pre class="post-code"><code>import statsmodels.formula.api as smf
 
 model = smf.ols(
@@ -107,7 +121,7 @@ print(model.summary())</code></pre>
     <figcaption><span>Chart 2</span> Paid Search and Referral customers clearly differ from Organic ones, even when orders and basket size are the same. Lines show 95% intervals. Basket size is shown per +&euro;10 so all rows share one scale. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Interaction Terms in Regression</h3>
+  <h3 id="interaction-terms-in-regression" style="scroll-margin-top:90px">Interaction Terms in Regression</h3>
   <p>Interaction terms allow the effect of one predictor on the target variable to depend on another predictor.</p>
   <p>For example, an additional order might generate different revenue depending on whether a customer came from Paid Search or Organic Search.</p>
   <p>In our model, one more order adds &euro;46.4 for every customer, whatever the channel:</p>
@@ -126,10 +140,10 @@ print(model.summary())</code></pre>
   <p>In Python, a <code>*</code> in the formula adds both variables and their product:</p>
   <pre class="post-code"><code>model = smf.ols("net_revenue ~ orders * paid_search", data=train).fit()</code></pre>
 
-  <h2>Multicollinearity: When Predictors Tell the Same Story</h2>
+  <h2 id="multicollinearity-when-predictors-tell-t" style="scroll-margin-top:90px">Multicollinearity: When Predictors Tell the Same Story</h2>
   <p>Multiple Linear Regression makes the same four assumptions as simple linear regression (see <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>): linearity, independence, normality of residuals, and homoscedasticity. The additional concern is multicollinearity.</p>
 
-  <h3>What Is Multicollinearity?</h3>
+  <h3 id="what-is-multicollinearity" style="scroll-margin-top:90px">What Is Multicollinearity?</h3>
   <p>Multicollinearity occurs when two or more independent variables in a regression model are highly correlated.</p>
   <p>Imagine an online retailer that wants to predict annual customer revenue. The model uses two predictors:</p>
   <ul class="post-points post-points-color">
@@ -140,7 +154,7 @@ print(model.summary())</code></pre>
   <p>This creates a challenge for the regression model: <strong>How much of the relationship with revenue should be attributed to orders, and how much to items bought?</strong></p>
   <p>That is the central problem of multicollinearity.</p>
 
-  <h3>Why Is It a Problem?</h3>
+  <h3 id="why-is-it-a-problem" style="scroll-margin-top:90px">Why Is It a Problem?</h3>
   <p>The problem becomes clearer when we compare two models.</p>
   <ul class="post-points post-points-color">
     <li><strong>Model A: One predictor.</strong> The model uses orders per year to predict revenue.</li>
@@ -148,7 +162,7 @@ print(model.summary())</code></pre>
   </ul>
   <p>The model may still predict revenue accurately, but it becomes harder to determine how much each predictor contributes individually. Because the predictors contain overlapping information, the model struggles to separate their individual effects.</p>
 
-  <h3>What Happens to the Regression Coefficients?</h3>
+  <h3 id="what-happens-to-the-regression-coefficie" style="scroll-margin-top:90px">What Happens to the Regression Coefficients?</h3>
   <p>Consider this illustrative example:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Metric</th><th>Model A: Orders only</th><th>Model B: Both predictors</th></tr></thead>
@@ -175,7 +189,7 @@ print(model.summary())</code></pre>
   <p>When items bought is added to the model, the estimated effect of orders changes only slightly, but its confidence interval becomes much wider. Because the two predictors contain similar information, the model has more difficulty separating their individual effects.</p>
   <div class="post-note post-note-explain"><p class="post-note-l">Reading the interval</p><p>The confidence interval for items bought includes zero, meaning its individual effect is not statistically significant at the 5% level. The data leave it uncertain whether the coefficient is positive, negative, or zero. However, this does not prove that items bought has no relationship with revenue.</p></div>
 
-  <h3>Does Multicollinearity Make the Model Useless?</h3>
+  <h3 id="does-multicollinearity-make-the-model-us" style="scroll-margin-top:90px">Does Multicollinearity Make the Model Useless?</h3>
   <p>Not necessarily.</p>
   <p>Multicollinearity primarily creates problems when we want to interpret the individual regression coefficients. It does not automatically make predictions unreliable.</p>
   <p>A model can still produce reasonably accurate predictions within the range of data it has observed, even when individual coefficients are difficult to interpret. However, highly correlated predictors can make coefficients unstable and can affect predictions in situations where the relationships between predictors change, particularly outside the observed data range.</p>
@@ -186,7 +200,7 @@ print(model.summary())</code></pre>
   </ul>
   <p>A model can perform well at the first task while struggling with the second.</p>
 
-  <h3>How Can We Detect Multicollinearity?</h3>
+  <h3 id="how-can-we-detect-multicollinearity" style="scroll-margin-top:90px">How Can We Detect Multicollinearity?</h3>
   <h4>Correlation matrix or scatterplot matrix</h4>
   <p>A correlation matrix shows the strength of the linear relationships between pairs of predictors. A scatterplot matrix makes these relationships visible.</p>
   <p>Look for pairs of predictors that move together closely. In this example, Orders and Items show a strong positive relationship: customers who place more orders tend to buy more items. Basket size, by contrast, shows no similarly clear linear relationship with either predictor.</p>
@@ -232,20 +246,20 @@ print(vifs.drop("const").round(1))</code></pre>
 
   <p>The goal is not to eliminate every correlation between predictors. It is to ensure that the model provides sufficiently reliable coefficient estimates for the questions you want to answer.</p>
 
-  <h2>Does the Model Hold Up?</h2>
+  <h2 id="does-the-model-hold-up" style="scroll-margin-top:90px">Does the Model Hold Up?</h2>
   <p>Three questions decide whether the model can be trusted:</p>
-  <h3>Adjusted R&sup2;: How Much Variation Does the Model Explain?</h3>
+  <h3 id="adjusted-r-how-much-variation-does-the-m" style="scroll-margin-top:90px">Adjusted R&sup2;: How Much Variation Does the Model Explain?</h3>
   <p>The model has an R&sup2; of 0.82, meaning it explains 82% of the variation in revenue in the training data. The adjusted R&sup2; is also 0.82, suggesting that accounting for the number of predictors makes little difference to the overall fit. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a>.</p>
-  <h3>Residuals: Do the Errors Behave as Expected?</h3>
+  <h3 id="residuals-do-the-errors-behave-as-expect" style="scroll-margin-top:90px">Residuals: Do the Errors Behave as Expected?</h3>
   <p>The residuals appear randomly scattered around zero, with no obvious curve or funnel shape. The Q&ndash;Q plot also follows the reference line closely. These patterns support the linearity, constant-variance and approximate-normality assumptions, although the plots alone cannot prove that all assumptions are satisfied.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/multiple-linear-regression/chart-5-residuals.svg" alt="Two plots side by side. Left: residuals against fitted net revenue, scattered evenly around zero with no curve or funnel shape. Right: a Q-Q plot where the points follow the straight reference line closely." loading="lazy">
     <figcaption><span>Chart 5</span> Residuals scatter evenly around zero and the Q-Q points follow the line, which supports the model assumptions. Illustrative data, training customers.</figcaption>
   </figure>
-  <h3>New Data: Does It Work on Customers It Has Not Seen?</h3>
+  <h3 id="new-data-does-it-work-on-customers-it-ha" style="scroll-margin-top:90px">New Data: Does It Work on Customers It Has Not Seen?</h3>
   <p>The Root Mean Squared Error (RMSE, a measure of prediction error that gives larger mistakes more weight) is &euro;52.8 on the training data and &euro;51.6 on the held-out test data. The similar error levels suggest that the model generalizes well to unseen customers, with no obvious sign of overfitting. The slightly lower test error may simply mean that these customers were easier to predict. See <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2 id="how-to-explain-it-to-stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">&ldquo;Each additional order per year goes with &euro;46.4 more net revenue per customer, when basket size and channel are the same. Customers acquired through Paid Search bring &euro;35.9 less per year than organic customers who otherwise look alike, and referral customers &euro;18.4 more.&rdquo;</p>
     <p class="post-callout-q">&ldquo;Together these factors explain about 82% of the differences between customers, and the model works just as well on 300 customers it had not seen. It shows association, not proof that switching channels would change revenue.&rdquo;</p>
@@ -254,7 +268,7 @@ print(vifs.drop("const").round(1))</code></pre>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Multiple linear regression estimates the relationship between an outcome and several predictors at once, and each coefficient is read with the other predictors held constant. Categories enter as dummy variables measured against a reference category, highly correlated predictors (multicollinearity) inflate the standard errors of individual coefficients, and the model should be judged on adjusted R&sup2;, residuals and new data, not on R&sup2; alone.</p></div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points">
     <li><a href="simple-linear-regression.html">Simple Linear Regression</a> The fitted line and what its slope and intercept mean.</li>
     <li><a href="least-squares.html">Least Squares</a> How the best-fitting line is chosen by minimizing squared errors.</li>

@@ -39,14 +39,32 @@
   <p>Comparing two groups is relatively straightforward with a <a href="t-test-vs-z-test.html">t-test</a>. But when we want to compare three or more groups, running multiple t-tests can increase the risk of false positives.</p>
   <p>This is where <strong>ANOVA</strong> (Analysis of Variance) comes in. It tests whether the differences between group means are large relative to the variation within each group. Instead of testing each pair separately, ANOVA evaluates whether there is sufficient statistical evidence that not all group means are equal.</p>
 
-  <h2>Why Not Run Several t-Tests?</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-not-run-several-t-tests">Why Not Run Several t-Tests?</a></li>
+      <li><details><summary><a href="#one-way-vs-two-way-anova">One-Way vs. Two-Way ANOVA</a></summary><ul><li><a href="#one-way-anova">One-way ANOVA</a></li><li><a href="#two-way-anova">Two-Way ANOVA</a></li></ul></details></li>
+      <li><a href="#the-core-idea-variation-between-groups-v">The Core Idea: Variation Between Groups vs. Variation Within Groups</a></li>
+      <li><details><summary><a href="#one-way-anova-step-by-step">One-Way ANOVA, Step by Step</a></summary><ul><li><a href="#step-1-define-the-null-and-alternative-h">Step 1: Define the null and alternative hypotheses</a></li><li><a href="#step-2-calculate-the-f-statistic">Step 2: Calculate the F-statistic</a></li><li><a href="#step-3-find-the-p-value">Step 3: Find the p-value</a></li><li><a href="#step-4-draw-a-conclusion">Step 4: Draw a Conclusion</a></li></ul></details></li>
+      <li><a href="#what-a-significant-result-does-not-tell-">What a Significant Result Does Not Tell You</a></li>
+      <li><a href="#which-groups-differ-post-hoc-tests">Which Groups Differ? Post-Hoc Tests</a></li>
+      <li><details><summary><a href="#two-way-anova-adding-a-second-factor">Two-Way ANOVA: Adding a Second Factor</a></summary><ul><li><a href="#interpreting-the-results">Interpreting the Results</a></li></ul></details></li>
+      <li><a href="#assumptions-and-when-anova-breaks">Assumptions and When ANOVA Breaks</a></li>
+      <li><details><summary><a href="#coding-anova-in-python">Coding ANOVA in Python</a></summary><ul><li><a href="#one-way-anova-2">One-way ANOVA</a></li><li><a href="#two-way-anova-2">Two-way ANOVA</a></li></ul></details></li>
+      <li><a href="#how-to-explain-the-results-to-stakeholde">How to Explain the Results to Stakeholders</a></li>
+    </ul>
+  </div>
+
+  <h2 id="why-not-run-several-t-tests" style="scroll-margin-top:90px">Why Not Run Several t-Tests?</h2>
   <p>Imagine we want to compare the average order value of three marketing channels: email, social media and search.</p>
   <p>We could run three separate t-tests: email vs. social, email vs. search, and social vs. search. However, every additional test increases the overall risk of a false positive — concluding that a difference exists when it is actually due to random variation.</p>
   <p>With three independent tests at a 5% significance level, the probability of at least one false positive would be approximately 14.3% if all null hypotheses were true. As the number of comparisons increases, this risk can grow further.</p>
   <p><strong>ANOVA</strong> (Analysis of Variance) addresses this by testing the overall question first: is there sufficient statistical evidence that not all group means are equal?</p>
 
-  <h2>One-Way vs. Two-Way ANOVA</h2>
-  <h3>One-way ANOVA</h3>
+  <h2 id="one-way-vs-two-way-anova" style="scroll-margin-top:90px">One-Way vs. Two-Way ANOVA</h2>
+  <h3 id="one-way-anova" style="scroll-margin-top:90px">One-way ANOVA</h3>
   <p>One-way ANOVA examines the relationship between one categorical independent variable and one continuous dependent variable.</p>
   <p>For example, we could investigate whether average order value differs across email, social media and search campaigns. The hypotheses are:</p>
   <ul class="post-points post-points-color">
@@ -58,7 +76,7 @@
     </li>
   </ul>
   <p>A significant result indicates that at least one population mean differs, but it does not tell us which channels differ. Post-hoc tests can investigate individual pairs.</p>
-  <h3>Two-Way ANOVA</h3>
+  <h3 id="two-way-anova" style="scroll-margin-top:90px">Two-Way ANOVA</h3>
   <p>Two-way ANOVA examines how two categorical independent variables relate to one continuous dependent variable.</p>
   <p>For example, we could investigate whether average order value differs by marketing channel (email, social media, search) and customer type (new vs. returning).</p>
   <p>Unlike one-way ANOVA, two-way ANOVA evaluates three effects:</p>
@@ -70,7 +88,7 @@
   <p>Each effect has its own null and alternative hypotheses. The null hypotheses state that there is no effect or interaction, while the alternative hypotheses state that an effect or interaction exists.</p>
   <p>The interaction effect is particularly interesting. For example, email marketing might generate higher average order values among returning customers, while search performs better among new customers. This would suggest that the relationship between marketing channel and order value depends on customer type.</p>
 
-  <h2>The Core Idea: Variation Between Groups vs. Variation Within Groups</h2>
+  <h2 id="the-core-idea-variation-between-groups-v" style="scroll-margin-top:90px">The Core Idea: Variation Between Groups vs. Variation Within Groups</h2>
   <p>ANOVA does not compare the averages directly. It compares two kinds of variation:</p>
   <ul class="post-points post-points-color">
     <li><strong>Variation between groups.</strong> How far the group averages are from the overall average. If the channels really differ, their averages spread out.</li>
@@ -86,7 +104,7 @@
   <p>If all groups share the same population mean, the F-statistic is generally around 1. The larger F becomes, the stronger the evidence against the null hypothesis — because the variation between group means is large relative to the variation within groups.</p>
   <p>A large F-statistic does not automatically mean the result is statistically significant. We need the F-distribution and its degrees of freedom to determine the p-value.</p>
 
-  <h2>One-Way ANOVA, Step by Step</h2>
+  <h2 id="one-way-anova-step-by-step" style="scroll-margin-top:90px">One-Way ANOVA, Step by Step</h2>
   <p>We compare 60 orders from three marketing channels, 20 per channel. The figures are illustrative and based on simulated data, not a real retailer.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Channel</th><th>Average order value</th><th>Standard deviation</th></tr></thead>
@@ -101,7 +119,7 @@
     <figcaption><span>Chart 2</span> Social orders sit lowest and search orders highest, yet every channel contains both cheap and expensive orders. The question is whether the gaps between the three averages are bigger than this spread would produce by chance. Illustrative data.</figcaption>
   </figure>
 
-  <h3>Step 1: Define the null and alternative hypotheses</h3>
+  <h3 id="step-1-define-the-null-and-alternative-h" style="scroll-margin-top:90px">Step 1: Define the null and alternative hypotheses</h3>
   <ul class="post-points post-points-color">
     <li><strong>H<sub>0</sub> (null hypothesis):</strong> The population mean order value is equal across all three marketing channels.
       <p class="post-formula" style="margin:8px 0 0"><strong>H<sub>0</sub>: μ<sub>Email</sub> = μ<sub>Social</sub> = μ<sub>Search</sub></strong></p>
@@ -112,7 +130,7 @@
   </ul>
   <p>We use a significance level of α = 0.05, meaning we accept a 5% Type I error rate for this test.</p>
 
-  <h3>Step 2: Calculate the F-statistic</h3>
+  <h3 id="step-2-calculate-the-f-statistic" style="scroll-margin-top:90px">Step 2: Calculate the F-statistic</h3>
   <p>The overall mean of all 60 orders is €64.22. ANOVA uses this overall mean as a reference point to measure two types of variation: between-group variation and within-group variation.</p>
 
   <p style="font-size:0.9rem"><strong>1. Between-group variation: sum of squares between groups (SSB)</strong></p>
@@ -168,7 +186,7 @@
     </tbody>
   </table></div>
 
-  <h3>Step 3: Find the p-value</h3>
+  <h3 id="step-3-find-the-p-value" style="scroll-margin-top:90px">Step 3: Find the p-value</h3>
   <p>If the null hypothesis is true, the F-statistic follows an F-distribution. Its shape depends on two degrees of freedom: 2 for the numerator and 57 for the denominator.</p>
   <p>At a significance level of 5%, the critical F-value is approximately 3.16. Our observed F-statistic of 5.95 exceeds this threshold, suggesting a statistically significant result.</p>
 
@@ -181,7 +199,7 @@
   </figure>
   <p>If all three marketing channels truly had the same population mean order value, an F-statistic of 5.95 or greater would occur in approximately 4–5 out of 1,000 repeated samples under the model assumptions.</p>
 
-  <h3>Step 4: Draw a Conclusion</h3>
+  <h3 id="step-4-draw-a-conclusion" style="scroll-margin-top:90px">Step 4: Draw a Conclusion</h3>
   <p>The p-value of approximately 0.0045 is below our significance level of 0.05, so we reject the null hypothesis. There is statistically significant evidence that not all three marketing channels have the same population mean order value. However, we still do not know which specific channels differ.</p>
 
   <p style="font-size:0.9rem"><strong>How large is the effect?</strong></p>
@@ -192,7 +210,7 @@
   <p>The p-value tells us that the differences are statistically significant, while eta-squared helps us understand their magnitude. Together, they provide a more complete picture of the results.</p>
   <p>To identify which specific channels differ, we can perform post-hoc comparisons, such as Tukey’s HSD.</p>
 
-  <h2>What a Significant Result Does Not Tell You</h2>
+  <h2 id="what-a-significant-result-does-not-tell-" style="scroll-margin-top:90px">What a Significant Result Does Not Tell You</h2>
   <p>A statistically significant ANOVA result is only the beginning. It tells us that not all group means are equal, but it leaves three important questions unanswered.</p>
   <ul class="post-points post-points-color">
     <li><strong>Which groups differ?</strong> ANOVA does not identify the specific differences between email, social media and search. Post-hoc tests, such as Tukey’s HSD, help us determine which pairs of groups differ significantly.</li>
@@ -201,7 +219,7 @@
   </ul>
   <p>The goal is not simply to find a significant p-value. It is to understand the size, meaning and limitations of the observed differences.</p>
 
-  <h2>Which Groups Differ? Post-Hoc Tests</h2>
+  <h2 id="which-groups-differ-post-hoc-tests" style="scroll-margin-top:90px">Which Groups Differ? Post-Hoc Tests</h2>
   <p>ANOVA tells us whether there is evidence that not all group means are equal, but it does not identify which groups differ. To investigate individual pairs, we can use a <strong>post-hoc test</strong>.</p>
   <p>A common choice is <strong>Tukey’s HSD (Honestly Significant Difference)</strong>. It compares all pairs of group means while controlling the family-wise error rate — the probability of making at least one Type I error across the set of comparisons.</p>
   <p>For our three marketing channels, we compare search with email, social with email, and social with search. Each difference is the first group’s average minus the second’s, so a negative value means the first group has the lower average.</p>
@@ -224,7 +242,7 @@
   <p>An unadjusted test is a regular test whose p-value is used as it is, without correcting for the number of comparisons being made. Running multiple unadjusted tests increases the risk of false positives. Tukey’s HSD accounts for the multiple comparisons, helping keep the overall family-wise error rate at the chosen significance level.</p>
   <p>In this example, the unadjusted email-versus-social comparison has a p-value of approximately 0.037, but the Tukey-adjusted p-value is 0.069. After accounting for the multiple comparisons, we do not have sufficient evidence to conclude that these two channels differ.</p>
 
-  <h2>Two-Way ANOVA: Adding a Second Factor</h2>
+  <h2 id="two-way-anova-adding-a-second-factor" style="scroll-margin-top:90px">Two-Way ANOVA: Adding a Second Factor</h2>
   <p>So far the customer type was ignored. Of our 60 orders, 30 came from new and 30 from returning customers, evenly spread over the channels (10 in each combination). Two-way ANOVA tests the channel, the customer type and their interaction at once.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Average order value</th><th>New customers</th><th>Returning customers</th></tr></thead>
@@ -246,7 +264,7 @@
       <tr><td>Channel × customer type</td><td>5.02</td><td>0.0100</td></tr>
     </tbody>
   </table></div>
-  <h3>Interpreting the Results</h3>
+  <h3 id="interpreting-the-results" style="scroll-margin-top:90px">Interpreting the Results</h3>
   <ul class="post-points post-points-color">
     <li><strong>Both factors matter.</strong> Marketing channel (F = 8.37, p = 0.0007) and customer type (F = 16.21, p = 0.0002) have statistically significant effects on average order value.</li>
     <li><strong>The interaction is significant.</strong> With F = 5.02 and p = 0.0100, the effect of marketing channel depends on customer type.</li>
@@ -255,7 +273,7 @@
   <p><strong>The business takeaway:</strong> Marketing strategies should account for customer segments rather than treating all customers alike.</p>
   <p>These results show associations, not necessarily causal effects. With only 10 orders per channel–customer combination, the findings should be interpreted with appropriate caution.</p>
 
-  <h2>Assumptions and When ANOVA Breaks</h2>
+  <h2 id="assumptions-and-when-anova-breaks" style="scroll-margin-top:90px">Assumptions and When ANOVA Breaks</h2>
   <p>Classical one-way ANOVA relies on several assumptions. Checking them helps us decide whether its results are reliable.</p>
   <ul class="post-points post-points-color">
     <li><strong>Independent observations.</strong> Each observation should be independent of the others. For example, repeated orders from the same customer may violate this assumption because those orders can be correlated.</li>
@@ -271,10 +289,10 @@
   </ul>
   <p>The goal is not to force the data to satisfy the assumptions, but to choose a method appropriate for the data and research question.</p>
 
-  <h2>Coding ANOVA in Python</h2>
+  <h2 id="coding-anova-in-python" style="scroll-margin-top:90px">Coding ANOVA in Python</h2>
   <p>Python can calculate the F-statistic, p-value and post-hoc comparisons automatically. We do not need to calculate them by hand.</p>
 
-  <h3>One-way ANOVA</h3>
+  <h3 id="one-way-anova-2" style="scroll-margin-top:90px">One-way ANOVA</h3>
   <p>We use <code>scipy.stats.f_oneway()</code> to test whether the mean order value differs across the three marketing channels. Tukey’s HSD then identifies which pairs differ, while accounting for multiple comparisons.</p>
   <pre class="post-code"><code>import pandas as pd
 from scipy import stats
@@ -310,7 +328,7 @@ Search Social   -16.65 0.0037 -28.4904 -4.8096   True
   <p>In this printout, <code>meandiff</code> is the mean of group2 minus the mean of group1. So the second row reads: social orders average €11.15 less than email orders. Only the last row has <code>reject = True</code>.</p>
   <p>The ANOVA result indicates a statistically significant difference between the channel means. Tukey’s HSD identifies which pairs differ significantly after adjusting for multiple comparisons.</p>
 
-  <h3>Two-way ANOVA</h3>
+  <h3 id="two-way-anova-2" style="scroll-margin-top:90px">Two-way ANOVA</h3>
   <p>To investigate both marketing channel and customer type, we use <code>statsmodels</code>. The formula <code>C(channel) * C(customer)</code> includes both main effects and their interaction.</p>
   <pre class="post-code"><code>import statsmodels.api as sm
 from statsmodels.formula.api import ols
@@ -336,7 +354,7 @@ Residual                9285.7000  54.0      NaN     NaN</code></pre>
   <p>For each effect, a p-value below 0.05 indicates statistically significant evidence against its null hypothesis.</p>
   <p>The code assumes that the dataset contains the columns <code>channel</code>, <code>customer</code> and <code>value</code>, with one row per order.</p>
 
-  <h2>How to Explain the Results to Stakeholders</h2>
+  <h2 id="how-to-explain-the-results-to-stakeholde" style="scroll-margin-top:90px">How to Explain the Results to Stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">“Across our 60 orders, average order value differed across the three marketing channels. The one-way ANOVA found statistically significant evidence of a difference (F = 5.95, p = 0.0045). Tukey’s post-hoc test showed that the difference between search and social was statistically significant, at approximately €16.65 per order. The other two pairwise differences were not statistically significant after adjustment.”</p>
     <p class="post-callout-q">“The two-way ANOVA revealed another important insight: customer type matters, and the effect of marketing channel depends on whether customers are new or returning. Email had the highest average order value among returning customers (€80.50), while search performed best among new customers (€68.70).”</p>
@@ -352,7 +370,7 @@ Residual                9285.7000  54.0      NaN     NaN</code></pre>
   </ul>
   <p style="margin-top:12px"><strong>The main lesson:</strong> Statistical analysis does not end with a p-value. The goal is to translate the results into meaningful business insights without claiming more than the data can support.</p></div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="hypothesis-testing.html">Hypothesis Testing</a> The logic of H<sub>0</sub>, p-values and significance levels behind every test.</li>
     <li><a href="t-test-vs-z-test.html">T-Test vs. Z-Test</a> The tests for comparing two averages, where ANOVA handles three or more.</li>

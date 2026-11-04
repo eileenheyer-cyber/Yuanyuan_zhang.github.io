@@ -40,7 +40,20 @@
 
   <p>This is the problem of <strong>generalization</strong>. A model that is too simple may miss important patterns (<strong>underfitting</strong>). A model that learns the training data too closely may fail to generalize (<strong>overfitting</strong>). Throughout this post, we use customer revenue as an illustrative example. All data is illustrative.</p>
 
-  <h2>Training Data and Test Data</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#training-data-and-test-data">Training Data and Test Data</a></summary><ul><li><a href="#a-practical-example">A practical example</a></li><li><a href="#splitting-the-data-with-python">Splitting the Data with Python</a></li></ul></details></li>
+      <li><details><summary><a href="#two-ways-a-model-can-fail">Two Ways a Model Can Fail</a></summary><ul><li><a href="#underfitting">Underfitting</a></li><li><a href="#overfitting">Overfitting</a></li><li><a href="#how-to-spot-underfitting-and-overfitting">How to Spot Underfitting and Overfitting</a></li></ul></details></li>
+      <li><details><summary><a href="#bias-and-variance">Bias and Variance</a></summary><ul><li><a href="#the-bias-variance-trade-off">The Bias&#8211;Variance Trade-off</a></li></ul></details></li>
+      <li><details><summary><a href="#strategies-to-reduce-underfitting-and-ov">Strategies to Reduce Underfitting and Overfitting</a></summary><ul><li><a href="#if-the-model-underfits">If the model underfits</a></li><li><a href="#if-the-model-overfits">If the model overfits</a></li><li><a href="#how-do-we-know-if-the-changes-work">How do we know if the changes work?</a></li></ul></details></li>
+      <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+    </ul>
+  </div>
+
+  <h2 id="training-data-and-test-data" style="scroll-margin-top:90px">Training Data and Test Data</h2>
   <p>Before building a machine learning model, data scientists typically split their dataset into training and test data. This is a standard step in the machine learning workflow: the model needs data to learn from, but we also need separate data to check whether it can make reliable predictions on new observations.</p>
   <p>We divide the data into two parts:</p>
   <ul class="post-points post-points-color">
@@ -48,12 +61,12 @@
     <li><strong>Test data</strong> is held back during training. Once the model is built, we use it to evaluate how well it predicts outcomes it has not seen before.</li>
   </ul>
 
-  <h3>A practical example</h3>
+  <h3 id="a-practical-example" style="scroll-margin-top:90px">A practical example</h3>
   <p>Imagine we have data from 100 customers and want to predict their net revenue. We randomly assign 80 customers to the training set and reserve the other 20 for the test set.</p>
   <p>The model learns from the 80 training customers. It then predicts revenue for the 20 test customers without having used their actual revenue values during training. We compare those predictions with the actual values to see how well the model performs on unseen data.</p>
   <p>This matters because a model can perform very well on its training data but poorly on new customers. Comparing its performance on both datasets helps us identify potential overfitting and assess whether the model has learned patterns that generalize beyond the data it was trained on.</p>
 
-  <h3>Splitting the Data with Python</h3>
+  <h3 id="splitting-the-data-with-python" style="scroll-margin-top:90px">Splitting the Data with Python</h3>
   <pre class="post-code"><code>from sklearn.model_selection import train_test_split
 
 # Separate predictors from the target
@@ -97,9 +110,9 @@ Test customers: 20</code></pre>
   <p>This is the central lesson: training performance alone cannot tell us whether a model will generalize well.</p>
   <div class="post-note"><p class="post-note-l">A random split is not always the right split</p><p>A random split is appropriate for many independent customer records, but not every dataset. Time-dependent data may require a chronological split, and repeated observations from the same customer may require a customer-level split to avoid data leakage.</p></div>
 
-  <h2>Two Ways a Model Can Fail</h2>
+  <h2 id="two-ways-a-model-can-fail" style="scroll-margin-top:90px">Two Ways a Model Can Fail</h2>
 
-  <h3>Underfitting</h3>
+  <h3 id="underfitting" style="scroll-margin-top:90px">Underfitting</h3>
   <p>An underfitting model is too simple to capture the underlying pattern in the data. It performs poorly even on the data it was trained on, often resulting in a low R².</p>
   <p>Imagine predicting net revenue per customer using only the weekday of their first order. Monday and Saturday customers may spend very different amounts, but the weekday alone might explain very little of that variation. The model ends up predicting roughly the same revenue for everyone.</p>
   <p>In this example, the model has not learned enough about what drives customer spending. Its R² is 0.03, meaning it explains only 3% of the variation in revenue in the data used to fit the model.</p>
@@ -115,7 +128,7 @@ Test customers: 20</code></pre>
   </ul>
   <p>Because the model fails to capture the pattern in its training data, it is also unlikely to make reliable predictions for new customers.</p>
 
-  <h3>Overfitting</h3>
+  <h3 id="overfitting" style="scroll-margin-top:90px">Overfitting</h3>
   <p>Overfitting is the opposite problem. An overfitting model learns the training data too closely. It performs very well on the data it was trained on, but its predictions become less reliable when it encounters new data.</p>
   <p>Imagine predicting net revenue per customer using 40 predictors but having data from only 60 customers. The model has many variables to work with relative to the number of observations. It may start treating random quirks as meaningful patterns. For example, one customer who happened to make a large purchase during a flash sale might disproportionately influence what the model learns. That pattern may not hold for other customers.</p>
   <p>To understand why this happens, we need to distinguish between two things in the data:</p>
@@ -129,7 +142,7 @@ Test customers: 20</code></pre>
     <figcaption><span>Chart 3</span> Each customer&#8217;s revenue is the smooth signal plus random noise. The overfitting model passes through every training customer, noise included, so it spikes at the flash-sale customer. New customers follow the smooth signal, not the spikes. Illustrative data.</figcaption>
   </figure>
 
-  <h3>How to Spot Underfitting and Overfitting</h3>
+  <h3 id="how-to-spot-underfitting-and-overfitting" style="scroll-margin-top:90px">How to Spot Underfitting and Overfitting</h3>
   <p>Comparing the error on the training data with the error on the test data tells the three situations apart.</p>
   <p>Chart 4 shows the same 24 customers fitted three ways: a straight line (degree 1), a smooth curve (degree 2) and a very flexible curve (degree 12).</p>
   <figure class="post-fig post-fig-wide">
@@ -150,13 +163,13 @@ Test customers: 20</code></pre>
 
   <p>Adding predictors can reduce training error even when the new variables contribute little useful information. For predictive modeling, cross-validation helps compare models on data not used to fit them. Adjusted R&sup2; is another useful measure when comparing linear regression models, but it does not replace evaluating predictive performance on unseen data. See <a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> for adjusted R&sup2;.</p>
 
-  <h2>Bias and Variance</h2>
+  <h2 id="bias-and-variance" style="scroll-margin-top:90px">Bias and Variance</h2>
   <p>Underfitting and overfitting describe what goes wrong with a model. Bias and variance help explain why.</p>
   <ul class="post-points post-points-color">
     <li><strong>Bias</strong> describes how much a model&#8217;s assumptions prevent it from capturing the real relationship in the data. A model with high bias is often too simple and consistently misses important patterns. This is commonly associated with underfitting.</li>
     <li><strong>Variance</strong> describes how sensitive a model is to the particular training data it receives. A model with high variance may learn patterns that are specific to one sample rather than patterns that hold more generally. This is commonly associated with overfitting.</li>
   </ul>
-  <h3>The Bias&#8211;Variance Trade-off</h3>
+  <h3 id="the-bias-variance-trade-off" style="scroll-margin-top:90px">The Bias&#8211;Variance Trade-off</h3>
   <p>A very simple model may miss important relationships, even when trained on different samples. A very complex model may fit one training sample extremely well but produce very different results when trained on another.</p>
   <p>The goal is to find a balance: a model complex enough to capture meaningful patterns, but not so complex that it starts learning random noise.</p>
   <p>The chart below shows how the two errors trade off as the model becomes more complex.</p>
@@ -165,25 +178,25 @@ Test customers: 20</code></pre>
     <figcaption><span>Chart 5</span> As complexity grows, bias² falls and variance rises, so total error is lowest in between. Total error also includes irreducible noise, and the exact curve shapes depend on the problem and the model. Conceptual sketch.</figcaption>
   </figure>
 
-  <h2>Strategies to Reduce Underfitting and Overfitting</h2>
-  <h3>If the model underfits</h3>
+  <h2 id="strategies-to-reduce-underfitting-and-ov" style="scroll-margin-top:90px">Strategies to Reduce Underfitting and Overfitting</h2>
+  <h3 id="if-the-model-underfits" style="scroll-margin-top:90px">If the model underfits</h3>
   <ul class="post-points post-points-color">
     <li>Choose a more flexible model. A straight-line model may be unable to capture a curved relationship.</li>
     <li>Add relevant predictors. Include variables that contain useful information about the outcome.</li>
     <li>Improve feature engineering. Transform existing variables or create new features that better represent the underlying relationships.</li>
   </ul>
-  <h3>If the model overfits</h3>
+  <h3 id="if-the-model-overfits" style="scroll-margin-top:90px">If the model overfits</h3>
   <ul class="post-points post-points-color">
     <li>Reduce model complexity. Remove unnecessary predictors or choose a simpler model.</li>
     <li>Use regularization. Penalize excessive model complexity to reduce sensitivity to the training data.</li>
     <li>Use cross-validation. Compare candidate models on different training/validation splits to find a model that generalizes well.</li>
   </ul>
   <p>Several of these strategies come down to the same question: which predictors belong in the model? Too few useful predictors can leave important patterns unexplained, while unnecessary predictors can increase overfitting risk. The right choice depends on the data, model complexity, and how the model is evaluated. Deciding which ones to keep is called variable selection, and it is covered in <a href="multiple-linear-regression.html">Multiple Linear Regression</a>.</p>
-  <h3>How do we know if the changes work?</h3>
+  <h3 id="how-do-we-know-if-the-changes-work" style="scroll-margin-top:90px">How do we know if the changes work?</h3>
   <p>Evaluate the selected model on a separate test set that was not used for model selection. This provides an estimate of how well the model predicts unseen observations.</p>
   <p>The goal is not to build the most complicated model or the model with the smallest training error. It is to find a model that captures meaningful patterns and performs reliably on new data.</p>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2 id="how-to-explain-it-to-stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">&#8220;We compared three regression models to predict revenue per customer. The most complex model made predictions that were typically close to the actual values in its training data. However, when tested on new customers, its prediction errors became much larger.&#8221;</p>
     <p class="post-callout-q">&#8220;The simpler model performed slightly worse on the training data but made much more reliable predictions for new customers.&#8221;</p>
@@ -195,7 +208,7 @@ Test customers: 20</code></pre>
   <p>To assess generalization, compare training performance with validation performance during model development. Once you have selected your model, evaluate it on a separate test set.</p>
   <p>The goal is not to build the most complicated model or achieve the lowest training error. It is to find a model that captures meaningful patterns and makes reliable predictions on new data.</p></div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points">
     <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> How R², MAE and MSE measure fit, and how confidence intervals describe uncertainty.</li>
     <li><a href="simple-linear-regression.html">Simple Linear Regression</a> The fitted line and what its slope and intercept mean.</li>

@@ -36,7 +36,21 @@
 
   <p>A regression model can find the best-fit line, but how do we know whether we can trust its results? The four assumptions of simple linear regression help us answer this question. They allow us to check whether a linear model is appropriate for our data and whether its statistical conclusions are reliable. In this article, we will explore why each assumption matters, what can go wrong when it is violated, and how to check it using visualizations and Python.</p>
 
-  <h2>The Four Assumptions at a Glance</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#the-four-assumptions-at-a-glance">The Four Assumptions at a Glance</a></li>
+      <li><a href="#1-linearity-is-a-straight-line-appropria">1. Linearity: Is a Straight Line Appropriate?</a></li>
+      <li><details><summary><a href="#2-independence-are-the-observations-inde">2. Independence: Are the Observations Independent?</a></summary><ul><li><a href="#visualizing-independence">Visualizing Independence</a></li><li><a href="#how-to-read-the-two-plots">How to Read the Two Plots</a></li><li><a href="#left-independent-errors">Left: Independent errors</a></li><li><a href="#right-dependent-errors">Right: Dependent errors</a></li></ul></details></li>
+      <li><a href="#3-normality-are-the-errors-normally-dist">3. Normality: Are the Errors Normally Distributed?</a></li>
+      <li><details><summary><a href="#4-homoscedasticity-is-the-error-spread-c">4. Homoscedasticity: Is the Error Spread Consistent?</a></summary><ul><li><a href="#how-to-read-the-two-plots-2">How to Read the Two Plots</a></li><li><a href="#left-constant-variance">Left: Constant variance</a></li><li><a href="#right-changing-variance">Right: Changing variance</a></li></ul></details></li>
+      <li><a href="#what-if-an-assumption-is-violated">What if an assumption is violated?</a></li>
+    </ul>
+  </div>
+
+  <h2 id="the-four-assumptions-at-a-glance" style="scroll-margin-top:90px">The Four Assumptions at a Glance</h2>
   <p>The four assumptions of simple linear regression help us identify potential problems before we interpret the results:</p>
   <ul class="post-points post-points-color">
     <li><strong>Linearity:</strong> Is a straight line an appropriate way to describe the relationship?</li>
@@ -45,7 +59,7 @@
     <li><strong>Homoscedasticity:</strong> Does the error variance remain approximately constant?</li>
   </ul>
 
-  <h2>1. Linearity: Is a Straight Line Appropriate?</h2>
+  <h2 id="1-linearity-is-a-straight-line-appropria" style="scroll-margin-top:90px">1. Linearity: Is a Straight Line Appropriate?</h2>
   <p>Simple linear regression assumes that the relationship between the independent variable (X, advertising spend) and the dependent variable (Y, sales) can be reasonably represented by a straight line.</p>
   <p>As advertising spend increases, sales might also increase. But how do they increase? If sales tend to rise at a roughly constant rate, a straight line may describe the relationship well. If sales rise rapidly at first and then level off, the relationship is curved instead.</p>
   <p><strong>Why does it matter?</strong> If the actual relationship is curved but we fit a straight line, the model may systematically overestimate or underestimate values in different parts of the data. Its predictions and interpretation may therefore be misleading.</p>
@@ -69,23 +83,23 @@ plt.show()</code></pre>
   <p>If a clear curve appears, possible remedies are to transform a variable, for example by taking its logarithm, or to add a squared term, and then check the plots again.</p>
   <div class="post-note"><p class="post-note-l">With several predictors</p><p>A single scatterplot is not enough when the model has more than one X. A scatterplot matrix plots every variable against every other, so you can check linearity for each predictor at once and also see whether predictors overlap. We cover this in Multiple Linear Regression.</p></div>
 
-  <h2>2. Independence: Are the Observations Independent?</h2>
+  <h2 id="2-independence-are-the-observations-inde" style="scroll-margin-top:90px">2. Independence: Are the Observations Independent?</h2>
   <p>The independence assumption means that the error for one observation should not depend on the error for another. After accounting for the relationship described by our regression model, the remaining errors should not show a systematic connection.</p>
   <p><strong>Why does it matter?</strong> When errors are correlated, the model may underestimate uncertainty. Standard errors can become too small and confidence intervals too narrow, making a relationship appear more statistically convincing than it really is.</p>
   <p><strong>How can we check it?</strong> Start by understanding how the data were collected. For monthly observations, plotting residuals over time can reveal patterns that suggest autocorrelation.</p>
   <p>Consider NordHome's monthly advertising spend and sales. A major campaign in March might continue to influence sales in April. If the model underestimates sales in March, it might also underestimate sales in April because both months are affected by the same underlying factor. Their errors may therefore be related.</p>
-  <h3>Visualizing Independence</h3>
+  <h3 id="visualizing-independence" style="scroll-margin-top:90px">Visualizing Independence</h3>
   <p>To investigate this, compare each month's residual with the previous month's residual. The horizontal axis shows the previous month's residual, while the vertical axis shows the current month's residual.</p>
   <p>When errors are independent, the points should form a scattered cloud without a clear pattern. When positive residuals tend to follow positive residuals, and negative residuals tend to follow negative residuals, the points may form an upward pattern. This suggests positive autocorrelation.</p>
-  <h3>How to Read the Two Plots</h3>
+  <h3 id="how-to-read-the-two-plots" style="scroll-margin-top:90px">How to Read the Two Plots</h3>
   <div class="post-qq">
-    <div class="post-qq-item"><img src="images/regression/assumptions-lag-indep.svg?v=1" alt="Lag plot of independent errors: a scattered cloud with a flat dashed line." loading="lazy"><div><h3>Left: Independent errors</h3><p>The dots form a scattered cloud with no clear direction, and the dashed line is flat.</p><ul class="post-points post-points-color"><li>A high residual can be followed by a high or a low one.</li><li>A low residual can be followed by a high or a low one.</li><li>Knowing last month's residual tells us almost nothing about this month's.</li></ul><p><strong>This is consistent with independence.</strong></p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-lag-dep.svg?v=1" alt="Lag plot of dependent errors: the dots rise along an upward dashed line." loading="lazy"><div><h3>Right: Dependent errors</h3><p>The dots rise from bottom left to top right, and the dashed line slopes upward.</p><ul class="post-points post-points-color"><li>A positive residual tends to be followed by a positive one.</li><li>A negative residual tends to be followed by a negative one.</li><li>Knowing last month's residual gives us a useful hint about this month's.</li></ul><p><strong>This suggests positive autocorrelation.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-lag-indep.svg?v=1" alt="Lag plot of independent errors: a scattered cloud with a flat dashed line." loading="lazy"><div><h3 id="left-independent-errors" style="scroll-margin-top:90px">Left: Independent errors</h3><p>The dots form a scattered cloud with no clear direction, and the dashed line is flat.</p><ul class="post-points post-points-color"><li>A high residual can be followed by a high or a low one.</li><li>A low residual can be followed by a high or a low one.</li><li>Knowing last month's residual tells us almost nothing about this month's.</li></ul><p><strong>This is consistent with independence.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-lag-dep.svg?v=1" alt="Lag plot of dependent errors: the dots rise along an upward dashed line." loading="lazy"><div><h3 id="right-dependent-errors" style="scroll-margin-top:90px">Right: Dependent errors</h3><p>The dots rise from bottom left to top right, and the dashed line slopes upward.</p><ul class="post-points post-points-color"><li>A positive residual tends to be followed by a positive one.</li><li>A negative residual tends to be followed by a negative one.</li><li>Knowing last month's residual gives us a useful hint about this month's.</li></ul><p><strong>This suggests positive autocorrelation.</strong></p></div></div>
   </div>
   <p>The pattern is a warning sign rather than definitive proof of dependence. A formal test, such as the Durbin–Watson test, can help assess autocorrelation in regression residuals.</p>
   <div class="post-note"><p class="post-note-l">What is autocorrelation?</p><p>Autocorrelation means that a series is correlated with its own past values. Here, a month's residual is related to the residual of the month before. If the model underestimates March, it tends to underestimate April too. Positive autocorrelation, where high follows high, is the common case. It matters because the months partly repeat each other, so the model has less real information than it thinks.</p></div>
 
-  <h2>3. Normality: Are the Errors Normally Distributed?</h2>
+  <h2 id="3-normality-are-the-errors-normally-dist" style="scroll-margin-top:90px">3. Normality: Are the Errors Normally Distributed?</h2>
   <p>The normality assumption concerns the errors in the regression model. To understand it, we first need to distinguish between errors and residuals.</p>
   <ul class="post-points post-points-color">
     <li><strong>Errors</strong> are the differences between the true underlying relationship and the observed values that the model aims to describe. They represent the model's natural, unobserved noise.</li>
@@ -114,16 +128,16 @@ sm.qqplot(residuals, line="s")
 plt.show()</code></pre>
   <p>If the residuals deviate substantially from the expected pattern, investigate the distribution and consider whether a transformation, such as taking the logarithm of a right-skewed outcome variable, is appropriate. Then refit the model and check again.</p>
 
-  <h2>4. Homoscedasticity: Is the Error Spread Consistent?</h2>
+  <h2 id="4-homoscedasticity-is-the-error-spread-c" style="scroll-margin-top:90px">4. Homoscedasticity: Is the Error Spread Consistent?</h2>
   <p>Homoscedasticity means that the errors have approximately the same variance across the range of predicted values. In simpler terms, the model's prediction errors should have a similar spread, whether predicted sales are low or high.</p>
   <p>Imagine NordHome's model predicts monthly sales. In some months, actual sales will be above the prediction; in others, they will be below it. That is normal. But if the errors are small when predicted sales are low and become much larger when predicted sales are high, the error variance may not be constant. This is called heteroscedasticity.</p>
   <p><strong>Why does it matter?</strong> When error variance changes across predictions, the usual standard errors may be unreliable if we ignore the problem. As a result, confidence intervals and hypothesis tests may be misleading, even though the regression line can still be fitted.</p>
   <p><strong>How can we check it?</strong> Plot the residuals against the fitted (predicted) values. The horizontal axis shows predicted sales, and the vertical axis shows residuals—the differences between actual and predicted sales.</p>
   <p>Ideally, the points form a random cloud around zero with a similar vertical spread across the plot. If the cloud widens or narrows as predicted sales increase, creating a funnel-like shape, this may indicate heteroscedasticity.</p>
-  <h3>How to Read the Two Plots</h3>
+  <h3 id="how-to-read-the-two-plots-2" style="scroll-margin-top:90px">How to Read the Two Plots</h3>
   <div class="post-qq">
-    <div class="post-qq-item"><img src="images/regression/assumptions-homo-const.svg?v=2" alt="Residuals plot with an even band of points around the zero line." loading="lazy"><div><h3>Left: Constant variance</h3><p>The points form an even band around the zero line.</p><ul class="post-points post-points-color"><li>The spread is similar for low and high predicted sales.</li><li>The model's errors are about equally large in every month.</li><li>Standard errors and confidence intervals can be trusted more.</li></ul><p><strong>This is consistent with homoscedasticity.</strong></p></div></div>
-    <div class="post-qq-item"><img src="images/regression/assumptions-homo-funnel.svg?v=2" alt="Residuals plot where the points fan out into a funnel as fitted values increase." loading="lazy"><div><h3>Right: Changing variance</h3><p>The points fan out as predicted sales increase, forming a funnel.</p><ul class="post-points post-points-color"><li>Errors are small when predicted sales are low.</li><li>Errors grow much larger when predicted sales are high.</li><li>Standard errors and confidence intervals may be misleading.</li></ul><p><strong>This suggests heteroscedasticity.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-homo-const.svg?v=2" alt="Residuals plot with an even band of points around the zero line." loading="lazy"><div><h3 id="left-constant-variance" style="scroll-margin-top:90px">Left: Constant variance</h3><p>The points form an even band around the zero line.</p><ul class="post-points post-points-color"><li>The spread is similar for low and high predicted sales.</li><li>The model's errors are about equally large in every month.</li><li>Standard errors and confidence intervals can be trusted more.</li></ul><p><strong>This is consistent with homoscedasticity.</strong></p></div></div>
+    <div class="post-qq-item"><img src="images/regression/assumptions-homo-funnel.svg?v=2" alt="Residuals plot where the points fan out into a funnel as fitted values increase." loading="lazy"><div><h3 id="right-changing-variance" style="scroll-margin-top:90px">Right: Changing variance</h3><p>The points fan out as predicted sales increase, forming a funnel.</p><ul class="post-points post-points-color"><li>Errors are small when predicted sales are low.</li><li>Errors grow much larger when predicted sales are high.</li><li>Standard errors and confidence intervals may be misleading.</li></ul><p><strong>This suggests heteroscedasticity.</strong></p></div></div>
   </div>
   <p>The plot takes a few lines, using the model fitted above:</p>
   <pre class="post-code"><code>import seaborn as sns
@@ -139,7 +153,7 @@ plt.ylabel("Residuals")
 plt.show()</code></pre>
   <p>If the assumption is violated, possible approaches include transforming the outcome variable or using statistical methods that account for non-constant variance.</p>
 
-  <h2>What if an assumption is violated?</h2>
+  <h2 id="what-if-an-assumption-is-violated" style="scroll-margin-top:90px">What if an assumption is violated?</h2>
   <p>A violation does not automatically mean that the entire analysis is useless. It means that we need to understand the problem before deciding how to proceed. Depending on the situation, possible next steps include:</p>
   <ul class="post-points post-points-color">
     <li><strong>Non-linearity.</strong> Transform a variable or consider a different model form.</li>
@@ -151,7 +165,7 @@ plt.show()</code></pre>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Fitting a line is only the first step: the four assumptions (linearity, independent observations, normal errors and constant variance) tell us whether the model's results can be interpreted with confidence. Check linearity and independence before fitting, and use residual plots for the other two afterward. The goal is not to make the data perfect, but to understand the limitations of the model and decide how to use it.</p></div>
 
-  <h2>Related posts</h2>
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="least-squares.html">OLS: How Does Linear Regression Find the Best-Fit Line?</a> How the best-fit line, residuals and SSR work.</li>
     <li><a href="regression-evaluation.html">Evaluating and Interpreting a Regression Model</a> How to judge whether a model is suitable for drawing conclusions.</li>

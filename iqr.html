@@ -39,7 +39,21 @@
   <p class="formula">IQR = Q3 − Q1</p>
   <p>But the interesting part isn't the calculation. It's what IQR tells us about the data.</p>
 
-  <h2>What is IQR?</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#what-is-iqr">What is IQR?</a></li>
+      <li><a href="#why-not-just-use-the-range">Why not just use the range?</a></li>
+      <li><a href="#iqr-and-outliers">IQR and outliers</a></li>
+      <li><a href="#iqr-in-a-box-plot">IQR in a box plot</a></li>
+      <li><a href="#what-iqr-tells-us">What IQR tells us</a></li>
+      <li><details><summary><a href="#how-to-explain-iqr-to-stakeholders">How to explain IQR to stakeholders</a></summary><ul><li><a href="#why-does-this-matter">Why does this matter?</a></li></ul></details></li>
+    </ul>
+  </div>
+
+  <h2 id="what-is-iqr" style="scroll-margin-top:90px">What is IQR?</h2>
   <p>The Interquartile Range measures the spread of the middle 50% of a dataset. To understand it, we first divide the data into four parts:</p>
   <ul class="post-points">
     <li><strong>Q1 (25th percentile)</strong> — 25% of the observations are below this value.</li>
@@ -54,7 +68,7 @@
     <figcaption><span>Chart 1</span> Eleven observations with their quartiles. The shaded area between Q1 and Q3 holds the middle 50% of the data.</figcaption>
   </figure>
 
-  <h2>Why not just use the range?</h2>
+  <h2 id="why-not-just-use-the-range" style="scroll-margin-top:90px">Why not just use the range?</h2>
   <p>The range is simply:</p>
   <p class="formula">Range = Maximum − Minimum</p>
   <p>It is easy to calculate, but there is a problem: outliers can completely change it. Imagine these customer order values:</p>
@@ -68,7 +82,7 @@
   <div class="post-note"><p class="post-note-l">Good to know</p><p>There are several ways to calculate quartiles, so Excel, Python or R can return slightly different Q1 and Q3 values for small datasets. The numbers here use the linear-interpolation method (NumPy's default).</p></div>
   <p>That's what makes IQR especially useful for skewed data and datasets with outliers.</p>
 
-  <h2>IQR and outliers</h2>
+  <h2 id="iqr-and-outliers" style="scroll-margin-top:90px">IQR and outliers</h2>
   <p>One of the most common applications of IQR is identifying potential outliers. After calculating the IQR, we can create two boundaries:</p>
   <p class="formula">Lower bound = Q1 − 1.5 × IQR<br>Upper bound = Q3 + 1.5 × IQR</p>
   <p>Observations outside these boundaries are typically flagged as potential outliers. For example, with Q1 = 20 and Q3 = 40:</p>
@@ -81,7 +95,7 @@
 
   <div class="post-note"><p class="post-note-l">Important</p><p>An outlier is not automatically an error. It is simply an observation that deserves a closer look.</p></div>
 
-  <h2>IQR in a box plot</h2>
+  <h2 id="iqr-in-a-box-plot" style="scroll-margin-top:90px">IQR in a box plot</h2>
   <p>This is also where IQR becomes visual. In a box plot, the box represents the middle 50% of the data. The bottom (or left side) of the box is Q1, the top (or right side) is Q3, and the distance between them is the IQR. The median sits inside the box, while observations beyond the whiskers may be displayed as potential outliers.</p>
   <figure class="post-fig">
     <img src="images/iqr/chart-4-boxplot.svg" alt="Annotated box plot: the box spans Q1 to Q3 and is the IQR, a line marks the median, whiskers extend to the furthest values within 1.5 times the IQR, and a point beyond is a potential outlier" loading="lazy" width="800" height="340">
@@ -90,7 +104,7 @@
 
   <p>So when looking at a box plot, IQR gives us a quick way to understand how concentrated or spread out the central part of the distribution is.</p>
 
-  <h2>What IQR tells us</h2>
+  <h2 id="what-iqr-tells-us" style="scroll-margin-top:90px">What IQR tells us</h2>
   <p>A small IQR means the middle 50% of observations are relatively close together. A large IQR means they are more spread out. For example:</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th></th><th>Q1</th><th>Q3</th><th>IQR</th></tr></thead>
@@ -105,14 +119,14 @@
     <figcaption><span>Chart 5</span> Same median, different spread. The wider the box, the larger the IQR.</figcaption>
   </figure>
 
-  <h2>How to explain IQR to stakeholders</h2>
+  <h2 id="how-to-explain-iqr-to-stakeholders" style="scroll-margin-top:90px">How to explain IQR to stakeholders</h2>
   <p>When presenting IQR to stakeholders, I would start with the business question:</p>
   <p class="formula">How much do our typical values vary?</p>
   <p>IQR helps answer this by looking at the middle 50% of the data. This makes it particularly useful when a dataset contains extreme values that could distort the overall picture.</p>
   <p>For example, imagine we're analysing customer order values. A few customers might place unusually large orders, but those orders don't necessarily represent typical customer behaviour. Instead of letting these extreme values dominate the analysis, IQR helps us understand where the majority of typical orders are concentrated.</p>
   <p>If the middle 50% of orders falls between €20 and €45, we can say that the typical range of order values is relatively concentrated around this interval.</p>
 
-  <h3>Why does this matter?</h3>
+  <h3 id="why-does-this-matter" style="scroll-margin-top:90px">Why does this matter?</h3>
   <p>Because an average alone can hide the story. Two customer segments could have the same average order value but very different distributions. One might have customers whose orders are consistently similar, while the other might contain a mixture of very small and very large orders.</p>
   <figure class="post-fig">
     <img src="images/iqr/chart-6-same-average.svg" alt="Two customer segments with the same average order value of 32 euros: Segment A has orders tightly grouped with an IQR of 4 euros, Segment B has orders spread widely with an IQR of 33 euros" loading="lazy" width="800" height="320">

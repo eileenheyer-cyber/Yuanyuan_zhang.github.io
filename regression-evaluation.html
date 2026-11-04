@@ -42,7 +42,20 @@
 
   <p>Throughout this post, we use one example: NordHome Retail fitted a simple linear regression on 24 months of data to predict monthly sales from advertising spend, both in thousands of euros (€k). The fitted line is sales = 20 + 5 × advertising spend.</p>
 
-  <h2>Interpret Uncertainty: How Reliable Are the Estimates?</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#interpret-uncertainty-how-reliable-are-t">Interpret Uncertainty: How Reliable Are the Estimates?</a></summary><ul><li><a href="#coefficient-how-much-do-sales-change">Coefficient: How much do sales change?</a></li><li><a href="#standard-error-how-precise-is-the-estima">Standard Error: How precise is the estimate?</a></li><li><a href="#p-value-is-there-evidence-of-a-relations">P-value: Is there evidence of a relationship?</a></li><li><a href="#confidence-interval-how-large-might-the-">Confidence Interval: How large might the slope be?</a></li><li><a href="#visualizing-uncertainty">Visualizing Uncertainty</a></li></ul></details></li>
+      <li><details><summary><a href="#model-evaluation-metrics-how-well-does-t">Model Evaluation Metrics: How Well Does the Model Fit?</a></summary><ul><li><a href="#r-coefficient-of-determination">R² — Coefficient of Determination</a></li><li><a href="#mae-and-mse">MAE and MSE</a></li><li><a href="#adjusted-r-does-adding-more-predictors-i">Adjusted R²: Does Adding More Predictors Improve the Model?</a></li></ul></details></li>
+      <li><a href="#avoid-misinterpretation-does-advertising">Avoid Misinterpretation: Does Advertising Cause Sales?</a></li>
+      <li><a href="#what-can-go-wrong">What Can Go Wrong?</a></li>
+      <li><a href="#how-to-explain-it-to-stakeholders">How to explain it to stakeholders</a></li>
+    </ul>
+  </div>
+
+  <h2 id="interpret-uncertainty-how-reliable-are-t" style="scroll-margin-top:90px">Interpret Uncertainty: How Reliable Are the Estimates?</h2>
   <p>Statistical software reports a fitted regression in one summary table. Here is the summary for NordHome&#8217;s model of monthly sales on advertising spend, in the format of Python&#8217;s statsmodels. Four columns matter most: <code>coef</code> shows the estimated relationship, <code>std err</code> shows how precise it is, <code>P&gt;|t|</code> gives the result of the hypothesis test, and the last two columns give the 95% confidence interval. These are the purple columns, and the sections below explain them one by one. The blue R-squared values at the top measure the model&#8217;s fit and are explained in Model Evaluation Metrics.</p>
   <figure class="post-fig post-fig-wide">
     <div class="post-summary">
@@ -63,14 +76,14 @@
     </div>
     <figcaption><span>Summary</span> Regression summary for NordHome, in the format of Python&#8217;s statsmodels. Sales and advertising spend are both in €k. Illustrative data.</figcaption>
   </figure>
-  <h3 class="post-h3-num" data-n="1">Coefficient: How much do sales change?</h3>
+  <h3 id="coefficient-how-much-do-sales-change" style="scroll-margin-top:90px" class="post-h3-num" data-n="1">Coefficient: How much do sales change?</h3>
   <p>NordHome&#8217;s estimated slope is 5.0. Since both advertising spend and sales are measured in thousands of euros (€k), this means that every additional €1,000 in advertising spend is associated with an estimated €5,000 increase in monthly sales.</p>
   <p>The intercept is 20, meaning the model predicts €20,000 in sales when advertising spend is zero. This interpretation is useful only if zero advertising spend is meaningful in the business context.</p>
   <p>These are estimates of a relationship, not proof that advertising causes sales to increase.</p>
-  <h3 class="post-h3-num" data-n="2">Standard Error: How precise is the estimate?</h3>
+  <h3 id="standard-error-how-precise-is-the-estima" style="scroll-margin-top:90px" class="post-h3-num" data-n="2">Standard Error: How precise is the estimate?</h3>
   <p>The slope is estimated at 5.0, with a standard error of 0.448. Think of the standard error as an indicator of how much the estimated slope would tend to vary across comparable samples.</p>
   <p>Here, the standard error is relatively small compared with the estimated slope. This suggests that the relationship has been estimated with reasonable precision, although the standard error alone does not tell us whether the model is appropriate or whether the relationship is causal.</p>
-  <h3 class="post-h3-num" data-n="3">P-value: Is there evidence of a relationship?</h3>
+  <h3 id="p-value-is-there-evidence-of-a-relations" style="scroll-margin-top:90px" class="post-h3-num" data-n="3">P-value: Is there evidence of a relationship?</h3>
   <p>Regression asks a yes-or-no question about the slope: is there really a relationship between advertising and sales? To answer it, we set up two competing hypotheses.</p>
   <ul class="post-points post-points-color">
     <li><strong>H₀ (null hypothesis):</strong> the true slope is 0. Advertising has no relationship with sales.</li>
@@ -80,13 +93,13 @@
   <p>In the summary table, the p-value (P&gt;|t|) is 0.000, meaning below 0.001. If advertising really had no relationship with sales, a result like this would almost never happen by chance. So we reject H₀ and conclude that the relationship in NordHome&#8217;s data is very unlikely to be a coincidence (read <a href="hypothesis-testing.html">Hypothesis Testing</a> for more).</p>
   <p>The p-value comes from a t-test on the slope, which is why the summary table also shows a t value.</p>
 
-  <h3 class="post-h3-num" data-n="4">Confidence Interval: How large might the slope be?</h3>
+  <h3 id="confidence-interval-how-large-might-the-" style="scroll-margin-top:90px" class="post-h3-num" data-n="4">Confidence Interval: How large might the slope be?</h3>
   <p>The 95% confidence interval for the slope is approximately [4.071, 5.929].</p>
   <p>In business terms, the estimated increase in monthly sales is between approximately €4,071 and €5,929 for each additional €1,000 in advertising spend.</p>
   <p>The interval excludes zero, which is consistent with the statistically significant result. It also communicates the uncertainty around the estimated slope: the point estimate is 5.0, but the true population slope is not known exactly.</p>
   <p>A 95% confidence interval is produced by a method that would contain the true slope in approximately 95% of repeated samples under the model assumptions. It does not mean there is a 95% probability that the true slope lies within this particular interval.</p>
 
-  <h3>Visualizing Uncertainty</h3>
+  <h3 id="visualizing-uncertainty" style="scroll-margin-top:90px">Visualizing Uncertainty</h3>
   <p>A regression line gives us an estimate, but how much confidence should we place in it? And how much might actual sales vary from month to month?</p>
   <p>A 95% <strong>confidence band</strong> and a 95% <strong>prediction interval</strong> answer two different questions.</p>
   <ul class="post-points post-points-color">
@@ -101,9 +114,9 @@
 
   <p><strong>In short:</strong> the <strong>confidence band</strong> describes uncertainty about the average relationship; the <strong>prediction interval</strong> describes uncertainty about an individual month&#8217;s sales.</p>
 
-  <h2>Model Evaluation Metrics: How Well Does the Model Fit?</h2>
+  <h2 id="model-evaluation-metrics-how-well-does-t" style="scroll-margin-top:90px">Model Evaluation Metrics: How Well Does the Model Fit?</h2>
   <p>A regression model estimates a relationship between a predictor and an outcome. But how closely do its predictions match the observed data?</p>
-  <h3 class="post-h3-num post-h3-num-blue" data-n="1">R² — Coefficient of Determination</h3>
+  <h3 id="r-coefficient-of-determination" style="scroll-margin-top:90px" class="post-h3-num post-h3-num-blue" data-n="1">R² — Coefficient of Determination</h3>
   <p>R² measures how much of the variation in observed sales the fitted model accounts for.</p>
   <p>For NordHome, an R² of 0.85 means the model accounts for approximately 85% of the variation in monthly sales across the 24 months used to fit it. The remaining variation is not accounted for by the model.</p>
   <figure class="post-fig post-fig-wide">
@@ -114,7 +127,7 @@
   <p class="post-formula"><strong>R² = 1 − <span class="frac"><span>Σ(yᵢ − ŷᵢ)²</span><span>Σ(yᵢ − ȳ)²</span></span></strong><span>yᵢ is observed sales, ŷᵢ is predicted sales, and ȳ is average sales. R² compares the model&#8217;s squared prediction errors with those of a baseline that always predicts average sales.</span></p>
   <p>A high R² does not guarantee accurate predictions on new data or prove that advertising causes sales to increase.</p>
 
-  <h3 class="post-h3-num post-h3-num-blue" data-n="2">MAE and MSE</h3>
+  <h3 id="mae-and-mse" style="scroll-margin-top:90px" class="post-h3-num post-h3-num-blue" data-n="2">MAE and MSE</h3>
   <p><strong>MAE — Mean Absolute Error.</strong> MAE measures the average absolute difference between predicted and actual sales.</p>
   <p>For NordHome, an MAE of €4k means the model&#8217;s predictions differ from actual monthly sales by €4,000 on average in absolute terms. Because MAE uses the original sales units, it is relatively easy to interpret.</p>
   <p class="post-formula"><strong>MAE = <span class="frac"><span>Σ|yᵢ − ŷᵢ|</span><span>n</span></span></strong><span>n is the number of months, yᵢ is observed sales, and ŷᵢ is predicted sales. MAE averages the absolute prediction errors.</span></p>
@@ -127,7 +140,7 @@
     <figcaption><span>Chart 3</span> NordHome&#8217;s 24 monthly prediction errors, measured in two ways. The €15k error contributes 15 to the MAE sum but 225 to the MSE sum because the error is squared. Illustrative data.</figcaption>
   </figure>
 
-  <h3 class="post-h3-num post-h3-num-blue" data-n="3">Adjusted R²: Does Adding More Predictors Improve the Model?</h3>
+  <h3 id="adjusted-r-does-adding-more-predictors-i" style="scroll-margin-top:90px" class="post-h3-num post-h3-num-blue" data-n="3">Adjusted R²: Does Adding More Predictors Improve the Model?</h3>
   <p>Imagine NordHome Retail wants to predict monthly sales. It starts with a simple regression model using advertising spend as its only predictor. The model has an R² of 0.85, meaning it accounts for 85% of the variation in historical monthly sales.</p>
   <p>But what happens if the analyst adds six more predictors, such as website traffic, discount rate and store footfall? The model&#8217;s R² increases to 0.87. At first glance, this looks like an improvement. However, adding predictors can help a model fit historical data even when some of those variables contribute little useful information. They may capture random patterns that will not hold in new data.</p>
   <p><strong>This is where adjusted R² becomes useful.</strong> It is used in multiple linear regression, where a model has more than one predictor. Unlike ordinary R², it accounts for the number of predictors in the model. It increases when the improvement in fit is sufficient to justify the additional complexity, and decreases when it is not.</p>
@@ -149,7 +162,7 @@
   <p>Adjusted R² does not prove that the extra predictors are useless. It signals that the improvement in fit may not justify including them.</p>
   <div class="post-note"><p class="post-note-l">Do not rely on R&sup2; alone</p><p><strong>A high R&sup2; does not guarantee accurate predictions on new data, confirm that the model assumptions hold, or prove that advertising causes sales.</strong></p><p>R&sup2; measures explained variation, while MAE and MSE measure prediction errors. AIC and BIC can help compare candidate models fitted to the same response data; lower values are generally preferred.</p></div>
 
-  <h2>Avoid Misinterpretation: Does Advertising Cause Sales?</h2>
+  <h2 id="avoid-misinterpretation-does-advertising" style="scroll-margin-top:90px">Avoid Misinterpretation: Does Advertising Cause Sales?</h2>
   <p>For NordHome, an R² of 0.85 corresponds to a positive correlation of approximately 0.92: months with higher advertising spend tend to have higher sales.</p>
   <p>Does this mean that advertising causes the increase? Not necessarily. Seasonal demand, for example, may raise both advertising spend and sales, so part of the increase may reflect the season rather than advertising.</p>
   <p>To test whether advertising actually drives sales, NordHome would need a <strong>randomized controlled experiment</strong>. Its key parts are:</p>
@@ -162,7 +175,7 @@
   </ul>
   <p>Setting up such an experiment is laborious and often impractical in a real business. This is why regression results are usually reported as associations (&#8220;is associated with&#8221;), not as proof that one thing causes the other.</p>
 
-  <h2>What Can Go Wrong?</h2>
+  <h2 id="what-can-go-wrong" style="scroll-margin-top:90px">What Can Go Wrong?</h2>
   <ul class="post-points post-points-color">
     <li><strong>Patterns in the residuals.</strong> A curve may indicate that a straight line misses part of the relationship. A funnel shape may indicate that prediction errors become more variable at higher sales or advertising levels. See <a href="regression-assumptions.html">The Four Assumptions of Simple Linear Regression</a>.</li>
     <li><strong>Influential months.</strong> One unusual month can substantially change the fitted slope, especially if its advertising spend is far from the others.</li>
@@ -171,7 +184,7 @@
   </ul>
   <p>A good fit does not guarantee reliable predictions, so check residuals, investigate influential observations and validate the model on data it has not seen.</p>
 
-  <h2>How to explain it to stakeholders</h2>
+  <h2 id="how-to-explain-it-to-stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">&#8220;In our historical data, every additional €1,000 in advertising was associated with about €5,000 more in sales. The estimate is reasonably precise: the plausible range is €4,100 to €5,900 per extra €1,000. The model accounts for 85% of the variation in monthly sales. That does not prove advertising caused the increase, and we should validate the model before using it for forecasts.&#8221;</p>
   </div>
