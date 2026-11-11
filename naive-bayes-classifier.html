@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Naive Bayes Classifier: Understanding Probabilistic Machine Learning – Yuanyuan Zhang</title>
+  <meta name="description" content="Learn how the Naive Bayes classifier turns Bayes’ theorem into predictions, with spam filtering in Python, smoothing, evaluation and limits.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261023a">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Classification</p>
+  <h1 class="post-title">Naive Bayes Classifier: Understanding Probabilistic Machine Learning</h1>
+  <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">How Bayes’ theorem turns probabilities into predictions.</p>
+
+  <h2 id="intro" style="scroll-margin-top:90px">How Can Probability Help Us Make Predictions?</h2>
+  <p>An e-mail arrives containing the words <em>free</em> and <em>prize</em>. Is it spam?</p>
+  <p>You cannot be certain, but you can reason about it. Spam often contains “free”, and legitimate mail (ham) rarely does. A classifier can turn that kind of evidence into a number: <strong>how probable is spam, given what I see?</strong></p>
+  <p>That is the idea behind <strong>Naive Bayes</strong>, a family of classifiers that estimates how common each class is, estimates how likely each feature value is within each class, and combines the two with Bayes’ theorem. It is simple, fast and a strong baseline for text. It also makes one assumption that is almost never exactly true. This post shows what that assumption is, why the method often works anyway, and where it breaks.</p>
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#intro">How Can Probability Help Us Make Predictions?</a></li>
+      <li><details><summary><a href="#bayes">Understanding Bayes’ Theorem</a></summary><ul><li><a href="#components">The four components</a></li><li><a href="#bayes-example">A numeric example</a></li></ul></details></li>
+      <li><details><summary><a href="#naive">From Bayes’ Theorem to Naive Bayes</a></summary><ul><li><a href="#map">Choosing the most probable class</a></li><li><a href="#assumption">The “naive” assumption</a></li><li><a href="#why-works">Why it still works</a></li><li><a href="#email-example">An e-mail example</a></li></ul></details></li>
+      <li><details><summary><a href="#variants">The Variants of Naive Bayes</a></summary><ul><li><a href="#gaussian">Gaussian</a></li><li><a href="#multinomial">Multinomial</a></li><li><a href="#bernoulli">Bernoulli</a></li><li><a href="#categorical">Categorical</a></li><li><a href="#variant-table">Comparison</a></li></ul></details></li>
+      <li><details><summary><a href="#zero-frequency">The Zero-Frequency Problem and Laplace Smoothing</a></summary><ul><li><a href="#smoothing">How smoothing works</a></li><li><a href="#before-after">Before and after</a></li></ul></details></li>
+      <li><details><summary><a href="#implementation">Practical Implementation: E-mail Spam Classification</a></summary><ul><li><a href="#impl-data">Data, target and features</a></li><li><a href="#impl-model">Split, vectorize and train</a></li><li><a href="#impl-eval">Predict and evaluate</a></li></ul></details></li>
+      <li><details><summary><a href="#evaluation">Evaluating the Classifier</a></summary><ul><li><a href="#metrics">Confusion matrix and metrics</a></li><li><a href="#accuracy-trap">Why accuracy can mislead</a></li><li><a href="#calibration">Predicted vs. calibrated probabilities</a></li></ul></details></li>
+      <li><a href="#pros-cons">Advantages and Limitations</a></li>
+      <li><a href="#comparison">Naive Bayes vs. Other Classifiers</a></li>
+      <li><a href="#takeaways">Key Takeaways</a></li>
+      <li><a href="#related-posts">Related posts</a></li>
+      <li><a href="#references">Further Reading and References</a></li>
+    </ul>
+  </div>
+
+  <h2 id="bayes" style="scroll-margin-top:90px">Understanding Bayes’ Theorem</h2>
+  <p>Bayes’ theorem reverses a conditional probability. In classification, A is the class and B is the evidence we observed.</p>
+  <p class="post-formula post-formula-plain"><strong>P(A | B) = <span class="frac"><span>P(B | A) × P(A)</span><span>P(B)</span></span></strong></p>
+  <h3 id="components" style="scroll-margin-top:90px">The four components</h3>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Term</th><th>Name</th><th>In spam filtering</th></tr></thead>
+    <tbody><tr><td>P(spam | words)</td><td>Posterior</td><td>What we want: probability of spam after seeing the words</td></tr><tr><td>P(words | spam)</td><td>Likelihood</td><td>How typical these words are in spam</td></tr><tr><td>P(spam)</td><td>Prior</td><td>How common spam is before reading the e-mail</td></tr><tr><td>P(words)</td><td>Evidence</td><td>How common these words are overall; a normalizing constant</td></tr></tbody>
+  </table></div>
+  <p><strong>Intuition.</strong> The prior is your starting suspicion. The likelihood says how well the words fit “spam” compared with “ham”. The posterior is the updated suspicion.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 160" role="img" aria-label="Bayes theorem as blocks: prior times likelihood divided by evidence equals posterior, with the spam example 0.30 times 0.60 divided by 0.215 giving about 0.84."><rect x="10" y="16" width="130" height="64" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="75.0" y="40" class="cr b l" text-anchor="middle">Prior</text><text x="75.0" y="60" class="cr ls" text-anchor="middle">P(spam)</text><rect x="180" y="16" width="130" height="64" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="2.5"/><text x="245.0" y="40" class="cr b l" text-anchor="middle">Likelihood</text><text x="245.0" y="60" class="cr ls" text-anchor="middle">P(word | spam)</text><rect x="350" y="16" width="130" height="64" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="415.0" y="40" class="b l" text-anchor="middle">Evidence</text><text x="415.0" y="60" class="ls" text-anchor="middle">P(word)</text><rect x="520" y="16" width="130" height="64" rx="6" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2.5"/><text x="585.0" y="40" class="cr b l" text-anchor="middle">Posterior</text><text x="585.0" y="60" class="cr ls" text-anchor="middle">P(spam | word)</text><text x="165" y="58" class="xl b" text-anchor="middle">×</text><text x="335" y="58" class="xl b" text-anchor="middle">÷</text><text x="505" y="58" class="xl b" text-anchor="middle">=</text><text x="330" y="124" class="l" text-anchor="middle">0.30 × 0.60 ÷ 0.215 ≈ 0.84</text><text x="330" y="148" class="ls" text-anchor="middle">Illustrative numbers for the word “free”</text></svg><figcaption><span>Chart 1</span> Bayes’ theorem as four blocks. The numbers are illustrative.</figcaption></figure>
+  <h3 id="bayes-example" style="scroll-margin-top:90px">A numeric example</h3>
+  <p>Suppose 30% of mail is spam, 60% of spam contains “free” and 5% of ham contains “free”. These numbers are illustrative, not measured. For an e-mail containing “free”:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Spam</th><th>Ham</th></tr></thead>
+    <tbody><tr><td>Prior</td><td>0.30</td><td>0.70</td></tr><tr><td>P(“free” | class)</td><td>0.60</td><td>0.05</td></tr><tr><td>Prior × likelihood</td><td>0.180</td><td>0.035</td></tr></tbody>
+  </table></div>
+  <p>The evidence is P(“free”) = 0.180 + 0.035 = 0.215, so:</p>
+  <p class="post-formula post-formula-plain"><strong>P(spam | “free”) = 0.180 / 0.215 ≈ 0.837</strong></p>
+  <p>One word lifted the spam probability from 30% to about 84%. For the full derivation with a different example, see <a href="bayes-theorem.html">Bayes’ Theorem</a> and <a href="conditional-probability.html">Conditional Probability</a>.</p>
+  <h2 id="naive" style="scroll-margin-top:90px">From Bayes’ Theorem to Naive Bayes</h2>
+  <h3 id="map" style="scroll-margin-top:90px">Choosing the most probable class</h3>
+  <p>Let X = (x₁, …, xₙ) be the features (for example, words) and Y the class. By Bayes’ theorem, P(Y | X) is proportional to P(Y) × P(X | Y). The evidence P(X) is the same for every class, so for <em>choosing</em> a class we can drop it. This is <strong>maximum a posteriori (MAP)</strong> classification:</p>
+  <p class="post-formula post-formula-plain"><strong>ŷ = argmax<sub>y</sub> P(y) × P(x₁, …, xₙ | y)</strong></p>
+  <p>The problem is the joint likelihood P(x₁, …, xₙ | y). It needs a probability for every combination of feature values, and with a 10,000-word vocabulary that cannot be estimated.</p>
+  <h3 id="assumption" style="scroll-margin-top:90px">The “naive” assumption</h3>
+  <p>Naive Bayes assumes the features are <strong>conditionally independent given the class</strong>, so the joint likelihood becomes a product of one small term per feature:</p>
+  <p class="post-formula post-formula-plain"><strong>ŷ = argmax<sub>y</sub> P(y) × ∏ P(xᵢ | y)</strong></p>
+  <p>Now we only need one small distribution per feature per class. In practice we add logarithms instead of multiplying, to avoid numerical underflow.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 270" role="img" aria-label="Conditional independence: the class node points to each word node separately; there are no connections between the words."><rect x="220" y="8" width="220" height="56" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="330.0" y="32" class="b l" text-anchor="middle">Class</text><text x="330.0" y="52" class="ls" text-anchor="middle">spam or ham</text><rect x="20" y="150" width="140" height="52" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="90.0" y="182.0" class="b l" text-anchor="middle">free</text><path d="M330,64 L98.5,147.0" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="96.4,141.3 90,150 100.5,152.6" fill="#0a0a0a"/><rect x="180" y="150" width="140" height="52" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="250.0" y="182.0" class="b l" text-anchor="middle">win</text><path d="M330,64 L256.1,143.4" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="251.7,139.3 250,150 260.5,147.5" fill="#0a0a0a"/><rect x="340" y="150" width="140" height="52" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="410.0" y="182.0" class="b l" text-anchor="middle">prize</text><path d="M330,64 L403.9,143.4" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="399.5,147.5 410,150 408.3,139.3" fill="#0a0a0a"/><rect x="500" y="150" width="140" height="52" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="570.0" y="182.0" class="b l" text-anchor="middle">meeting</text><path d="M330,64 L561.5,147.0" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="559.5,152.6 570,150 563.6,141.3" fill="#0a0a0a"/><text x="330" y="232" class="l" text-anchor="middle">No arrows between the words:</text><text x="330" y="256" class="ls" text-anchor="middle">once the class is known, each word is treated as separate evidence</text></svg><figcaption><span>Chart 2</span> Given the class, each word is its own piece of evidence. Real words are linked, which is what “naive” refers to.</figcaption></figure>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Independence is not conditional independence</p>
+    <p>“Free” and “prize” are not independent overall: they appear together in spam. Naive Bayes only claims they are independent <em>once we know the class</em>. Even that is usually false, because spammers write “free prize” as a phrase. That is why the method is called naive.</p>
+  </div>
+  <h3 id="why-works" style="scroll-margin-top:90px">Why it still works</h3>
+  <p>Classification only needs the <em>ranking</em> of the classes to be right, not the exact probabilities. Correlated features can double-count evidence and push probabilities toward 0 or 1, yet the winning class is often still correct. A simple model with few parameters can also beat a flexible one that overfits on limited data (Domingos and Pazzani, 1997).</p>
+  <p><strong>When correlation hurts.</strong> If many features are near-duplicates, the same signal is counted many times. Predictions become overconfident, and the ranking can flip when the duplicated signal points the wrong way.</p>
+  <h3 id="email-example" style="scroll-margin-top:90px">An e-mail example</h3>
+  <p>Add a second word to the earlier example, with P(“win” | spam) = 0.40 and P(“win” | ham) = 0.02 (illustrative numbers):</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Spam</th><th>Ham</th></tr></thead>
+    <tbody><tr><td>Prior</td><td>0.30</td><td>0.70</td></tr><tr><td>× P(“free” | class)</td><td>0.60</td><td>0.05</td></tr><tr><td>× P(“win” | class)</td><td>0.40</td><td>0.02</td></tr><tr><td>Score</td><td>0.0720</td><td>0.0007</td></tr></tbody>
+  </table></div>
+  <p>Normalizing gives P(spam | “free”, “win”) = 0.0720 / 0.0727 ≈ 0.99.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 180" role="img" aria-label="Naive Bayes step by step: estimate class priors and word likelihoods from training data, then for a new e-mail multiply them, compare the classes and pick the highest."><rect x="10" y="20" width="112" height="76" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="66.0" y="44" class="b l" text-anchor="middle">Class</text><text x="66.0" y="64" class="ls" text-anchor="middle">priors</text><rect x="142" y="20" width="112" height="76" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="198.0" y="44" class="b l" text-anchor="middle">Word</text><text x="198.0" y="64" class="ls" text-anchor="middle">likelihoods</text><rect x="274" y="20" width="112" height="76" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="330.0" y="44" class="cr b l" text-anchor="middle">Multiply</text><text x="330.0" y="64" class="cr ls" text-anchor="middle">(add logs)</text><rect x="406" y="20" width="112" height="76" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="2.5"/><text x="462.0" y="44" class="cr b l" text-anchor="middle">Compare</text><text x="462.0" y="64" class="cr ls" text-anchor="middle">classes</text><rect x="538" y="20" width="112" height="76" rx="6" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2.5"/><text x="594.0" y="44" class="cr b l" text-anchor="middle">Pick the</text><text x="594.0" y="64" class="cr ls" text-anchor="middle">highest</text><path d="M124,58 H132" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="130,52 140,58 130,64" fill="#0a0a0a"/><path d="M256,58 H264" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="262,52 272,58 262,64" fill="#0a0a0a"/><path d="M388,58 H396" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="394,52 404,58 394,64" fill="#0a0a0a"/><path d="M520,58 H528" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="526,52 536,58 526,64" fill="#0a0a0a"/><path d="M10,120 V132 H254 V120" fill="none" stroke="#0a0a0a" stroke-width="2"/><text x="132" y="160" class="l" text-anchor="middle">Learned in training</text><path d="M274,120 V132 H650 V120" fill="none" stroke="#0a0a0a" stroke-width="2"/><text x="462" y="160" class="l" text-anchor="middle">Applied to new e-mail</text></svg><figcaption><span>Chart 3</span> Naive Bayes in five steps. The first two are learned once; the last three run for every new e-mail.</figcaption></figure>
+  <h2 id="variants" style="scroll-margin-top:90px">The Variants of Naive Bayes</h2>
+  <p>All variants share the same decision rule. They differ in how they model P(xᵢ | y).</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 210" role="img" aria-label="Four Naive Bayes variants: Gaussian for continuous values shown as a bell curve, Multinomial for counts, Bernoulli for yes or no features and Categorical for categories."><rect x="10" y="10" width="145" height="190" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="82" y="38" class="l b" text-anchor="middle">Gaussian</text><text x="82" y="188" class="ls" text-anchor="middle">continuous</text><rect x="175" y="10" width="145" height="190" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="247" y="38" class="l b" text-anchor="middle">Multinomial</text><text x="247" y="188" class="ls" text-anchor="middle">counts</text><rect x="340" y="10" width="145" height="190" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="412" y="38" class="l b" text-anchor="middle">Bernoulli</text><text x="412" y="188" class="ls" text-anchor="middle">yes / no</text><rect x="505" y="10" width="145" height="190" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="577" y="38" class="l b" text-anchor="middle">Categorical</text><text x="577" y="188" class="ls" text-anchor="middle">categories</text><polyline points="30,138.8 33,138.2 35,137.4 38,136.3 41,134.9 44,133.0 46,130.5 49,127.5 52,123.9 54,119.6 57,114.8 60,109.4 62,103.6 65,97.5 68,91.5 70,85.8 73,80.5 76,76.1 79,72.8 81,70.7 84,70.0 87,70.7 89,72.8 92,76.1 95,80.5 98,85.8 100,91.5 103,97.5 106,103.6 108,109.4 111,114.8 114,119.6 116,123.9 119,127.5 122,130.5 124,133.0 127,134.9 130,136.3 133,137.4 135,138.2 138,138.8" fill="none" stroke="#1d57b5" stroke-width="4"/><line x1="30" y1="140" x2="137" y2="140" stroke="#0a0a0a" stroke-width="2.5"/><rect x="193" y="80" width="16" height="60" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><rect x="215" y="115" width="16" height="25" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><rect x="237" y="60" width="16" height="80" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><rect x="259" y="100" width="16" height="40" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><rect x="281" y="125" width="16" height="15" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><line x1="189" y1="140" x2="306" y2="140" stroke="#0a0a0a" stroke-width="2.5"/><rect x="372" y="100" width="32" height="40" fill="#f5c548" stroke="#0a0a0a" stroke-width="2"/><text x="388" y="162" class="ls" text-anchor="middle">0</text><rect x="417" y="55" width="32" height="85" fill="#f5c548" stroke="#0a0a0a" stroke-width="2"/><text x="433" y="162" class="ls" text-anchor="middle">1</text><line x1="360" y1="140" x2="465" y2="140" stroke="#0a0a0a" stroke-width="2.5"/><rect x="527" y="70" width="28" height="70" fill="#0a0a0a"/><text x="541" y="162" class="ls" text-anchor="middle">A</text><rect x="563" y="105" width="28" height="35" fill="#0a0a0a"/><text x="577" y="162" class="ls" text-anchor="middle">B</text><rect x="599" y="85" width="28" height="55" fill="#0a0a0a"/><text x="613" y="162" class="ls" text-anchor="middle">C</text><line x1="521" y1="140" x2="635" y2="140" stroke="#0a0a0a" stroke-width="2.5"/></svg><figcaption><span>Chart 4</span> The four variants and the kind of feature each one expects.</figcaption></figure>
+  <h3 id="gaussian" style="scroll-margin-top:90px">Gaussian Naive Bayes</h3>
+  <p>For <strong>continuous</strong> features. Within each class, each feature is modeled as a normal distribution with its own mean μ and variance σ²:</p>
+  <p class="post-formula post-formula-plain"><strong>P(xᵢ | y) = <span class="frac"><span>1</span><span>√(2πσ²<sub>y,i</sub>)</span></span> × exp( −<span class="frac"><span>(xᵢ − μ<sub>y,i</sub>)²</span><span>2σ²<sub>y,i</sub></span></span> )</strong></p>
+  <pre class="post-code" data-run="1"><code>import numpy as np
+from sklearn.naive_bayes import GaussianNB
+
+rng = np.random.default_rng(1)
+# two numeric features per e-mail: number of links, share of capital letters
+X_ham = np.column_stack([rng.poisson(1, 300), rng.beta(1, 15, 300)])
+X_spam = np.column_stack([rng.poisson(4, 150), rng.beta(3, 14, 150)])
+X_num = np.vstack([X_ham, X_spam])
+y_num = np.r_[np.zeros(300), np.ones(150)]
+
+gnb = GaussianNB().fit(X_num, y_num)
+print(&quot;class means (rows: ham, spam):\n&quot;, gnb.theta_.round(2))
+print(&quot;class variances:\n&quot;, gnb.var_.round(3))</code></pre>
+  <p>Gaussian Naive Bayes can behave badly on strongly skewed features such as message length. Consider a log transform or scaling first. The parameter <code>var_smoothing</code> keeps tiny variances from producing zero densities.</p>
+  <h3 id="multinomial" style="scroll-margin-top:90px">Multinomial Naive Bayes</h3>
+  <p>For <strong>counts</strong>, typically word counts in a document-term matrix: one row per document, one column per word. Each class gets a probability for every word, and an e-mail’s score depends on <em>how often</em> each word occurs.</p>
+  <pre class="post-code" data-run="1"><code>import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+
+docs = [&quot;free win free prize&quot;, &quot;meeting project deadline&quot;, &quot;free meeting project&quot;]
+vec = CountVectorizer()
+dtm = vec.fit_transform(docs)                      # document-term matrix (sparse)
+print(pd.DataFrame(dtm.toarray(), columns=vec.get_feature_names_out()))
+
+# Multinomial NB uses these counts; Bernoulli NB uses presence/absence instead
+binary = CountVectorizer(binary=True).fit_transform(docs)
+print(binary.toarray())</code></pre>
+  <h3 id="bernoulli" style="scroll-margin-top:90px">Bernoulli Naive Bayes</h3>
+  <p>For <strong>binary</strong> features: does the word occur, yes or no? Unlike the multinomial model, it also treats the <em>absence</em> of a word as evidence. In scikit-learn, pair <code>BernoulliNB</code> with <code>CountVectorizer(binary=True)</code>, as in the second matrix above. Use Multinomial when frequency carries information and Bernoulli when only presence does, which is more typical for short texts.</p>
+  <h3 id="categorical" style="scroll-margin-top:90px">Categorical Naive Bayes</h3>
+  <p>For <strong>discrete categories</strong> such as sender type or attachment type. The model learns a category distribution per class. The input must be non-negative integers, so encode categories with <code>OrdinalEncoder</code>. A category that never appeared in training needs handling, for example through <code>min_categories</code>.</p>
+  <pre class="post-code" data-run="1"><code>import pandas as pd
+from sklearn.compose import make_column_transformer
+from sklearn.naive_bayes import CategoricalNB
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import OrdinalEncoder
+
+meta = pd.DataFrame({
+    &quot;sender&quot;: [&quot;unknown&quot;, &quot;colleague&quot;, &quot;unknown&quot;, &quot;shop&quot;, &quot;colleague&quot;, &quot;unknown&quot;],
+    &quot;attachment&quot;: [&quot;none&quot;, &quot;pdf&quot;, &quot;exe&quot;, &quot;none&quot;, &quot;pdf&quot;, &quot;zip&quot;],
+})
+is_spam = [1, 0, 1, 0, 0, 1]
+
+cat_nb = make_pipeline(OrdinalEncoder(), CategoricalNB(alpha=1.0))
+cat_nb.fit(meta, is_spam)
+print(cat_nb.predict_proba(pd.DataFrame({&quot;sender&quot;: [&quot;unknown&quot;], &quot;attachment&quot;: [&quot;pdf&quot;]})).round(3))</code></pre>
+  <h3 id="variant-table" style="scroll-margin-top:90px">Comparison</h3>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Variant</th><th>Input data</th><th>Typical application</th></tr></thead>
+    <tbody><tr><td>Gaussian</td><td>Continuous numeric features</td><td>Numeric tabular data, sensor readings</td></tr><tr><td>Multinomial</td><td>Non-negative counts (word counts, TF-IDF)</td><td>Text classification, spam filtering</td></tr><tr><td>Bernoulli</td><td>Binary features (present or absent)</td><td>Short texts, binary indicators</td></tr><tr><td>Categorical</td><td>Integer-coded categories</td><td>Tabular data with discrete variables</td></tr></tbody>
+  </table></div>
+  <h2 id="zero-frequency" style="scroll-margin-top:90px">The Zero-Frequency Problem and Laplace Smoothing</h2>
+  <p>Suppose a word never appears in the spam training examples. Its estimated probability in spam is 0. Because Naive Bayes <em>multiplies</em> probabilities, that one zero wipes out the whole product, however strong the other evidence is.</p>
+  <h3 id="smoothing" style="scroll-margin-top:90px">How smoothing works</h3>
+  <p><strong>Laplace (additive) smoothing</strong> adds a pseudo-count α to every word count:</p>
+  <p class="post-formula post-formula-plain"><strong>P(wᵢ | y) = <span class="frac"><span>N<sub>y,i</sub> + α</span><span>N<sub>y</sub> + α × V</span></span></strong></p>
+  <p>N<sub>y,i</sub> is how often word i occurs in class y, N<sub>y</sub> is the total number of word tokens in class y, and V is the vocabulary size. α = 1 is classic Laplace smoothing; other values are called Lidstone smoothing. Intuitively, you pretend to have seen every word α extra times in every class. Treat α as a hyperparameter and tune it with cross-validation.</p>
+  <h3 id="before-after" style="scroll-margin-top:90px">Before and after</h3>
+  <p>A tiny training set, counted by hand. Spam: “free win free”, “win free prize”, “free prize win”. Ham: “meeting project free”, “project deadline meeting”, “meeting schedule project”. The vocabulary has V = 7 words, and each class has 9 word tokens. Classify “free meeting” with equal priors:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>No smoothing</th><th>α = 1</th></tr></thead>
+    <tbody><tr><td>P(“meeting” | spam)</td><td>0 / 9 = 0</td><td>1 / 16</td></tr><tr><td>P(“free” | spam)</td><td>4 / 9</td><td>5 / 16</td></tr><tr><td>P(“free” | ham)</td><td>1 / 9</td><td>2 / 16</td></tr><tr><td>P(“meeting” | ham)</td><td>3 / 9</td><td>4 / 16</td></tr><tr><td>P(spam | text)</td><td>0.000</td><td>0.385 (5/13)</td></tr></tbody>
+  </table></div>
+  <p>Without smoothing, one unseen word makes spam impossible. With smoothing, ham is still favored, but spam keeps a realistic probability.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 275" role="img" aria-label="Laplace smoothing: without smoothing the word meeting has probability 0 in spam; with alpha 1 it gets 0.06 and the other probabilities shrink slightly."><text x="165" y="26" class="l b" text-anchor="middle">Without smoothing</text><rect x="24" y="76.7" width="50" height="133.3" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="49" y="71.7" class="ls b" text-anchor="middle">0.44</text><text x="49" y="232" class="ls" text-anchor="middle">free</text><rect x="98" y="110.0" width="50" height="100.0" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="123" y="105.0" class="ls b" text-anchor="middle">0.33</text><text x="123" y="232" class="ls" text-anchor="middle">win</text><rect x="172" y="143.3" width="50" height="66.7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="197" y="138.3" class="ls b" text-anchor="middle">0.22</text><text x="197" y="232" class="ls" text-anchor="middle">prize</text><text x="271" y="205.0" class="ls b" text-anchor="middle" style="fill:#dc452d">0</text><text x="271" y="232" class="ls" text-anchor="middle">meeting</text><line x1="16" y1="210" x2="322" y2="210" stroke="#0a0a0a" stroke-width="2.5"/><text x="495" y="26" class="l b" text-anchor="middle">With α = 1</text><rect x="354" y="116.2" width="50" height="93.8" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="379" y="111.2" class="ls b" text-anchor="middle">0.31</text><text x="379" y="232" class="ls" text-anchor="middle">free</text><rect x="428" y="135.0" width="50" height="75.0" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="453" y="130.0" class="ls b" text-anchor="middle">0.25</text><text x="453" y="232" class="ls" text-anchor="middle">win</text><rect x="502" y="153.8" width="50" height="56.2" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="527" y="148.8" class="ls b" text-anchor="middle">0.19</text><text x="527" y="232" class="ls" text-anchor="middle">prize</text><rect x="576" y="191.2" width="50" height="18.8" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><text x="601" y="186.2" class="ls b" text-anchor="middle">0.06</text><text x="601" y="232" class="ls" text-anchor="middle">meeting</text><line x1="346" y1="210" x2="652" y2="210" stroke="#0a0a0a" stroke-width="2.5"/><text x="330" y="262" class="ls" text-anchor="middle">P(word | spam). The other three vocabulary words are not shown.</text></svg><figcaption><span>Chart 5</span> The zero disappears and the other estimates shrink slightly to make room for it.</figcaption></figure>
+  <pre class="post-code" data-run="1"><code>from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+
+docs = [&quot;free win free&quot;, &quot;win free prize&quot;, &quot;free prize win&quot;,
+        &quot;meeting project free&quot;, &quot;project deadline meeting&quot;, &quot;meeting schedule project&quot;]
+labels = [1, 1, 1, 0, 0, 0]          # 1 = spam, 0 = ham
+
+for a in [1e-10, 1.0]:
+    p = Pipeline([(&quot;c&quot;, CountVectorizer()),
+                  (&quot;nb&quot;, MultinomialNB(alpha=a, force_alpha=True))]).fit(docs, labels)
+    print(&quot;alpha =&quot;, a, p.predict_proba([&quot;free meeting&quot;, &quot;free win&quot;]).round(3).tolist())</code></pre>
+  <pre class="post-code post-code-out"><code>alpha = 1e-10 [[1.0, 0.0], [0.0, 1.0]]
+alpha = 1.0 [[0.615, 0.385], [0.091, 0.909]]</code></pre>
+  <p>The columns are P(ham) and P(spam). With a near-zero α the probabilities are extreme and brittle; with α = 1 they are moderate.</p>
+  <h2 id="implementation" style="scroll-margin-top:90px">Practical Implementation: E-mail Spam Classification</h2>
+  <p>The examples use <strong>simulated</strong> e-mails so that the post is fully reproducible. Replace the DataFrame with your own data and the rest stays the same. In the simulation, each e-mail contains five topical words and three neutral words, and 30% of the topical words come from the <em>other</em> class, so the task is not trivially easy.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>1. Load and inspect</strong> the data and check the class balance.</li>
+    <li><strong>2. Define the target</strong>: <code>spam</code>, 1 for spam and 0 for ham.</li>
+    <li><strong>3. Choose the features</strong>: the raw text. Vectorizing happens inside the pipeline.</li>
+    <li><strong>4. Split</strong> into train and test, before fitting anything.</li>
+    <li><strong>5. Vectorize</strong> with <code>CountVectorizer</code> to build the document-term matrix.</li>
+    <li><strong>6. Train</strong> <code>MultinomialNB</code>.</li>
+    <li><strong>7. Predict</strong> classes and probabilities on the test set.</li>
+    <li><strong>8. Evaluate</strong> with the confusion matrix, precision, recall, F1 and ROC-AUC.</li>
+  </ul>
+  <h3 id="impl-data" style="scroll-margin-top:90px">Data, target and features (steps 1 to 3)</h3>
+  <pre class="post-code" data-run="1"><code>import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (classification_report, confusion_matrix,
+                             roc_auc_score)
+
+
+# Steps 1-3: load / inspect, target, features (simulated e-mails; replace with your own DataFrame)
+rng = np.random.default_rng(7)
+spam_words = [&quot;free&quot;, &quot;win&quot;, &quot;prize&quot;, &quot;gift&quot;, &quot;pharmacy&quot;, &quot;limited&quot;, &quot;online&quot;, &quot;claim&quot;]
+ham_words = [&quot;meeting&quot;, &quot;invoice&quot;, &quot;deadline&quot;, &quot;project&quot;, &quot;receipt&quot;, &quot;lunch&quot;, &quot;schedule&quot;, &quot;team&quot;]
+neutral = [&quot;hello&quot;, &quot;please&quot;, &quot;today&quot;, &quot;update&quot;, &quot;thanks&quot;, &quot;info&quot;, &quot;you&quot;, &quot;order&quot;]
+
+def make_email(is_spam):
+    own, other = (spam_words, ham_words) if is_spam else (ham_words, spam_words)
+    # each topical word comes from the other class 30% of the time (noise)
+    topical = [rng.choice(other if rng.random() &lt; 0.30 else own) for _ in range(5)]
+    words = topical + list(rng.choice(neutral, 3))
+    rng.shuffle(words)
+    return &quot; &quot;.join(words)
+
+n = 2000
+y = (rng.random(n) &lt; 0.30).astype(int)
+df = pd.DataFrame({&quot;text&quot;: [make_email(label) for label in y], &quot;spam&quot;: y})
+print(df.head(3))
+print(df[&quot;spam&quot;].value_counts(normalize=True))
+
+# Steps 2-3: target and features
+X, target = df[&quot;text&quot;], df[&quot;spam&quot;]</code></pre>
+  <h3 id="impl-model" style="scroll-margin-top:90px">Split, vectorize and train (steps 4 to 6)</h3>
+  <pre class="post-code" data-run="1"><code># 4. Split (stratified, before any fitting)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, target, test_size=0.25, stratify=target, random_state=42)
+
+# 5-6. Vectorize + train inside one Pipeline (vocabulary learned on train only)
+model = Pipeline([
+    (&quot;counts&quot;, CountVectorizer()),
+    (&quot;nb&quot;, MultinomialNB(alpha=1.0)),
+])
+model.fit(X_train, y_train)</code></pre>
+  <p>Why a <code>Pipeline</code>? <code>CountVectorizer</code> learns the vocabulary. If you fit it on all the data before splitting, words from the test set leak into the model. Inside a pipeline, <code>fit</code> sees only the training data, and the same object works unchanged in cross-validation. This is the same fit-on-train rule described in <a href="feature-engineering.html">Feature Engineering</a>.</p>
+  <h3 id="impl-eval" style="scroll-margin-top:90px">Predict and evaluate (steps 7 and 8)</h3>
+  <pre class="post-code" data-run="1"><code># 7. Predict
+pred = model.predict(X_test)
+proba = model.predict_proba(X_test)[:, 1]
+
+# 8. Evaluate
+print(confusion_matrix(y_test, pred))
+print(classification_report(y_test, pred, digits=3))
+print(&quot;ROC-AUC:&quot;, round(roc_auc_score(y_test, proba), 4))</code></pre>
+  <pre class="post-code" data-run="1"><code># Which words push towards spam?
+vec, nb = model.named_steps[&quot;counts&quot;], model.named_steps[&quot;nb&quot;]
+log_ratio = pd.Series(nb.feature_log_prob_[1] - nb.feature_log_prob_[0],
+                      index=vec.get_feature_names_out())
+print(log_ratio.sort_values(ascending=False).head(5).round(2))</code></pre>
+  <pre class="post-code post-code-out"><code>claim       0.99
+win         0.95
+free        0.87
+pharmacy    0.86
+limited     0.80</code></pre>
+  <p>The last block shows what the model learned: the log-ratio of each word’s probability in spam versus ham. This is the interpretability advantage of Naive Bayes.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 180" role="img" aria-label="Spam pipeline: e-mail text becomes a count matrix, the Naive Bayes model combines priors and likelihoods, and the output is a spam prediction."><rect x="10" y="20" width="145" height="76" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="82.5" y="44" class="b l" text-anchor="middle">Text</text><text x="82.5" y="64" class="ls" text-anchor="middle">“free win prize”</text><rect x="175" y="20" width="145" height="76" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="247.5" y="44" class="b l" text-anchor="middle">Counts</text><text x="247.5" y="64" class="ls" text-anchor="middle">free=1 win=1 …</text><rect x="340" y="20" width="145" height="76" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="412.5" y="44" class="cr b l" text-anchor="middle">Model</text><text x="412.5" y="64" class="cr ls" text-anchor="middle">priors × likelihoods</text><rect x="505" y="20" width="145" height="76" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="2.5"/><text x="577.5" y="44" class="cr b l" text-anchor="middle">Prediction</text><text x="577.5" y="64" class="cr ls" text-anchor="middle">spam, p ≈ 0.99</text><path d="M157,58 H165" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="163,52 173,58 163,64" fill="#0a0a0a"/><path d="M322,58 H330" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="328,52 338,58 328,64" fill="#0a0a0a"/><path d="M487,58 H495" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="493,52 503,58 493,64" fill="#0a0a0a"/><path d="M175,120 V132 H650 V120" fill="none" stroke="#0a0a0a" stroke-width="2"/><text x="412" y="160" class="l" text-anchor="middle">One Pipeline, fit on train</text></svg><figcaption><span>Chart 6</span> From raw text to a spam prediction, with the vocabulary learned inside the pipeline.</figcaption></figure>
+  <h2 id="evaluation" style="scroll-margin-top:90px">Evaluating the Classifier</h2>
+  <h3 id="metrics" style="scroll-margin-top:90px">Confusion matrix and metrics</h3>
+  <p>Results of the code above. The data is <strong>simulated, so these numbers illustrate the method and say nothing about real e-mail</strong>.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Predicted ham</th><th>Predicted spam</th></tr></thead>
+    <tbody><tr><td>Actual ham</td><td>314 (TN)</td><td>36 (FP)</td></tr><tr><td>Actual spam</td><td>48 (FN)</td><td>102 (TP)</td></tr></tbody>
+  </table></div>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Metric (spam class)</th><th>Formula</th><th>Value</th></tr></thead>
+    <tbody><tr><td>Accuracy</td><td>(TP + TN) / all</td><td>0.832</td></tr><tr><td>Precision</td><td>TP / (TP + FP)</td><td>0.739</td></tr><tr><td>Recall</td><td>TP / (TP + FN)</td><td>0.680</td></tr><tr><td>F1</td><td>2 × P × R / (P + R)</td><td>0.708</td></tr><tr><td>ROC-AUC</td><td>ranking quality over all thresholds</td><td>0.904</td></tr></tbody>
+  </table></div>
+  <h3 id="accuracy-trap" style="scroll-margin-top:90px">Why accuracy can mislead</h3>
+  <p>Here 70% of the e-mails are ham, so a “model” that always answers ham scores 0.70 accuracy while catching no spam at all. Our 0.832 must be judged against that baseline, and precision and recall tell the real story. With only 5% spam, the always-ham baseline would reach 95%.</p>
+  <p>The two kinds of error also have different costs. A <strong>false positive</strong> (ham marked as spam) can bury an important message, so many filters favor precision. A <strong>false negative</strong> (spam reaches the inbox) is an annoyance or a security risk, and recall matters more when phishing is the worry. You can move the decision threshold on <code>predict_proba</code> to trade one against the other.</p>
+  <h3 id="calibration" style="scroll-margin-top:90px">Predicted vs. calibrated probabilities</h3>
+  <p><code>predict_proba</code> returns the model’s <em>scores</em>. They only count as calibrated probabilities if, among e-mails scored around 0.7, about 70% really are spam. To check, bin the predictions and compare them with the actual spam rate:</p>
+  <pre class="post-code" data-run="1"><code>cal = pd.DataFrame({&quot;p&quot;: proba, &quot;spam&quot;: y_test.to_numpy()})
+cal[&quot;bin&quot;] = pd.cut(cal[&quot;p&quot;], [0, 0.1, 0.5, 0.9, 1.0], include_lowest=True)
+print(cal.groupby(&quot;bin&quot;, observed=True)
+         .agg(n=(&quot;spam&quot;, &quot;size&quot;), mean_predicted=(&quot;p&quot;, &quot;mean&quot;), actual_rate=(&quot;spam&quot;, &quot;mean&quot;))
+         .round(3))</code></pre>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Predicted bin</th><th>E-mails</th><th>Mean predicted</th><th>Actual spam rate</th></tr></thead>
+    <tbody><tr><td>0 to 0.1</td><td>185</td><td>0.027</td><td>0.027</td></tr><tr><td>0.1 to 0.5</td><td>177</td><td>0.239</td><td>0.243</td></tr><tr><td>0.5 to 0.9</td><td>112</td><td>0.712</td><td>0.688</td></tr><tr><td>0.9 to 1.0</td><td>26</td><td>0.959</td><td>0.962</td></tr></tbody>
+  </table></div>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Do not generalize this result</p>
+    <p>The probabilities here are close to calibrated because the simulated words really are independent given the class, so the Naive Bayes assumption holds by construction. In real text, correlated words usually make Naive Bayes overconfident, with scores bunched near 0 and 1. Always run this check on your own data, and if you need trustworthy probabilities, wrap the model in <code>CalibratedClassifierCV</code>.</p>
+  </div>
+  <h2 id="pros-cons" style="scroll-margin-top:90px">Advantages and Limitations</h2>
+  <p><strong>Advantages</strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>Fast.</strong> Training is counting, and it scales to very large vocabularies.</li>
+    <li><strong>Works with little data.</strong> It estimates few parameters.</li>
+    <li><strong>Few hyperparameters.</strong> Mostly α.</li>
+    <li><strong>Interpretable.</strong> Per-word log-ratios show what drives a prediction.</li>
+    <li><strong>A strong text baseline.</strong> Easy to build before trying anything heavier.</li>
+  </ul>
+  <p><strong>Limitations</strong></p>
+  <ul class="post-points post-points-color">
+    <li><strong>Independence is rarely true.</strong> Probabilities tend to be overconfident when features are correlated.</li>
+    <li><strong>No interactions.</strong> It cannot learn that “not” changes the meaning of “free”.</li>
+    <li><strong>Gaussian NB assumes bell-shaped features</strong> within each class.</li>
+    <li><strong>Smoothing is mandatory</strong> to avoid zero probabilities.</li>
+    <li><strong>Not always competitive.</strong> A tuned discriminative model can win with enough data, so compare against a baseline on every problem.</li>
+  </ul>
+  <h2 id="comparison" style="scroll-margin-top:90px">Naive Bayes vs. Other Classifiers</h2>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model</th><th>Principle</th><th>Training speed</th><th>Interpretability</th><th>Key assumptions</th><th>Typical use</th></tr></thead>
+    <tbody><tr><td>Naive Bayes</td><td>Generative: models P(X | Y) and P(Y)</td><td>Very fast (counting)</td><td>High (word log-ratios)</td><td>Features independent given the class</td><td>Spam, text baselines</td></tr><tr><td>Logistic regression</td><td>Discriminative: models P(Y | X) directly</td><td>Fast (iterative fit)</td><td>High (coefficients)</td><td>Linear log-odds</td><td>Risk and scoring models</td></tr><tr><td>Decision tree</td><td>Recursive splits into rules</td><td>Fast</td><td>High for small trees</td><td>Few; overfits easily</td><td>Rule-based decisions</td></tr><tr><td>Random forest</td><td>Many trees, averaged</td><td>Moderate</td><td>Low</td><td>Few</td><td>Tabular data</td></tr><tr><td>SVM</td><td>Maximum-margin boundary</td><td>Slower on large data</td><td>Low with kernels</td><td>Depends on the kernel</td><td>High-dimensional data, text</td></tr></tbody>
+  </table></div>
+  <p>A common pattern is that Naive Bayes does well with little data, while discriminative models such as <a href="logistic-regression.html">logistic regression</a> can overtake it as the training set grows. This depends on the problem, so test both.</p>
+  <h2 id="takeaways" style="scroll-margin-top:90px">Key Takeaways</h2>
+  <ul class="post-points post-points-color">
+    <li>Naive Bayes picks the class with the highest P(Y) × ∏ P(xᵢ | Y).</li>
+    <li>The “naive” part is <em>conditional</em> independence of the features given the class.</li>
+    <li>Choose the variant to match the data: Gaussian, Multinomial, Bernoulli or Categorical.</li>
+    <li>Always smooth (α &gt; 0) and tune α.</li>
+    <li>Keep vectorizing and modeling in one <code>Pipeline</code>.</li>
+    <li>Judge it with precision, recall, F1 and ROC-AUC, not accuracy alone, and treat its probabilities as scores until you have checked calibration.</li>
+  </ul>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Naive Bayes shows that a prediction can be reasoning under uncertainty rather than a black-box verdict: start from a prior, weigh the evidence, update the belief. The independence assumption is false in most real data, yet the method is often a hard-to-beat baseline for text. Treat its probabilities as scores, check them before trusting them, and always compare it against a simple baseline.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="bayes-theorem.html">Bayes’ Theorem</a> The theorem behind the classifier, with a fraud-alert example.</li>
+    <li><a href="conditional-probability.html">Conditional Probability</a> What P(A | B) means.</li>
+    <li><a href="feature-engineering.html">Feature Engineering</a> Turning raw data into features, and the fit-on-train rule.</li>
+    <li><a href="descriptive-statistics.html">Descriptive Statistics</a> Summarizing data before modeling.</li>
+    <li><a href="logistic-regression.html">Logistic Regression</a> A discriminative alternative for binary outcomes.</li>
+    <li><a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> Precision, recall, F1 and ROC in detail.</li>
+  </ul>
+  <h2 id="references" style="scroll-margin-top:90px">Further Reading and References</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="https://scikit-learn.org/stable/modules/naive_bayes.html">scikit-learn: Naive Bayes user guide</a></li>
+    <li><a href="https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html">scikit-learn: Working with text data</a></li>
+    <li>StatQuest (Josh Starmer): <a href="https://www.youtube.com/watch?v=O2L2Uv9pdDA">Naive Bayes, Clearly Explained</a></li>
+    <li>Domingos, P. and Pazzani, M. (1997). <a href="https://doi.org/10.1023/A:1007413511361">On the optimality of the simple Bayesian classifier under zero-one loss</a>. Machine Learning, 29, 103–130.</li>
+    <li>McCallum, A. and Nigam, K. (1998). <a href="http://www.kamalnigam.com/papers/multinomial-aaaiws98.pdf">A comparison of event models for Naive Bayes text classification</a>.</li>
+    <li>Manning, C., Raghavan, P. and Schütze, H. <a href="https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf">Introduction to Information Retrieval</a> (chapter on Naive Bayes text classification). Cambridge University Press.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
