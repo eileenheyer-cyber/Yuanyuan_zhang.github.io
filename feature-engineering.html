@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Feature Engineering: Turning Raw Data into Meaningful Features – Yuanyuan Zhang</title>
-  <meta name="description" content="A practical guide to feature creation, transformation, selection, and preprocessing in machine learning.">
+  <meta name="description" content="A practical guide to feature creation, transformation, selection, and preprocessing in machine learning, with Python examples and a leakage-safe pipeline.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,9 +33,331 @@
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Data fundamentals</p>
   <h1 class="post-title">Feature Engineering: Turning Raw Data into Meaningful Features</h1>
-  <p class="post-sub">A practical guide to feature creation, transformation, selection, and preprocessing in machine learning.</p>
+  <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">A practical guide to feature creation, transformation, selection, and preprocessing in machine learning.</p>
 
-  <p>Draft placeholder. Text to follow.</p>
+  <p>Imagine an online shop that wants to know which customers will stop buying. Its database holds one row per order: a customer ID, a timestamp and an order value. You can't feed that table to a model. It has the wrong shape (one row per order, not per customer), and the columns say little about behavior. A timestamp such as <code>2026-06-12 14:03</code> is just a number that keeps growing.</p>
+  <p>Now compare it with "this customer last ordered 7 days ago, orders about once a month and spends €45 per order". Same data, but now it contains information a model can use.</p>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#why-it-matters">Why Feature Engineering Matters</a></li>
+      <li><a href="#understanding-features">Understanding Features</a></li>
+      <li><details><summary><a href="#core-techniques">Core Feature Engineering Techniques</a></summary><ul><li><a href="#numerical">A. Numerical transformations</a></li><li><a href="#categorical">B. Categorical encoding</a></li><li><a href="#datetime">C. Date and time features</a></li><li><a href="#creation">D. Feature creation</a></li><li><a href="#text">E. Text features</a></li><li><a href="#missing-outliers">F. Missing values and outliers</a></li></ul></details></li>
+      <li><details><summary><a href="#python-implementation">Practical Implementation with Python</a></summary><ul><li><a href="#simulated-data">The simulated shop data</a></li><li><a href="#customer-features">Building customer-level features</a></li></ul></details></li>
+      <li><details><summary><a href="#feature-selection">Feature Selection and Feature Importance</a></summary><ul><li><a href="#multicollinearity">Correlation and multicollinearity</a></li><li><a href="#selection-methods">Filter, wrapper and embedded methods</a></li><li><a href="#tree-importance">Tree-based importance</a></li><li><a href="#pca">PCA and dimensionality reduction</a></li></ul></details></li>
+      <li><details><summary><a href="#pipeline">Feature Engineering in a Machine Learning Pipeline</a></summary><ul><li><a href="#fit-on-train">Fit on training data only</a></li><li><a href="#pipeline-columntransformer">Pipeline and ColumnTransformer</a></li><li><a href="#time-leakage">A second kind of leakage: time</a></li></ul></details></li>
+      <li><details><summary><a href="#does-it-help">Does Feature Engineering Improve Model Performance?</a></summary><ul><li><a href="#experiment">The experiment</a></li><li><a href="#results">Results on simulated data</a></li><li><a href="#interpretation">How to interpret the results</a></li></ul></details></li>
+      <li><a href="#related-posts">Related posts</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+
+  <h2 id="why-it-matters" style="scroll-margin-top:90px">Why Feature Engineering Matters</h2>
+  <p><strong>Feature engineering</strong> is the work of turning raw data into inputs (features) that make a pattern easier for a model to learn. It sits between data quality and model choice. Clean data is the precondition, and the representation you choose decides how much of the signal the model can actually see. A simple model with good features often beats a complex model fed with raw columns.</p>
+  <p>This article follows one scenario: predicting customer churn for an e-commerce shop. First we clarify what a feature is, then go through the core techniques, build customer features in Python, select among them, wrap everything in a leakage-safe pipeline, and test whether the effort paid off.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 200" role="img" aria-label="Feature engineering workflow: raw orders, customer table, transform and encode, select features, model and evaluate. The first two steps use only data before the cut-off date; the last three are fitted on training data only."><rect x="10" y="20" width="106" height="76" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="63" y="52" class="b l" text-anchor="middle">Raw</text><text x="63" y="76" class="l" text-anchor="middle">orders</text><rect x="142" y="20" width="106" height="76" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="195" y="52" class="b l" text-anchor="middle">Customer</text><text x="195" y="76" class="l" text-anchor="middle">table</text><rect x="274" y="20" width="106" height="76" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="327" y="52" class="cr b l" text-anchor="middle">Transform</text><text x="327" y="76" class="cr l" text-anchor="middle">&amp; encode</text><rect x="406" y="20" width="106" height="76" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="2.5"/><text x="459" y="52" class="cr b l" text-anchor="middle">Select</text><text x="459" y="76" class="cr l" text-anchor="middle">features</text><rect x="538" y="20" width="106" height="76" rx="6" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2.5"/><text x="591" y="52" class="cr b l" text-anchor="middle">Model</text><text x="591" y="76" class="cr l" text-anchor="middle">&amp; evaluate</text><path d="M118,58 H132" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="130,52 140,58 130,64" fill="#0a0a0a"/><path d="M250,58 H264" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="262,52 272,58 262,64" fill="#0a0a0a"/><path d="M382,58 H396" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="394,52 404,58 394,64" fill="#0a0a0a"/><path d="M514,58 H528" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="526,52 536,58 526,64" fill="#0a0a0a"/><path d="M10,120 V132 H248 V120" fill="none" stroke="#0a0a0a" stroke-width="2"/><text x="129" y="160" class="l" text-anchor="middle">Data before cut-off only</text><path d="M274,120 V132 H644 V120" fill="none" stroke="#0a0a0a" stroke-width="2"/><text x="459" y="160" class="l" text-anchor="middle">Fitted on training data only</text></svg><figcaption><span>Chart 1</span> Each step builds on the one before. Features use only information from before the cut-off date, and every step that learns from data is fitted on training data only.</figcaption></figure>
+  <h2 id="understanding-features" style="scroll-margin-top:90px">Understanding Features</h2>
+  <p>A <strong>feature</strong> is an input column the model uses to make a prediction. The <strong>target variable</strong> is what you want to predict, here <code>churned</code> (1 = no order in the next 90 days, 0 = ordered again). Features can be <strong>numerical</strong> (order value, age) or <strong>categorical</strong> (country, product category). <strong>Raw features</strong> are the columns as recorded. <strong>Engineered features</strong> are derived from them.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Raw feature</th><th>Engineered feature</th><th>What the model gains</th></tr></thead>
+    <tbody><tr><td><code>order_timestamp</code></td><td><code>days_since_last_order</code></td><td>Recency instead of a growing number</td></tr><tr><td><code>order_value</code>, <code>order_id</code></td><td><code>avg_order_value</code> per customer</td><td>Spending level at customer level</td></tr><tr><td><code>category</code> (text)</td><td>One-hot columns</td><td>Numbers without a fake order</td></tr><tr><td><code>review_text</code></td><td><code>review_length</code>, TF-IDF terms</td><td>Text as numbers</td></tr><tr><td><code>age</code> with gaps</td><td><code>age</code> filled + <code>age_missing</code> flag</td><td>Missingness kept as a signal</td></tr></tbody>
+  </table></div>
+  <h2 id="core-techniques" style="scroll-margin-top:90px">Core Feature Engineering Techniques</h2>
+  <p>Three terms keep the next sections tidy. <strong>Feature creation</strong> builds new columns (ratios, aggregates). <strong>Feature transformation</strong> changes the form of an existing column (log, scaling, encoding). <strong>Feature selection</strong> removes columns (see Feature Selection and Feature Importance below).</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Category</th><th>Typical techniques</th><th>Main risk</th></tr></thead>
+    <tbody><tr><td>Numerical</td><td>Log, scaling, binning</td><td>Hiding real differences, or distorting the scale</td></tr><tr><td>Categorical</td><td>One-hot, ordinal, target encoding</td><td>Inventing an order, or leaking the target</td></tr><tr><td>Date and time</td><td>Calendar parts, recency, cyclical encoding</td><td>Using information from after the prediction date</td></tr><tr><td>Feature creation</td><td>Ratios, interactions, aggregates</td><td>Too many features that look good by chance</td></tr><tr><td>Text</td><td>Length, word counts, TF-IDF</td><td>Ignoring word order and meaning</td></tr><tr><td>Missing and outliers</td><td>Imputation, indicators, capping</td><td>Deleting real information</td></tr></tbody>
+  </table></div>
+  <h3 id="numerical" style="scroll-margin-top:90px">A. Numerical transformations</h3>
+  <p><strong>Log transformation.</strong> Order values are skewed: most orders are €20–60, a few are €900. Taking the logarithm pulls the long tail in, so one huge order stops dominating a linear model. Use <code>log1p</code> (the log of 1 + x), which also works for zeros. It suits right-skewed, non-negative values, mainly with linear models. Tree-based models don't need it, and a logged value is harder to explain to stakeholders.</p>
+  <pre class="post-code"><code>df[&quot;log_order_value&quot;] = np.log1p(df[&quot;order_value&quot;])</code></pre>
+  <p><strong>Standardization and normalization.</strong> Standardization rescales a column to mean 0 and standard deviation 1. Min-max normalization squeezes values into the range 0 to 1.</p>
+  <p class="post-formula post-formula-plain"><strong>z = <span class="frac"><span><em>x</em> − mean</span><span>standard deviation</span></span></strong></p>
+  <p>The z-value says how many standard deviations a customer sits above or below the average, which puts "total spent" in euros and "orders per month" on the same footing.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − min</span><span>max − min</span></span></strong></p>
+  <p>The min-max value says where a customer sits between the lowest and highest value. Both matter when the model is sensitive to scale (logistic regression, k-nearest neighbors, PCA, regularized models), because otherwise a column measured in large numbers outweighs a small one simply by size. Trees ignore scale. Min-max is sensitive to outliers, because one extreme value squeezes everyone else together.</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+z = StandardScaler().fit_transform(df[[&quot;order_value&quot;]])    # mean 0, std 1
+mm = MinMaxScaler().fit_transform(df[[&quot;order_value&quot;]])     # range 0 to 1</code></pre>
+  <p><strong>Binning.</strong> Binning cuts a numerical column into groups, such as low, mid, high and top order value (quartiles). It helps when the effect isn't smooth (for example, age groups with different behavior) and when you want something easy to explain. The cost is lost detail: two customers just either side of a cut-off look completely different, and two very different customers in one bin look identical.</p>
+  <pre class="post-code"><code>df[&quot;value_band&quot;] = pd.qcut(df[&quot;order_value&quot;], q=4, labels=[&quot;low&quot;, &quot;mid&quot;, &quot;high&quot;, &quot;top&quot;])</code></pre>
+  <h3 id="categorical" style="scroll-margin-top:90px">B. Categorical encoding</h3>
+  <p>Models need numbers, but the way you turn categories into numbers can add information that isn't there. <a href="one-hot-encoding.html">One-Hot Encoding</a> explains this in detail with a product-category example. In short:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Encoding</th><th>Idea</th><th>Use when</th><th>Limitation</th></tr></thead>
+    <tbody><tr><td><strong>One-hot</strong></td><td>One 0/1 column per category</td><td>Few categories, no order (country, category)</td><td>Many categories mean many columns</td></tr><tr><td><strong>Label</strong></td><td>One integer per category</td><td>Only for the <em>target</em> (0/1)</td><td>On features it invents an order</td></tr><tr><td><strong>Ordinal</strong></td><td>Integers in a meaningful order</td><td>A real order exists (S &lt; M &lt; L)</td><td>You must specify the order yourself</td></tr><tr><td><strong>Target</strong></td><td>Category replaced by its average target value</td><td>Many categories (e.g., postcode)</td><td>Leaks the target if done naively</td></tr></tbody>
+  </table></div>
+  <pre class="post-code"><code>from sklearn.preprocessing import OrdinalEncoder, TargetEncoder
+
+pd.get_dummies(df[&quot;category&quot;], prefix=&quot;cat&quot;)                                # one-hot
+OrdinalEncoder(categories=[[&quot;S&quot;, &quot;M&quot;, &quot;L&quot;]]).fit_transform(df[[&quot;size&quot;]])    # ordinal
+
+te = TargetEncoder(target_type=&quot;binary&quot;, cv=5)                              # target
+df[&quot;category_te&quot;] = te.fit_transform(df[[&quot;category&quot;]], df[&quot;churned&quot;]).ravel()</code></pre>
+  <p>Target encoding is the one to handle with care. If a category's average churn rate is computed on the same rows the model then trains on, the feature contains the answer. scikit-learn's <code>TargetEncoder</code> reduces this with internal cross-fitting inside <code>fit_transform</code>, but it must still be fitted on training data only.</p>
+  <h3 id="datetime" style="scroll-margin-top:90px">C. Date and time features</h3>
+  <p>Dates carry several kinds of information once you pull them apart.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Calendar parts.</strong> Year, month, weekday, hour, and a weekend flag.</li>
+    <li><strong>Time since an event.</strong> Days since the last purchase is the most useful date feature in churn problems.</li>
+    <li><strong>Cyclical encoding.</strong> Weekday, month and hour are circular. Hour 23 is next to hour 0, but as plain numbers they are 23 apart. Encoding the hour as a sine and a cosine of its position on the 24-hour circle fixes that.</li>
+  </ul>
+  <pre class="post-code"><code>df[&quot;weekday&quot;] = df[&quot;order_ts&quot;].dt.weekday
+df[&quot;is_weekend&quot;] = (df[&quot;weekday&quot;] &gt;= 5).astype(int)
+df[&quot;hour&quot;] = df[&quot;order_ts&quot;].dt.hour
+df[&quot;hour_sin&quot;] = np.sin(2 * np.pi * df[&quot;hour&quot;] / 24)
+df[&quot;hour_cos&quot;] = np.cos(2 * np.pi * df[&quot;hour&quot;] / 24)</code></pre>
+  <p>Use cyclical encoding with linear and distance-based models. Trees can usually cope with plain integers. The sine/cosine pair is harder to read than "hour = 23", so use it only where the circular distance matters.</p>
+  <h3 id="creation" style="scroll-margin-top:90px">D. Feature creation</h3>
+  <p>New columns built from existing ones often carry the most domain knowledge.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Ratios.</strong> Order value per item, or recency divided by a customer's usual gap between orders. A customer who has been silent for 60 days but normally orders every 55 days is fine. One who normally orders every 10 days is not.</li>
+    <li><strong>Interactions.</strong> The product of two features, such as order value × weekend flag, when the effect of one depends on the other.</li>
+    <li><strong>Aggregations.</strong> Summaries over groups, such as a customer's total spending or a category's average order value.</li>
+    <li><strong>Domain-specific features.</strong> Anything the business already knows matters, such as "used a discount code" or "returned an item".</li>
+  </ul>
+  <pre class="post-code"><code>df[&quot;value_per_item&quot;] = df[&quot;order_value&quot;] / df[&quot;items&quot;]
+df[&quot;category_mean_value&quot;] = df.groupby(&quot;category&quot;)[&quot;order_value&quot;].transform(&quot;mean&quot;)
+df[&quot;value_vs_category&quot;] = df[&quot;order_value&quot;] / df[&quot;category_mean_value&quot;]</code></pre>
+  <p>The danger here is volume: you can generate hundreds of ratios, and some will look predictive by chance. Create features because you can explain why they should matter.</p>
+  <h3 id="text" style="scroll-margin-top:90px">E. Text features</h3>
+  <p>Text must become numbers first. Simple signals go a long way: review length, word count, number of exclamation marks. <strong>Word frequency</strong> (bag of words) counts how often each word appears. <strong>TF-IDF</strong> weights those counts so that a word that is frequent in one review but rare overall ("broken") counts more than one that appears everywhere ("the"). Both are forms of <strong>text vectorization</strong>: each text becomes a row of numbers.</p>
+  <pre class="post-code"><code>from sklearn.feature_extraction.text import TfidfVectorizer
+
+df[&quot;review_length&quot;] = df[&quot;review&quot;].str.len()
+tfidf = TfidfVectorizer(max_features=50, stop_words=&quot;english&quot;)
+X_text = tfidf.fit_transform(df[&quot;review&quot;])      # sparse matrix: one column per word</code></pre>
+  <p>TF-IDF ignores word order and meaning ("not good" looks like "good"), and the vocabulary comes from the training data, so fit it on training data only.</p>
+  <h3 id="missing-outliers" style="scroll-margin-top:90px">F. Missing values and outliers</h3>
+  <p><strong>Missing-value imputation</strong> fills gaps, for example with the median for numbers or the most frequent value for categories. <strong>Missingness indicators</strong> are extra 0/1 columns saying "this value was missing". Imputing alone hides the gap. The indicator keeps it, which matters when missing is itself informative (a customer who never gave an age may behave differently).</p>
+  <p>The two are different jobs. Imputation <em>handles</em> missing data so the model can run. An indicator <em>creates a feature</em> from the fact that data was missing. Often you do both.</p>
+  <pre class="post-code"><code>from sklearn.impute import SimpleImputer
+
+imp = SimpleImputer(strategy=&quot;median&quot;, add_indicator=True)   # fills gaps + adds flag columns</code></pre>
+  <p><strong>Outliers</strong> need a decision, not a rule. Capping values at the IQR fences (Q1 − 1.5 × IQR and Q3 + 1.5 × IQR; see <a href="iqr.html">IQR</a>) limits their influence. But a €900 order may be a real, valuable customer. Check what an outlier is before you change it, and prefer capping or a log transform over deleting rows.</p>
+  <pre class="post-code"><code>q1, q3 = df[&quot;order_value&quot;].quantile([0.25, 0.75])
+iqr = q3 - q1
+df[&quot;value_capped&quot;] = df[&quot;order_value&quot;].clip(q1 - 1.5 * iqr, q3 + 1.5 * iqr)</code></pre>
+  <h2 id="python-implementation" style="scroll-margin-top:90px">Practical Implementation with Python</h2>
+  <p>The running example is an e-commerce shop. We want customer-level features to predict churn, defined as no order in the 90 days after a cut-off date (30 June 2026). <strong>Every feature may only use orders up to that date.</strong> The data is simulated, so the numbers show the method, not real customer behavior.</p>
+  <h3 id="simulated-data" style="scroll-margin-top:90px">The simulated shop data</h3>
+  <p>This block creates one table with one row per order (<code>orders</code>) and one with one row per customer (<code>customers</code>, including the target <code>churned</code>). You can skip the details and focus on the result.</p>
+  <pre class="post-code" data-run="1"><code>import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(42)
+n_customers = 4000
+obs_start = pd.Timestamp(&quot;2025-07-01&quot;)
+cutoff = pd.Timestamp(&quot;2026-06-30&quot;)
+label_end = pd.Timestamp(&quot;2026-09-28&quot;)                # cut-off + 90 days
+
+customers = pd.DataFrame({
+    &quot;customer_id&quot;: np.arange(1, n_customers + 1),
+    &quot;age&quot;: rng.integers(18, 75, n_customers).astype(float),
+    &quot;country&quot;: rng.choice([&quot;DE&quot;, &quot;AT&quot;, &quot;CH&quot;, &quot;NL&quot;], n_customers, p=[.6, .1, .1, .2]),
+})
+customers.loc[rng.random(n_customers) &lt; 0.08, &quot;age&quot;] = np.nan    # 8% missing ages
+
+orders = []
+for cid in customers[&quot;customer_id&quot;]:
+    rate = rng.gamma(2.0, 0.6)                        # orders per month
+    basket = rng.lognormal(mean=3.8, sigma=0.5)       # typical basket value in EUR
+    active_until = obs_start + pd.Timedelta(days=float(rng.exponential(330)))
+    t = obs_start + pd.Timedelta(days=float(rng.exponential(30 / rate)))
+    while t &lt; label_end and t &lt; active_until:
+        orders.append((cid, t.normalize(), round(rng.lognormal(np.log(basket), 0.4), 2)))
+        t += pd.Timedelta(days=float(rng.exponential(30 / rate)) + 1)
+orders = pd.DataFrame(orders, columns=[&quot;customer_id&quot;, &quot;order_date&quot;, &quot;order_value&quot;])
+orders[&quot;order_id&quot;] = np.arange(1, len(orders) + 1)
+
+# target: 1 = no order in the 90 days after the cut-off
+ordered_later = set(orders.loc[orders[&quot;order_date&quot;] &gt; cutoff, &quot;customer_id&quot;])
+has_history = set(orders.loc[orders[&quot;order_date&quot;] &lt;= cutoff, &quot;customer_id&quot;])
+customers = customers[customers[&quot;customer_id&quot;].isin(has_history)].copy()
+customers[&quot;churned&quot;] = (~customers[&quot;customer_id&quot;].isin(ordered_later)).astype(int)</code></pre>
+  <h3 id="customer-features" style="scroll-margin-top:90px">Building customer-level features</h3>
+  <p>The goal is one row per customer. We group the orders by customer and calculate what each history says about future behavior.</p>
+  <pre class="post-code" data-run="1"><code>snapshot_date = cutoff + pd.Timedelta(days=1)       # 1 July 2026
+past = orders[orders[&quot;order_date&quot;] &lt; snapshot_date].sort_values([&quot;customer_id&quot;, &quot;order_date&quot;])
+
+features = past.groupby(&quot;customer_id&quot;).agg(
+    total_orders=(&quot;order_id&quot;, &quot;count&quot;),
+    total_spent=(&quot;order_value&quot;, &quot;sum&quot;),
+    first_order=(&quot;order_date&quot;, &quot;min&quot;),
+    last_order=(&quot;order_date&quot;, &quot;max&quot;),
+)
+
+features[&quot;avg_order_value&quot;] = features[&quot;total_spent&quot;] / features[&quot;total_orders&quot;]
+features[&quot;recency_days&quot;] = (snapshot_date - features[&quot;last_order&quot;]).dt.days
+features[&quot;tenure_days&quot;] = (snapshot_date - features[&quot;first_order&quot;]).dt.days
+features[&quot;orders_per_month&quot;] = features[&quot;total_orders&quot;] / (features[&quot;tenure_days&quot;].clip(lower=30) / 30)
+
+# average time between purchases (NaN for customers with a single order)
+gaps = past.groupby(&quot;customer_id&quot;)[&quot;order_date&quot;].diff().dt.days
+features[&quot;avg_days_between_orders&quot;] = gaps.groupby(past[&quot;customer_id&quot;]).mean()
+features[&quot;recency_vs_usual_gap&quot;] = features[&quot;recency_days&quot;] / features[&quot;avg_days_between_orders&quot;]
+features[&quot;single_order_flag&quot;] = features[&quot;avg_days_between_orders&quot;].isna().astype(int)
+
+recent = past[past[&quot;order_date&quot;] &gt; snapshot_date - pd.Timedelta(days=90)]
+features[&quot;orders_last_90d&quot;] = recent.groupby(&quot;customer_id&quot;)[&quot;order_id&quot;].count()
+features[&quot;orders_last_90d&quot;] = features[&quot;orders_last_90d&quot;].fillna(0)
+
+features = features.drop(columns=[&quot;first_order&quot;, &quot;last_order&quot;])
+df = customers.set_index(&quot;customer_id&quot;).join(features, how=&quot;left&quot;)</code></pre>
+  <p>What each feature says about the customer:</p>
+  <ul class="post-points post-points-color">
+    <li><strong><code>total_orders</code>, <code>total_spent</code>.</strong> How much history the customer has and how valuable they are.</li>
+    <li><strong><code>avg_order_value</code>.</strong> Spending <em>per order</em>, separate from how often they buy.</li>
+    <li><strong><code>recency_days</code>.</strong> How long the customer has been silent. In churn problems this is usually the strongest signal.</li>
+    <li><strong><code>orders_per_month</code>.</strong> Purchase frequency, adjusted for how long the customer has existed (<code>clip(lower=30)</code> stops brand-new customers from getting absurd rates).</li>
+    <li><strong><code>avg_days_between_orders</code>, <code>recency_vs_usual_gap</code>.</strong> The customer's own rhythm. A value above 1 means they are already overdue compared with their normal pattern.</li>
+    <li><strong><code>single_order_flag</code>.</strong> The gap is undefined for one-order customers, so we keep the fact that it's missing as its own feature.</li>
+    <li><strong><code>orders_last_90d</code>.</strong> Recent activity compared with the whole history.</li>
+  </ul>
+  <h2 id="feature-selection" style="scroll-margin-top:90px">Feature Selection and Feature Importance</h2>
+  <p>Feature engineering <em>makes</em> candidate features. Feature selection <em>decides which to keep</em>. More features do not automatically mean a better model: each one adds noise the model can latch onto, the risk of overfitting grows (see <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>), and the model gets harder to explain. <a href="variable-selection-regularization.html">Variable Selection vs. Regularization</a> covers the logic in depth.</p>
+  <p>Start with the obvious: drop IDs, constant columns and exact duplicates. Then look at how the remaining features relate to each other.</p>
+  <h3 id="multicollinearity" style="scroll-margin-top:90px">Correlation and multicollinearity</h3>
+  <p>If two features say nearly the same thing (<code>log_order_value</code> and <code>order_value</code>), keep one. For linear models, strongly correlated features make coefficients unstable and hard to interpret.</p>
+  <h3 id="selection-methods" style="scroll-margin-top:90px">Filter, wrapper and embedded methods</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>Filter methods</strong> score each feature on its own, before any model (for example, an ANOVA F-test with <code>SelectKBest</code>). They are fast but ignore interactions.</li>
+    <li><strong>Wrapper methods</strong> train models repeatedly on different subsets. Recursive Feature Elimination (<code>RFE</code>) removes the weakest feature step by step. They are more accurate but slower.</li>
+    <li><strong>Embedded methods</strong> select during training. L1 regularization (Lasso) shrinks some coefficients to exactly zero, and tree models rank features by how much they improve splits.</li>
+  </ul>
+  <pre class="post-code"><code>from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_selection import RFE, SelectFromModel, SelectKBest, f_classif
+from sklearn.linear_model import LogisticRegression
+
+SelectKBest(f_classif, k=5)                                                  # filter
+RFE(LogisticRegression(max_iter=1000), n_features_to_select=5)               # wrapper
+SelectFromModel(RandomForestClassifier(n_estimators=200, random_state=42))   # embedded</code></pre>
+  <p>All three learn from the data, so in practice they belong inside the training part of a pipeline (see the pipeline section below).</p>
+  <h3 id="tree-importance" style="scroll-margin-top:90px">Tree-based importance</h3>
+  <p>Tree models are convenient because they report how much each feature contributed. But the built-in impurity importance tends to favor continuous features and splits credit between correlated ones. <code>permutation_importance</code> is a more honest check: it shuffles one feature on held-out data and measures how much the score drops.</p>
+  <h3 id="pca" style="scroll-margin-top:90px">PCA and dimensionality reduction</h3>
+  <p>PCA is dimensionality reduction rather than selection. It combines features into a few new, uncorrelated components that keep most of the variance. It helps with many correlated numerical features, but the components are hard to explain ("component 2" is not a business concept), so it's rarely the first choice when interpretability matters.</p>
+  <h2 id="pipeline" style="scroll-margin-top:90px">Feature Engineering in a Machine Learning Pipeline</h2>
+  <p>Feature engineering belongs inside the workflow, in this order: split the data, fit transformations on the training part, train, then evaluate on the test part.</p>
+  <h3 id="fit-on-train" style="scroll-margin-top:90px">Fit on training data only</h3>
+  <p>Every transformation that learns something from the data must be fitted on the training data only. Scalers learn means, imputers learn medians, encoders learn categories, target encoders learn target averages. If they see the test set, information leaks from the test set into the model, and your test score becomes too optimistic.</p>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Data leakage</p>
+    <p>Using information at training time that wouldn't be available when predicting on genuinely new data. The result is a test score that looks better than the real-world performance will be.</p>
+  </div>
+  <pre class="post-code"><code># WRONG: the scaler learns mean and std from ALL rows, including the test set
+X_scaled = StandardScaler().fit_transform(df[num_cols])
+X_train, X_test = train_test_split(X_scaled, test_size=0.25)</code></pre>
+  <pre class="post-code" data-run="1"><code>from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+num_cols = [&quot;age&quot;, &quot;total_orders&quot;, &quot;total_spent&quot;, &quot;avg_order_value&quot;, &quot;recency_days&quot;,
+            &quot;tenure_days&quot;, &quot;orders_per_month&quot;, &quot;avg_days_between_orders&quot;,
+            &quot;recency_vs_usual_gap&quot;, &quot;single_order_flag&quot;, &quot;orders_last_90d&quot;]
+cat_cols = [&quot;country&quot;]
+y = df[&quot;churned&quot;]
+
+# RIGHT: split first, then learn only from the training part
+X_train, X_test, y_train, y_test = train_test_split(
+    df, y, test_size=0.25, stratify=y, random_state=42)
+scaler = StandardScaler().fit(X_train[[&quot;total_spent&quot;]])
+X_test_scaled = scaler.transform(X_test[[&quot;total_spent&quot;]])    # transform only, never fit</code></pre>
+  <h3 id="pipeline-columntransformer" style="scroll-margin-top:90px">Pipeline and ColumnTransformer</h3>
+  <p>Doing this by hand for every step is error-prone. A <code>Pipeline</code> chains steps, and a <code>ColumnTransformer</code> applies different steps to numerical and categorical columns. When you call <code>fit</code>, everything is learned from the training data only, and the same steps are applied to new data automatically.</p>
+  <pre class="post-code" data-run="1"><code>from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder
+
+def make_preprocess(num_cols, cat_cols):
+    numeric = Pipeline([
+        (&quot;impute&quot;, SimpleImputer(strategy=&quot;median&quot;, add_indicator=True)),  # fill + missing flag
+        (&quot;scale&quot;, StandardScaler()),
+    ])
+    categorical = OneHotEncoder(handle_unknown=&quot;ignore&quot;)   # unseen categories become all zeros
+    return ColumnTransformer([(&quot;num&quot;, numeric, num_cols), (&quot;cat&quot;, categorical, cat_cols)])
+
+model = Pipeline([
+    (&quot;prep&quot;, make_preprocess(num_cols, cat_cols)),
+    (&quot;clf&quot;, LogisticRegression(max_iter=1000, class_weight=&quot;balanced&quot;)),
+])
+model.fit(X_train[num_cols + cat_cols], y_train)</code></pre>
+  <p><code>handle_unknown="ignore"</code> prevents a crash when the test data contains a country the training data never saw. <code>class_weight="balanced"</code> stops the model from ignoring the smaller class.</p>
+  <figure class="post-fig"><svg class="nd-svg" viewBox="0 0 660 336" role="img" aria-label="Pipeline with a leakage boundary: the customer table is split into train and test first. Preprocessing is fitted on the training data, then only applied to the test data."><rect x="220" y="8" width="220" height="56" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="330.0" y="32" class="b l" text-anchor="middle">Customer table</text><text x="330.0" y="52" class="ls" text-anchor="middle">split first</text><path d="M330,64 V84 H130 V104" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="124,94 130,106 136,94" fill="#0a0a0a"/><path d="M330,84 H530 V104" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="524,94 530,106 536,94" fill="#0a0a0a"/><rect x="20" y="106" width="220" height="56" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2.5"/><text x="130.0" y="130" class="cr b l" text-anchor="middle">Train (75%)</text><text x="130.0" y="150" class="cr ls" text-anchor="middle">learn from this</text><rect x="420" y="106" width="220" height="56" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="530.0" y="130" class="b l" text-anchor="middle">Test (25%)</text><text x="530.0" y="150" class="ls" text-anchor="middle">kept untouched</text><path d="M130,162 V178" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="124,176 130,186 136,176" fill="#0a0a0a"/><path d="M530,162 V178" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="524,176 530,186 536,176" fill="#0a0a0a"/><rect x="20" y="186" width="220" height="56" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="130.0" y="210" class="b l" text-anchor="middle">Preprocessing</text><text x="130.0" y="230" class="ls" text-anchor="middle">fit + transform</text><rect x="420" y="186" width="220" height="56" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2.5"/><text x="530.0" y="210" class="b l" text-anchor="middle">Preprocessing</text><text x="530.0" y="230" class="ls" text-anchor="middle">transform only</text><path d="M244,214 H408" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-dasharray="5 6"/><polygon points="406,208 416,214 406,220" fill="#0a0a0a"/><text x="330" y="204" class="ls" text-anchor="middle">learned values</text><path d="M130,242 V258" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="124,256 130,266 136,256" fill="#0a0a0a"/><path d="M530,242 V258" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="524,256 530,266 536,256" fill="#0a0a0a"/><rect x="20" y="266" width="220" height="56" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="2.5"/><text x="130.0" y="290" class="cr b l" text-anchor="middle">Model</text><text x="130.0" y="310" class="cr ls" text-anchor="middle">fit</text><rect x="420" y="266" width="220" height="56" rx="6" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2.5"/><text x="530.0" y="290" class="cr b l" text-anchor="middle">Evaluate</text><text x="530.0" y="310" class="cr ls" text-anchor="middle">predict + score</text><path d="M244,294 H408" fill="none" stroke="#0a0a0a" stroke-width="2.5"/><polygon points="406,288 416,294 406,300" fill="#0a0a0a"/><text x="330" y="284" class="ls" text-anchor="middle">fitted model</text></svg><figcaption><span>Chart 2</span> The test set never influences preprocessing. It only receives what the training data taught the pipeline, which is why the test score stays honest.</figcaption></figure>
+  <h3 id="time-leakage" style="scroll-margin-top:90px">A second kind of leakage: time</h3>
+  <p>No pipeline fixes <strong>time leakage</strong>. If a feature uses orders <em>after</em> the cut-off date, the model sees the future. Here that is prevented because every feature was built from <code>past</code> only. Always ask: "Would I have known this at prediction time?"</p>
+  <h2 id="does-it-help" style="scroll-margin-top:90px">Does Feature Engineering Improve Model Performance?</h2>
+  <p>Not automatically, so we test it.</p>
+  <h3 id="experiment" style="scroll-margin-top:90px">The experiment</h3>
+  <p>Same customers, same train/test split (75/25, stratified), same two models (logistic regression and random forest), but two feature sets.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Baseline.</strong> <code>age</code>, <code>country</code>, <code>total_orders</code>, <code>total_spent</code>: what a plain group-by gives you.</li>
+    <li><strong>Engineered.</strong> The baseline plus <code>avg_order_value</code>, <code>recency_days</code>, <code>tenure_days</code>, <code>orders_per_month</code>, <code>avg_days_between_orders</code>, <code>recency_vs_usual_gap</code>, <code>single_order_flag</code> and <code>orders_last_90d</code>.</li>
+  </ul>
+  <p>The metrics treat churn as the positive class. <strong>Accuracy</strong> is the share of all customers classified correctly. <strong>Precision</strong> is, of the customers flagged as churners, the share who really churned. <strong>Recall</strong> is, of the real churners, the share the model found. <strong>F1</strong> combines precision and recall. The <strong>confusion matrix</strong> shows the four counts behind them. <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> explains each of them step by step.</p>
+  <pre class="post-code" data-run="1"><code>from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+baseline_num = [&quot;age&quot;, &quot;total_orders&quot;, &quot;total_spent&quot;]
+engineered_num = num_cols
+
+estimators = {
+    &quot;logreg&quot;: lambda: LogisticRegression(max_iter=1000, class_weight=&quot;balanced&quot;),
+    &quot;rf&quot;: lambda: RandomForestClassifier(n_estimators=300, min_samples_leaf=5,
+                                         class_weight=&quot;balanced&quot;, random_state=42, n_jobs=-1),
+}
+for feature_set, cols in {&quot;baseline&quot;: baseline_num, &quot;engineered&quot;: engineered_num}.items():
+    for name, make_estimator in estimators.items():
+        pipe = Pipeline([(&quot;prep&quot;, make_preprocess(cols, cat_cols)), (&quot;clf&quot;, make_estimator())])
+        pipe.fit(X_train[cols + cat_cols], y_train)
+        pred = pipe.predict(X_test[cols + cat_cols])
+        print(feature_set, name)
+        print(classification_report(y_test, pred, digits=3))
+        print(confusion_matrix(y_test, pred))</code></pre>
+  <h3 id="results" style="scroll-margin-top:90px">Results on simulated data</h3>
+  <p>The simulation has 3,530 customers with order history. The test set has 883 customers, of which 617 churned (about 70%). Always predicting "churn" would therefore already score 0.70 accuracy. All figures below come from one run of the code, with one train/test split.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model</th><th>Features</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead>
+    <tbody><tr><td>Logistic regression</td><td>Baseline</td><td>0.724</td><td>0.816</td><td>0.781</td><td>0.798</td></tr><tr><td>Logistic regression</td><td>Engineered</td><td>0.854</td><td>0.960</td><td>0.825</td><td>0.888</td></tr><tr><td>Random forest</td><td>Baseline</td><td>0.709</td><td>0.827</td><td>0.737</td><td>0.780</td></tr><tr><td>Random forest</td><td>Engineered</td><td>0.870</td><td>0.956</td><td>0.853</td><td>0.901</td></tr></tbody>
+  </table></div>
+  <p>Confusion matrices for the random forest (rows are actual, columns are predicted):</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Baseline: predicted retained</th><th>Baseline: predicted churn</th><th>Engineered: predicted retained</th><th>Engineered: predicted churn</th></tr></thead>
+    <tbody><tr><td><strong>Actually retained</strong></td><td>171</td><td>95</td><td>242</td><td>24</td></tr><tr><td><strong>Actually churned</strong></td><td>162</td><td>455</td><td>91</td><td>526</td></tr></tbody>
+  </table></div>
+  <h3 id="interpretation" style="scroll-margin-top:90px">How to interpret the results</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>The baseline barely beats a trivial rule.</strong> Its accuracy of 0.709 is hardly above the 0.70 you get by always predicting churn, so the raw aggregates add little.</li>
+    <li><strong>The engineered set cuts both kinds of error.</strong> False alarms (retained customers wrongly flagged) drop from 95 to 24, and missed churners drop from 162 to 91. For a retention campaign with costly offers, fewer false alarms is the main business gain.</li>
+    <li><strong>The pattern holds across models.</strong> Logistic regression and random forest both improve, which suggests the gain comes from the features and not from one model's quirks.</li>
+  </ul>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">What this does and does not prove</p>
+    <p>The simulation makes churn depend on how long a customer has been silent, so recency features are <em>expected</em> to help here. The experiment shows how to test the idea, not that feature engineering always works.</p>
+    <p>On real data, use cross-validation instead of a single split, compare against a simple baseline, and ask whether a gain is large enough to matter for the business. A feature that adds 0.2 percentage points but takes a week to maintain may not be worth it.</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Feature engineering combines technical skill with domain knowledge: the best features usually come from understanding how the business works. A better representation can help a model learn the same pattern with less effort, but more features do not automatically mean a better model, and every transformation must be fitted on training data only. Before choosing an algorithm, spend time with the data itself, because most modeling problems that look like algorithm problems turn out to be data representation problems.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="one-hot-encoding.html">One-Hot Encoding</a> The categorical encoding from this article in detail.</li>
+    <li><a href="iqr.html">IQR</a> The rule behind capping outliers.</li>
+    <li><a href="overfitting-underfitting.html">Overfitting and Underfitting</a> Why more features can make a model worse on new data.</li>
+    <li><a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> Selection and shrinkage for regression models.</li>
+    <li><a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> Precision, recall, F1 and the confusion matrix explained.</li>
+  </ul>
+  <h2 id="references" style="scroll-margin-top:90px">References</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="https://scikit-learn.org/stable/common_pitfalls.html">scikit-learn: Common pitfalls and recommended practices</a> (data leakage and pipelines)</li>
+    <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html">scikit-learn: ColumnTransformer</a></li>
+    <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.TargetEncoder.html">scikit-learn: TargetEncoder</a></li>
+    <li>Kuhn, M. and Johnson, K. (2019). <a href="https://bookdown.org/max/FES">Feature Engineering and Selection: A Practical Approach for Predictive Models</a>. CRC Press.</li>
+    <li>Micci-Barreca, D. (2001). <a href="https://doi.org/10.1145/507533.507538">A preprocessing scheme for high-cardinality categorical attributes in classification and prediction problems</a>. SIGKDD Explorations, 3(1), 27–32.</li>
+  </ul>
 
 </article>
 </main>
