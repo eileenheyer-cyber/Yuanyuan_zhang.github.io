@@ -34,7 +34,29 @@
   <p class="overline">Unsupervised learning</p>
   <h1 class="post-title">K-Means Clustering</h1>
 
-  <p>Draft in progress.</p>
+  <p>An online shop has thousands of customers and wants to treat them differently, but nobody has told it which customer belongs to which type. There is no “segment” column to predict. K-means finds the groups itself by putting customers who behave similarly into the same cluster. Because there are no labels, it belongs to unsupervised learning, unlike <a href="logistic-regression.html">Logistic Regression</a>, which learns from known outcomes.</p>
+
+  <h2>How K-Means Works</h2>
+  <p>Describe each customer with two numbers: orders per year and average order value. Plotted on a chart, every customer becomes a point, and customers who behave alike end up close together. K-means groups these points around centers.</p>
+  <ul class="post-points post-points-color">
+    <li><strong>k.</strong> The number of clusters you choose in advance. In this example, k = 3.</li>
+    <li><strong>Centroid.</strong> The center of a cluster, which is the average position of all customers in it.</li>
+    <li><strong>Cluster.</strong> All customers whose nearest centroid is the same one.</li>
+  </ul>
+  <p>The algorithm repeats four steps:</p>
+  <ul class="post-points post-points-color">
+    <li><em>Step 1: Place starting centroids.</em> Choose k customers at random as the first centroids.</li>
+    <li><em>Step 2: Assign each customer to the nearest centroid.</em> Measure the distance from the customer to every centroid and pick the smallest.</li>
+    <li><em>Step 3: Move each centroid.</em> Replace each centroid with the average of the customers assigned to it.</li>
+    <li><em>Step 4: Repeat Steps 2 and 3</em> until no customer changes cluster.</li>
+  </ul>
+
+  <h3>How is “nearest” measured?</h3>
+  <p>With the straight-line (Euclidean) distance. Take a customer with 12 orders and an average order value of €80, and a centroid at 10 orders and €70:</p>
+  <p class="post-formula post-formula-plain"><strong>distance = √((12 − 10)² + (80 − 70)²) = √(4 + 100) = √104 ≈ 10.2</strong>
+    <span>We calculate this for every centroid, and the customer joins the one with the smallest distance.</span></p>
+  <p>The orders contribute only 4 to the sum while the order value contributes 100, so the larger scale dominates. That is why features are usually standardized before running K-means.</p>
+
 
 </article>
 </main>
