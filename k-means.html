@@ -45,7 +45,7 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><details><summary><a href="#how-k-means-works">How K-Means Works</a></summary><ul><li><a href="#how-nearest-is-measured">How is “nearest” measured?</a></li></ul></details></li>
-      <li><details><summary><a href="#inertia-and-k">Inertia and Different k Values</a></summary><ul><li><a href="#what-happens-when-k-changes">What happens when we change k?</a></li></ul></details></li>
+      <li><details><summary><a href="#inertia">Inertia: How Compact Are the Clusters?</a></summary><ul><li><a href="#what-happens-when-k-changes">What happens when we change k?</a></li></ul></details></li>
       <li><a href="#local-minima">Local Minima: Why Different Runs Give Different Clusters</a></li>
       <li><details><summary><a href="#evaluating">Evaluating a K-Means Model</a></summary><ul><li><a href="#elbow-curve">Mode 1: Elbow Curve (Inertia)</a></li><li><a href="#silhouette-score">Mode 2: Silhouette Score</a></li></ul></details></li>
       <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
@@ -77,11 +77,15 @@
     <span>We calculate this for every centroid, and the customer joins the one with the smallest distance.</span></p>
   <p>The orders contribute only 4 to the sum while the order value contributes 100, so the larger scale dominates. That is why features are usually standardized before running K-means.</p>
 
-  <h2 id="inertia-and-k" style="scroll-margin-top:90px">Inertia and Different k Values</h2>
-  <p>K-means needs a way to say how good a set of clusters is. That measure is <strong>inertia</strong>: for every customer, take the squared distance to the centroid of its own cluster, then add everything up.</p>
-  <p class="post-formula post-formula-plain"><strong>inertia = (distance of customer 1 to its centroid)² + (distance of customer 2 to its centroid)² + …</strong>
-    <span>One term for every customer, summed over all clusters.</span></p>
-  <p>Take one small cluster with three customers who are 0.3, 0.4 and 0.5 away from their centroid (in standardized units): 0.09 + 0.16 + 0.25 = 0.50. For the whole result we do this for every cluster and add the values together. <strong>Low inertia means the customers sit close to their centroids, so the clusters are compact.</strong> The algorithm from the first section is really just trying to push this number down with every assignment and every move of a centroid.</p>
+  <h2 id="inertia" style="scroll-margin-top:90px">Inertia: How Compact Are the Clusters?</h2>
+  <p>How do we measure how well K-means groups the data? One way is inertia.</p>
+  <p>Inertia is the sum of squared distances between each observation and the centroid of its assigned cluster. In simple terms, it measures how tightly the data points are grouped around their centroids.</p>
+  <p><strong>Example:</strong> Imagine three customers with distances of 0.3, 0.4 and 0.5 from their centroid:</p>
+  <p class="post-formula post-formula-plain">Inertia = 0.3² + 0.4² + 0.5² = 0.50</p>
+  <p>We calculate this for every customer across all clusters and add the results together.</p>
+  <p>Lower inertia means more compact clusters, with observations closer to their respective centroids.</p>
+  <p>K-means aims to minimize this value by repeatedly assigning observations to the nearest centroid and updating the centroid positions.</p>
+
   <h3 id="what-happens-when-k-changes" style="scroll-margin-top:90px">What happens when we change k?</h3>
   <p>Here are the same 24 customers clustered with different values of k:</p>
   <div class="post-table-wrap"><table class="post-table">
