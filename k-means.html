@@ -49,6 +49,7 @@
       <li><a href="#what-happens-when-k-changes">What Happens When We Change K?</a></li>
       <li><a href="#local-minima">Local Minima: Why Different Runs Give Different Clusters</a></li>
       <li><details><summary><a href="#evaluating">Evaluating a K-Means Model</a></summary><ul><li><a href="#elbow-curve">Mode 1: Elbow Curve (Inertia)</a></li><li><a href="#silhouette-score">Mode 2: Silhouette Score</a></li></ul></details></li>
+      <li><a href="#putting-it-together">Putting It Together: Choosing the Number of Clusters</a></li>
       <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
     </ul>
   </div>
@@ -267,6 +268,16 @@
     </tbody>
   </table></div>
   <p>The score peaks at k = 3, so it agrees with the elbow curve. If the two disagree, look at the clusters themselves and ask which one gives segments that are useful for the business.</p>
+
+  <h2 id="putting-it-together" style="scroll-margin-top:90px">Putting It Together: Choosing the Number of Clusters</h2>
+  <p>We now have everything needed to run K-means on the shop's customers. In practice, the steps are:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Standardize the features</strong>, so that orders per year and average order value contribute equally to the distances.</li>
+    <li><strong>Run K-means for a range of K values</strong>, for example 2 to 6, with several restarts or k-means++ to avoid local minima.</li>
+    <li><strong>Check both evaluation tools.</strong> The elbow curve shows where extra clusters stop reducing inertia, and the silhouette score shows which K separates the clusters best.</li>
+    <li><strong>Look at the clusters themselves.</strong> The best K is the one that gives groups you can describe and act on.</li>
+  </ul>
+  <p>For our 24 customers, both tools point to K = 3. Looking at the three clusters, they match the groups from the beginning of this post: occasional buyers (few orders, low order value), frequent shoppers (many orders, moderate order value) and high-spending customers (high order value). The shop can now tailor its marketing and offers to each of these groups, which was the original goal.</p>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
