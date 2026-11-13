@@ -36,7 +36,21 @@
 
   <p>An online shop has thousands of customers and wants to treat them differently, but nobody has told it which customer belongs to which type. There is no “segment” column to predict. K-means finds the groups itself by putting customers who behave similarly into the same cluster. Because there are no labels, it belongs to unsupervised learning, unlike <a href="logistic-regression.html">Logistic Regression</a>, which learns from known outcomes.</p>
 
-  <h2>How K-Means Works</h2>
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#how-k-means-works">How K-Means Works</a></summary><ul><li><a href="#how-nearest-is-measured">How is “nearest” measured?</a></li></ul></details></li>
+      <li><details><summary><a href="#inertia-and-k">Inertia and Different k Values</a></summary><ul><li><a href="#what-happens-when-k-changes">What happens when we change k?</a></li></ul></details></li>
+      <li><a href="#local-minima">Local Minima: Why Different Runs Give Different Clusters</a></li>
+      <li><details><summary><a href="#evaluating">Evaluating a K-Means Model</a></summary><ul><li><a href="#elbow-curve">Mode 1: Elbow Curve (Inertia)</a></li><li><a href="#silhouette-score">Mode 2: Silhouette Score</a></li></ul></details></li>
+      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
+      <li><a href="#related-posts">Related posts</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+
+  <h2 id="how-k-means-works" style="scroll-margin-top:90px">How K-Means Works</h2>
   <p>Describe each customer with two numbers: orders per year and average order value. Plotted on a chart, every customer becomes a point, and customers who behave alike end up close together. K-means groups these points around centers.</p>
   <ul class="post-points post-points-color">
     <li><strong>k.</strong> The number of clusters you choose in advance. In this example, k = 3.</li>
@@ -50,14 +64,220 @@
     <li><em>Step 3: Move each centroid.</em> Replace each centroid with the average of the customers assigned to it.</li>
     <li><em>Step 4: Repeat Steps 2 and 3</em> until no customer changes cluster.</li>
   </ul>
+  <figure class="post-fig">
+    <img src="images/k-means/chart-1-centroids-move.svg" alt="Three scatter plots of 24 customers by orders per year and average order value, colored by cluster, with black plus signs as centroids. Left: two starting centroids sit in the same group of customers. Middle: after the first update the centroids have moved towards the groups. Right: after three rounds the three groups are found and the centroids sit in their centers." loading="lazy">
+    <figcaption><span>Chart 1</span> Even with poor starting centroids (two start in the same group), a few rounds of assigning and moving find the three groups.</figcaption>
+  </figure>
 
-  <h3>How is “nearest” measured?</h3>
+  <h3 id="how-nearest-is-measured" style="scroll-margin-top:90px">How is “nearest” measured?</h3>
   <p>With the straight-line (Euclidean) distance. Take a customer with 12 orders and an average order value of €80, and a centroid at 10 orders and €70:</p>
   <p class="post-formula post-formula-plain"><strong>distance = √((12 − 10)² + (80 − 70)²) = √(4 + 100) = √104 ≈ 10.2</strong>
     <span>We calculate this for every centroid, and the customer joins the one with the smallest distance.</span></p>
   <p>The orders contribute only 4 to the sum while the order value contributes 100, so the larger scale dominates. That is why features are usually standardized before running K-means.</p>
 
+  <h2 id="inertia-and-k" style="scroll-margin-top:90px">Inertia and Different k Values</h2>
+  <p>K-means needs a way to say how good a set of clusters is. That measure is <strong>inertia</strong>: for every customer, take the squared distance to the centroid of its own cluster, then add everything up.</p>
+  <p class="post-formula post-formula-plain"><strong>inertia = (distance of customer 1 to its centroid)² + (distance of customer 2 to its centroid)² + …</strong>
+    <span>One term for every customer, summed over all clusters.</span></p>
+  <p>Take one small cluster with three customers who are 0.3, 0.4 and 0.5 away from their centroid (in standardized units): 0.09 + 0.16 + 0.25 = 0.50. For the whole result we do this for every cluster and add the values together. <strong>Low inertia means the customers sit close to their centroids, so the clusters are compact.</strong> The algorithm from the first section is really just trying to push this number down with every assignment and every move of a centroid.</p>
+  <h3 id="what-happens-when-k-changes" style="scroll-margin-top:90px">What happens when we change k?</h3>
+  <p>Here are the same 24 customers clustered with different values of k:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>k</th><th>Inertia</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>38.64</td></tr>
+      <tr><td>2</td><td>18.57</td></tr>
+      <tr><td>3</td><td>4.43</td></tr>
+      <tr><td>4</td><td>3.40</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="post-fig">
+    <img src="images/k-means/chart-2-different-k.svg" alt="Three scatter plots of the same 24 customers clustered with k equal to 2, 3 and 4, with inertia 18.57, 4.43 and 3.40 in the titles. With k equal to 2 two of the three natural groups are merged. With k equal to 3 each natural group is its own cluster. With k equal to 4 one natural group is split in two." loading="lazy">
+    <figcaption><span>Chart 2</span> Two clusters merge real groups and four split one, so k = 3 matches the structure of the data.</figcaption>
+  </figure>
 
+  <p>Inertia falls every time we add a cluster, because more centroids always mean shorter distances. With k = 24, every customer would be its own cluster and inertia would be 0, which is useless as a customer segmentation. So <strong>inertia alone can never tell us the right k</strong>. We need a way to judge when adding another cluster stops being worth it. That is what the evaluation section below does.</p>
+
+  <h2 id="local-minima" style="scroll-margin-top:90px">Local Minima: Why Different Runs Give Different Clusters</h2>
+  <p>K-means starts from random centroids, and where it starts can decide where it ends up. The algorithm only moves in the direction of lower inertia, so it can get stuck in a result that is not the best one. This is called a <strong>local minimum</strong>.</p>
+  <p>For example, if two starting centroids land in the same group of customers, the algorithm can end up splitting that group in two and merging two other groups into one. On our 24 customers we ran k-means 200 times with a single random start each. 178 runs found the best result (inertia 4.43), but 22 runs got stuck with inertia between 18 and 25, with clusters that make no business sense.</p>
+  <figure class="post-fig">
+    <img src="images/k-means/chart-3-local-minimum.svg" alt="Two scatter plots of the same 24 customers with k equal to 3. Left, the best run with inertia 4.43 finds the three natural groups. Right, a stuck run with inertia 18.13 splits the lower left group between two centroids and merges the other two groups under one centroid." loading="lazy">
+    <figcaption><span>Chart 3</span> The same algorithm can end in a poor result when two starting centroids fall into the same group.</figcaption>
+  </figure>
+
+  <p>Two standard fixes:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Several restarts.</strong> Run k-means many times with different starting centroids and keep the run with the lowest inertia.</li>
+    <li><strong>k-means++.</strong> Choose the starting centroids so that they are far apart from each other, which makes bad starts much less likely.</li>
+  </ul>
+  <p>Both are built into common libraries, so in practice you use them by default. Every inertia value in this post is the best of several runs.</p>
+
+  <h2 id="evaluating" style="scroll-margin-top:90px">Evaluating a K-Means Model</h2>
+  <p>In supervised learning we compare predictions with the true answer. Here there are no true segments to compare with, so we judge a clustering by its shape: are the clusters <strong>compact</strong> (customers close to their own centroid) and <strong>well separated</strong> (clusters far from each other)? Two tools answer this, and both help choose k.</p>
+
+  <h3 id="elbow-curve" style="scroll-margin-top:90px">Mode 1: Elbow Curve (Inertia)</h3>
+  <p>Plot inertia against k. The curve falls steeply while extra clusters reveal real groups, then flattens once they only split groups that already exist. The bend, the “elbow”, is the k to choose.</p>
+  <figure class="post-fig">
+    <img src="images/k-means/chart-4-elbow-curve.svg" alt="Line chart of inertia against the number of clusters k from 1 to 7. Inertia falls from 38.64 at k equal to 1 to 18.57 at k equal to 2 and 4.43 at k equal to 3, then flattens to 3.40, 2.80, 2.35 and 1.99. The elbow at k equal to 3 is circled." loading="lazy">
+    <figcaption><span>Chart 4</span> Inertia drops steeply until k = 3 and barely improves afterwards, so extra clusters add little.</figcaption>
+  </figure>
+
+  <p>For our customers, going from k = 1 to 2 lowers inertia by 20.07, going from 2 to 3 lowers it by another 14.14, but going from 3 to 4 lowers it by only 1.03. The drop flattens after k = 3, so the elbow is at 3. It uses inertia to tell us where additional clusters stop paying off.</p>
+  <p>The limit of this tool: with real data the bend is often gradual, and two people can disagree about where it is.</p>
+
+  <h3 id="silhouette-score" style="scroll-margin-top:90px">Mode 2: Silhouette Score</h3>
+  <p>The silhouette score judges each customer on its own. For one customer it compares two distances:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>a</strong> is the average distance to the other customers in its own cluster.</li>
+    <li><strong>b</strong> is the average distance to the customers of the nearest other cluster.</li>
+  </ul>
+  <p class="post-formula post-formula-plain"><strong>s = <span class="frac"><span>b − a</span><span>max(a, b)</span></span></strong>
+    <span>The silhouette value s of one customer, between −1 and +1.</span></p>
+  <p>It lies between −1 and +1:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Close to +1:</strong> the customer is much closer to its own cluster than to any other, so it fits well.</li>
+    <li><strong>Around 0:</strong> the customer sits on the border between two clusters.</li>
+    <li><strong>Below 0:</strong> the customer is closer to another cluster than to its own, so it was probably put in the wrong cluster.</li>
+  </ul>
+  <p>Move the slider to see this in action: it slides one customer from cluster A toward cluster B.</p>
+<figure class="post-fig sil-fig" id="sil-demo">
+  <style>
+    .sil-fig svg{width:100%;height:auto;display:block;background:#fff}
+    .sil-ctl{margin:12px 0 4px}
+    .sil-ctl label{display:block;font-size:.92rem;font-weight:600;margin-bottom:6px}
+    .sil-ctl input[type=range]{width:100%;accent-color:#1d57b5}
+    .sil-ends{display:flex;justify-content:space-between;font-size:.8rem;color:#555}
+    .sil-read{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 8px}
+    .sil-cell{border:1px solid #e3e3e3;padding:8px 10px;background:#fff}
+    .sil-cell b{display:block;font-size:.72rem;font-weight:600;letter-spacing:.02em;color:#555;margin-bottom:2px}
+    .sil-cell span{font-size:1.15rem;font-variant-numeric:tabular-nums}
+    .sil-eq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-size:1rem;font-variant-numeric:tabular-nums}
+    .sil-frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.25}
+    .sil-frac>span:first-child{padding:0 6px;border-bottom:1px solid #0a0a0a}
+    .sil-frac>span:last-child{padding:0 6px}
+    .sil-gauge{position:relative;height:10px;margin:14px 0 4px;background:linear-gradient(90deg,#dc452d 0%,#f5c548 50%,#1d57b5 100%)}
+    .sil-mark{position:absolute;top:-5px;width:4px;height:20px;background:#0a0a0a;transform:translateX(-2px)}
+    .sil-scale{display:flex;justify-content:space-between;font-size:.75rem;color:#555}
+    .sil-msg{margin:10px 0 0;font-size:.95rem;min-height:2.6em}
+    @media(max-width:560px){.sil-read{grid-template-columns:repeat(2,1fr)}}
+  </style>
+  <svg id="sil-svg" viewBox="0 0 560 380" role="img" aria-label="Interactive scatter plot of 24 customers in three clusters. A slider moves one highlighted customer from cluster A toward cluster B and the silhouette score updates."></svg>
+  <div class="sil-ctl">
+    <label for="sil-slider">Move the highlighted customer from cluster A toward cluster B</label>
+    <input id="sil-slider" type="range" min="0" max="100" value="0" step="1">
+    <div class="sil-ends"><span>Deep inside cluster A</span><span>Inside cluster B</span></div>
+  </div>
+  <div class="sil-read" aria-live="polite">
+    <div class="sil-cell"><b>a · own cluster</b><span id="sil-a">–</span></div>
+    <div class="sil-cell"><b>b · nearest other cluster</b><span id="sil-b">–</span></div>
+    <div class="sil-cell"><b>s · this customer</b><span id="sil-s">–</span></div>
+    <div class="sil-cell"><b>Average s · all 24 customers</b><span id="sil-avg">–</span></div>
+  </div>
+  <div class="sil-eq" id="sil-eq"></div>
+  <div class="sil-gauge"><div class="sil-mark" id="sil-mark"></div></div>
+  <div class="sil-scale"><span>−1 wrong cluster</span><span>0 on the border</span><span>+1 clearly in its cluster</span></div>
+  <p class="sil-msg" id="sil-msg"></p>
+  <figcaption><span>Chart 5</span> A customer's silhouette score falls from near +1 to below 0 as it moves away from its own cluster. Schematic data, standardized axes.</figcaption>
+  <script>
+  (function(){
+    var A=[[-1.35,-1.0],[-0.7,-1.05],[-1.0,-0.55],[-0.75,-0.4],[-1.3,-0.5],[-0.95,-1.2],[-0.6,-0.75]];
+    var B=[[0.6,-0.3],[1.1,-0.05],[0.85,-0.7],[1.35,-0.45],[0.7,0.1],[1.2,-0.85],[1.5,-0.15],[0.95,-0.35]];
+    var C=[[-0.2,1.0],[0.3,1.4],[-0.45,1.45],[0.1,0.85],[0.5,1.1],[-0.1,1.7],[0.7,1.5],[-0.5,1.05]];
+    var P0=[-1.0,-0.8], P1=[1.0,-0.4];
+    var W=560,H=380,L=56,R=16,T=14,Bt=48,xmin=-2,xmax=2.2,ymin=-1.6,ymax=2.2;
+    var NS='http://www.w3.org/2000/svg';
+    function X(v){return L+(v-xmin)/(xmax-xmin)*(W-L-R)}
+    function Y(v){return H-Bt-(v-ymin)/(ymax-ymin)*(H-Bt-T)}
+    function d(p,q){return Math.hypot(p[0]-q[0],p[1]-q[1])}
+    function mean(p,set){var s=0;for(var i=0;i<set.length;i++)s+=d(p,set[i]);return s/set.length}
+    function el(n,at,par){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e}
+    var svg=document.getElementById('sil-svg');
+    // grid + axes
+    var xs=[-2,-1,0,1,2],ys=[-1,0,1,2],i;
+    for(i=0;i<xs.length;i++){el('line',{x1:X(xs[i]),x2:X(xs[i]),y1:T,y2:H-Bt,stroke:'#ececec'});el('text',{x:X(xs[i]),y:H-Bt+16,'text-anchor':'middle','font-size':12,fill:'#444'}).textContent=xs[i]}
+    for(i=0;i<ys.length;i++){el('line',{x1:L,x2:W-R,y1:Y(ys[i]),y2:Y(ys[i]),stroke:'#ececec'});el('text',{x:L-8,y:Y(ys[i])+4,'text-anchor':'end','font-size':12,fill:'#444'}).textContent=ys[i]}
+    el('line',{x1:L,x2:L,y1:T,y2:H-Bt,stroke:'#0a0a0a'});el('line',{x1:L,x2:W-R,y1:H-Bt,y2:H-Bt,stroke:'#0a0a0a'});
+    el('text',{x:(L+W-R)/2,y:H-10,'text-anchor':'middle','font-size':13,fill:'#0a0a0a'}).textContent='Orders per year (standardized)';
+    var yl=el('text',{x:14,y:(T+H-Bt)/2,'text-anchor':'middle','font-size':13,fill:'#0a0a0a',transform:'rotate(-90 14 '+((T+H-Bt)/2)+')'});yl.textContent='Average order value (standardized)';
+    // cluster labels
+    el('text',{x:X(-1.75),y:Y(-1.3),'font-size':13,'font-weight':600,fill:'#1d57b5'}).textContent='Cluster A';
+    el('text',{x:X(1.35),y:Y(0.35),'font-size':13,'font-weight':600,fill:'#dc452d'}).textContent='Cluster B';
+    el('text',{x:X(0.9),y:Y(1.95),'font-size':13,'font-weight':600,fill:'#0a0a0a'}).textContent='Cluster C';
+    var lines=el('g',{});
+    function dots(set,fill,stroke){for(var j=0;j<set.length;j++)el('circle',{cx:X(set[j][0]),cy:Y(set[j][1]),r:5,fill:fill,stroke:stroke||'#0a0a0a','stroke-width':1})}
+    dots(A,'#1d57b5');dots(B,'#dc452d');dots(C,'#f5c548');
+    var pt=el('circle',{r:9,fill:'#1d57b5',stroke:'#0a0a0a','stroke-width':3});
+    // legend
+    el('line',{x1:L+12,x2:L+42,y1:T+14,y2:T+14,stroke:'#0a0a0a','stroke-width':1.5});
+    el('text',{x:L+48,y:T+18,'font-size':12,fill:'#0a0a0a'}).textContent='distances averaged into a';
+    el('line',{x1:L+12,x2:L+42,y1:T+34,y2:T+34,stroke:'#777','stroke-width':1.5,'stroke-dasharray':'5 4'});
+    el('text',{x:L+48,y:T+38,'font-size':12,fill:'#0a0a0a'}).textContent='distances averaged into b';
+    function f2(v){return v.toFixed(2).replace('-','−')}
+    function update(){
+      var t=document.getElementById('sil-slider').value/100;
+      var P=[P0[0]+(P1[0]-P0[0])*t,P0[1]+(P1[1]-P0[1])*t];
+      pt.setAttribute('cx',X(P[0]));pt.setAttribute('cy',Y(P[1]));
+      var own=A,aMean=mean(P,A),bB=mean(P,B),bC=mean(P,C);
+      var near=bB<bC?B:C,b=Math.min(bB,bC);
+      var s=(b-aMean)/Math.max(aMean,b);
+      lines.textContent='';
+      for(var j=0;j<own.length;j++)el('line',{x1:X(P[0]),y1:Y(P[1]),x2:X(own[j][0]),y2:Y(own[j][1]),stroke:'#0a0a0a','stroke-width':1,opacity:.55},lines);
+      for(j=0;j<near.length;j++)el('line',{x1:X(P[0]),y1:Y(P[1]),x2:X(near[j][0]),y2:Y(near[j][1]),stroke:'#777','stroke-width':1.2,'stroke-dasharray':'5 4',opacity:.8},lines);
+      // average silhouette over all customers (test customer belongs to A)
+      var cl=[A.concat([P]),B,C],tot=0,n=0;
+      for(var c=0;c<3;c++)for(var m=0;m<cl[c].length;m++){
+        var q=cl[c][m],ai=0,k=0;
+        for(var u=0;u<cl[c].length;u++){if(u!==m){ai+=d(q,cl[c][u]);k++}}ai/=k;
+        var bi=Infinity;for(var o=0;o<3;o++){if(o!==c)bi=Math.min(bi,mean(q,cl[o]))}
+        tot+=(bi-ai)/Math.max(ai,bi);n++}
+      document.getElementById('sil-a').textContent=f2(aMean);
+      document.getElementById('sil-b').textContent=f2(b);
+      document.getElementById('sil-s').textContent=f2(s);
+      document.getElementById('sil-avg').textContent=f2(tot/n);
+      document.getElementById('sil-eq').innerHTML='<span>s =</span><span class="sil-frac"><span>b − a</span><span>max(a, b)</span></span><span>=</span><span class="sil-frac"><span>'+f2(b)+' − '+f2(aMean)+'</span><span>'+f2(Math.max(aMean,b))+'</span></span><span>= <strong>'+f2(s)+'</strong></span>';
+      document.getElementById('sil-mark').style.left=((s+1)/2*100)+'%';
+      var msg=s>=0.5?'The customer sits far closer to its own cluster than to any other, so the cluster fits it well.':(s>=0.1?'The customer is still nearer to its own cluster, but the other cluster is getting close.':(s>-0.1?'The customer sits on the border: its own cluster and the neighbouring one are about equally far away.':'The customer is closer to another cluster than to its own, so it was probably put in the wrong cluster.'));
+      document.getElementById('sil-msg').textContent=msg;
+    }
+    document.getElementById('sil-slider').addEventListener('input',update);
+    update();
+  })();
+  </script>
+</figure>
+
+  <p>The <strong>silhouette score of a clustering is the average s over all customers</strong>. We calculate it for each k and choose the k with the highest score:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>k</th><th>Average silhouette score</th></tr></thead>
+    <tbody>
+      <tr><td>2</td><td>0.51</td></tr>
+      <tr><td>3</td><td>0.68</td></tr>
+      <tr><td>4</td><td>0.57</td></tr>
+      <tr><td>5</td><td>0.44</td></tr>
+    </tbody>
+  </table></div>
+  <p>The score peaks at k = 3, so it agrees with the elbow curve. If the two disagree, look at the clusters themselves and ask which one gives segments that are useful for the business.</p>
+
+  <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“We grouped our customers by how often they order and how much they spend per order. We did not decide the groups in advance: the algorithm found them.</p>
+    <p class="post-callout-q">We tested two to six groups. Three was clearly best, because adding a fourth group barely made the groups tighter, and the customers in each of the three groups were much closer to their own group than to the others. So we can now give each of the three groups its own offer.</p>
+    <p class="post-callout-q">The question we can answer next is which group is worth the most to us.”</p>
+  </div>
+
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>K-means groups customers by minimizing inertia, but inertia always falls as k rises, so it cannot choose k alone. Use the elbow curve and the silhouette score together to pick k, and run the algorithm several times so that a bad start does not leave you with a local minimum.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a> How to standardize and prepare features before clustering.</li>
+    <li><a href="logistic-regression.html">Logistic Regression</a> The supervised counterpart: predicting a known outcome instead of finding groups.</li>
+  </ul>
+
+  <h2 id="references" style="scroll-margin-top:90px">References</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="https://scikit-learn.org/stable/modules/clustering.html#k-means">scikit-learn: K-means clustering</a> (inertia, k-means++ and restarts)</li>
+    <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html">scikit-learn: silhouette_score</a></li>
+  </ul>
 </article>
 </main>
 
