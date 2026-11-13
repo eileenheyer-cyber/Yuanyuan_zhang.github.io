@@ -281,9 +281,10 @@
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“We grouped our customers by how often they order and how much they spend per order. We did not decide the groups in advance: the algorithm found them.</p>
-    <p class="post-callout-q">We tested two to six groups. Three was clearly best, because adding a fourth group barely made the groups tighter, and the customers in each of the three groups were much closer to their own group than to the others. So we can now give each of the three groups its own offer.</p>
-    <p class="post-callout-q">The question we can answer next is which group is worth the most to us.”</p>
+    <p class="post-callout-q">“We used K-means to identify customer groups based on two behaviours: how frequently they purchase and how much they spend per order.</p>
+    <p class="post-callout-q">We tested different numbers of clusters and found that three groups provided a good balance between compactness and simplicity. Adding more clusters only brought a small improvement, suggesting that three segments capture much of the structure in our data.</p>
+    <p class="post-callout-q">These segments give us a starting point for understanding our customers better and developing more targeted marketing strategies.</p>
+    <p class="post-callout-q">The next step is to examine what makes each group different and which segments offer the greatest business value.”</p>
   </div>
 
   <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>K-means groups customers by minimizing inertia, but inertia always falls as k rises, so it cannot choose k alone. Use the elbow curve and the silhouette score together to pick k, and run the algorithm several times so that a bad start does not leave you with a local minimum.</p></div>
