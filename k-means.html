@@ -45,7 +45,8 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><details><summary><a href="#how-k-means-works">How K-Means Works</a></summary><ul><li><a href="#how-nearest-is-measured">How is “nearest” measured?</a></li></ul></details></li>
-      <li><details><summary><a href="#inertia">Inertia: How Compact Are the Clusters?</a></summary><ul><li><a href="#what-happens-when-k-changes">What happens when we change k?</a></li></ul></details></li>
+      <li><a href="#inertia">Inertia: How Compact Are the Clusters?</a></li>
+      <li><a href="#what-happens-when-k-changes">What Happens When We Change K?</a></li>
       <li><a href="#local-minima">Local Minima: Why Different Runs Give Different Clusters</a></li>
       <li><details><summary><a href="#evaluating">Evaluating a K-Means Model</a></summary><ul><li><a href="#elbow-curve">Mode 1: Elbow Curve (Inertia)</a></li><li><a href="#silhouette-score">Mode 2: Silhouette Score</a></li></ul></details></li>
       <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
@@ -86,10 +87,10 @@
   <p>Lower inertia means more compact clusters, with observations closer to their respective centroids.</p>
   <p>K-means aims to minimize this value by repeatedly assigning observations to the nearest centroid and updating the centroid positions.</p>
 
-  <h3 id="what-happens-when-k-changes" style="scroll-margin-top:90px">What happens when we change k?</h3>
-  <p>Here are the same 24 customers clustered with different values of k:</p>
+  <h2 id="what-happens-when-k-changes" style="scroll-margin-top:90px">What Happens When We Change K?</h2>
+  <p>Let's apply K-means to the same 24 customers using different values of K.</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>k</th><th>Inertia</th></tr></thead>
+    <thead><tr><th>Number of clusters (K)</th><th>Inertia</th></tr></thead>
     <tbody>
       <tr><td>1</td><td>38.64</td></tr>
       <tr><td>2</td><td>18.57</td></tr>
@@ -101,8 +102,11 @@
     <img src="images/k-means/chart-2-different-k.svg" alt="Three scatter plots of the same 24 customers clustered with k equal to 2, 3 and 4, with inertia 18.57, 4.43 and 3.40 in the titles. With k equal to 2 two of the three natural groups are merged. With k equal to 3 each natural group is its own cluster. With k equal to 4 one natural group is split in two." loading="lazy">
     <figcaption><span>Chart 2</span> Two clusters merge real groups and four split one, so k = 3 matches the structure of the data.</figcaption>
   </figure>
-
-  <p>Inertia falls every time we add a cluster, because more centroids always mean shorter distances. With k = 24, every customer would be its own cluster and inertia would be 0, which is useless as a customer segmentation. So <strong>inertia alone can never tell us the right k</strong>. We need a way to judge when adding another cluster stops being worth it. That is what the evaluation section below does.</p>
+  <p>As K increases, inertia decreases because more centroids allow data points to be grouped closer to their respective centres.</p>
+  <p>But lower inertia doesn't automatically mean better clustering.</p>
+  <p>With K = 24, every customer could form their own cluster, resulting in an inertia of zero. Mathematically, that's perfect compactness, but it wouldn't be useful for customer segmentation.</p>
+  <p><strong>The goal is not simply to minimize inertia, but to find a meaningful balance between cluster compactness and the number of clusters.</strong></p>
+  <p>This is where the Elbow Method comes in.</p>
 
   <h2 id="local-minima" style="scroll-margin-top:90px">Local Minima: Why Different Runs Give Different Clusters</h2>
   <p>K-means starts from random centroids, and where it starts can decide where it ends up. The algorithm only moves in the direction of lower inertia, so it can get stuck in a result that is not the best one. This is called a <strong>local minimum</strong>.</p>
