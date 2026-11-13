@@ -53,11 +53,11 @@
   </div>
 
   <h2 id="how-k-means-works" style="scroll-margin-top:90px">How K-Means Works</h2>
-  <p>Describe each customer with two numbers: orders per year and average order value. Plotted on a chart, every customer becomes a point, and customers who behave alike end up close together. K-means groups these points around centers.</p>
+  <p>Represent each customer using two features: orders per year and average order value. Each customer becomes a point on a chart. Customers with similar shopping behaviour tend to be closer together. K-means groups these points into clusters based on their distance from cluster centres.</p>
   <ul class="post-points post-points-color">
-    <li><strong>k.</strong> The number of clusters you choose in advance. In this example, k = 3.</li>
-    <li><strong>Centroid.</strong> The center of a cluster, which is the average position of all customers in it.</li>
-    <li><strong>Cluster.</strong> All customers whose nearest centroid is the same one.</li>
+    <li><strong>K:</strong> The number of clusters chosen in advance. Here, k = 3.</li>
+    <li><strong>Centroid:</strong> The centre of a cluster, calculated as the mean position of all points assigned to it.</li>
+    <li><strong>Cluster:</strong> A group of data points assigned to the same nearest centroid.</li>
   </ul>
   <p>The algorithm repeats four steps:</p>
   <ul class="post-points post-points-color">
