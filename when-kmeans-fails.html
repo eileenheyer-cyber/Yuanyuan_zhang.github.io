@@ -118,6 +118,10 @@
     <li><em>Step 3: Maximization (M-step).</em> Update each component’s centre, shape and weight, giving more influence to the customers who most likely belong to it.</li>
     <li><em>Step 4: Repeat Steps 2 and 3</em> until the fit stops improving.</li>
   </ul>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-2-em-algorithm.webp" alt="Four panels of the EM algorithm on two diagonal groups: a rough starting guess, after 1 round, after 3 rounds and converged after 13 rounds. The ovals slide and stretch onto the groups, dots turn from mixed to clearly red or blue, and the log-likelihood rises from -2523 to -1350." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 2</span> Each round pulls the ovals toward the groups and sharpens the probabilities, until the fit stops improving. Simulated data.</figcaption>
+  </figure>
   <p>The responsibilities calculated in the E-step are the 85% and 15% from the shop example. In the M-step, each component’s centre, shape and weight are recalculated as usual, except that each customer counts in proportion to its responsibility. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
   <p>This is the soft version of what K-Means does: K-Means assigns each customer to one centroid and then moves the centroid, while EM assigns probabilities and then updates the whole distribution. Like K-Means, EM can end in a local optimum, so it is usually run from several starting points.</p>
 <h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
@@ -130,7 +134,7 @@
   <p>Two stretched, diagonal groups lie side by side. Dot colour shows the probability of belonging to each group.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-2-gmm-vs-kmeans.webp" alt="K-means versus a Gaussian mixture on two diagonal oval groups. K-means cuts across both ovals with agreement 0.03; the Gaussian mixture follows them with agreement 1.00 and marks one uncertain point." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 2</span> K-means cuts across both ovals, while the GMM follows them and shows where it is unsure. Simulated data.</figcaption>
+    <figcaption><span>Chart 3</span> K-means cuts across both ovals, while the GMM follows them and shows where it is unsure. Simulated data.</figcaption>
   </figure>
 <ul class="post-points post-points-color">
     <li><strong>K-means:</strong> the dashed border cuts straight across both ovals (agreement 0.03).</li>
@@ -165,7 +169,7 @@
   <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-3-dbscan-vs-hdbscan.webp" alt="DBSCAN with a small eps, DBSCAN with a large eps, and HDBSCAN on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points, HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 3</span> No single eps recovers all three groups, but HDBSCAN does. Simulated data.</figcaption>
+    <figcaption><span>Chart 4</span> No single eps recovers all three groups, but HDBSCAN does. Simulated data.</figcaption>
   </figure>
 <h3 id="dbscan-found" style="scroll-margin-top:90px">What each run found</h3>
 <ul class="post-points post-points-color">
@@ -198,7 +202,7 @@
   <svg id="db-plot" viewBox="0 0 680 330" role="img" aria-label="Interactive scatter plot of three groups plus noise, coloured by DBSCAN cluster. Sliders change eps and min_samples."></svg>
   <div class="db-stats"><div class="db-stat"><b id="db-k">0</b><i>clusters found (true: 3)</i></div><div class="db-stat"><b id="db-nz">0</b><i>points flagged as noise (true: 20)</i></div></div>
   <p class="db-cap" id="db-cap" aria-live="polite"></p>
-  <figcaption><span>Chart 4</span> Small eps loses the sparse group to noise, large eps merges the two dense groups. Simulated data (a separate draw from Chart 3, so counts differ slightly): two dense groups, one sparse group, 20 random noise points.</figcaption>
+  <figcaption><span>Chart 5</span> Small eps loses the sparse group to noise, large eps merges the two dense groups. Simulated data (a separate draw from Chart 3, so counts differ slightly): two dense groups, one sparse group, 20 random noise points.</figcaption>
   <script>
 (function(){
 function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -270,7 +274,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   <p>All four runs use the same moon-shaped data and ask for 2 clusters:</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-4-linkage.webp" alt="Four linkage methods on two moons. Single linkage follows the curve with agreement 1.00; complete, average and Ward cut the moons into compact chunks with agreement 0.23, 0.15 and 0.29." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 5</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
+    <figcaption><span>Chart 6</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
   </figure>
 <ul class="post-points post-points-color">
     <li><strong>Single linkage:</strong> follows the curve of the moons (agreement 1.00).</li>
@@ -292,7 +296,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   </ul>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-5-dendrogram.webp" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 6</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
+    <figcaption><span>Chart 7</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
 <h3 id="agg-limits" style="scroll-margin-top:90px">Two limits to keep in mind</h3>
 <ul class="post-points post-points-color">
