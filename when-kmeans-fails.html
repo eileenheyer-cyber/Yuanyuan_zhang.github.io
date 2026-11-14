@@ -55,9 +55,9 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#reading-agreement">How to read “agreement”</a></li></ul></details></li>
-      <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-em">How GMM learns: the EM algorithm</a></li><li><a href="#gmm-picture">In the picture</a></li></ul></details></li>
-      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: one radius per group</a></li><li><a href="#dbscan-try">Try it yourself</a></li></ul></details></li>
-      <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li></ul></details></li>
+      <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-em">How GMM learns: the EM algorithm</a></li><li><a href="#gmm-picture">In the picture</a></li><li><a href="#gmm-fixes">What it fixes, and where it still fails</a></li></ul></details></li>
+      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: one radius per group</a></li><li><a href="#dbscan-try">Try it yourself</a></li><li><a href="#dbscan-fixes">What it fixes, and the catch</a></li></ul></details></li>
+      <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li><li><a href="#agg-limits">Two limits to keep in mind</a></li></ul></details></li>
       <li><a href="#comparison">Head-to-Head Comparison of All Five Methods</a></li>
       <li><a href="#how-to-choose">How to Choose a Clustering Method</a></li>
       <li><a href="#key-takeaway">Key Takeaway: Choose the Definition of a Cluster That Fits Your Data</a></li>
@@ -124,12 +124,6 @@
   </figure>
   <p>The responsibilities calculated in the E-step are the 85% and 15% from the shop example. In the M-step, each component’s centre, shape and weight are recalculated as usual, except that each customer counts in proportion to its responsibility. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
   <p>This is the soft version of what K-Means does: K-Means assigns each customer to one centroid and then moves the centroid, while EM assigns probabilities and then updates the whole distribution. Like K-Means, EM can end in a local optimum, so it is usually run from several starting points.</p>
-<h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
-<ul class="post-points post-points-color">
-    <li><strong>Fixed:</strong> clusters can be stretched and tilted, and clusters can overlap.</li>
-    <li><strong>Still open:</strong> you choose the number of components up front.</li>
-    <li><strong>Still open:</strong> every cluster is assumed to be bell-shaped, so crescents and rings remain a problem.</li>
-  </ul>
 <h3 id="gmm-picture" style="scroll-margin-top:90px">In the picture</h3>
   <p>Two stretched, diagonal groups lie side by side. Dot colour shows the probability of belonging to each group.</p>
   <figure class="post-fig post-fig-wide">
@@ -141,6 +135,8 @@
     <li><strong>GMM:</strong> an oval around each group follows them (agreement 1.00).</li>
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
+<h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
+  <p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front, and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p>
 <h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
   <p class="post-lead">DBSCAN takes a different approach to clustering. Instead of looking for cluster centres, it looks for areas where data points are packed closely together. Dense regions become clusters, while isolated points can be classified as noise.</p>
   <p>Unlike K-Means, DBSCAN can discover clusters of different shapes without requiring the number of clusters in advance.</p>
@@ -164,13 +160,6 @@
     <li><strong>Noise point:</strong> Neither a core point nor reachable from any core point.</li>
   </ul>
   <p>Core points form the dense structure of a cluster, border points extend its boundaries, and noise points remain unassigned.</p>
-<h3 id="dbscan-fixes" style="scroll-margin-top:90px">What it fixes, and the catch</h3>
-<ul class="post-points post-points-color">
-    <li><strong>Fixed:</strong> you don’t choose k.</li>
-    <li><strong>Fixed:</strong> clusters can take any shape.</li>
-    <li><strong>Fixed:</strong> outliers are flagged instead of dragging a centre.</li>
-    <li><strong>The catch:</strong> eps is a single radius for the whole dataset. A dense group needs a small eps, a sparse group needs a large one, and no single value suits both.</li>
-  </ul>
 <h3 id="dbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
   <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
   <figure class="post-fig post-fig-wide">
@@ -256,6 +245,8 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
 })();
 </script>
 </figure>
+<h3 id="dbscan-fixes" style="scroll-margin-top:90px">What it fixes, and the catch</h3>
+  <p>DBSCAN fixes three K-Means problems at once. You don’t have to choose the number of clusters, clusters can take any shape, and outliers are flagged as noise instead of dragging a centre. The catch is that eps is a single radius for the whole dataset. A dense group needs a small eps and a sparse group needs a large one, so no single value suits both, as the first two runs above show.</p>
 <h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
   <p class="post-lead">Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</p>
 <h3 id="agg-idea" style="scroll-margin-top:90px">The idea: a family tree</h3>
@@ -305,10 +296,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <figcaption><span>Chart 7</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
 <h3 id="agg-limits" style="scroll-margin-top:90px">Two limits to keep in mind</h3>
-<ul class="post-points post-points-color">
-    <li><strong>Size:</strong> it compares many pairs of points, so it gets slow and memory-hungry on large datasets.</li>
-    <li><strong>No undo:</strong> a merge can never be undone once it has happened.</li>
-  </ul>
+  <p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p>
 <h2 id="comparison" style="scroll-margin-top:90px">Head-to-Head Comparison of All Five Methods</h2>
   <p class="post-lead">K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</p>
   <div class="post-table-wrap"><table class="post-table">
