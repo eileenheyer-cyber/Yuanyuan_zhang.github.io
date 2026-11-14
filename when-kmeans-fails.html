@@ -193,6 +193,7 @@
   </style>
   <div class="db-ctl"><label for="db-eps">eps (radius)</label><input type="range" id="db-eps" min="0.05" max="1.2" step="0.01" value="0.2"><span id="db-epsv">0.20</span></div>
   <div class="db-ctl"><label for="db-ms">min_samples</label><input type="range" id="db-ms" min="3" max="15" step="1" value="8"><span id="db-msv">8</span></div>
+  <p class="db-key" style="font-size:.85rem;margin:0 0 6px;text-align:left"><span style="color:#2F63B5">●</span> <span style="color:#D8433A">●</span> <span style="color:#2E9A5E">●</span> colored dot = point in a cluster &nbsp; <span style="color:#888780">○</span> grey ring = noise &nbsp; <span style="color:#555">◌</span> dashed circle = eps (around group A)</p>
   <svg id="db-plot" viewBox="0 0 680 330" role="img" aria-label="Interactive scatter plot of three groups plus noise, coloured by DBSCAN cluster. Sliders change eps and min_samples."></svg>
   <div class="db-stats"><div class="db-stat"><b id="db-k">0</b><i>clusters found (true: 3)</i></div><div class="db-stat"><b id="db-nz">0</b><i>points flagged as noise (true: 20)</i></div></div>
   <p class="db-cap" id="db-cap" aria-live="polite"></p>
@@ -213,9 +214,11 @@ function X(p){return ox+(p[0]-x0)*sc}function Y(p){return oy+(y1-p[1])*sc}
 var COL=['#D8433A','#2F63B5','#2E9A5E','#7B4FC0','#E3A21A','#D4537E','#0F6E56'];
 var NS='http://www.w3.org/2000/svg',svg=document.getElementById('db-plot'),dots=[];
 var ring=document.createElementNS(NS,'circle');ring.setAttribute('fill','none');ring.setAttribute('stroke','#888780');ring.setAttribute('stroke-dasharray','5 4');ring.setAttribute('stroke-width','1.5');svg.appendChild(ring);
-var rl=document.createElementNS(NS,'text');rl.setAttribute('font-size','13');rl.setAttribute('fill','#888780');rl.textContent='eps';svg.appendChild(rl);
+var rl=document.createElementNS(NS,'text');rl.setAttribute('font-size','13');rl.setAttribute('fill','#555');rl.setAttribute('text-anchor','end');rl.setAttribute('font-weight','600');rl.setAttribute('style','paint-order:stroke;stroke:#fff;stroke-width:4px');rl.textContent='eps';svg.appendChild(rl);
 P.forEach(function(p){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',X(p).toFixed(1));c.setAttribute('cy',Y(p).toFixed(1));c.setAttribute('r','3.6');svg.appendChild(c);dots.push(c)});
-var cx0=X([4.5,1.5]),cy0=Y([4.5,1.5]);
+var cx0=X([0,0]),cy0=Y([0,0]);
+function glab(t,gx,gy,an){var e=document.createElementNS(NS,'text');e.setAttribute('x',X([gx,gy]).toFixed(1));e.setAttribute('y',Y([gx,gy]).toFixed(1));e.setAttribute('text-anchor',an||'middle');e.setAttribute('font-size','13');e.setAttribute('font-weight','600');e.setAttribute('fill','#333');e.setAttribute('style','paint-order:stroke;stroke:#fff;stroke-width:4px');e.textContent=t;svg.appendChild(e)}
+glab('dense group A',0.3,-0.62,'end');glab('dense group B',1.1,-0.62,'start');glab('sparse group',4.5,3.15);
 function dbscan(eps,m){var lab=new Array(n).fill(-2),c=-1,e2=eps*eps;
 function nb(i){var o=[];for(var j=0;j<n;j++){var dx=P[i][0]-P[j][0],dy=P[i][1]-P[j][1];if(dx*dx+dy*dy<=e2)o.push(j)}return o}
 for(var i=0;i<n;i++){if(lab[i]!==-2)continue;var N=nb(i);if(N.length<m){lab[i]=-1;continue}c++;lab[i]=c;var q=N.slice();for(var k=0;k<q.length;k++){var j=q[k];if(lab[j]===-1)lab[j]=c;if(lab[j]!==-2)continue;lab[j]=c;var M=nb(j);if(M.length>=m)for(var t=0;t<M.length;t++)q.push(M[t])}}
@@ -229,7 +232,7 @@ for(var i=0;i<n;i++){var l=lab[i],c=dots[i];
 if(l<0){noise++;c.setAttribute('fill','none');c.setAttribute('stroke','#888780');c.setAttribute('stroke-width','1.4')}
 else{c.setAttribute('fill',COL[l%COL.length]);c.setAttribute('fill-opacity','.75');c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','.8')}
 var t=T[i];if(t<3){size[t]++;if(l<0)nz[t]++;else{cnt[l]=cnt[l]||[0,0,0];cnt[l][t]++}}}
-ring.setAttribute('cx',cx0);ring.setAttribute('cy',cy0);ring.setAttribute('r',(eps*sc).toFixed(1));rl.setAttribute('x',cx0+eps*sc+6);rl.setAttribute('y',cy0+4);
+ring.setAttribute('cx',cx0);ring.setAttribute('cy',cy0);ring.setAttribute('r',(eps*sc).toFixed(1));rl.setAttribute('x',cx0-eps*sc-6);rl.setAttribute('y',cy0+4);
 document.getElementById('db-k').textContent=res.k;document.getElementById('db-nz').textContent=noise;
 var lost=[],merged=false;
 for(var g=0;g<3;g++)if(nz[g]>0.8*size[g])lost.push(NAMES[g]);
