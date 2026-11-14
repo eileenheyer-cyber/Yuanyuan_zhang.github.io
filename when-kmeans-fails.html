@@ -28,7 +28,13 @@
 </header>
 
 <main id="top">
-<article class="post post-italic-h2 post-small-figs">
+<article class="post post-italic-h2 post-small-figs post-wkf">
+  <style>
+    .post-wkf h2{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
+    .post-wkf #introduction{margin-top:32px;padding-top:0;border-top:0}
+    .post-wkf h3{font-size:1.15rem;margin:34px 0 10px}
+    .post.post-wkf p.post-lead{font-size:1.12rem;line-height:1.6;font-weight:500;text-align:left;hyphens:none;margin:0 0 20px}
+  </style>
 
   <a class="cs-back" href="statistics.html">← Statistics</a>
   <p class="overline">Unsupervised learning</p>
@@ -59,7 +65,7 @@
   </div>
 
 <h2 id="why-kmeans-fails" style="scroll-margin-top:90px">Why K-Means Can Fail: Four Hidden Assumptions</h2>
-  <p><strong>K-means assumes four things about your data. When your data breaks one of them, it fails without any warning.</strong></p>
+  <p class="post-lead">K-means assumes four things about your data. When your data breaks one of them, it fails without any warning.</p>
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Quick refresher: how k-means works</p>
     <p>K-means picks k centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes.</p>
@@ -93,7 +99,7 @@
   </ul>
   <div class="post-note post-note-plain"><p class="post-note-l">Silent failure</p><p>None of these four runs raised an error or a warning.</p></div>
 <h2 id="gmm" style="scroll-margin-top:90px">Gaussian Mixture Models: Clusters With Shape and Probabilities</h2>
-  <p><strong>A Gaussian Mixture Model (GMM) describes each cluster as an oval and gives every point a probability instead of a single verdict.</strong></p>
+  <p class="post-lead">A Gaussian Mixture Model (GMM) describes each cluster as an oval and gives every point a probability instead of a single verdict.</p>
 <h3 id="gmm-idea" style="scroll-margin-top:90px">The idea: a party</h3>
   <p>Someone standing between the music corner and the food table is maybe 70% part of one group and 30% part of the other. K-means forces a single answer. A GMM keeps both numbers.</p>
   <p>In the shop example, a customer who orders often with small baskets might be 85% “frequent small-basket buyer” and 15% “bulk buyer”. K-means would only report the first label and hide the 15%.</p>
@@ -121,7 +127,7 @@
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
 <h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
-  <p><strong>DBSCAN defines a cluster as a crowded region separated from other crowds by empty space. It finds clusters of any shape and labels the loners as noise.</strong></p>
+  <p class="post-lead">DBSCAN defines a cluster as a crowded region separated from other crowds by empty space. It finds clusters of any shape and labels the loners as noise.</p>
 <h3 id="dbscan-idea" style="scroll-margin-top:90px">The idea: a city at night</h3>
   <p>Seen from above, crowds are clusters. A person standing alone far from everyone is not part of any crowd, just a passerby.</p>
   <p>In the shop example, the crowds are groups of regular customers with similar behaviour, and the passersby are a handful of unusual buyers who don’t resemble anyone. DBSCAN gives those buyers the label -1 (noise) instead of forcing them into a group.</p>
@@ -230,7 +236,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
 </script>
 </figure>
 <h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
-  <p><strong>Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</strong></p>
+  <p class="post-lead">Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</p>
 <h3 id="agg-idea" style="scroll-margin-top:90px">The idea: a family tree</h3>
 <ul class="post-points post-points-color">
     <li><strong>Start:</strong> every customer is their own group.</li>
@@ -283,7 +289,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <li><strong>No undo:</strong> a merge can never be undone once it has happened.</li>
   </ul>
 <h2 id="comparison" style="scroll-margin-top:90px">Head-to-Head Comparison of All Five Methods</h2>
-  <p><strong>K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</strong></p>
+  <p class="post-lead">K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Method</th><th>What a cluster is</th><th>Number of clusters</th><th>Shapes it handles</th><th>Outliers and noise</th><th>Large datasets</th></tr></thead>
     <tbody>
@@ -295,7 +301,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     </tbody>
   </table></div>
 <h2 id="how-to-choose" style="scroll-margin-top:90px">How to Choose a Clustering Method</h2>
-  <p><strong>Start from the shape of your data and what you need from the result, not from the algorithm.</strong></p>
+  <p class="post-lead">Start from the shape of your data and what you need from the result, not from the algorithm.</p>
 <h3 id="pick" style="scroll-margin-top:90px">Pick by situation</h3>
 <ul class="post-points post-points-color">
     <li><strong>Round, similar-sized groups and a large dataset:</strong> use k-means. It is still the right default, and it is easy to explain to stakeholders.</li>
