@@ -81,7 +81,7 @@
   </ul>
   <p>Each dataset below breaks one assumption and has two true groups. K-means (k = 2) runs on all four:</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-1-kmeans-fails.webp" alt="K-means on four datasets: two moons, unequal sizes, outliers and rings. In each, k-means cuts the true groups in the wrong place; agreement with the true groups falls to between 0.00 and 0.49." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-1-kmeans-fails.webp?v=2" alt="K-means on four datasets: two moons, unequal sizes, outliers and rings. In each, k-means cuts the true groups in the wrong place; agreement with the true groups falls to between 0.00 and 0.49." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 1</span> K-means cuts through the true groups in all four datasets, so a tidy-looking result can still be wrong. Simulated data.</figcaption>
   </figure>
 <h3 id="each-panel" style="scroll-margin-top:90px">What went wrong in each panel</h3>
@@ -124,7 +124,7 @@
     <li><em>Step 4: Repeat Steps 2 and 3</em> until the fit stops improving.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-2-em-algorithm.webp" alt="Four panels of the EM algorithm on two diagonal groups: a rough starting guess, after 1 round, after 3 rounds and converged after 13 rounds. The ovals slide and stretch onto the groups, dots turn from mixed to clearly red or blue, and the log-likelihood rises from -2523 to -1350." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-2-em-algorithm.webp?v=2" alt="Four panels of the EM algorithm on two diagonal groups: a rough starting guess, after 1 round, after 3 rounds and converged after 13 rounds. The ovals slide and stretch onto the groups, dots turn from mixed to clearly red or blue, and the log-likelihood rises from -2523 to -1350." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 2</span> Each round pulls the ovals toward the groups and sharpens the probabilities, until the fit stops improving. Simulated data.</figcaption>
   </figure>
   <p>The responsibilities calculated in the E-step are the 85% and 15% from the shop example. In the M-step, each component’s centre, shape and weight are recalculated as usual, except that each customer counts in proportion to its responsibility. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
@@ -132,7 +132,7 @@
 <h3 id="gmm-picture" style="scroll-margin-top:90px">In the picture</h3>
   <p>Two stretched, diagonal groups lie side by side. Dot colour shows the probability of belonging to each group.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-2-gmm-vs-kmeans.webp" alt="K-means versus a Gaussian mixture on two diagonal oval groups. K-means cuts across both ovals with agreement 0.03; the Gaussian mixture follows them with agreement 1.00 and marks one uncertain point." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-2-gmm-vs-kmeans.webp?v=2" alt="K-means versus a Gaussian mixture on two diagonal oval groups. K-means cuts across both ovals with agreement 0.03; the Gaussian mixture follows them with agreement 1.00 and marks one uncertain point." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 3</span> K-means cuts across both ovals, while the GMM follows them and shows where it is unsure. Simulated data.</figcaption>
   </figure>
 <ul class="post-points post-points-color">
@@ -169,7 +169,7 @@
 <h3 id="dbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
   <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-3-dbscan-vs-hdbscan.webp" alt="DBSCAN with a small eps, DBSCAN with a large eps, and HDBSCAN on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points, HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-3-dbscan-vs-hdbscan.webp?v=2" alt="DBSCAN with a small eps, DBSCAN with a large eps, and HDBSCAN on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points, HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 4</span> No single eps recovers all three groups, but HDBSCAN does. Simulated data.</figcaption>
   </figure>
 <h3 id="dbscan-found" style="scroll-margin-top:90px">What each run found</h3>
@@ -265,7 +265,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   </ul>
   <p>Here is step 1 on the same data as Chart 4. On the left, the circle around one point per group reaches that point’s 25th nearest neighbour. On the right, the same distance is shown for every point.</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-6-hdbscan-radius.webp" alt="Two panels on the same simulated data. Left: circles reaching the 25th nearest neighbour have radius 0.13 and 0.14 in the two dense groups and 0.56 in the sparse group. Right: every point shaded by core distance, dark in the dense groups, light in the sparse group and the noise." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-6-hdbscan-radius.webp?v=2" alt="Two panels on the same simulated data. Left: circles reaching the 25th nearest neighbour have radius 0.13 and 0.14 in the two dense groups and 0.56 in the sparse group. Right: every point shaded by core distance, dark in the dense groups, light in the sparse group and the noise." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 6</span> The radius needed to reach 25 neighbours is about four times larger in the sparse group than in the dense ones. Simulated data.</figcaption>
   </figure>
 <h3 id="hdbscan-settings" style="scroll-margin-top:90px">The two settings</h3>
@@ -299,7 +299,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
 <h3 id="linkage-picture" style="scroll-margin-top:90px">In the picture: the linkage changes the answer</h3>
   <p>All four runs use the same moon-shaped data and ask for 2 clusters:</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-4-linkage.webp" alt="Four linkage methods on two moons. Single linkage follows the curve with agreement 1.00; complete, average and Ward cut the moons into compact chunks with agreement 0.23, 0.15 and 0.29." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-4-linkage.webp?v=2" alt="Four linkage methods on two moons. Single linkage follows the curve with agreement 1.00; complete, average and Ward cut the moons into compact chunks with agreement 0.23, 0.15 and 0.29." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 7</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
   </figure>
 <ul class="post-points post-points-color">
@@ -321,7 +321,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <li><strong>Good sign:</strong> a long vertical stretch with no merges, like the gap around the red line, hints that the groups below it are really separate.</li>
   </ul>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-5-dendrogram.webp" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
+    <img src="images/when-kmeans-fails/chart-5-dendrogram.webp?v=2" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 8</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
   <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="agg-limits"><p class="post-note-l">Two limits to keep in mind</p><p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p></div>
