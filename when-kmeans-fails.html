@@ -167,16 +167,15 @@
 <h3 id="dbscan-grow" style="scroll-margin-top:90px">How a cluster grows</h3>
   <p>DBSCAN starts at a core point and pulls in every point inside its eps circle. If some of those points are core points too, their circles pull in still more, and so on. Two points end up in the same cluster when a chain of overlapping core neighbourhoods links them, which is called density-connectedness. Because the chain can bend, a cluster can follow a crescent or a ring, and that is why DBSCAN is not limited to round shapes. A border point that lies within reach of two clusters joins just one of them, and which one can depend on the order in which the points are processed.</p>
 <h3 id="dbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
-  <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
+  <p>The data has two dense groups, one sparse group and 20 random noise points. Two DBSCAN runs on the same data:</p>
   <figure class="post-fig post-fig-wide">
-    <img src="images/when-kmeans-fails/chart-3-dbscan-vs-hdbscan.webp?v=2" alt="DBSCAN with a small eps, DBSCAN with a large eps, and HDBSCAN on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points, HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 4</span> No single eps recovers all three groups, but HDBSCAN does. Simulated data.</figcaption>
+    <img src="images/when-kmeans-fails/chart-3-dbscan-eps.webp?v=2" alt="DBSCAN with a small eps and DBSCAN with a large eps on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 4</span> Neither radius recovers all three groups: a small eps loses the sparse group, a large eps merges the two dense ones. Simulated data.</figcaption>
   </figure>
 <h3 id="dbscan-found" style="scroll-margin-top:90px">What each run found</h3>
 <ul class="post-points post-points-color">
     <li><strong>Small eps:</strong> the sparse group dissolves into noise. 2 clusters, 125 noise points.</li>
     <li><strong>Large eps:</strong> the sparse group survives, but the two neighbouring dense groups melt into one. 2 clusters, 24 noise points.</li>
-    <li><strong>HDBSCAN:</strong> all 3 groups found, 28 noise points, close to the 20 true noise points.</li>
   </ul>
 <h3 id="dbscan-try" style="scroll-margin-top:90px">Try it yourself</h3>
   <p>Move eps and min_samples and watch groups appear, merge or turn into noise. With min_samples = 8, none of the radii I tried (0.12 to 1.0) recovered all three groups.</p>
@@ -263,7 +262,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <li><strong>Hierarchy.</strong> Removing the edges from longest to shortest splits the data apart step by step. Each step is a DBSCAN result for a different eps.</li>
     <li><strong>Condense and select.</strong> A split that only sheds fewer than min_cluster_size points is treated as points falling off the cluster, not as a new cluster. Among the real clusters, HDBSCAN keeps the ones that stay stable over a wide range of radii. Points outside the chosen clusters are noise.</li>
   </ul>
-  <p>Here is step 1 on the same data as Chart 4. On the left, the circle around one point per group reaches that point’s 25th nearest neighbour. On the right, the same distance is shown for every point.</p>
+  <p>Here is step 1 on the same data as the DBSCAN runs. On the left, the circle around one point per group reaches that point’s 25th nearest neighbour. On the right, the same distance is shown for every point.</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-6-hdbscan-radius.webp?v=2" alt="Two panels on the same simulated data. Left: circles reaching the 25th nearest neighbour have radius 0.13 and 0.14 in the two dense groups and 0.56 in the sparse group. Right: every point shaded by core distance, dark in the dense groups, light in the sparse group and the noise." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 6</span> The radius needed to reach 25 neighbours is about four times larger in the sparse group than in the dense ones. Simulated data.</figcaption>
@@ -274,7 +273,11 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <li><strong>min_samples:</strong> how conservative the density estimate is. When it is not set, scikit-learn uses min_cluster_size, so it was 25 here too.</li>
   </ul>
 <h3 id="hdbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
-  <p>Back to Chart 4: on the same data, HDBSCAN found all three groups, where DBSCAN found two at either radius. It flagged 28 points as noise, close to the 20 random points that were added.</p>
+  <p>Now the same data as in the DBSCAN runs. HDBSCAN found all three groups with a single setting, where DBSCAN found two at either radius. It flagged 28 points as noise, close to the 20 random points that were added.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-7-hdbscan-result.webp?v=2" alt="DBSCAN with a large eps next to HDBSCAN on the same data. DBSCAN finds 2 clusters and 24 noise points, merging the two dense groups; HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 7</span> DBSCAN at its better radius merges the two dense groups, while HDBSCAN keeps all three groups apart. Simulated data.</figcaption>
+  </figure>
   <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="hdbscan-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>HDBSCAN removes the single-radius problem, so groups of different densities can all be found, and it flags noise like DBSCAN. It is not magic, though. You still have to choose min_cluster_size, and that choice shapes the result. It still defines a cluster as a dense region, so it won’t suit data where that definition is wrong, and it is typically slower than DBSCAN.</p></div>
 <h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
   <p class="post-lead">Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</p>
@@ -300,7 +303,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   <p>All four runs use the same moon-shaped data and ask for 2 clusters:</p>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-4-linkage.webp?v=2" alt="Four linkage methods on two moons. Single linkage follows the curve with agreement 1.00; complete, average and Ward cut the moons into compact chunks with agreement 0.23, 0.15 and 0.29." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 7</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
+    <figcaption><span>Chart 8</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
   </figure>
 <ul class="post-points post-points-color">
     <li><strong>Single linkage:</strong> follows the curve of the moons (agreement 1.00).</li>
@@ -322,7 +325,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   </ul>
   <figure class="post-fig post-fig-wide">
     <img src="images/when-kmeans-fails/chart-5-dendrogram.webp?v=2" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
-    <figcaption><span>Chart 8</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
+    <figcaption><span>Chart 9</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
   <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="agg-limits"><p class="post-note-l">Two limits to keep in mind</p><p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p></div>
 <h2 id="segments" style="scroll-margin-top:90px">What This Means for Customer Segmentation</h2>
