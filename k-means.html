@@ -179,6 +179,8 @@
     <input id="sil-slider" type="range" min="0" max="100" value="0" step="1">
     <div class="sil-ends"><span>Deep inside cluster A</span><span>Inside cluster B</span></div>
   </div>
+  <div class="sil-gauge"><div class="sil-mark" id="sil-mark"></div></div>
+  <div class="sil-scale" style="margin-bottom:14px"><span>−1 wrong cluster</span><span>0 on the border</span><span>+1 clearly in its cluster</span></div>
   <div class="sil-read" aria-live="polite">
     <div class="sil-cell"><b>a · own cluster</b><span id="sil-a">–</span></div>
     <div class="sil-cell"><b>b · nearest other cluster</b><span id="sil-b">–</span></div>
@@ -186,8 +188,6 @@
     <div class="sil-cell"><b>Average s · all 24 customers</b><span id="sil-avg">–</span></div>
   </div>
   <div class="sil-eq" id="sil-eq"></div>
-  <div class="sil-gauge"><div class="sil-mark" id="sil-mark"></div></div>
-  <div class="sil-scale"><span>−1 wrong cluster</span><span>0 on the border</span><span>+1 clearly in its cluster</span></div>
   <p class="sil-msg" id="sil-msg"></p>
   <figcaption><span>Chart 5</span> A customer's silhouette score falls from near +1 to below 0 as it moves away from its own cluster. Schematic data, standardized axes.</figcaption>
   <script>
