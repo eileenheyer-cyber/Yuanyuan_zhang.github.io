@@ -56,7 +56,8 @@
     <ul>
       <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#reading-agreement">How to read “agreement”</a></li><li><a href="#scaling">Before you cluster: scale your features</a></li></ul></details></li>
       <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-em">How GMM learns: the EM algorithm</a></li><li><a href="#gmm-picture">In the picture</a></li><li><a href="#gmm-fixes">What it fixes, and where it still fails</a></li></ul></details></li>
-      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-grow">How a cluster grows</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: a radius for every neighbourhood</a></li><li><a href="#dbscan-try">Try it yourself</a></li><li><a href="#dbscan-fixes">What it fixes, and the catch</a></li></ul></details></li>
+      <li><details><summary><a href="#dbscan">DBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-grow">How a cluster grows</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#dbscan-try">Try it yourself</a></li><li><a href="#dbscan-fixes">What it fixes, and the catch</a></li></ul></details></li>
+      <li><details><summary><a href="#hdbscan">HDBSCAN: Dense Regions at Any Density</a></summary><ul><li><a href="#hdbscan-idea">The idea: neighbourhoods of different density</a></li><li><a href="#hdbscan-how">How it works</a></li><li><a href="#hdbscan-settings">The two settings</a></li><li><a href="#hdbscan-picture">In the picture</a></li><li><a href="#hdbscan-fixes">What it fixes, and where it still fails</a></li></ul></details></li>
       <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li><li><a href="#agg-limits">Two limits to keep in mind</a></li></ul></details></li>
       <li><a href="#segments">What This Means for Customer Segmentation</a></li>
       <li><a href="#comparison">Head-to-Head Comparison of All Five Methods</a></li>
@@ -140,7 +141,7 @@
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
   <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="gmm-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front (comparing a criterion such as BIC across several values helps), and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p></div>
-<h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
+<h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN: Finding Clusters as Dense Regions</h2>
   <p class="post-lead">DBSCAN takes a different approach to clustering. Instead of looking for cluster centres, it looks for areas where data points are packed closely together. Dense regions become clusters, while isolated points can be classified as noise.</p>
   <p>Unlike K-Means, DBSCAN can discover clusters of different shapes without requiring the number of clusters in advance.</p>
 <h3 id="dbscan-idea" style="scroll-margin-top:90px">The idea: a city at night</h3>
@@ -177,20 +178,6 @@
     <li><strong>Large eps:</strong> the sparse group survives, but the two neighbouring dense groups melt into one. 2 clusters, 24 noise points.</li>
     <li><strong>HDBSCAN:</strong> all 3 groups found, 28 noise points, close to the 20 true noise points.</li>
   </ul>
-<h3 id="hdbscan" style="scroll-margin-top:90px">HDBSCAN: a radius for every neighbourhood</h3>
-  <p>Think of a map with a big city, a mid-sized town and a village. A rule like “a neighbourhood needs 50 people within 200 metres” suits the city and wipes out the village, while a looser rule merges the city and the town next to it. HDBSCAN judges each area by its own density and keeps the areas that stand out from their surroundings.</p>
-  <p>In short, HDBSCAN is DBSCAN run at every possible eps at once, followed by a choice of the most stable clusters. It gets there in four steps:</p>
-<ul class="post-points post-points-color">
-    <li><strong>Mutual reachability distance.</strong> Each point gets a core distance, the distance to its min_samples-th nearest neighbour, which is small in dense areas and large in sparse ones. The mutual reachability distance between two points is the largest of their two core distances and their actual distance. This pushes sparse points away from everything else, so they are less likely to bridge two clusters.</li>
-    <li><strong>Minimum spanning tree.</strong> The points are connected with the shortest total length of mutual reachability edges, without forming any loops.</li>
-    <li><strong>Hierarchy.</strong> Removing the edges from longest to shortest splits the data apart step by step. Each step is a DBSCAN result for a different eps.</li>
-    <li><strong>Condense and select.</strong> A split that only sheds fewer than min_cluster_size points is treated as points falling off the cluster, not as a new cluster. Among the real clusters, HDBSCAN keeps the ones that stay stable over a wide range of radii. Points outside the chosen clusters are noise.</li>
-  </ul>
-<ul class="post-points post-points-color">
-    <li><strong>min_cluster_size:</strong> the smallest group you are willing to call a cluster (25 in this example).</li>
-    <li><strong>min_samples:</strong> how conservative the density estimate is. When it is not set, scikit-learn uses min_cluster_size, so it was 25 here too.</li>
-  </ul>
-  <p>The difference from DBSCAN is that there is no single eps, so groups of different densities can all be found. HDBSCAN still has settings to choose, and it still defines a cluster as a dense region.</p>
 <h3 id="dbscan-try" style="scroll-margin-top:90px">Try it yourself</h3>
   <p>Move eps and min_samples and watch groups appear, merge or turn into noise. With min_samples = 8, none of the radii I tried (0.12 to 1.0) recovered all three groups.</p>
   <figure class="post-fig post-fig-wide db-fig" id="db-demo">
@@ -262,7 +249,28 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
 })();
 </script>
 </figure>
-  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="dbscan-fixes"><p class="post-note-l">What it fixes, and the catch</p><p>DBSCAN fixes three K-Means problems at once. You don’t have to choose the number of clusters, clusters can take any shape, and outliers are flagged as noise instead of dragging a centre. The catch is that eps is a single radius for the whole dataset. A dense group needs a small eps and a sparse group needs a large one, so no single value suits both, as the first two runs above show.</p></div>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="dbscan-fixes"><p class="post-note-l">What it fixes, and the catch</p><p>DBSCAN fixes three K-Means problems at once. You don’t have to choose the number of clusters, clusters can take any shape, and outliers are flagged as noise instead of dragging a centre. The catch is that eps is a single radius for the whole dataset. A dense group needs a small eps and a sparse group needs a large one, so no single value suits both, as the first two runs above show. That is the problem HDBSCAN was built to solve.</p></div>
+<h2 id="hdbscan" style="scroll-margin-top:90px">HDBSCAN: Dense Regions at Any Density</h2>
+  <p class="post-lead">HDBSCAN keeps DBSCAN’s idea that clusters are dense regions and sparse points are noise, but it drops the single radius. Every group is judged by its own density.</p>
+<h3 id="hdbscan-idea" style="scroll-margin-top:90px">The idea: neighbourhoods of different density</h3>
+  <p>Think of a map with a big city, a mid-sized town and a village. A rule like “a neighbourhood needs 50 people within 200 metres” suits the city and wipes out the village, while a looser rule merges the city and the town next to it. HDBSCAN judges each area by its own density and keeps the areas that stand out from their surroundings.</p>
+  <p>In the shop example, that could mean a large mainstream group of customers and a small, tight niche of big spenders, both found with the same settings.</p>
+<h3 id="hdbscan-how" style="scroll-margin-top:90px">How it works</h3>
+  <p>In short, HDBSCAN is DBSCAN run at every possible eps at once, followed by a choice of the most stable clusters. It gets there in four steps:</p>
+<ul class="post-points post-points-color">
+    <li><strong>Mutual reachability distance.</strong> Each point gets a core distance, the distance to its min_samples-th nearest neighbour, which is small in dense areas and large in sparse ones. The mutual reachability distance between two points is the largest of their two core distances and their actual distance. This pushes sparse points away from everything else, so they are less likely to bridge two clusters.</li>
+    <li><strong>Minimum spanning tree.</strong> The points are connected with the shortest total length of mutual reachability edges, without forming any loops.</li>
+    <li><strong>Hierarchy.</strong> Removing the edges from longest to shortest splits the data apart step by step. Each step is a DBSCAN result for a different eps.</li>
+    <li><strong>Condense and select.</strong> A split that only sheds fewer than min_cluster_size points is treated as points falling off the cluster, not as a new cluster. Among the real clusters, HDBSCAN keeps the ones that stay stable over a wide range of radii. Points outside the chosen clusters are noise.</li>
+  </ul>
+<h3 id="hdbscan-settings" style="scroll-margin-top:90px">The two settings</h3>
+<ul class="post-points post-points-color">
+    <li><strong>min_cluster_size:</strong> the smallest group you are willing to call a cluster (25 in this example).</li>
+    <li><strong>min_samples:</strong> how conservative the density estimate is. When it is not set, scikit-learn uses min_cluster_size, so it was 25 here too.</li>
+  </ul>
+<h3 id="hdbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
+  <p>Back to Chart 4: on the same data, HDBSCAN found all three groups, where DBSCAN found two at either radius. It flagged 28 points as noise, close to the 20 random points that were added.</p>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="hdbscan-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>HDBSCAN removes the single-radius problem, so groups of different densities can all be found, and it flags noise like DBSCAN. It is not magic, though. You still have to choose min_cluster_size, and that choice shapes the result. It still defines a cluster as a dense region, so it won’t suit data where that definition is wrong, and it is typically slower than DBSCAN.</p></div>
 <h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
   <p class="post-lead">Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</p>
 <h3 id="agg-idea" style="scroll-margin-top:90px">The idea: a family tree</h3>
