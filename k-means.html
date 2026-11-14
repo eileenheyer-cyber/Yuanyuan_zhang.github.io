@@ -212,9 +212,10 @@
     el('text',{x:(L+W-R)/2,y:H-10,'text-anchor':'middle','font-size':13,fill:'#0a0a0a'}).textContent='Orders per year (standardized)';
     var yl=el('text',{x:14,y:(T+H-Bt)/2,'text-anchor':'middle','font-size':13,fill:'#0a0a0a',transform:'rotate(-90 14 '+((T+H-Bt)/2)+')'});yl.textContent='Average order value (standardized)';
     // cluster labels
-    el('text',{x:X(-1.75),y:Y(-1.3),'font-size':13,'font-weight':600,fill:'#1d57b5'}).textContent='Cluster A';
-    el('text',{x:X(1.35),y:Y(0.35),'font-size':13,'font-weight':600,fill:'#dc452d'}).textContent='Cluster B';
-    el('text',{x:X(0.9),y:Y(1.95),'font-size':13,'font-weight':600,fill:'#0a0a0a'}).textContent='Cluster C';
+    function clabel(x,y,anchor,col,t1,t2){var t=el('text',{x:x,y:y,'text-anchor':anchor,'font-size':13,'font-weight':600,fill:col});t.textContent=t1;var u=el('text',{x:x,y:y+15,'text-anchor':anchor,'font-size':12,fill:col});u.textContent=t2}
+    clabel(X(-1.9),Y(-1.2),'start','#1d57b5','Cluster A','Occasional buyers');
+    clabel(W-R-6,Y(0.55),'end','#dc452d','Cluster B','Frequent shoppers');
+    clabel(W-R-6,Y(1.95),'end','#8a6a00','Cluster C','High-spending customers');
     var lines=el('g',{});
     function dots(set,fill,stroke){for(var j=0;j<set.length;j++)el('circle',{cx:X(set[j][0]),cy:Y(set[j][1]),r:5,fill:fill,stroke:stroke||'#0a0a0a','stroke-width':1})}
     dots(A,'#1d57b5');dots(B,'#dc452d');dots(C,'#f5c548');
@@ -278,11 +279,12 @@
     <li><strong>Interpret the clusters.</strong> Look beyond the metrics. Do the resulting groups represent meaningful customer segments that the business can actually use?</li>
   </ol>
   <p>For our 24 customers, both evaluation methods support a three-cluster solution. Looking at the results, we can identify three distinct customer groups:</p>
-  <ul class="post-points post-points-color">
-    <li><strong>Occasional buyers:</strong> Few orders and relatively low average order value.</li>
-    <li><strong>Frequent shoppers:</strong> Many orders and moderate average order value.</li>
-    <li><strong>High-spending customers:</strong> Higher average order value.</li>
+  <ul class="post-points post-points-color kmeans-groups">
+    <li><strong>Occasional buyers (Cluster A, blue):</strong> Few orders and relatively low average order value.</li>
+    <li><strong>Frequent shoppers (Cluster B, red):</strong> Many orders and moderate average order value.</li>
+    <li><strong>High-spending customers (Cluster C, yellow):</strong> Higher average order value.</li>
   </ul>
+  <style>.kmeans-groups li:nth-child(1)::marker{color:#1d57b5}.kmeans-groups li:nth-child(2)::marker{color:#dc452d}.kmeans-groups li:nth-child(3)::marker{color:#f5c548}</style>
   <p>The online shop can now use these insights to develop more targeted marketing campaigns and tailor its offers to different customer groups.</p>
   <p>And that's the real purpose of clustering: turning patterns in data into insights that support better business decisions.</p>
 
