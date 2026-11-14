@@ -142,22 +142,28 @@
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
 <h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
-  <p class="post-lead">DBSCAN defines a cluster as a crowded region separated from other crowds by empty space. It finds clusters of any shape and labels the loners as noise.</p>
+  <p class="post-lead">DBSCAN takes a different approach to clustering. Instead of looking for cluster centres, it looks for areas where data points are packed closely together. Dense regions become clusters, while isolated points can be classified as noise.</p>
+  <p>Unlike K-Means, DBSCAN can discover clusters of different shapes without requiring the number of clusters in advance.</p>
 <h3 id="dbscan-idea" style="scroll-margin-top:90px">The idea: a city at night</h3>
-  <p>Seen from above, crowds are clusters. A person standing alone far from everyone is not part of any crowd, just a passerby.</p>
-  <p>In the shop example, the crowds are groups of regular customers with similar behaviour, and the passersby are a handful of unusual buyers who don’t resemble anyone. DBSCAN gives those buyers the label -1 (noise) instead of forcing them into a group.</p>
+  <p>Imagine looking at a city from above at night. Some areas are brightly lit and full of activity, while others are dark and quiet.</p>
+  <p>The brightly lit areas represent clusters. Someone standing alone, far away from the crowds, isn't necessarily part of any group. They're just a passerby.</p>
+  <p>In our online shop example, dense regions might represent groups of customers with similar purchasing behaviour. Meanwhile, a handful of unusual buyers who don't fit into any dense region may be classified as noise.</p>
+  <p>DBSCAN assigns these observations the label <code>-1</code>, rather than forcing them into an existing cluster.</p>
 <h3 id="dbscan-settings" style="scroll-margin-top:90px">The two settings</h3>
+  <p>DBSCAN relies on two parameters:</p>
 <ul class="post-points post-points-color">
-    <li><strong>eps:</strong> the search radius around a point.</li>
-    <li><strong>min_samples:</strong> how many points must sit within that radius for the spot to count as crowded.</li>
+    <li><strong>eps:</strong> The maximum distance between two points for them to be considered neighbours.</li>
+    <li><strong>min_samples:</strong> The minimum number of points required within a point's <code>eps</code> neighbourhood for it to qualify as a core point. The point itself is included.</li>
   </ul>
+  <p>Together, these parameters determine how dense a region must be before DBSCAN considers it a cluster.</p>
 <h3 id="dbscan-roles" style="scroll-margin-top:90px">Three roles for every point</h3>
+  <p>DBSCAN classifies observations into three categories:</p>
 <ul class="post-points post-points-color">
-    <li><strong>Core point:</strong> has enough points within eps.</li>
-    <li><strong>Border point:</strong> within eps of a core point, but not crowded itself.</li>
-    <li><strong>Noise point:</strong> neither.</li>
+    <li><strong>Core point:</strong> Has at least <code>min_samples</code> points, including itself, within its <code>eps</code> neighbourhood.</li>
+    <li><strong>Border point:</strong> Has fewer than <code>min_samples</code> points in its own neighbourhood but lies within the <code>eps</code> neighbourhood of a core point.</li>
+    <li><strong>Noise point:</strong> Neither a core point nor reachable from any core point.</li>
   </ul>
-  <p>Clusters grow by chaining core points together, which is why they can bend around curves.</p>
+  <p>Core points form the dense structure of a cluster, border points extend its boundaries, and noise points remain unassigned.</p>
 <h3 id="dbscan-fixes" style="scroll-margin-top:90px">What it fixes, and the catch</h3>
 <ul class="post-points post-points-color">
     <li><strong>Fixed:</strong> you don’t choose k.</li>
