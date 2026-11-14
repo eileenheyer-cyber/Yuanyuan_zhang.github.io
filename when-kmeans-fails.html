@@ -65,13 +65,12 @@
   </div>
 
 <h2 id="why-kmeans-fails" style="scroll-margin-top:90px">Why K-Means Can Fail: Four Hidden Assumptions</h2>
-  <p class="post-lead">K-means assumes four things about your data. When your data breaks one of them, it fails without any warning.</p>
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Quick refresher: how k-means works</p>
     <p>K-means picks k centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes.</p>
     <p>In the shop example, each centre is a typical customer profile, and every customer joins the closest profile.</p>
   </div>
-<h3 id="four-assumptions" style="scroll-margin-top:90px">The four hidden assumptions</h3>
+  <p class="post-lead">K-means assumes four things about your data. When your data breaks one of them, it fails without any warning:</p>
 <ul class="post-points post-points-color">
     <li><strong>Clusters are round blobs.</strong> The border between two clusters is always a straight line, and a crescent or a ring can’t be separated by one.</li>
     <li><strong>Clusters have similar size and spread.</strong> The border sits halfway between two centres, so a big, spread-out group next to a small, tight one gets cut in the wrong place.</li>
