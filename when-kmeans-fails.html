@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>When K-Means Fails: GMM, DBSCAN, HDBSCAN and Agglomerative Clustering Explained – Yuanyuan Zhang</title>
-  <meta name="description" content="When k-means fails: how Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering work, and when to use each of them.">
+  <title>When K-Means Fails: GMM, DBSCAN, HDBSCAN, Agglomerative – Yuanyuan Zhang</title>
+  <meta name="description" content="Why K-Means clustering fails on some data, and how Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering work. Unsupervised learning, with simulated customer data.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -54,10 +54,11 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#reading-agreement">How to read “agreement”</a></li></ul></details></li>
+      <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#reading-agreement">How to read “agreement”</a></li><li><a href="#scaling">Before you cluster: scale your features</a></li></ul></details></li>
       <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-em">How GMM learns: the EM algorithm</a></li><li><a href="#gmm-picture">In the picture</a></li><li><a href="#gmm-fixes">What it fixes, and where it still fails</a></li></ul></details></li>
-      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: one radius per group</a></li><li><a href="#dbscan-try">Try it yourself</a></li><li><a href="#dbscan-fixes">What it fixes, and the catch</a></li></ul></details></li>
+      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-grow">How a cluster grows</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: a radius for every neighbourhood</a></li><li><a href="#dbscan-try">Try it yourself</a></li><li><a href="#dbscan-fixes">What it fixes, and the catch</a></li></ul></details></li>
       <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li><li><a href="#agg-limits">Two limits to keep in mind</a></li></ul></details></li>
+      <li><a href="#segments">What This Means for Customer Segmentation</a></li>
       <li><a href="#comparison">Head-to-Head Comparison of All Five Methods</a></li>
       <li><a href="#how-to-choose">How to Choose a Clustering Method</a></li>
       <li><a href="#key-takeaway">Key Takeaway: Choose the Definition of a Cluster That Fits Your Data</a></li>
@@ -67,7 +68,7 @@
 <h2 id="why-kmeans-fails" style="scroll-margin-top:90px">Why K-Means Can Fail: Four Hidden Assumptions</h2>
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Quick refresher: how k-means works</p>
-    <p>K-means picks k centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes.</p>
+    <p><a href="k-means.html">K-means</a> picks k centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes.</p>
     <p>In the shop example, each centre is a typical customer profile, and every customer joins the closest profile.</p>
   </div>
   <p class="post-lead">K-means assumes four things about your data. When your data breaks one of them, it fails without any warning:</p>
@@ -96,6 +97,9 @@
     <li><strong>The catch:</strong> you can only compute it when you know the true groups, as with simulated data. On real data you usually don’t, which is exactly why a wrong clustering is so easy to miss.</li>
   </ul>
   <div class="post-note post-note-plain"><p class="post-note-l">Silent failure</p><p>None of these four runs raised an error or a warning.</p></div>
+<h3 id="scaling" style="scroll-margin-top:90px">Before you cluster: scale your features</h3>
+  <p>K-means, DBSCAN and most of the other methods in this article work with distances, so a feature with large numbers can drown out one with small numbers. In the shop example, orders per year might run from 1 to 30, while average basket value might run from 20 to 300 euros. Those ranges are only an illustration. If you leave them as they are, nearly all of the distance between two customers comes from the basket value, and the order frequency barely counts.</p>
+  <p>The usual fix is standardisation: subtract each feature’s mean and divide by its standard deviation, so both features are measured in comparable units. It is a modelling choice, because it changes which customers look similar, and for a skewed feature such as basket value a log transform first may help. For DBSCAN it matters even more, because eps only means something once the features share a scale. The charts here use simulated coordinates rather than real euros, so no scaling was needed for them.</p>
 <h2 id="gmm" style="scroll-margin-top:90px">Gaussian Mixture Models: Clusters With Shape and Probabilities</h2>
   <p class="post-lead">A Gaussian Mixture Model (GMM) represents clusters as overlapping probability distributions. Instead of assigning each data point to exactly one cluster, it estimates the probability of belonging to each cluster.</p>
 <h3 id="gmm-idea" style="scroll-margin-top:90px">The idea: a party</h3>
@@ -135,7 +139,7 @@
     <li><strong>GMM:</strong> an oval around each group follows them (agreement 1.00).</li>
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
-  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="gmm-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front, and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p></div>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="gmm-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front (comparing a criterion such as BIC across several values helps), and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p></div>
 <h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
   <p class="post-lead">DBSCAN takes a different approach to clustering. Instead of looking for cluster centres, it looks for areas where data points are packed closely together. Dense regions become clusters, while isolated points can be classified as noise.</p>
   <p>Unlike K-Means, DBSCAN can discover clusters of different shapes without requiring the number of clusters in advance.</p>
@@ -159,6 +163,8 @@
     <li><strong>Noise point:</strong> Neither a core point nor reachable from any core point.</li>
   </ul>
   <p>Core points form the dense structure of a cluster, border points extend its boundaries, and noise points remain unassigned.</p>
+<h3 id="dbscan-grow" style="scroll-margin-top:90px">How a cluster grows</h3>
+  <p>DBSCAN starts at a core point and pulls in every point inside its eps circle. If some of those points are core points too, their circles pull in still more, and so on. Two points end up in the same cluster when a chain of overlapping core neighbourhoods links them, which is called density-connectedness. Because the chain can bend, a cluster can follow a crescent or a ring, and that is why DBSCAN is not limited to round shapes. A border point that lies within reach of two clusters joins just one of them, and which one can depend on the order in which the points are processed.</p>
 <h3 id="dbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
   <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
   <figure class="post-fig post-fig-wide">
@@ -171,11 +177,20 @@
     <li><strong>Large eps:</strong> the sparse group survives, but the two neighbouring dense groups melt into one. 2 clusters, 24 noise points.</li>
     <li><strong>HDBSCAN:</strong> all 3 groups found, 28 noise points, close to the 20 true noise points.</li>
   </ul>
-<h3 id="hdbscan" style="scroll-margin-top:90px">HDBSCAN: one radius per group</h3>
+<h3 id="hdbscan" style="scroll-margin-top:90px">HDBSCAN: a radius for every neighbourhood</h3>
+  <p>Think of a map with a big city, a mid-sized town and a village. A rule like “a neighbourhood needs 50 people within 200 metres” suits the city and wipes out the village, while a looser rule merges the city and the town next to it. HDBSCAN judges each area by its own density and keeps the areas that stand out from their surroundings.</p>
+  <p>In short, HDBSCAN is DBSCAN run at every possible eps at once, followed by a choice of the most stable clusters. It gets there in four steps:</p>
 <ul class="post-points post-points-color">
-    <li><strong>The idea:</strong> instead of one radius, HDBSCAN looks at clusters across many radii and keeps the ones that stay stable, so each group effectively gets its own radius.</li>
-    <li><strong>The main setting:</strong> min_cluster_size, the smallest group you are willing to call a cluster (25 in this example).</li>
+    <li><strong>Mutual reachability distance.</strong> Each point gets a core distance, the distance to its min_samples-th nearest neighbour, which is small in dense areas and large in sparse ones. The mutual reachability distance between two points is the largest of their two core distances and their actual distance. This pushes sparse points away from everything else, so they are less likely to bridge two clusters.</li>
+    <li><strong>Minimum spanning tree.</strong> The points are connected with the shortest total length of mutual reachability edges, without forming any loops.</li>
+    <li><strong>Hierarchy.</strong> Removing the edges from longest to shortest splits the data apart step by step. Each step is a DBSCAN result for a different eps.</li>
+    <li><strong>Condense and select.</strong> A split that only sheds fewer than min_cluster_size points is treated as points falling off the cluster, not as a new cluster. Among the real clusters, HDBSCAN keeps the ones that stay stable over a wide range of radii. Points outside the chosen clusters are noise.</li>
   </ul>
+<ul class="post-points post-points-color">
+    <li><strong>min_cluster_size:</strong> the smallest group you are willing to call a cluster (25 in this example).</li>
+    <li><strong>min_samples:</strong> how conservative the density estimate is. When it is not set, scikit-learn uses min_cluster_size, so it was 25 here too.</li>
+  </ul>
+  <p>The difference from DBSCAN is that there is no single eps, so groups of different densities can all be found. HDBSCAN still has settings to choose, and it still defines a cluster as a dense region.</p>
 <h3 id="dbscan-try" style="scroll-margin-top:90px">Try it yourself</h3>
   <p>Move eps and min_samples and watch groups appear, merge or turn into noise. With min_samples = 8, none of the radii I tried (0.12 to 1.0) recovered all three groups.</p>
   <figure class="post-fig post-fig-wide db-fig" id="db-demo">
@@ -256,16 +271,16 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <li><strong>Merge:</strong> the two most similar customers pair up, similar pairs merge into small segments, and segments keep merging.</li>
     <li><strong>End:</strong> one group holds every customer.</li>
   </ul>
-  <p>The whole history of merges is kept, so you can look at the structure first and decide afterwards how many segments make sense.</p>
+  <p>The whole history of merges is kept, so you can look at the structure first and decide afterwards how many segments make sense. The two main settings are the linkage method (below) and where to cut the tree, either as a number of clusters or as a distance threshold.</p>
 <h3 id="linkage" style="scroll-margin-top:90px">Linkage: what does “closest” mean?</h3>
   <p>When each group has many points, one choice decides how the tree looks: how to measure the distance between two groups. That is the linkage method.</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Linkage</th><th>Distance between two clusters</th><th>Tends to produce</th></tr></thead>
+    <thead><tr><th>Linkage</th><th>Distance between two clusters</th><th>Tends to produce</th><th>Watch out for</th></tr></thead>
     <tbody>
-      <tr><td>Single</td><td>Closest pair of points</td><td>Long, curved chains; sensitive to noise</td></tr>
-      <tr><td>Complete</td><td>Farthest pair of points</td><td>Compact clusters of similar width</td></tr>
-      <tr><td>Average</td><td>Average over all pairs of points</td><td>A compromise between single and complete</td></tr>
-      <tr><td>Ward</td><td>The merge that raises the variance the least</td><td>Round, even clusters, similar to k-means</td></tr>
+      <tr><td>Single</td><td>Closest pair of points</td><td>Long, curved chains</td><td>A few stray points can chain clusters together</td></tr>
+      <tr><td>Complete</td><td>Farthest pair of points</td><td>Compact clusters of similar width</td><td>One distant outlier can distort merges; may split elongated groups</td></tr>
+      <tr><td>Average</td><td>Average over all pairs of points</td><td>A compromise between single and complete</td><td>Depends on the distance metric you choose</td></tr>
+      <tr><td>Ward</td><td>The merge that increases the within-cluster variance the least</td><td>Round clusters, similar to k-means</td><td>Needs Euclidean distances; tends toward similar-sized clusters</td></tr>
     </tbody>
   </table></div>
 <h3 id="linkage-picture" style="scroll-margin-top:90px">In the picture: the linkage changes the answer</h3>
@@ -297,16 +312,38 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <figcaption><span>Chart 7</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
   <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="agg-limits"><p class="post-note-l">Two limits to keep in mind</p><p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p></div>
+<h2 id="segments" style="scroll-margin-top:90px">What This Means for Customer Segmentation</h2>
+  <p class="post-lead">All charts in this article use simulated data, so nothing here is a real business result. But the pattern is realistic: different algorithms answer different questions about the same customers.</p>
+<ul class="post-points post-points-color">
+    <li><strong>K-means</strong> gives a small set of typical profiles. It is easy to explain and a good first overview when the segments are roughly round.</li>
+    <li><strong>GMM</strong> shows customers who sit between segments, for example 85% in one and 15% in another. That helps when you want to target only the customers the model is sure about.</li>
+    <li><strong>DBSCAN</strong> finds dense groups of similar buyers and sets aside the customers who fit none of them.</li>
+    <li><strong>HDBSCAN</strong> can show a large mainstream group and a small, tight niche side by side, even though their densities differ.</li>
+    <li><strong>Agglomerative clustering</strong> gives a tree of segments, so you can cut it into 3 broad segments for a strategy meeting or 8 finer ones for a campaign.</li>
+  </ul>
+<h3 id="noise-not-bad" style="scroll-margin-top:90px">Noise is not the same as a bad customer</h3>
+  <p>A customer labelled noise only means that they don’t sit in a dense region of these two features. They might be a business buyer who orders rarely but in bulk, someone who made a single large gift purchase, a top spender, or a data entry error. Look at them before you discard them, because they can be the most valuable customers you have.</p>
 <h2 id="comparison" style="scroll-margin-top:90px">Head-to-Head Comparison of All Five Methods</h2>
-  <p class="post-lead">K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</p>
+  <p class="post-lead">K-means is the simplest option but the least flexible. The other four give up some simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy. First, how each method defines a cluster:</p>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Method</th><th>What a cluster is</th><th>Number of clusters</th><th>Shapes it handles</th><th>Outliers and noise</th><th>Large datasets</th></tr></thead>
+    <thead><tr><th>Method</th><th>What a cluster is</th><th>Number of clusters</th><th>Shapes it handles</th><th>Outliers and noise</th><th>Key parameters</th></tr></thead>
     <tbody>
-      <tr><td>K-means</td><td>A group around a centre</td><td>You choose k</td><td>Round blobs of similar size</td><td>No noise label; outliers pull centres</td><td>Very well</td></tr>
-      <tr><td>Gaussian Mixture</td><td>An oval with a probability per point</td><td>You choose the number of components</td><td>Ovals, including overlapping ones</td><td>No noise label</td><td>Well</td></tr>
-      <tr><td>DBSCAN</td><td>A dense region</td><td>Found automatically (set eps and min_samples)</td><td>Any shape, one density</td><td>Flagged as noise</td><td>Well</td></tr>
-      <tr><td>HDBSCAN</td><td>A dense region, at any density</td><td>Found automatically (set min_cluster_size)</td><td>Any shape, varying densities</td><td>Flagged as noise</td><td>Moderately</td></tr>
-      <tr><td>Agglomerative</td><td>A level of a merge tree</td><td>You choose k or the cut height</td><td>Depends on the linkage</td><td>Depends on the linkage; single linkage is sensitive</td><td>Poorly</td></tr>
+      <tr><td>K-means</td><td>Points around a centre (a mean)</td><td>You choose k</td><td>Round, similar size</td><td>No noise label; outliers pull centres</td><td>k</td></tr>
+      <tr><td>Gaussian Mixture</td><td>An oval (Gaussian) with soft probabilities</td><td>You choose the number of components</td><td>Ovals, including tilted and overlapping ones</td><td>No noise label; outliers can stretch a component</td><td>Number of components, covariance type</td></tr>
+      <tr><td>DBSCAN</td><td>A dense region</td><td>Found automatically</td><td>Any shape, but one density level</td><td>Flagged as noise</td><td>eps, min_samples</td></tr>
+      <tr><td>HDBSCAN</td><td>A dense region, with density allowed to vary</td><td>Found automatically</td><td>Any shape, varying densities</td><td>Flagged as noise</td><td>min_cluster_size, min_samples</td></tr>
+      <tr><td>Agglomerative</td><td>A cut through a merge tree</td><td>You choose k or a distance threshold</td><td>Depends on the linkage</td><td>No noise label; depends on the linkage</td><td>Linkage, k or threshold</td></tr>
+    </tbody>
+  </table></div>
+  <p>And what each method is good and bad at. Speed and memory depend on the data and the implementation, so the notes below are typical tendencies, not guarantees:</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Method</th><th>Strengths</th><th>Limitations</th><th>Good fit when</th></tr></thead>
+    <tbody>
+      <tr><td>K-means</td><td>Simple and quick; typically scales well to large datasets</td><td>Fails silently when its assumptions break; sensitive to feature scale and starting points</td><td>Round, similar-sized groups; a fast first look</td></tr>
+      <tr><td>Gaussian Mixture</td><td>Soft probabilities; flexible oval shapes</td><td>Still assumes bell-shaped groups; the number of covariance parameters grows quickly with more features</td><td>Overlapping segments, or when uncertainty matters</td></tr>
+      <tr><td>DBSCAN</td><td>Any shape; flags noise; no k needed</td><td>One eps for all densities; sensitive to eps and feature scale</td><td>Dense groups of similar density, with outliers to flag</td></tr>
+      <tr><td>HDBSCAN</td><td>Handles varying densities; less sensitive to the exact radius</td><td>Still depends on min_cluster_size; typically slower than DBSCAN</td><td>Groups of different density, with noise present</td></tr>
+      <tr><td>Agglomerative</td><td>Shows structure at every level; k can be chosen after the tree is built</td><td>Merges are final; often needs memory for all pairwise distances, so less suited to very large datasets</td><td>Small to medium datasets, or when the hierarchy itself is useful</td></tr>
     </tbody>
   </table></div>
 <h2 id="how-to-choose" style="scroll-margin-top:90px">How to Choose a Clustering Method</h2>
@@ -321,14 +358,14 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
   </ul>
 <h3 id="habits" style="scroll-margin-top:90px">Three habits for every method</h3>
 <ul class="post-points post-points-color">
-    <li><strong>Scale your features first.</strong> Most of these methods rely on distances. A feature measured in euros (hundreds) will drown out one measured in orders per year (single digits), and eps in DBSCAN means nothing until the features are on a comparable scale.</li>
+    <li><strong>Scale your features first.</strong> These methods rely on distances, so a feature measured in euros will drown out one measured in orders per year (see the scaling note above).</li>
     <li><strong>Plot the result.</strong> Wrong clusters still look tidy. With two features, a scatter plot is enough; with more, project the data down to two dimensions first.</li>
     <li><strong>Check more than one signal.</strong> The silhouette score helps when you have no true labels, but it tends to favour compact, round clusters, so it can rate a correct clustering of curved groups lower than a wrong round one. Always ask whether the segments make business sense too.</li>
   </ul>
 <h3 id="other-methods" style="scroll-margin-top:90px">Other methods</h3>
   <p>Spectral Clustering, Mean Shift, OPTICS, BIRCH, K-Medoids and Affinity Propagation also exist. The five in this post cover the most common everyday cases.</p>
 <h2 id="key-takeaway" style="scroll-margin-top:90px">Key Takeaway: Choose the Definition of a Cluster That Fits Your Data</h2>
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>K-means, Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering are five different answers to the question “what is a cluster?”: a group around a centre, an oval with probabilities, a dense region, a dense region at any density, or a level in a tree. No method is the best one. The right one is the one whose definition matches your data. And because every method returns clusters whether or not they make sense, always plot the result and check it against what you know about the business.</p></div>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>K-means, Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering are five different answers to the question “what is a cluster?”: a group around a centre, an oval with probabilities, a dense region, a dense region at any density, or a level in a tree. No method is the best one. The right one is the one whose definition matches your data. And because every method returns clusters whether or not they make sense, always plot the result and check it against what you know about the business.</p><p><strong>What does a meaningful cluster actually look like in my data?</strong></p></div>
 
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
