@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When K-Means Fails: GMM, DBSCAN, HDBSCAN and Agglomerative Clustering Explained – Yuanyuan Zhang</title>
+  <meta name="description" content="When k-means fails: how Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering work, and when to use each of them.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261024f">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Unsupervised learning</p>
+  <h1 class="post-title">When K-Means Fails: GMM, DBSCAN, HDBSCAN and Agglomerative Clustering Explained</h1>
+
+<h2 id="introduction" style="scroll-margin-top:90px">Introduction</h2>
+  <p>K-Means always finds clusters, even when the data doesn't naturally contain them. Give it two crescent moons, two rings, or a dataset with a few extreme outliers, and it will still divide the observations into neat-looking groups. The problem? Those groups might have very little to do with the actual structure of the data.</p>
+  <p>Why does this happen? K-Means is built around specific assumptions about how clusters are shaped and distributed. When those assumptions don't hold, the results can be misleading.</p>
+  <p>Fortunately, K-Means isn't the only option.</p>
+  <p>In this article, we'll explore four alternative clustering algorithms — Gaussian Mixture Models (GMM), DBSCAN, HDBSCAN, and Agglomerative Clustering — understand how they work, and, more importantly, when to use each of them.</p>
+  <div class="post-note post-note-plain">
+    <p class="post-note-l">Running example</p>
+    <p>Throughout the article, we'll use a customer segmentation scenario from an online shop. Imagine grouping customers based on two features: orders per year and average basket value. All visualizations use simulated data to illustrate how different algorithms approach the same clustering problem.</p>
+  </div>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#seeing-it-fail">Seeing it fail</a></li><li><a href="#reading-agreement">How to read “agreement”</a></li></ul></details></li>
+      <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-picture">In the picture</a></li></ul></details></li>
+      <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: one radius per group</a></li><li><a href="#dbscan-try">Try it yourself</a></li></ul></details></li>
+      <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li></ul></details></li>
+      <li><a href="#comparison">Head-to-Head Comparison of All Five Methods</a></li>
+      <li><a href="#how-to-choose">How to Choose a Clustering Method</a></li>
+      <li><a href="#key-takeaway">Key Takeaway: Choose the Definition of a Cluster That Fits Your Data</a></li>
+    </ul>
+  </div>
+
+<h2 id="why-kmeans-fails" style="scroll-margin-top:90px">Why K-Means Can Fail: Four Hidden Assumptions</h2>
+  <p><strong>K-means assumes four things about your data. When your data breaks one of them, it fails without any warning.</strong></p>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Quick refresher: how k-means works</p>
+    <p>K-means picks k centres, assigns every point to its nearest centre, moves each centre to the mean of its points, and repeats until nothing changes.</p>
+    <p>In the shop example, each centre is a typical customer profile, and every customer joins the closest profile.</p>
+  </div>
+<h3 id="four-assumptions" style="scroll-margin-top:90px">The four hidden assumptions</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Clusters are round blobs.</strong> The border between two clusters is always a straight line, and a crescent or a ring can’t be separated by one.</li>
+    <li><strong>Clusters have similar size and spread.</strong> The border sits halfway between two centres, so a big, spread-out group next to a small, tight one gets cut in the wrong place.</li>
+    <li><strong>Every point belongs to a cluster.</strong> There is no noise label, and a centre is an average. Three customers who each spend 50 times the average can pull a centre away from the real group.</li>
+    <li><strong>You choose k first.</strong> The elbow curve and the silhouette score help, but they can’t tell you that the shape is the real problem.</li>
+  </ul>
+<h3 id="seeing-it-fail" style="scroll-margin-top:90px">Seeing it fail</h3>
+  <p>Each dataset below breaks one assumption and has two true groups. K-means (k = 2) runs on all four:</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-1-kmeans-fails.webp" alt="K-means on four datasets: two moons, unequal sizes, outliers and rings. In each, k-means cuts the true groups in the wrong place; agreement with the true groups falls to between 0.00 and 0.49." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 1</span> K-means cuts through the true groups in all four datasets, so a tidy-looking result can still be wrong. Simulated data.</figcaption>
+  </figure>
+<h3 id="each-panel" style="scroll-margin-top:90px">What went wrong in each panel</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Two moons:</strong> cut in half by a straight line (agreement 0.27).</li>
+    <li><strong>Unequal sizes:</strong> the big group is split, and part of it joins the small one (agreement 0.49).</li>
+    <li><strong>Outliers:</strong> 14 far-away points take one centre for themselves, so the two real groups merge into one (agreement 0.00).</li>
+    <li><strong>Rings:</strong> sliced by a straight line instead of separated into inner and outer ring (agreement 0.00).</li>
+  </ul>
+<h3 id="reading-agreement" style="scroll-margin-top:90px">How to read “agreement”</h3>
+<ul class="post-points post-points-color">
+    <li><strong>What it is:</strong> the adjusted Rand index, which compares the k-means labels with the true groups.</li>
+    <li><strong>How to read it:</strong> 1.0 means a perfect match, and a value near 0 means no better than random. Outlier points are left out of the score.</li>
+    <li><strong>The catch:</strong> you can only compute it when you know the true groups, as with simulated data. On real data you usually don’t, which is exactly why a wrong clustering is so easy to miss.</li>
+  </ul>
+  <div class="post-note post-note-plain"><p class="post-note-l">Silent failure</p><p>None of these four runs raised an error or a warning.</p></div>
+<h2 id="gmm" style="scroll-margin-top:90px">Gaussian Mixture Models: Clusters With Shape and Probabilities</h2>
+  <p><strong>A Gaussian Mixture Model (GMM) describes each cluster as an oval and gives every point a probability instead of a single verdict.</strong></p>
+<h3 id="gmm-idea" style="scroll-margin-top:90px">The idea: a party</h3>
+  <p>Someone standing between the music corner and the food table is maybe 70% part of one group and 30% part of the other. K-means forces a single answer. A GMM keeps both numbers.</p>
+  <p>In the shop example, a customer who orders often with small baskets might be 85% “frequent small-basket buyer” and 15% “bulk buyer”. K-means would only report the first label and hide the 15%.</p>
+<h3 id="gmm-how" style="scroll-margin-top:90px">How it works</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Each cluster is a bell-shaped (Gaussian) distribution</strong> with its own centre, its own shape (how stretched and tilted the oval is) and its own size.</li>
+    <li><strong>The model fits all of them at once</strong>, then works out how likely each point came from each one.</li>
+    <li><strong>This is soft clustering</strong>, as opposed to the hard labels of k-means.</li>
+  </ul>
+<h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Fixed:</strong> clusters can be stretched and tilted, and clusters can overlap.</li>
+    <li><strong>Still open:</strong> you choose the number of components up front.</li>
+    <li><strong>Still open:</strong> every cluster is assumed to be bell-shaped, so crescents and rings remain a problem.</li>
+  </ul>
+<h3 id="gmm-picture" style="scroll-margin-top:90px">In the picture</h3>
+  <p>Two stretched, diagonal groups lie side by side. Dot colour shows the probability of belonging to each group.</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-2-gmm-vs-kmeans.webp" alt="K-means versus a Gaussian mixture on two diagonal oval groups. K-means cuts across both ovals with agreement 0.03; the Gaussian mixture follows them with agreement 1.00 and marks one uncertain point." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 2</span> K-means cuts across both ovals, while the GMM follows them and shows where it is unsure. Simulated data.</figcaption>
+  </figure>
+<ul class="post-points post-points-color">
+    <li><strong>K-means:</strong> the dashed border cuts straight across both ovals (agreement 0.03).</li>
+    <li><strong>GMM:</strong> an oval around each group follows them (agreement 1.00).</li>
+    <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
+  </ul>
+<h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
+  <p><strong>DBSCAN defines a cluster as a crowded region separated from other crowds by empty space. It finds clusters of any shape and labels the loners as noise.</strong></p>
+<h3 id="dbscan-idea" style="scroll-margin-top:90px">The idea: a city at night</h3>
+  <p>Seen from above, crowds are clusters. A person standing alone far from everyone is not part of any crowd, just a passerby.</p>
+  <p>In the shop example, the crowds are groups of regular customers with similar behaviour, and the passersby are a handful of unusual buyers who don’t resemble anyone. DBSCAN gives those buyers the label -1 (noise) instead of forcing them into a group.</p>
+<h3 id="dbscan-settings" style="scroll-margin-top:90px">The two settings</h3>
+<ul class="post-points post-points-color">
+    <li><strong>eps:</strong> the search radius around a point.</li>
+    <li><strong>min_samples:</strong> how many points must sit within that radius for the spot to count as crowded.</li>
+  </ul>
+<h3 id="dbscan-roles" style="scroll-margin-top:90px">Three roles for every point</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Core point:</strong> has enough points within eps.</li>
+    <li><strong>Border point:</strong> within eps of a core point, but not crowded itself.</li>
+    <li><strong>Noise point:</strong> neither.</li>
+  </ul>
+  <p>Clusters grow by chaining core points together, which is why they can bend around curves.</p>
+<h3 id="dbscan-fixes" style="scroll-margin-top:90px">What it fixes, and the catch</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Fixed:</strong> you don’t choose k.</li>
+    <li><strong>Fixed:</strong> clusters can take any shape.</li>
+    <li><strong>Fixed:</strong> outliers are flagged instead of dragging a centre.</li>
+    <li><strong>The catch:</strong> eps is a single radius for the whole dataset. A dense group needs a small eps, a sparse group needs a large one, and no single value suits both.</li>
+  </ul>
+<h3 id="dbscan-picture" style="scroll-margin-top:90px">In the picture</h3>
+  <p>The data has two dense groups, one sparse group and 20 random noise points. Three runs on the same data:</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-3-dbscan-vs-hdbscan.webp" alt="DBSCAN with a small eps, DBSCAN with a large eps, and HDBSCAN on the same data. Small eps finds 2 clusters and 125 noise points, large eps finds 2 clusters and 24 noise points, HDBSCAN finds 3 clusters and 28 noise points." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 3</span> No single eps recovers all three groups, but HDBSCAN does. Simulated data.</figcaption>
+  </figure>
+<h3 id="dbscan-found" style="scroll-margin-top:90px">What each run found</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Small eps:</strong> the sparse group dissolves into noise. 2 clusters, 125 noise points.</li>
+    <li><strong>Large eps:</strong> the sparse group survives, but the two neighbouring dense groups melt into one. 2 clusters, 24 noise points.</li>
+    <li><strong>HDBSCAN:</strong> all 3 groups found, 28 noise points, close to the 20 true noise points.</li>
+  </ul>
+<h3 id="hdbscan" style="scroll-margin-top:90px">HDBSCAN: one radius per group</h3>
+<ul class="post-points post-points-color">
+    <li><strong>The idea:</strong> instead of one radius, HDBSCAN looks at clusters across many radii and keeps the ones that stay stable, so each group effectively gets its own radius.</li>
+    <li><strong>The main setting:</strong> min_cluster_size, the smallest group you are willing to call a cluster (25 in this example).</li>
+  </ul>
+<h3 id="dbscan-try" style="scroll-margin-top:90px">Try it yourself</h3>
+  <p>Move eps and min_samples and watch groups appear, merge or turn into noise. With min_samples = 8, none of the radii I tried (0.12 to 1.0) recovered all three groups.</p>
+  <figure class="post-fig post-fig-wide db-fig" id="db-demo">
+  <style>
+    .db-fig svg{width:100%;height:auto;display:block;background:#fff}
+    .db-ctl{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+    .db-ctl label{font-size:.9rem;font-weight:600;min-width:104px}
+    .db-ctl span{font-size:.9rem;font-weight:600;min-width:40px;text-align:right;font-variant-numeric:tabular-nums}
+    .db-ctl input[type=range]{flex:1;accent-color:#1d57b5}
+    .db-stats{display:flex;gap:10px;margin:12px 0}
+    .db-stat{border:1px solid #e3e3e3;padding:8px 12px;flex:1;background:#fff}
+    .db-stat b{font-size:1.4rem;font-weight:600;display:block;font-variant-numeric:tabular-nums}
+    .db-stat i{font-style:normal;font-size:.8rem;color:#555}
+    .db-cap{font-size:.95rem;margin:0;min-height:2.8em}
+  </style>
+  <div class="db-ctl"><label for="db-eps">eps (radius)</label><input type="range" id="db-eps" min="0.05" max="1.2" step="0.01" value="0.2"><span id="db-epsv">0.20</span></div>
+  <div class="db-ctl"><label for="db-ms">min_samples</label><input type="range" id="db-ms" min="3" max="15" step="1" value="8"><span id="db-msv">8</span></div>
+  <svg id="db-plot" viewBox="0 0 680 330" role="img" aria-label="Interactive scatter plot of three groups plus noise, coloured by DBSCAN cluster. Sliders change eps and min_samples."></svg>
+  <div class="db-stats"><div class="db-stat"><b id="db-k">0</b><i>clusters found (true: 3)</i></div><div class="db-stat"><b id="db-nz">0</b><i>points flagged as noise (true: 20)</i></div></div>
+  <p class="db-cap" id="db-cap" aria-live="polite"></p>
+  <figcaption><span>Chart 4</span> Small eps loses the sparse group to noise, large eps merges the two dense groups. Simulated data (a separate draw from Chart 3, so counts differ slightly): two dense groups, one sparse group, 20 random noise points.</figcaption>
+  <script>
+(function(){
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var r=rng(42);
+function gauss(){var u=1-r(),v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+var P=[],T=[];
+function add(n,cx,cy,s,t){for(var i=0;i<n;i++){P.push([cx+s*gauss(),cy+s*gauss()]);T.push(t)}}
+add(150,0,0,.22,0);add(150,1.4,0,.22,1);add(100,4.5,1.5,.8,2);
+for(var i=0;i<20;i++){P.push([-1+7.5*r(),-2+5.5*r()]);T.push(3)}
+var n=P.length,x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+P.forEach(function(p){x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1])});
+var sc=Math.min(640/(x1-x0),300/(y1-y0)),ox=(680-(x1-x0)*sc)/2,oy=(330-(y1-y0)*sc)/2;
+function X(p){return ox+(p[0]-x0)*sc}function Y(p){return oy+(y1-p[1])*sc}
+var COL=['#D8433A','#2F63B5','#2E9A5E','#7B4FC0','#E3A21A','#D4537E','#0F6E56'];
+var NS='http://www.w3.org/2000/svg',svg=document.getElementById('db-plot'),dots=[];
+var ring=document.createElementNS(NS,'circle');ring.setAttribute('fill','none');ring.setAttribute('stroke','#888780');ring.setAttribute('stroke-dasharray','5 4');ring.setAttribute('stroke-width','1.5');svg.appendChild(ring);
+var rl=document.createElementNS(NS,'text');rl.setAttribute('font-size','13');rl.setAttribute('fill','#888780');rl.textContent='eps';svg.appendChild(rl);
+P.forEach(function(p){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',X(p).toFixed(1));c.setAttribute('cy',Y(p).toFixed(1));c.setAttribute('r','3.6');svg.appendChild(c);dots.push(c)});
+var cx0=X([4.5,1.5]),cy0=Y([4.5,1.5]);
+function dbscan(eps,m){var lab=new Array(n).fill(-2),c=-1,e2=eps*eps;
+function nb(i){var o=[];for(var j=0;j<n;j++){var dx=P[i][0]-P[j][0],dy=P[i][1]-P[j][1];if(dx*dx+dy*dy<=e2)o.push(j)}return o}
+for(var i=0;i<n;i++){if(lab[i]!==-2)continue;var N=nb(i);if(N.length<m){lab[i]=-1;continue}c++;lab[i]=c;var q=N.slice();for(var k=0;k<q.length;k++){var j=q[k];if(lab[j]===-1)lab[j]=c;if(lab[j]!==-2)continue;lab[j]=c;var M=nb(j);if(M.length>=m)for(var t=0;t<M.length;t++)q.push(M[t])}}
+return{lab:lab,k:c+1}}
+var NAMES=['the left dense group','the right dense group','the sparse group'];
+function update(){
+var eps=+document.getElementById('db-eps').value,m=+document.getElementById('db-ms').value;
+document.getElementById('db-epsv').textContent=eps.toFixed(2);document.getElementById('db-msv').textContent=m;
+var res=dbscan(eps,m),lab=res.lab,noise=0,size=[0,0,0],nz=[0,0,0],cnt={};
+for(var i=0;i<n;i++){var l=lab[i],c=dots[i];
+if(l<0){noise++;c.setAttribute('fill','none');c.setAttribute('stroke','#888780');c.setAttribute('stroke-width','1.4')}
+else{c.setAttribute('fill',COL[l%COL.length]);c.setAttribute('fill-opacity','.75');c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','.8')}
+var t=T[i];if(t<3){size[t]++;if(l<0)nz[t]++;else{cnt[l]=cnt[l]||[0,0,0];cnt[l][t]++}}}
+ring.setAttribute('cx',cx0);ring.setAttribute('cy',cy0);ring.setAttribute('r',(eps*sc).toFixed(1));rl.setAttribute('x',cx0+eps*sc+6);rl.setAttribute('y',cy0+4);
+document.getElementById('db-k').textContent=res.k;document.getElementById('db-nz').textContent=noise;
+var lost=[],merged=false;
+for(var g=0;g<3;g++)if(nz[g]>0.8*size[g])lost.push(NAMES[g]);
+Object.keys(cnt).forEach(function(c){var s=0;for(var g=0;g<3;g++)if(cnt[c][g]>0.5*size[g])s++;if(s>=2)merged=true});
+var msg=[];
+if(res.k===0)msg.push('Everything is flagged as noise: eps is too small for this min_samples.');
+else{if(lost.length)msg.push('Lost as noise: '+lost.join(' and ')+'.');if(merged)msg.push('Two true groups have melted into one cluster.');if(!lost.length&&!merged)msg.push('Every group has its own cluster.');}
+if(res.k>3)msg.push('More than 3 clusters: groups are being split into pieces.');
+document.getElementById('db-cap').textContent=msg.join(' ');
+}
+document.getElementById('db-eps').addEventListener('input',update);document.getElementById('db-ms').addEventListener('input',update);update();
+})();
+</script>
+</figure>
+<h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
+  <p><strong>Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</strong></p>
+<h3 id="agg-idea" style="scroll-margin-top:90px">The idea: a family tree</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Start:</strong> every customer is their own group.</li>
+    <li><strong>Merge:</strong> the two most similar customers pair up, similar pairs merge into small segments, and segments keep merging.</li>
+    <li><strong>End:</strong> one group holds every customer.</li>
+  </ul>
+  <p>The whole history of merges is kept, so you can look at the structure first and decide afterwards how many segments make sense.</p>
+<h3 id="linkage" style="scroll-margin-top:90px">Linkage: what does “closest” mean?</h3>
+  <p>When each group has many points, one choice decides how the tree looks: how to measure the distance between two groups. That is the linkage method.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Linkage</th><th>Distance between two clusters</th><th>Tends to produce</th></tr></thead>
+    <tbody>
+      <tr><td>Single</td><td>Closest pair of points</td><td>Long, curved chains; sensitive to noise</td></tr>
+      <tr><td>Complete</td><td>Farthest pair of points</td><td>Compact clusters of similar width</td></tr>
+      <tr><td>Average</td><td>Average over all pairs of points</td><td>A compromise between single and complete</td></tr>
+      <tr><td>Ward</td><td>The merge that raises the variance the least</td><td>Round, even clusters, similar to k-means</td></tr>
+    </tbody>
+  </table></div>
+<h3 id="linkage-picture" style="scroll-margin-top:90px">In the picture: the linkage changes the answer</h3>
+  <p>All four runs use the same moon-shaped data and ask for 2 clusters:</p>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-4-linkage.webp" alt="Four linkage methods on two moons. Single linkage follows the curve with agreement 1.00; complete, average and Ward cut the moons into compact chunks with agreement 0.23, 0.15 and 0.29." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 5</span> Only single linkage follows the curve of the moons; the other three cut them into compact chunks. Simulated data.</figcaption>
+  </figure>
+<ul class="post-points post-points-color">
+    <li><strong>Single linkage:</strong> follows the curve of the moons (agreement 1.00).</li>
+    <li><strong>Complete (0.23), average (0.15) and Ward (0.29):</strong> all cut the moons into compact chunks.</li>
+  </ul>
+<h3 id="agg-noise" style="scroll-margin-top:90px">The catch: noise breaks single linkage</h3>
+<ul class="post-points post-points-color">
+    <li><strong>The test:</strong> I added 12 random noise points to the same data.</li>
+    <li><strong>The result:</strong> single linkage dropped to an agreement of 0.00. A few stray points were enough to bridge the gap between the moons, so almost everything ended up in one cluster.</li>
+    <li><strong>The lesson:</strong> the method that follows curves best is also the one that noise disturbs most.</li>
+  </ul>
+<h3 id="dendrogram" style="scroll-margin-top:90px">Reading the dendrogram</h3>
+  <p>The tree itself is called a dendrogram. In the picture below, the red line crosses 3 branches, so it gives 3 clusters.</p>
+<ul class="post-points post-points-color">
+    <li><strong>Leaf:</strong> one point.</li>
+    <li><strong>Joint:</strong> a merge. Its height shows how far apart the two merged groups were.</li>
+    <li><strong>Horizontal cut:</strong> every branch the line crosses is one cluster. A lower line gives more, smaller clusters; a higher line gives fewer, larger ones.</li>
+    <li><strong>Good sign:</strong> a long vertical stretch with no merges, like the gap around the red line, hints that the groups below it are really separate.</li>
+  </ul>
+  <figure class="post-fig post-fig-wide">
+    <img src="images/when-kmeans-fails/chart-5-dendrogram.webp" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
+    <figcaption><span>Chart 6</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
+  </figure>
+<h3 id="agg-limits" style="scroll-margin-top:90px">Two limits to keep in mind</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Size:</strong> it compares many pairs of points, so it gets slow and memory-hungry on large datasets.</li>
+    <li><strong>No undo:</strong> a merge can never be undone once it has happened.</li>
+  </ul>
+<h2 id="comparison" style="scroll-margin-top:90px">Head-to-Head Comparison of All Five Methods</h2>
+  <p><strong>K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</strong></p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Method</th><th>What a cluster is</th><th>Number of clusters</th><th>Shapes it handles</th><th>Outliers and noise</th><th>Large datasets</th></tr></thead>
+    <tbody>
+      <tr><td>K-means</td><td>A group around a centre</td><td>You choose k</td><td>Round blobs of similar size</td><td>No noise label; outliers pull centres</td><td>Very well</td></tr>
+      <tr><td>Gaussian Mixture</td><td>An oval with a probability per point</td><td>You choose the number of components</td><td>Ovals, including overlapping ones</td><td>No noise label</td><td>Well</td></tr>
+      <tr><td>DBSCAN</td><td>A dense region</td><td>Found automatically (set eps and min_samples)</td><td>Any shape, one density</td><td>Flagged as noise</td><td>Well</td></tr>
+      <tr><td>HDBSCAN</td><td>A dense region, at any density</td><td>Found automatically (set min_cluster_size)</td><td>Any shape, varying densities</td><td>Flagged as noise</td><td>Moderately</td></tr>
+      <tr><td>Agglomerative</td><td>A level of a merge tree</td><td>You choose k or the cut height</td><td>Depends on the linkage</td><td>Depends on the linkage; single linkage is sensitive</td><td>Poorly</td></tr>
+    </tbody>
+  </table></div>
+<h2 id="how-to-choose" style="scroll-margin-top:90px">How to Choose a Clustering Method</h2>
+  <p><strong>Start from the shape of your data and what you need from the result, not from the algorithm.</strong></p>
+<h3 id="pick" style="scroll-margin-top:90px">Pick by situation</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Round, similar-sized groups and a large dataset:</strong> use k-means. It is still the right default, and it is easy to explain to stakeholders.</li>
+    <li><strong>Stretched or overlapping groups, or you want to know how sure the model is:</strong> use a Gaussian Mixture Model.</li>
+    <li><strong>Odd shapes, or you want outliers flagged as noise:</strong> use DBSCAN. If the groups differ a lot in density, use HDBSCAN.</li>
+    <li><strong>You want to see the structure first, or the dataset is small:</strong> use agglomerative clustering. Pick Ward for round groups and single linkage for curved chains, and watch out for noise.</li>
+    <li><strong>Not sure:</strong> try two or three methods and compare the results.</li>
+  </ul>
+<h3 id="habits" style="scroll-margin-top:90px">Three habits for every method</h3>
+<ul class="post-points post-points-color">
+    <li><strong>Scale your features first.</strong> Most of these methods rely on distances. A feature measured in euros (hundreds) will drown out one measured in orders per year (single digits), and eps in DBSCAN means nothing until the features are on a comparable scale.</li>
+    <li><strong>Plot the result.</strong> Wrong clusters still look tidy. With two features, a scatter plot is enough; with more, project the data down to two dimensions first.</li>
+    <li><strong>Check more than one signal.</strong> The silhouette score helps when you have no true labels, but it tends to favour compact, round clusters, so it can rate a correct clustering of curved groups lower than a wrong round one. Always ask whether the segments make business sense too.</li>
+  </ul>
+<h3 id="other-methods" style="scroll-margin-top:90px">Other methods</h3>
+  <p>Spectral Clustering, Mean Shift, OPTICS, BIRCH, K-Medoids and Affinity Propagation also exist. The five in this post cover the most common everyday cases.</p>
+<h2 id="key-takeaway" style="scroll-margin-top:90px">Key Takeaway: Choose the Definition of a Cluster That Fits Your Data</h2>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>K-means, Gaussian Mixture Models, DBSCAN, HDBSCAN and agglomerative clustering are five different answers to the question “what is a cluster?”: a group around a centre, an oval with probabilities, a dense region, a dense region at any density, or a level in a tree. No method is the best one. The right one is the one whose definition matches your data. And because every method returns clusters whether or not they make sense, always plot the result and check it against what you know about the business.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="k-means.html">K-Means Clustering</a> How k-means works, how to choose k, and how to evaluate the result.</li>
+  </ul>
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
