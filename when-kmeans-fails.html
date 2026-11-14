@@ -97,16 +97,19 @@
   </ul>
   <div class="post-note post-note-plain"><p class="post-note-l">Silent failure</p><p>None of these four runs raised an error or a warning.</p></div>
 <h2 id="gmm" style="scroll-margin-top:90px">Gaussian Mixture Models: Clusters With Shape and Probabilities</h2>
-  <p class="post-lead">A Gaussian Mixture Model (GMM) describes each cluster as an oval and gives every point a probability instead of a single verdict.</p>
+  <p class="post-lead">A Gaussian Mixture Model (GMM) represents clusters as overlapping probability distributions. Instead of assigning each data point to exactly one cluster, it estimates the probability of belonging to each cluster.</p>
 <h3 id="gmm-idea" style="scroll-margin-top:90px">The idea: a party</h3>
-  <p>Someone standing between the music corner and the food table is maybe 70% part of one group and 30% part of the other. K-means forces a single answer. A GMM keeps both numbers.</p>
-  <p>In the shop example, a customer who orders often with small baskets might be 85% “frequent small-basket buyer” and 15% “bulk buyer”. K-means would only report the first label and hide the 15%.</p>
+  <p>Imagine someone standing between the music corner and the food table. They're clearly enjoying both. Perhaps there's a 70% chance they'd belong to one group and a 30% chance they'd belong to the other.</p>
+  <p>K-Means forces a single assignment. A GMM can capture both possibilities.</p>
+  <p>In our online shop example, a customer who frequently places small orders might have an 85% probability of belonging to the "frequent small-basket buyers" cluster and a 15% probability of belonging to the "bulk buyers" cluster.</p>
+  <p>Rather than forcing a definite label, GMM preserves this uncertainty.</p>
 <h3 id="gmm-how" style="scroll-margin-top:90px">How it works</h3>
 <ul class="post-points post-points-color">
-    <li><strong>Each cluster is a bell-shaped (Gaussian) distribution</strong> with its own centre, its own shape (how stretched and tilted the oval is) and its own size.</li>
-    <li><strong>The model fits all of them at once</strong>, then works out how likely each point came from each one.</li>
-    <li><strong>This is soft clustering</strong>, as opposed to the hard labels of k-means.</li>
+    <li><strong>Each cluster is represented by a Gaussian distribution.</strong> It has its own centre (mean), shape and orientation (covariance), and weight within the overall mixture.</li>
+    <li><strong>The model estimates all distributions together.</strong> It learns where the clusters are, how spread out they are, and how much each contributes to the overall data distribution.</li>
+    <li><strong>Each data point receives probabilities for all clusters.</strong> These probabilities, also called responsibilities, indicate how likely the observation is to belong to each Gaussian component.</li>
   </ul>
+  <p>This is called soft clustering, in contrast to the hard cluster assignments produced by K-Means.</p>
 <h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
 <ul class="post-points post-points-color">
     <li><strong>Fixed:</strong> clusters can be stretched and tilted, and clusters can overlap.</li>
