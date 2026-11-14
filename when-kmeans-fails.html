@@ -32,9 +32,6 @@
   <style>
     .post-wkf h2{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
     .post-wkf #introduction{margin-top:32px;padding-top:0;border-top:0}
-    .post-wkf .post-sum{margin:36px 0 8px;padding:18px 22px;background:none;border-left:4px solid #f5c548;border-radius:0}
-    .post-wkf .post-sum-l{margin:0 0 6px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-style:italic;color:#8a6a00}
-    .post-wkf .post-sum p:not(.post-sum-l){margin:0}
     .post-wkf h3{font-size:1.15rem;margin:34px 0 10px}
     .post.post-wkf p.post-lead{font-size:1.12rem;line-height:1.6;font-weight:500;text-align:left;hyphens:none;margin:0 0 20px}
   </style>
@@ -138,7 +135,7 @@
     <li><strong>GMM:</strong> an oval around each group follows them (agreement 1.00).</li>
     <li><strong>Uncertain point:</strong> one point sits so close to the border that the model doesn’t commit above 90%.</li>
   </ul>
-  <div class="post-sum" id="gmm-fixes" style="scroll-margin-top:90px"><p class="post-sum-l">What it fixes, and where it still fails</p><p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front, and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p></div>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="gmm-fixes"><p class="post-note-l">What it fixes, and where it still fails</p><p>GMMs fix two of the main K-Means problems: clusters can be stretched and tilted, and they can overlap. Two limits remain. You still choose the number of components up front, and every cluster is assumed to be bell-shaped, so crescents and rings are still a problem.</p></div>
 <h2 id="dbscan" style="scroll-margin-top:90px">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</h2>
   <p class="post-lead">DBSCAN takes a different approach to clustering. Instead of looking for cluster centres, it looks for areas where data points are packed closely together. Dense regions become clusters, while isolated points can be classified as noise.</p>
   <p>Unlike K-Means, DBSCAN can discover clusters of different shapes without requiring the number of clusters in advance.</p>
@@ -247,7 +244,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
 })();
 </script>
 </figure>
-  <div class="post-sum" id="dbscan-fixes" style="scroll-margin-top:90px"><p class="post-sum-l">What it fixes, and the catch</p><p>DBSCAN fixes three K-Means problems at once. You don’t have to choose the number of clusters, clusters can take any shape, and outliers are flagged as noise instead of dragging a centre. The catch is that eps is a single radius for the whole dataset. A dense group needs a small eps and a sparse group needs a large one, so no single value suits both, as the first two runs above show.</p></div>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="dbscan-fixes"><p class="post-note-l">What it fixes, and the catch</p><p>DBSCAN fixes three K-Means problems at once. You don’t have to choose the number of clusters, clusters can take any shape, and outliers are flagged as noise instead of dragging a centre. The catch is that eps is a single radius for the whole dataset. A dense group needs a small eps and a sparse group needs a large one, so no single value suits both, as the first two runs above show.</p></div>
 <h2 id="agglomerative" style="scroll-margin-top:90px">Agglomerative Clustering: Building a Tree of Merges</h2>
   <p class="post-lead">Agglomerative clustering builds a family tree: it starts with every point alone and keeps merging the two closest groups. You can cut the tree at any level instead of choosing k up front.</p>
 <h3 id="agg-idea" style="scroll-margin-top:90px">The idea: a family tree</h3>
@@ -296,7 +293,7 @@ document.getElementById('db-eps').addEventListener('input',update);document.getE
     <img src="images/when-kmeans-fails/chart-5-dendrogram.webp" alt="A dendrogram of 13 points next to their scatter plot. A red dashed line cuts the tree into 3 clusters." width="1456" height="816" loading="lazy">
     <figcaption><span>Chart 7</span> The red line crosses 3 branches, so it gives 3 clusters; moving it up or down changes the number. Simulated data.</figcaption>
   </figure>
-  <div class="post-sum" id="agg-limits" style="scroll-margin-top:90px"><p class="post-sum-l">Two limits to keep in mind</p><p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p></div>
+  <div class="post-note post-note-plain post-note-concept" style="--accent:#dc452d;scroll-margin-top:90px" id="agg-limits"><p class="post-note-l">Two limits to keep in mind</p><p>Agglomerative clustering has two limits. It compares many pairs of points, so it gets slow and memory-hungry on large datasets. And a merge can never be undone once it has happened.</p></div>
 <h2 id="comparison" style="scroll-margin-top:90px">Head-to-Head Comparison of All Five Methods</h2>
   <p class="post-lead">K-means is the fastest and simplest option but the least flexible; the other four give up some speed or simplicity in exchange for handling ovals, odd shapes, noise or a hierarchy.</p>
   <div class="post-table-wrap"><table class="post-table">
