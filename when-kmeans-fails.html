@@ -55,7 +55,7 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><details><summary><a href="#why-kmeans-fails">Why K-Means Can Fail: Four Hidden Assumptions</a></summary><ul><li><a href="#reading-agreement">How to read “agreement”</a></li></ul></details></li>
-      <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-picture">In the picture</a></li></ul></details></li>
+      <li><details><summary><a href="#gmm">Gaussian Mixture Models: Clusters With Shape and Probabilities</a></summary><ul><li><a href="#gmm-idea">The idea: a party</a></li><li><a href="#gmm-how">How it works</a></li><li><a href="#gmm-em">How GMM learns: the EM algorithm</a></li><li><a href="#gmm-picture">In the picture</a></li></ul></details></li>
       <li><details><summary><a href="#dbscan">DBSCAN and HDBSCAN: Finding Clusters as Dense Regions</a></summary><ul><li><a href="#dbscan-idea">The idea: a city at night</a></li><li><a href="#dbscan-settings">The two settings</a></li><li><a href="#dbscan-roles">Three roles for every point</a></li><li><a href="#dbscan-picture">In the picture</a></li><li><a href="#hdbscan">HDBSCAN: one radius per group</a></li><li><a href="#dbscan-try">Try it yourself</a></li></ul></details></li>
       <li><details><summary><a href="#agglomerative">Agglomerative Clustering: Building a Tree of Merges</a></summary><ul><li><a href="#agg-idea">The idea: a family tree</a></li><li><a href="#linkage">Linkage: what does “closest” mean?</a></li><li><a href="#agg-noise">The catch: noise breaks single linkage</a></li><li><a href="#dendrogram">Reading the dendrogram</a></li></ul></details></li>
       <li><a href="#comparison">Head-to-Head Comparison of All Five Methods</a></li>
@@ -110,6 +110,21 @@
     <li><strong>Each data point receives probabilities for all clusters.</strong> These probabilities, also called responsibilities, indicate how likely the observation is to belong to each Gaussian component.</li>
   </ul>
   <p>This is called soft clustering, in contrast to the hard cluster assignments produced by K-Means.</p>
+<h3 id="gmm-em" style="scroll-margin-top:90px">How GMM learns: the EM algorithm</h3>
+  <p><strong>The chicken-and-egg problem.</strong> To describe each cluster, we need to know which customers belong to it. To know which customers belong to which cluster, we need to describe the clusters. GMM solves this with the <strong>Expectation-Maximization (EM) algorithm</strong>, which alternates between the two questions.</p>
+<ul class="post-points post-points-color">
+    <li><em>Step 1: Start with a guess.</em> Place the Gaussian components at starting positions.</li>
+    <li><em>Step 2: Expectation (E-step).</em> For every customer, calculate the probability of belonging to each component (the responsibilities).</li>
+    <li><em>Step 3: Maximization (M-step).</em> Update each component’s centre, shape and weight, giving more influence to the customers who most likely belong to it.</li>
+    <li><em>Step 4: Repeat Steps 2 and 3</em> until the fit stops improving.</li>
+  </ul>
+  <p><strong>E-step:</strong> the responsibility of component k for customer i.</p>
+  <p class="post-formula post-formula-plain">γ<sub>ik</sub> = <span class="frac"><span>π<sub>k</sub> · N(x<sub>i</sub> | μ<sub>k</sub>, Σ<sub>k</sub>)</span><span>Σ<sub>j</sub> π<sub>j</sub> · N(x<sub>i</sub> | μ<sub>j</sub>, Σ<sub>j</sub>)</span></span><span>x<sub>i</sub> = orders per year and average basket value of customer i, π<sub>k</sub> = weight, μ<sub>k</sub> = mean, Σ<sub>k</sub> = covariance of component k.</span></p>
+  <p>This is the 85% and 15% from the shop example. The top is how well component k explains the customer, and the bottom makes the probabilities add up to 1.</p>
+  <p><strong>M-step:</strong> update each component, where N<sub>k</sub> = Σ<sub>i</sub> γ<sub>ik</sub> is the effective number of customers in component k and N is the total number of customers.</p>
+  <p class="post-formula post-formula-plain">π<sub>k</sub> = <span class="frac"><span>N<sub>k</sub></span><span>N</span></span>&emsp;&emsp;μ<sub>k</sub> = <span class="frac"><span>Σ<sub>i</sub> γ<sub>ik</sub> · x<sub>i</sub></span><span>N<sub>k</sub></span></span>&emsp;&emsp;Σ<sub>k</sub> = <span class="frac"><span>Σ<sub>i</sub> γ<sub>ik</sub> · (x<sub>i</sub> − μ<sub>k</sub>)(x<sub>i</sub> − μ<sub>k</sub>)<sup>T</sup></span><span>N<sub>k</sub></span></span><span>New weight, mean and covariance of component k.</span></p>
+  <p>These are the ordinary share, mean and covariance, except that each customer counts in proportion to γ<sub>ik</sub>. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
+  <p>This is the soft version of what K-Means does: K-Means assigns each customer to one centroid and then moves the centroid, while EM assigns probabilities and then updates the whole distribution. Like K-Means, EM can end in a local optimum, so it is usually run from several starting points.</p>
 <h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
 <ul class="post-points post-points-color">
     <li><strong>Fixed:</strong> clusters can be stretched and tilted, and clusters can overlap.</li>
