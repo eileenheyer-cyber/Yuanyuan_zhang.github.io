@@ -270,14 +270,21 @@
   <p>The score peaks at k = 3, so it agrees with the elbow curve. If the two disagree, look at the clusters themselves and ask which one gives segments that are useful for the business.</p>
 
   <h2 id="putting-it-together" style="scroll-margin-top:90px">Putting It Together: Choosing the Number of Clusters</h2>
-  <p>We now have everything needed to run K-means on the shop's customers. In practice, the steps are:</p>
+  <p>Now that we understand how K-means works and how to evaluate its results, let's apply the process to our online shop's customers.</p>
+  <ol class="post-points post-points-color">
+    <li><strong>Standardize the features.</strong> Make sure orders per year and average order value contribute equally to distance calculations.</li>
+    <li><strong>Test different values of K.</strong> Run K-means with different numbers of clusters (e.g. K = 2 to 6) and use multiple initializations to reduce the risk of poor clustering results.</li>
+    <li><strong>Evaluate the results.</strong> Use the Elbow Method to examine how inertia changes as K increases, and the Silhouette Score to assess cluster cohesion and separation.</li>
+    <li><strong>Interpret the clusters.</strong> Look beyond the metrics. Do the resulting groups represent meaningful customer segments that the business can actually use?</li>
+  </ol>
+  <p>For our 24 customers, both evaluation methods support a three-cluster solution. Looking at the results, we can identify three distinct customer groups:</p>
   <ul class="post-points post-points-color">
-    <li><strong>Standardize the features</strong>, so that orders per year and average order value contribute equally to the distances.</li>
-    <li><strong>Run K-means for a range of K values</strong>, for example 2 to 6, with several restarts or k-means++ to avoid local minima.</li>
-    <li><strong>Check both evaluation tools.</strong> The elbow curve shows where extra clusters stop reducing inertia, and the silhouette score shows which K separates the clusters best.</li>
-    <li><strong>Look at the clusters themselves.</strong> The best K is the one that gives groups you can describe and act on.</li>
+    <li><strong>Occasional buyers:</strong> Few orders and relatively low average order value.</li>
+    <li><strong>Frequent shoppers:</strong> Many orders and moderate average order value.</li>
+    <li><strong>High-spending customers:</strong> Higher average order value.</li>
   </ul>
-  <p>For our 24 customers, both tools point to K = 3. Looking at the three clusters, they match the groups from the beginning of this post: occasional buyers (few orders, low order value), frequent shoppers (many orders, moderate order value) and high-spending customers (high order value). The shop can now tailor its marketing and offers to each of these groups, which was the original goal.</p>
+  <p>The online shop can now use these insights to develop more targeted marketing campaigns and tailor its offers to different customer groups.</p>
+  <p>And that's the real purpose of clustering: turning patterns in data into insights that support better business decisions.</p>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
