@@ -158,27 +158,37 @@
     .sil-ctl{margin:12px 0 4px}
     .sil-ctl label{display:block;font-size:.92rem;font-weight:600;margin-bottom:6px}
     .sil-ctl input[type=range]{width:100%;accent-color:#1d57b5}
-    .sil-eq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:18px 0 8px;font-size:1rem;font-variant-numeric:tabular-nums}
+    .sil-ends{display:flex;justify-content:space-between;font-size:.8rem;color:#555}
+    .sil-read{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 8px}
+    .sil-cell{border:1px solid #e3e3e3;padding:8px 10px;background:#fff}
+    .sil-cell b{display:block;font-size:.72rem;font-weight:600;letter-spacing:.02em;color:#555;margin-bottom:2px}
+    .sil-cell span{font-size:1.15rem;font-variant-numeric:tabular-nums}
+    .sil-eq{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-size:1rem;font-variant-numeric:tabular-nums}
     .sil-frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.25}
     .sil-frac>span:first-child{padding:0 6px;border-bottom:1px solid #0a0a0a}
     .sil-frac>span:last-child{padding:0 6px}
     .sil-gauge{position:relative;height:10px;margin:14px 0 4px;background:linear-gradient(90deg,#dc452d 0%,#f5c548 50%,#1d57b5 100%)}
     .sil-mark{position:absolute;top:-5px;width:4px;height:20px;background:#0a0a0a;transform:translateX(-2px)}
     .sil-scale{display:flex;justify-content:space-between;font-size:.75rem;color:#555}
-    .sil-msg{margin:6px 0 4px;font-size:.95rem;line-height:1.5;min-height:3em}
-    .sil-avgline{margin:0;font-size:.85rem;color:#555}
-    
+    .sil-msg{margin:10px 0 0;font-size:.95rem;min-height:2.6em}
+    @media(max-width:560px){.sil-read{grid-template-columns:repeat(2,1fr)}}
   </style>
   <svg id="sil-svg" viewBox="0 0 560 380" role="img" aria-label="Interactive scatter plot of 24 customers in three clusters. A slider moves one highlighted customer from cluster A toward cluster B and the silhouette score updates."></svg>
   <div class="sil-ctl">
     <label for="sil-slider">Move the highlighted customer from cluster A toward cluster B</label>
     <input id="sil-slider" type="range" min="0" max="100" value="0" step="1">
+    <div class="sil-ends"><span>Deep inside cluster A</span><span>Inside cluster B</span></div>
   </div>
   <div class="sil-gauge"><div class="sil-mark" id="sil-mark"></div></div>
-  <div class="sil-scale"><span>−1 wrong cluster</span><span>0 border</span><span>+1 fits well</span></div>
+  <div class="sil-scale" style="margin-bottom:14px"><span>−1 wrong cluster</span><span>0 on the border</span><span>+1 clearly in its cluster</span></div>
+  <div class="sil-read" aria-live="polite">
+    <div class="sil-cell"><b>a · own cluster</b><span id="sil-a">–</span></div>
+    <div class="sil-cell"><b>b · nearest other cluster</b><span id="sil-b">–</span></div>
+    <div class="sil-cell"><b>s · this customer</b><span id="sil-s">–</span></div>
+    <div class="sil-cell"><b>Average s · all 24 customers</b><span id="sil-avg">–</span></div>
+  </div>
   <div class="sil-eq" id="sil-eq"></div>
-  <p class="sil-msg" id="sil-msg" aria-live="polite"></p>
-  <p class="sil-avgline">Average s over all 24 customers: <strong id="sil-avg">–</strong></p>
+  <p class="sil-msg" id="sil-msg"></p>
   <figcaption><span>Chart 5</span> A customer's silhouette score falls from near +1 to below 0 as it moves away from its own cluster. Schematic data, standardized axes.</figcaption>
   <script>
   (function(){
@@ -232,6 +242,9 @@
         for(var u=0;u<cl[c].length;u++){if(u!==m){ai+=d(q,cl[c][u]);k++}}ai/=k;
         var bi=Infinity;for(var o=0;o<3;o++){if(o!==c)bi=Math.min(bi,mean(q,cl[o]))}
         tot+=(bi-ai)/Math.max(ai,bi);n++}
+      document.getElementById('sil-a').textContent=f2(aMean);
+      document.getElementById('sil-b').textContent=f2(b);
+      document.getElementById('sil-s').textContent=f2(s);
       document.getElementById('sil-avg').textContent=f2(tot/n);
       document.getElementById('sil-eq').innerHTML='<span>s =</span><span class="sil-frac"><span>b − a</span><span>max(a, b)</span></span><span>=</span><span class="sil-frac"><span>'+f2(b)+' − '+f2(aMean)+'</span><span>'+f2(Math.max(aMean,b))+'</span></span><span>= <strong>'+f2(s)+'</strong></span>';
       document.getElementById('sil-mark').style.left=((s+1)/2*100)+'%';
