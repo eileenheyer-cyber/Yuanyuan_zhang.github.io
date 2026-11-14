@@ -118,12 +118,7 @@
     <li><em>Step 3: Maximization (M-step).</em> Update each component’s centre, shape and weight, giving more influence to the customers who most likely belong to it.</li>
     <li><em>Step 4: Repeat Steps 2 and 3</em> until the fit stops improving.</li>
   </ul>
-  <p><strong>E-step:</strong> the responsibility of component k for customer i.</p>
-  <p class="post-formula post-formula-plain">γ<sub>ik</sub> = <span class="frac"><span>π<sub>k</sub> · N(x<sub>i</sub> | μ<sub>k</sub>, Σ<sub>k</sub>)</span><span>Σ<sub>j</sub> π<sub>j</sub> · N(x<sub>i</sub> | μ<sub>j</sub>, Σ<sub>j</sub>)</span></span><span>x<sub>i</sub> = orders per year and average basket value of customer i, π<sub>k</sub> = weight, μ<sub>k</sub> = mean, Σ<sub>k</sub> = covariance of component k.</span></p>
-  <p>This is the 85% and 15% from the shop example. The top is how well component k explains the customer, and the bottom makes the probabilities add up to 1.</p>
-  <p><strong>M-step:</strong> update each component, where N<sub>k</sub> = Σ<sub>i</sub> γ<sub>ik</sub> is the effective number of customers in component k and N is the total number of customers.</p>
-  <p class="post-formula post-formula-plain">π<sub>k</sub> = <span class="frac"><span>N<sub>k</sub></span><span>N</span></span>&emsp;&emsp;μ<sub>k</sub> = <span class="frac"><span>Σ<sub>i</sub> γ<sub>ik</sub> · x<sub>i</sub></span><span>N<sub>k</sub></span></span>&emsp;&emsp;Σ<sub>k</sub> = <span class="frac"><span>Σ<sub>i</sub> γ<sub>ik</sub> · (x<sub>i</sub> − μ<sub>k</sub>)(x<sub>i</sub> − μ<sub>k</sub>)<sup>T</sup></span><span>N<sub>k</sub></span></span><span>New weight, mean and covariance of component k.</span></p>
-  <p>These are the ordinary share, mean and covariance, except that each customer counts in proportion to γ<sub>ik</sub>. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
+  <p>The responsibilities calculated in the E-step are the 85% and 15% from the shop example. In the M-step, each component’s centre, shape and weight are recalculated as usual, except that each customer counts in proportion to its responsibility. A customer with 0.85 for component 1 pulls its mean and shape 85% as much as a full member would.</p>
   <p>This is the soft version of what K-Means does: K-Means assigns each customer to one centroid and then moves the centroid, while EM assigns probabilities and then updates the whole distribution. Like K-Means, EM can end in a local optimum, so it is usually run from several starting points.</p>
 <h3 id="gmm-fixes" style="scroll-margin-top:90px">What it fixes, and where it still fails</h3>
 <ul class="post-points post-points-color">
