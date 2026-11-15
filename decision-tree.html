@@ -46,7 +46,7 @@
     <ul>
       <li><a href="#how-a-tree-predicts">How a Decision Tree Makes a Prediction</a></li>
       <li><details><summary><a href="#splits">How a Decision Tree Chooses Its Splits</a></summary><ul><li><a href="#gini-impurity">Gini Impurity: How Mixed Is a Group?</a></li><li><a href="#comparing-splits">Comparing Two Possible Splits</a></li><li><a href="#growing-the-tree">Growing the Tree: Repeat on Every Branch</a></li></ul></details></li>
-      <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#prepare-data">Create and Prepare the Data</a></li><li><a href="#fit-the-tree">Fit the Tree and Read Its Rules</a></li><li><a href="#predict-new-customer">Predict for a New Customer</a></li></ul></details></li>
+      <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#fit-the-tree">Train the Tree</a></li><li><a href="#predict-new-customer">Read the Rules and Predict</a></li></ul></details></li>
       <li><details><summary><a href="#overfitting-pruning">Overfitting and Pruning</a></summary><ul><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
       <li><a href="#evaluating">Evaluating a Decision Tree</a></li>
       <li><a href="#reading-the-tree">Reading a Tree and Feature Importance</a></li>
@@ -182,50 +182,21 @@
 
   <h2 id="python" style="scroll-margin-top:90px">Building a Decision Tree in Python</h2>
 
-  <p>Now we build a tree with scikit-learn. We use simulated churn data with 2,000 customers, of whom 36% churned. The data is generated so that churn is more likely on month-to-month contracts, with short tenure and many support calls. Simulated data means that you can run every line yourself.</p>
+  <p>Training a tree takes only a few lines in scikit-learn. We use a churn table with one row per customer: <code>contract</code>, <code>tenure_months</code>, <code>monthly_charges</code>, <code>support_calls</code> and the target <code>churned</code>. The results shown in this post come from a simulated table of 2,000 customers, of whom 36% churned.</p>
 
-  <h3 id="prepare-data">Create and Prepare the Data</h3>
+  <h3 id="fit-the-tree">Train the Tree</h3>
 
-  <pre class="post-code"><code>import numpy as np
-import pandas as pd
+  <pre class="post-code"><code>import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier, export_text
 
-rng = np.random.default_rng(42)
-n = 2000
-
-contract = rng.choice([&quot;Month-to-month&quot;, &quot;One year&quot;, &quot;Two year&quot;], size=n, p=[0.55, 0.25, 0.20])
-tenure_months = np.clip(rng.exponential(scale=22, size=n).round(), 1, 72).astype(int)
-monthly_charges = np.clip(rng.normal(70, 20, size=n), 20, 120).round(2)
-support_calls = rng.poisson(1.5, size=n)
-
-# churn is more likely on month-to-month contracts, with short tenure and many support calls
-logit = (-1.6
-         + 1.9 * (contract == &quot;Month-to-month&quot;)
-         - 0.9 * (contract == &quot;Two year&quot;)
-         - 0.045 * tenure_months
-         + 0.45 * support_calls
-         + 0.012 * (monthly_charges - 70))
-churned = (rng.random(n) &lt; 1 / (1 + np.exp(-logit))).astype(int)
-
-df = pd.DataFrame({&quot;contract&quot;: contract, &quot;tenure_months&quot;: tenure_months,
-                   &quot;monthly_charges&quot;: monthly_charges, &quot;support_calls&quot;: support_calls,
-                   &quot;churned&quot;: churned})</code></pre>
-
-  <p>A tree cannot read text such as “Month-to-month”, so we turn the contract column into 0/1 columns with one-hot encoding (see <a href="one-hot-encoding.html">One-Hot Encoding</a>). Unlike many other models, a tree needs no scaling of numeric features, because it only asks whether a value is above or below a cut-off. For more on preparing features, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
-
-  <pre class="post-code"><code>from sklearn.model_selection import train_test_split
-
+# df: one row per customer, target column &quot;churned&quot; (1 = cancelled)
 X = pd.get_dummies(df.drop(columns=&quot;churned&quot;), columns=[&quot;contract&quot;])
 y = df[&quot;churned&quot;]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, stratify=y, random_state=42
-)</code></pre>
-
-  <p>We keep 25% of the customers as a test set that the tree never sees while learning. <code>stratify=y</code> keeps the churn share at 36% in both parts.</p>
-
-  <h3 id="fit-the-tree">Fit the Tree and Read Its Rules</h3>
-
-  <pre class="post-code"><code>from sklearn.tree import DecisionTreeClassifier, export_text
+)
 
 tree = DecisionTreeClassifier(criterion=&quot;gini&quot;, max_depth=3, random_state=42)
 tree.fit(X_train, y_train)
@@ -233,6 +204,8 @@ tree.fit(X_train, y_train)
 print(export_text(tree, feature_names=list(X.columns)))
 print(f&quot;Train accuracy: {tree.score(X_train, y_train):.3f}&quot;)
 print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre>
+
+  <p>Three steps matter here. A tree cannot read text such as “Month-to-month”, so <code>get_dummies</code> turns the contract column into 0/1 columns (see <a href="one-hot-encoding.html">One-Hot Encoding</a>); numeric features need no scaling. <code>train_test_split</code> keeps 25% of the customers as a test set that the tree never sees while learning, and <code>stratify=y</code> keeps the churn share the same in both parts. <code>DecisionTreeClassifier</code> then learns the splits from the training data; <code>max_depth=3</code> limits the tree to three questions in a row.</p>
 
   <pre class="post-code post-code-out"><code>|--- contract_Month-to-month &lt;= 0.50
 |   |--- support_calls &lt;= 3.50
@@ -260,31 +233,11 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 Train accuracy: 0.767
 Test accuracy:  0.746</code></pre>
 
-  <p>Each line is a question. The first line, <code>contract_Month-to-month &lt;= 0.50</code>, means “not a month-to-month customer”, because the column is 0 or 1. The lines indented below it are the next questions, and <code>class: 1</code> is a leaf that predicts churn. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data. It is also simple enough to read in one minute.</p>
+  <h3 id="predict-new-customer">Read the Rules and Predict</h3>
 
-  <h3 id="predict-new-customer">Predict for a New Customer</h3>
+  <p>Each line of the output is a question. The first line, <code>contract_Month-to-month &lt;= 0.50</code>, means “not a month-to-month customer”, because the column is 0 or 1. The lines indented below it are the next questions, and <code>class: 1</code> is a leaf that predicts churn. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data.</p>
 
-  <p>Let’s use the tree for Maria from the start of the post: 8 months of tenure, 3 support calls and a month-to-month contract.</p>
-
-  <pre class="post-code"><code>maria = pd.DataFrame([{
-    &quot;tenure_months&quot;: 8, &quot;monthly_charges&quot;: 70.0, &quot;support_calls&quot;: 3,
-    &quot;contract_Month-to-month&quot;: True, &quot;contract_One year&quot;: False, &quot;contract_Two year&quot;: False,
-}])[X.columns]
-
-print(tree.predict(maria))
-print(tree.predict_proba(maria).round(2))</code></pre>
-
-  <pre class="post-code post-code-out"><code>[1]
-[[0.24 0.76]]</code></pre>
-
-  <p><code>predict</code> returns the class, here 1 for churn. <code>predict_proba</code> returns the share of training customers of each class in Maria’s leaf: 24% stayed and 76% churned. This share is the tree’s confidence in the prediction.</p>
-
-  <pre class="post-code"><code>import matplotlib.pyplot as plt
-from sklearn.tree import plot_tree
-
-plt.figure(figsize=(14, 7))
-plot_tree(tree, feature_names=list(X.columns), class_names=[&quot;Stay&quot;, &quot;Churn&quot;], filled=True)
-plt.show()</code></pre>
+  <p>To predict for Maria from the start of the post (8 months of tenure, 3 support calls, month-to-month contract), follow the rules: month-to-month, tenure up to 25 months, more than one support call. She lands in a churn leaf where 76% of 245 similar training customers churned. This share is the tree’s confidence, and <code>tree.predict_proba</code> returns it for new customers.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:640px" src="images/decision-tree/chart-3-fitted-tree.svg" alt="The fitted decision tree of depth 3. Root: month-to-month contract. Month-to-month customers continue to: tenure up to 25 months, then support calls up to 1. Other customers continue to: support calls up to 3, then tenure up to 11 or 4 months. Eight leaves are colored blue for stay and red for churn; the leaf with month-to-month contract, tenure up to 25 months and more than one support call has 245 customers of whom 76 percent churned." loading="lazy"></div>
@@ -295,18 +248,7 @@ plt.show()</code></pre>
 
   <p>A depth-3 tree has only 8 leaves. What happens if we remove all limits and let the tree grow until it can?</p>
 
-  <pre class="post-code"><code>full_tree = DecisionTreeClassifier(random_state=42)   # no limits
-full_tree.fit(X_train, y_train)
-
-print(f&quot;Depth: {full_tree.get_depth()}, leaves: {full_tree.get_n_leaves()}&quot;)
-print(f&quot;Train accuracy: {full_tree.score(X_train, y_train):.3f}&quot;)
-print(f&quot;Test accuracy:  {full_tree.score(X_test, y_test):.3f}&quot;)</code></pre>
-
-  <pre class="post-code post-code-out"><code>Depth: 23, leaves: 412
-Train accuracy: 1.000
-Test accuracy:  0.644</code></pre>
-
-  <p>The unlimited tree classifies every training customer correctly, but on new customers it reaches 64.4%, barely better than predicting “stay” for everyone (64%). With 412 leaves, many of them hold only a handful of customers, so the tree has memorized noise instead of learning a pattern. This is overfitting; the <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> post explains the bias-variance trade-off behind it.</p>
+  <p>Without limits, the tree grows to a depth of 23 with 412 leaves. It classifies every training customer correctly (100% accuracy), but on new customers it reaches 64.4%, barely better than predicting “stay” for everyone (64%). With 412 leaves, many of them hold only a handful of customers, so the tree has memorized noise instead of learning a pattern. This is overfitting; the <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> post explains the bias-variance trade-off behind it.</p>
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-4-train-vs-test.svg" alt="Line chart of accuracy against max_depth from 1 to 15. Training accuracy rises from 0.70 to 0.98. Test accuracy peaks at 0.76 at depth 4 and then falls to 0.66." loading="lazy">
@@ -324,54 +266,11 @@ Test accuracy:  0.644</code></pre>
 
   <p>Chart 4 uses the test set only to show the idea. To choose the limits, we should not look at the test set, because then it is no longer a fair test. Instead, we use 5-fold cross-validation on the training data: the training set is split into five parts, and each part takes a turn as validation data.</p>
 
-  <pre class="post-code"><code>from sklearn.model_selection import GridSearchCV
-
-param_grid = {&quot;max_depth&quot;: [2, 3, 4, 5, 6, 8, 10],
-              &quot;min_samples_leaf&quot;: [1, 10, 25, 50]}
-
-grid = GridSearchCV(DecisionTreeClassifier(random_state=42), param_grid,
-                    cv=5, scoring=&quot;accuracy&quot;)
-grid.fit(X_train, y_train)
-best_tree = grid.best_estimator_
-
-print(grid.best_params_)
-print(f&quot;Cross-validated accuracy: {grid.best_score_:.3f}&quot;)
-print(f&quot;Train accuracy: {best_tree.score(X_train, y_train):.3f}&quot;)
-print(f&quot;Test accuracy:  {best_tree.score(X_test, y_test):.3f}&quot;)</code></pre>
-
-  <pre class="post-code post-code-out"><code>{&#x27;max_depth&#x27;: 4, &#x27;min_samples_leaf&#x27;: 50}
-Cross-validated accuracy: 0.762
-Train accuracy: 0.773
-Test accuracy:  0.756</code></pre>
-
-  <p>The search picks a tree with at most 4 questions in a row and at least 50 customers in every leaf. It has 16 leaves instead of 412. Its test accuracy (0.756) is far higher than that of the unlimited tree (0.644), and close to its training accuracy (0.773), a sign that it generalizes.</p>
+  <p>Scikit-learn’s <code>GridSearchCV</code> tries every combination of the limits and returns the best one. Here it picks <code>DecisionTreeClassifier(max_depth=4, min_samples_leaf=50)</code>: at most 4 questions in a row and at least 50 customers in every leaf, with a cross-validated accuracy of 0.762. It has 16 leaves instead of 412. Its test accuracy (0.756) is far higher than that of the unlimited tree (0.644), and close to its training accuracy (0.773), a sign that it generalizes.</p>
 
   <h2 id="evaluating" style="scroll-margin-top:90px">Evaluating a Decision Tree</h2>
 
-  <p>Accuracy alone says little. In our test set 64% of customers stay, so a model that always predicts “stay” is right 64% of the time. The pruned tree reaches 75.6%, which is a real improvement, but we need to see which mistakes it makes.</p>
-
-  <pre class="post-code"><code>from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score
-
-y_pred = best_tree.predict(X_test)
-print(confusion_matrix(y_test, y_pred))
-print(classification_report(y_test, y_pred, target_names=[&quot;Stay&quot;, &quot;Churn&quot;]))
-
-proba = best_tree.predict_proba(X_test)[:, 1]
-print(f&quot;AUC: {roc_auc_score(y_test, proba):.2f}&quot;)</code></pre>
-
-  <pre class="post-code post-code-out"><code>[[254  66]
- [ 56 124]]
-
-              precision    recall  f1-score   support
-
-        Stay       0.82      0.79      0.81       320
-       Churn       0.65      0.69      0.67       180
-
-    accuracy                           0.76       500
-   macro avg       0.74      0.74      0.74       500
-weighted avg       0.76      0.76      0.76       500
-
-AUC: 0.81</code></pre>
+  <p>Accuracy alone says little. In our test set 64% of customers stay, so a model that always predicts “stay” is right 64% of the time. The pruned tree reaches 75.6%, which is a real improvement, but we need to see which mistakes it makes. Scikit-learn’s <code>confusion_matrix</code>, <code>classification_report</code> and <code>roc_auc_score</code> (all in <code>sklearn.metrics</code>) give the numbers below for the test set.</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th></th><th>Predicted stay</th><th>Predicted churn</th></tr></thead>
@@ -391,17 +290,7 @@ AUC: 0.81</code></pre>
 
   <h2 id="reading-the-tree" style="scroll-margin-top:90px">Reading a Tree and Feature Importance</h2>
 
-  <p>A tree can be read as a list of rules. Every path from the root to a leaf is one rule. In the pruned tree, for example, one rule says: <em>month-to-month contract, tenure up to 25 months and more than one support call → churn.</em> To see which features matter most overall, scikit-learn adds up how much each feature reduced the impurity across all splits:</p>
-
-  <pre class="post-code"><code>importances = pd.Series(best_tree.feature_importances_, index=X.columns)
-print(importances.sort_values(ascending=False).round(2))</code></pre>
-
-  <pre class="post-code post-code-out"><code>contract_Month-to-month    0.58
-tenure_months              0.29
-support_calls             0.10
-contract_Two year         0.02
-monthly_charges           0.01
-contract_One year         0.00</code></pre>
+  <p>A tree can be read as a list of rules. Every path from the root to a leaf is one rule. In the pruned tree, for example, one rule says: <em>month-to-month contract, tenure up to 25 months and more than one support call → churn.</em> To see which features matter most overall, scikit-learn adds up how much each feature reduced the impurity across all splits (<code>feature_importances_</code>):</p>
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-5-feature-importance.svg" alt="Horizontal bar chart of feature importance in the pruned tree: contract month-to-month 0.58, tenure in months 0.29, support calls 0.10, contract two year 0.02, monthly charges 0.01, contract one year 0.00." loading="lazy">
