@@ -46,7 +46,7 @@
     <ul>
       <li><a href="#how-a-tree-predicts">How a Decision Tree Makes a Prediction</a></li>
       <li><details><summary><a href="#splits">How a Decision Tree Chooses Its Splits</a></summary><ul><li><a href="#gini-impurity">Gini Impurity: How Mixed Is a Group?</a></li><li><a href="#comparing-splits">Comparing Two Possible Splits</a></li><li><a href="#growing-the-tree">Growing the Tree: Repeat on Every Branch</a></li></ul></details></li>
-      <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#fit-the-tree">Train the Tree</a></li><li><a href="#predict-new-customer">Read the Rules and Predict</a></li></ul></details></li>
+      <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#fit-the-tree">Train the Tree</a></li><li><a href="#predict-new-customer">Read the Tree and Predict</a></li></ul></details></li>
       <li><details><summary><a href="#overfitting-pruning">Overfitting and Pruning</a></summary><ul><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
       <li><a href="#evaluating">Evaluating a Decision Tree</a></li>
       <li><a href="#reading-the-tree">Reading a Tree and Feature Importance</a></li>
@@ -188,7 +188,7 @@
 
   <pre class="post-code"><code>import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier, export_text
+from sklearn.tree import DecisionTreeClassifier
 
 # df: one row per customer, target column &quot;churned&quot; (1 = cancelled)
 X = pd.get_dummies(df.drop(columns=&quot;churned&quot;), columns=[&quot;contract&quot;])
@@ -201,48 +201,21 @@ X_train, X_test, y_train, y_test = train_test_split(
 tree = DecisionTreeClassifier(criterion=&quot;gini&quot;, max_depth=3, random_state=42)
 tree.fit(X_train, y_train)
 
-print(export_text(tree, feature_names=list(X.columns)))
 print(f&quot;Train accuracy: {tree.score(X_train, y_train):.3f}&quot;)
 print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre>
 
   <p>Three steps matter here. A tree cannot read text such as “Month-to-month”, so <code>get_dummies</code> turns the contract column into 0/1 columns (see <a href="one-hot-encoding.html">One-Hot Encoding</a>); numeric features need no scaling. <code>train_test_split</code> keeps 25% of the customers as a test set that the tree never sees while learning, and <code>stratify=y</code> keeps the churn share the same in both parts. <code>DecisionTreeClassifier</code> then learns the splits from the training data; <code>max_depth=3</code> limits the tree to three questions in a row.</p>
 
-  <pre class="post-code post-code-out"><code>|--- contract_Month-to-month &lt;= 0.50
-|   |--- support_calls &lt;= 3.50
-|   |   |--- tenure_months &lt;= 11.50
-|   |   |   |--- class: 0
-|   |   |--- tenure_months &gt;  11.50
-|   |   |   |--- class: 0
-|   |--- support_calls &gt;  3.50
-|   |   |--- tenure_months &lt;= 4.50
-|   |   |   |--- class: 1
-|   |   |--- tenure_months &gt;  4.50
-|   |   |   |--- class: 0
-|--- contract_Month-to-month &gt;  0.50
-|   |--- tenure_months &lt;= 25.50
-|   |   |--- support_calls &lt;= 1.50
-|   |   |   |--- class: 1
-|   |   |--- support_calls &gt;  1.50
-|   |   |   |--- class: 1
-|   |--- tenure_months &gt;  25.50
-|   |   |--- support_calls &lt;= 1.50
-|   |   |   |--- class: 0
-|   |   |--- support_calls &gt;  1.50
-|   |   |   |--- class: 0
-
-Train accuracy: 0.767
-Test accuracy:  0.746</code></pre>
-
-  <h3 id="predict-new-customer">Read the Rules and Predict</h3>
-
-  <p>Each line of the output is a question. The first line, <code>contract_Month-to-month &lt;= 0.50</code>, means “not a month-to-month customer”, because the column is 0 or 1. The lines indented below it are the next questions, and <code>class: 1</code> is a leaf that predicts churn. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data.</p>
-
-  <p>To predict for Maria from the start of the post (8 months of tenure, 3 support calls, month-to-month contract), follow the rules: month-to-month, tenure up to 25 months, more than one support call. She lands in a churn leaf where 76% of 245 similar training customers churned. This share is the tree’s confidence, and <code>tree.predict_proba</code> returns it for new customers.</p>
-
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:640px" src="images/decision-tree/chart-3-fitted-tree.svg" alt="The fitted decision tree of depth 3. Root: month-to-month contract. Month-to-month customers continue to: tenure up to 25 months, then support calls up to 1. Other customers continue to: support calls up to 3, then tenure up to 11 or 4 months. Eight leaves are colored blue for stay and red for churn; the leaf with month-to-month contract, tenure up to 25 months and more than one support call has 245 customers of whom 76 percent churned." loading="lazy"></div>
     <figcaption><span>Chart 3</span> The fitted tree, redrawn in this site’s colors. Maria follows Yes, Yes, No and lands in a churn leaf where 76% of 245 similar customers churned.</figcaption>
   </figure>
+
+  <h3 id="predict-new-customer">Read the Tree and Predict</h3>
+
+  <p>Chart 3 shows what the tree learned from the training data. Each beige box is a question, and the two branches below it are the answers. The first question is whether the contract is month-to-month, just like in Chart 1. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data.</p>
+
+  <p>To predict for Maria from the start of the post (8 months of tenure, 3 support calls, month-to-month contract), follow the answers from the root down: month-to-month (yes), tenure up to 25 months (yes), more than one support call. She lands in a churn leaf where 76% of 245 similar training customers churned. This share is the tree’s confidence, and <code>tree.predict_proba</code> returns it for new customers.</p>
 
   <h2 id="overfitting-pruning" style="scroll-margin-top:90px">Overfitting and Pruning</h2>
 
