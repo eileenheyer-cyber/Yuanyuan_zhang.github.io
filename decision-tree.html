@@ -107,7 +107,9 @@
 
   <h3 id="gini-impurity">Gini Impurity: How Mixed Is a Group?</h3>
 
-  <p>Start with an intuition. Pick two customers at random from a group, putting the first one back before drawing the second. If everyone in the group churned, both always have the same outcome: the group is <em>pure</em> and there is nothing left to decide. If half churned and half stayed, the two often differ: the group is as mixed as it can be. <strong>Gini impurity</strong> is the probability that the two customers have different outcomes. It is 0 for a pure group and at most 0.5 for two classes, and a higher value means a more mixed group.</p>
+  <p>Start with an intuition. Imagine randomly selecting two customers from a group, putting the first one back, and then selecting the second. If everyone in the group churned, both customers will always have the same outcome. The group is <em>pure</em>. If half churned and half stayed, the two customers have a 50% probability of having different outcomes. This is the most mixed a group can be when there are two classes.</p>
+
+  <p><strong>Gini impurity</strong> measures the probability that two randomly selected customers have different outcomes. It ranges from 0 to 0.5 for a two-class problem. A value of 0 means the group is perfectly pure, while a value closer to 0.5 indicates a more mixed group.</p>
 
   <p class="post-formula post-formula-plain"><strong>Gini = 1 − (<em>p</em><sub>churn</sub><sup>2</sup> + <em>p</em><sub>stay</sub><sup>2</sup>)</strong><span><em>p</em> = share of customers in the group with that outcome.</span></p>
 
