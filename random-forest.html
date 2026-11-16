@@ -130,13 +130,13 @@
 
   <h3 id="trees-too-similar">The Problem: Bagging Trees Can Still Be Too Similar</h3>
 
-  <p>Bagging creates different trees by training each one on a different bootstrap sample. But different samples do not necessarily produce very different trees.</p>
+  <p>Bagging gives every tree its own bootstrap sample, so we might expect very different trees. In practice, they are often not.</p>
 
-  <p>Remember our telecom churn example. Contract type is the strongest predictor of customer churn. Even though every tree receives a different sample of customers, contract type is likely to remain the best feature for the first split.</p>
+  <p>Think of our telecom churn data. Contract type is by far the strongest predictor. Even when a tree sees a different sample of customers, contract type is still the best first question, so almost every tree starts with it and many go on to learn similar rules.</p>
 
-  <p>As a result, many trees may start with the same question and learn similar decision rules. They are different, but not different enough.</p>
+  <p>Why does this matter? Imagine five colleagues who each estimate next month's churn. If they work with different data, one estimate is too high, another too low, and the mistakes cancel out in the average. If all five read the same report, they make the same mistake, and the average repeats it. Similar trees do the same: they misclassify the same customers, so the vote repeats the error instead of correcting it.</p>
 
-  <p>Why does this matter? Because averaging similar trees provides less variance reduction than averaging diverse trees.</p>
+  <p>Averaging only helps as far as the trees make different mistakes. The next subsection shows this with numbers.</p>
 
   <h3 id="why-correlation-matters">Why Correlation Matters</h3>
 
