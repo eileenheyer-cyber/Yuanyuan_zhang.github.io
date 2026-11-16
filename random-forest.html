@@ -34,7 +34,43 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">Random Forest: Why Many Trees Beat One</h1>
 
-  <p>Placeholder. Text follows after approval in chat.</p>
+  <p>A telecom company trains a decision tree to predict churn. When it retrains on a slightly different sample of customers, the first question changes and some customers get a different prediction. Nothing about the business changed, only the sample.</p>
+
+  <p>This is the weak spot of a single tree: easy to read, but sensitive to the data it saw. A random forest fixes this by training many trees on different versions of the data and letting them vote.</p>
+
+  <p>In this post, you will learn why single trees are unstable, how bagging and random feature selection fix it, and how to train, tune and evaluate a forest. It builds on <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>.</p>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#unstable-tree">Why a Single Decision Tree Is Unstable</a></li>
+      <li><a href="#bagging">Bagging: Averaging Many Trees to Reduce Variance</a></li>
+      <li><a href="#random-forest">From Bagging to Random Forest: Random Feature Selection</a></li>
+      <li><a href="#python">Training a Random Forest in Python</a></li>
+      <li><a href="#hyperparameters">Key Hyperparameters of a Random Forest</a></li>
+      <li><a href="#evaluating">Evaluating a Random Forest</a></li>
+      <li><a href="#feature-importance">Feature Importance and the Interpretability Trade-Off</a></li>
+      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
+    </ul>
+  </div>
+
+  <h2 id="unstable-tree" style="scroll-margin-top:90px">Why a Single Decision Tree Is Unstable</h2>
+
+  <h2 id="bagging" style="scroll-margin-top:90px">Bagging: Averaging Many Trees to Reduce Variance</h2>
+
+  <h2 id="random-forest" style="scroll-margin-top:90px">From Bagging to Random Forest: Random Feature Selection</h2>
+
+  <h2 id="python" style="scroll-margin-top:90px">Training a Random Forest in Python</h2>
+
+  <h2 id="hyperparameters" style="scroll-margin-top:90px">Key Hyperparameters of a Random Forest</h2>
+
+  <h2 id="evaluating" style="scroll-margin-top:90px">Evaluating a Random Forest</h2>
+
+  <h2 id="feature-importance" style="scroll-margin-top:90px">Feature Importance and the Interpretability Trade-Off</h2>
+
+  <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
+
 
 </article>
 </main>
