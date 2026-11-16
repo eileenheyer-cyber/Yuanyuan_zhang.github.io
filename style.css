@@ -2010,3 +2010,26 @@ html { scroll-behavior: smooth; }
 .knowledge-page .track-head h2 { margin: 0; font-size: 2.4rem; font-weight: 700; letter-spacing: -0.02em; color: #f1faf7; }
 .knowledge-page .track-head p:not(.overline) { max-width: 560px; margin: 10px auto 0; color: var(--muted); }
 .knowledge-page .track-head + .theme-head { margin-top: 32px; }
+
+/* Editorial Statistics & ML page: one featured post per group, the rest as a quiet list */
+.group-layout { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; margin-bottom: 8px; }
+.group-layout.is-flip { grid-template-columns: 7fr 5fr; }
+.group-layout.is-flip .feature-card { order: 2; }
+.group-layout .feature-card { width: 100%; }
+.group-layout .feature-card .project-card-img { aspect-ratio: 3 / 2; }
+.group-layout .feature-card .project-title { font-size: 1.3rem; }
+.list-col { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.list-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 4px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: padding-left 0.15s; }
+.list-row:hover { padding-left: 12px; }
+.list-row:hover .lr-title { color: var(--accent); }
+.lr-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.lr-title { font-weight: 600; font-size: 1.02rem; transition: color 0.15s; }
+.lr-desc { font-size: 0.84rem; line-height: 1.45; color: var(--muted); }
+.lr-arrow { color: var(--mint); flex: none; }
+.group-no { display: inline-block; margin-right: 14px; font-style: normal; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; color: var(--mint); vertical-align: middle; }
+.knowledge-page .theme-head { margin-top: 72px; }
+.knowledge-page .track-head + .theme-head { margin-top: 32px; }
+@media (max-width: 860px) {
+  .group-layout, .group-layout.is-flip { grid-template-columns: 1fr; gap: 24px; }
+  .group-layout.is-flip .feature-card { order: 0; }
+}
