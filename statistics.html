@@ -8,9 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261024f">
+  <link rel="stylesheet" href="style.css?v=20261116a">
 </head>
-<body>
+<body class="stats-page">
 
 <header class="site-header">
   <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
@@ -35,7 +35,14 @@
     <h1 class="section-title">Nerding Out on Data.</h1>
     <p class="section-intro">Statistics, machine learning, and everything in between.<br>A collection of visual explorations into the fascinating logic behind data.</p>
 
-    <div class="theme-head"><h2>Data fundamentals</h2><p>The basics of working with data: summarise a dataset, explore it, and structure a project from question to decision.</p></div>
+    <nav class="jump-bar" aria-label="Jump to a topic">
+      <div class="jump-row"><a class="jump-track" href="#statistics">Statistics</a><a href="#data-fundamentals">Data fundamentals</a><a href="#probability">Probability</a><a href="#sampling">Sampling</a><a href="#inference">Inference &amp; experiments</a><a href="#regression">Regression analysis</a><a href="#glm">Generalized linear models</a></div>
+      <div class="jump-row"><a class="jump-track" href="#machine-learning">Machine Learning</a><a href="#model-fundamentals">Model fundamentals</a><a href="#classification">Classification</a><a href="#unsupervised">Unsupervised learning</a></div>
+    </nav>
+
+    <div class="track-head" id="statistics"><p class="overline">Track 1</p><h2>Statistics</h2><p>The foundations: describe data, reason about uncertainty, and test whether a difference is real.</p></div>
+
+    <div class="theme-head" id="data-fundamentals"><h2>Data fundamentals</h2><p>The basics of working with data: summarise a dataset, explore it, and structure a project from question to decision.</p></div>
     <div class="project-grid">
 
       <a class="project-card" href="descriptive-statistics.html">
@@ -78,29 +85,9 @@
         <span class="project-card-foot"><span class="project-tags"><span>Python</span><span>Pandas</span><span>NumPy</span><span>Matplotlib</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a class="project-card" href="one-hot-encoding.html">
-        <span class="project-card-img"><img src="images/one-hot-encoding-cover.webp" alt="One-Hot Encoding: a product category column turned into one yes/no column per category" width="2337" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Data fundamentals</span>
-          <span class="project-title">One-Hot Encoding</span>
-          <p>How to turn categories into numbers a model can use, without inventing an order that isn't there.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>One-hot encoding</span><span>Categorical data</span><span>Dummy variables</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="feature-engineering.html">
-        <span class="project-card-img"><img src="images/feature-engineering-cover.webp?v=20261111" alt="Feature Engineering: raw data in a table, turned into features, leading to a better model, on a Bauhaus-style background" width="2252" height="1504" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Data fundamentals</span>
-          <span class="project-title">Feature Engineering</span>
-          <p>How to turn raw columns into features a model can learn from, without leaking the test set.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Feature engineering</span><span>Data leakage</span><span>Pipelines</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
     </div>
 
-    <div class="theme-head"><h2>Probability</h2><p>From single events to distributions: the language of uncertainty.</p></div>
+    <div class="theme-head" id="probability"><h2>Probability</h2><p>From single events to distributions: the language of uncertainty.</p></div>
     <div class="project-grid">
 
       <a class="project-card" href="probability-basics.html">
@@ -175,7 +162,7 @@
 
     </div>
 
-    <div class="theme-head"><h2>Sampling</h2><p>How to choose the data you analyze, and how to avoid bias.</p></div>
+    <div class="theme-head" id="sampling"><h2>Sampling</h2><p>How to choose the data you analyze, and how to avoid bias.</p></div>
     <div class="project-grid">
 
       <a class="project-card" href="sampling-methods.html">
@@ -198,21 +185,10 @@
         <span class="project-card-foot"><span class="project-tags"><span>Sampling distribution</span><span>Standard error</span><span>Normal</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
-
     </div>
 
-    <div class="theme-head"><h2>Inference &amp; experiments</h2><p>Test whether a change really made a difference.</p></div>
+    <div class="theme-head" id="inference"><h2>Inference &amp; experiments</h2><p>Test whether a change really made a difference.</p></div>
     <div class="project-grid">
-
-      <a class="project-card" href="confidence-intervals.html">
-        <span class="project-card-img"><img src="images/confidence-intervals-cover.webp?v=2" alt="Confidence intervals: sample estimates with error bars around a true value, most of them crossing it" width="1800" height="1200" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">Confidence Intervals</span>
-          <p>Why a range beats a single estimate, how to read a 95% interval, and what it does not mean.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Confidence interval</span><span>Z-score</span><span>Margin of error</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
 
       <a class="project-card" href="hypothesis-testing.html">
         <span class="project-card-img"><img src="images/hypothesis-testing-cover.webp" alt="Hypothesis testing: null and alternative hypothesis boxes above a bell curve with red rejection regions in both tails" width="2340" height="1550" loading="lazy"></span>
@@ -224,14 +200,14 @@
         <span class="project-card-foot"><span class="project-tags"><span>Significance level</span><span>P-value</span><span>Power</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a class="project-card" href="ab-testing.html">
-        <span class="project-card-img"><img src="images/ab-testing-cover.webp" alt="A/B testing: users randomly split into a control group and a treatment group" width="2812" height="1560" loading="lazy"></span>
+      <a class="project-card" href="confidence-intervals.html">
+        <span class="project-card-img"><img src="images/confidence-intervals-cover.webp?v=2" alt="Confidence intervals: sample estimates with error bars around a true value, most of them crossing it" width="1800" height="1200" loading="lazy"></span>
         <span class="project-card-body">
-          <span class="project-type">Experimentation</span>
-          <span class="project-title">A/B Testing</span>
-          <p>How to design an experiment and tell whether a change really made things better.</p>
+          <span class="project-type">Inference</span>
+          <span class="project-title">Confidence Intervals</span>
+          <p>Why a range beats a single estimate, how to read a 95% interval, and what it does not mean.</p>
         </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Hypothesis</span><span>Randomization</span><span>p-value</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+        <span class="project-card-foot"><span class="project-tags"><span>Confidence interval</span><span>Z-score</span><span>Margin of error</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
       <a class="project-card" href="t-test-vs-z-test.html">
@@ -274,9 +250,19 @@
         <span class="project-card-foot"><span class="project-tags"><span>F-statistic</span><span>Post-hoc tests</span><span>Interaction effects</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
+      <a class="project-card" href="ab-testing.html">
+        <span class="project-card-img"><img src="images/ab-testing-cover.webp" alt="A/B testing: users randomly split into a control group and a treatment group" width="2812" height="1560" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Experimentation</span>
+          <span class="project-title">A/B Testing</span>
+          <p>How to design an experiment and tell whether a change really made things better.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Hypothesis</span><span>Randomization</span><span>p-value</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
     </div>
 
-    <div class="theme-head"><h2>Regression analysis</h2><p>Model how an outcome depends on other variables, whatever type of outcome it is.</p></div>
+    <div class="theme-head" id="regression"><h2>Regression analysis</h2><p>Model how a numeric outcome depends on other variables: fit a line, check its assumptions, and evaluate the fit.</p></div>
     <div class="project-grid">
 
       <a class="project-card" href="simple-linear-regression.html">
@@ -289,16 +275,6 @@
         <span class="project-card-foot"><span class="project-tags"><span>Slope</span><span>Intercept</span><span>Fitted line</span><span>Prediction</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a class="project-card" href="multiple-linear-regression.html">
-        <span class="project-card-img"><img src="images/multiple-linear-regression-cover.webp" alt="Multiple Linear Regression: bold title next to three predictors X1, X2 and X3 feeding a fitted plane with data points above and below it, surrounded by blue, red, yellow and black geometric shapes" width="2344" height="1568" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">Multiple Linear Regression</span>
-          <p>Predict a customer's net revenue from several drivers at once, and learn to read each coefficient on its own.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Multicollinearity</span><span>VIF</span><span>Adjusted R²</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
       <a class="project-card" href="least-squares.html">
         <span class="project-card-img"><img src="images/ols-cover.webp?v=2" alt="Ordinary Least Squares: bold title next to a scatter plot with a red fitted line, dashed residuals and a squared-residual box, surrounded by yellow, red, blue and black geometric shapes" width="2767" height="1558" loading="lazy"></span>
         <span class="project-card-body">
@@ -307,6 +283,16 @@
           <p>How residuals and the sum of squared residuals turn "fits well" into a number, and how OLS finds the best line.</p>
         </span>
         <span class="project-card-foot"><span class="project-tags"><span>OLS</span><span>Residuals</span><span>SSR</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="project-card" href="multiple-linear-regression.html">
+        <span class="project-card-img"><img src="images/multiple-linear-regression-cover.webp" alt="Multiple Linear Regression: bold title next to three predictors X1, X2 and X3 feeding a fitted plane with data points above and below it, surrounded by blue, red, yellow and black geometric shapes" width="2344" height="1568" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Regression analysis</span>
+          <span class="project-title">Multiple Linear Regression</span>
+          <p>Predict a customer's net revenue from several drivers at once, and learn to read each coefficient on its own.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Multicollinearity</span><span>VIF</span><span>Adjusted R²</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
       <a class="project-card" href="regression-assumptions.html">
@@ -329,10 +315,62 @@
         <span class="project-card-foot"><span class="project-tags"><span>Model fit</span><span>R²</span><span>Confidence intervals</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
+    </div>
+
+    <div class="theme-head" id="glm"><h2>Generalized linear models</h2><p>Extend regression to outcomes that are not a plain number: yes or no, counts, rates.</p></div>
+    <div class="project-grid">
+
+      <a class="project-card" href="glm.html">
+        <span class="project-card-img"><img src="images/glm-cover.webp" alt="Generalized Linear Models: a blue circle with a regression line, a red rectangle with an S-shaped logistic curve and a yellow triangle with rising bars" width="2362" height="1558" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Generalized linear models</span>
+          <span class="project-title">Generalized Linear Models</span>
+          <p>One framework behind linear, logistic and Poisson regression: link functions for continuous, binary and count outcomes.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>GLM</span><span>Logistic</span><span>Poisson</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="project-card" href="logistic-regression.html">
+        <span class="project-card-img"><img src="images/logistic-regression-cover.webp?v=2" alt="Logistic Regression: bold title and the subtitle Modeling Probabilities for Binary Outcomes above an S-shaped probability curve with blue points near 0, red points near 1 and a dashed decision boundary, between a yellow circle, black and red rectangles and a large blue circle" width="1536" height="1024" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Generalized linear models</span>
+          <span class="project-title">Logistic Regression</span>
+          <p>Predict a yes/no outcome as a probability and read the coefficients as odds ratios.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Probability</span><span>Odds ratio</span><span>MLE</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+    </div>
+
+    <div class="track-head" id="machine-learning"><p class="overline">Track 2</p><h2>Machine Learning</h2><p>Prepare data, build models that predict and group, and check that they generalise.</p></div>
+
+    <div class="theme-head" id="model-fundamentals"><h2>Model fundamentals</h2><p>What every model needs: well-built features, and the right level of complexity.</p></div>
+    <div class="project-grid">
+
+      <a class="project-card" href="feature-engineering.html">
+        <span class="project-card-img"><img src="images/feature-engineering-cover.webp?v=20261111" alt="Feature Engineering: raw data in a table, turned into features, leading to a better model, on a Bauhaus-style background" width="2252" height="1504" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Model fundamentals</span>
+          <span class="project-title">Feature Engineering</span>
+          <p>How to turn raw columns into features a model can learn from, without leaking the test set.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Feature engineering</span><span>Data leakage</span><span>Pipelines</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="project-card" href="one-hot-encoding.html">
+        <span class="project-card-img"><img src="images/one-hot-encoding-cover.webp" alt="One-Hot Encoding: a product category column turned into one yes/no column per category" width="2337" height="1558" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Model fundamentals</span>
+          <span class="project-title">One-Hot Encoding</span>
+          <p>How to turn categories into numbers a model can use, without inventing an order that isn't there.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>One-hot encoding</span><span>Categorical data</span><span>Dummy variables</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
       <a class="project-card" href="overfitting-underfitting.html">
         <span class="project-card-img"><img src="images/overfitting-underfitting-cover.webp" alt="Overfitting and Underfitting: bold title above three scatter plots showing a straight line that is too simple, a smooth curve that fits well and a wiggly curve that is too complex, surrounded by red, yellow, blue and black geometric shapes" width="2354" height="1570" loading="lazy"></span>
         <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
+          <span class="project-type">Model fundamentals</span>
           <span class="project-title">Overfitting and Underfitting</span>
           <p>Why a model can be too simple or too flexible, and how to tell the difference before it fails on new data.</p>
         </span>
@@ -342,37 +380,17 @@
       <a class="project-card" href="variable-selection-regularization.html">
         <span class="project-card-img"><img src="images/variable-selection-regularization-cover.webp?v=2" alt="Variable Selection &amp; Regularization: bold title above three stepped blocks that go from all predictors to useful ones to regularized, with Ridge and Lasso coefficient lines shrinking and a validation error curve marking the best penalty, between a red and a blue circle" width="2331" height="1554" loading="lazy"></span>
         <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
+          <span class="project-type">Model fundamentals</span>
           <span class="project-title">Variable Selection vs. Regularization: Managing Model Complexity</span>
           <p>Choose which predictors to keep or shrink their coefficients: forward selection, Ridge and Lasso compared on one example.</p>
         </span>
         <span class="project-card-foot"><span class="project-tags"><span>Variable selection</span><span>Regularization</span><span>Lasso &amp; Ridge</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
 
-      <a class="project-card" href="glm.html">
-        <span class="project-card-img"><img src="images/glm-cover.webp" alt="Generalized Linear Models: a blue circle with a regression line, a red rectangle with an S-shaped logistic curve and a yellow triangle with rising bars" width="2362" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">Generalized Linear Models</span>
-          <p>One framework behind linear, logistic and Poisson regression: link functions for continuous, binary and count outcomes.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>GLM</span><span>Logistic</span><span>Poisson</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
     </div>
 
-    <div class="theme-head"><h2>Classification</h2><p>Predict which category an observation belongs to: yes or no, churn or stay, spam or not.</p></div>
+    <div class="theme-head" id="classification"><h2>Classification</h2><p>Predict which category an observation belongs to: yes or no, churn or stay, spam or not.</p></div>
     <div class="project-grid">
-
-      <a class="project-card" href="logistic-regression.html">
-        <span class="project-card-img"><img src="images/logistic-regression-cover.webp?v=2" alt="Logistic Regression: bold title and the subtitle Modeling Probabilities for Binary Outcomes above an S-shaped probability curve with blue points near 0, red points near 1 and a dashed decision boundary, between a yellow circle, black and red rectangles and a large blue circle" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Classification</span>
-          <span class="project-title">Logistic Regression</span>
-          <p>Predict a yes/no outcome as a probability and read the coefficients as odds ratios.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Probability</span><span>Odds ratio</span><span>MLE</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
 
       <a class="project-card" href="logistic-regression-metrics.html">
         <span class="project-card-img"><img src="images/logistic-regression-metrics-cover.webp" alt="Common Logistic Regression Metrics: bold title with the subtitle Evaluate, Compare, Choose the right model above three small charts: an ROC curve, a confusion matrix with TP, FN, FP and TN cells, and precision and recall curves against the decision threshold, between a yellow circle, a blue circle and red and black rectangles" width="1536" height="1024" loading="lazy"></span>
@@ -383,7 +401,6 @@
         </span>
         <span class="project-card-foot"><span class="project-tags"><span>Confusion matrix</span><span>Precision and recall</span><span>ROC curve</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
       </a>
-
 
       <a class="project-card" href="naive-bayes-classifier.html">
         <span class="project-card-img"><img src="images/naive-bayes-classifier-cover.webp" alt="Naive Bayes Classifier: bold title with the subtitle A probabilistic approach to classification, an envelope branching into Spam and Not Spam labels, and the formula P(Y|X) = P(X|Y)P(Y) / P(X) in a yellow circle, between blue, red and black geometric shapes" width="2244" height="1496" loading="lazy"></span>
@@ -417,7 +434,7 @@
 
     </div>
 
-    <div class="theme-head"><h2>Unsupervised learning</h2><p>Find structure in data without labels: customer segments, similar products, hidden patterns.</p></div>
+    <div class="theme-head" id="unsupervised"><h2>Unsupervised learning</h2><p>Find structure in data without labels: customer segments, similar products, hidden patterns.</p></div>
     <div class="project-grid">
 
       <a class="project-card" href="k-means.html">
