@@ -265,7 +265,15 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="comparing-with-a-single-tree">Comparing with a Single Tree</h3>
 
-  <p>Now the same test set, three models: the fully grown tree from Chart 1, a pruned tree tuned by cross-validation (<code>max_depth=6</code>, <code>min_samples_leaf=50</code>), and the tuned forest. The metrics are explained in <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> and work in the same way here.</p>
+  <p>Now the same test set and three models, all trained on the same 3,750 training customers:</p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>Fully grown tree.</strong> A single tree without any limits, like the trees in Chart 1, here trained on the whole training set.</li>
+    <li><strong>Pruned tree.</strong> A single tree whose size we limited. We chose the limits by cross-validation on the training data: we tried a <code>max_depth</code> between 2 and 8 and a <code>min_samples_leaf</code> between 1 and 50, and the best combination was <code>max_depth=6</code> and <code>min_samples_leaf=50</code>. This is a new tree built for this comparison, not the one from <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>, which used a different table.</li>
+    <li><strong>Random forest.</strong> The tuned forest from the previous section.</li>
+  </ul>
+
+  <p>The pruned tree and the forest were tuned in the same way, on the training data only, so the comparison is fair. The metrics are explained in <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> and work in the same way here.</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th></th><th>Fully grown tree</th><th>Pruned tree</th><th>Random forest</th></tr></thead>
