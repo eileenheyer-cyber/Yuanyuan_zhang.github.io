@@ -417,8 +417,11 @@ print(importances.sort_values(ascending=False).round(2))
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
 
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“We built a simple set of rules that predicts which customers are likely to cancel. The biggest signal is the contract: 55% of our month-to-month customers churned, compared with 13% of everyone else. Among month-to-month customers in their first 25 months, those who called support more than once churned in 76% of the cases (245 customers in our data).</p>
-    <p class="post-callout-q">On customers the model had never seen, it was right about 3 times out of 4. It finds about 7 in 10 of the customers who really leave, and about 2 in 3 of the customers it flags do leave. So the retention team can start with the flagged customers on month-to-month contracts and decide whether a discount or a call is worth the cost. The question for us is which offer keeps these customers at a price we can afford.”</p>
+    <p class="post-callout-q">“We built a model that identifies customers who are more likely to cancel their subscriptions. The strongest signal is the contract type: 55% of our month-to-month customers churned, compared with just 13% of customers on other contracts.</p>
+    <p class="post-callout-q">We found another important pattern: among month-to-month customers with less than 25 months of tenure, those who contacted support more than once churned in 76% of cases. This group represents 245 customers in our dataset.</p>
+    <p class="post-callout-q">When tested on customers the model had never seen before, it correctly classified approximately 75% of them. More importantly, it identified about 7 out of 10 customers who actually churned (recall), while approximately 2 out of 3 customers flagged as potential churners really did leave (precision).</p>
+    <p class="post-callout-q">This gives our retention team a starting point. They can prioritize high-risk customers, particularly those on month-to-month contracts, and investigate whether a personal call or a targeted discount could prevent them from leaving.</p>
+    <p class="post-callout-q">The next business question is: which retention strategy delivers the best results without costing us more than the customers are worth?”</p>
   </div>
 
   <div class="post-note post-takeaway">
