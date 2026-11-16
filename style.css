@@ -1629,6 +1629,7 @@ main > article.post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px;
 .post-note.post-note-explain { border-left-color: #1d57b5; }
 .post-note.post-note-warn { border-left-color: #f5c548; }
 .post-takeaway { margin-top: 48px; padding: 22px 26px; border: 1px solid var(--accent); border-radius: 10px; background: #fff; }
+.post-note p:not(.post-note-l) + p { margin-top: 10px; }
 .post-fig { margin: 24px 0 28px; }
 .post-fig img { width: 100%; height: auto; }
 .post-fig figcaption { margin-top: 8px; font-size: 0.85rem; color: var(--muted); }

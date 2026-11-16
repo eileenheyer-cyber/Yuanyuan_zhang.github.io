@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116b">
+  <link rel="stylesheet" href="style.css?v=20261116c">
 </head>
 <body>
 
@@ -421,7 +421,12 @@ print(importances.sort_values(ascending=False).round(2))
     <p class="post-callout-q">On customers the model had never seen, it was right about 3 times out of 4. It finds about 7 in 10 of the customers who really leave, and about 2 in 3 of the customers it flags do leave. So the retention team can start with the flagged customers on month-to-month contracts and decide whether a discount or a call is worth the cost. The question for us is which offer keeps these customers at a price we can afford.”</p>
   </div>
 
-  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>A decision tree predicts with a chain of yes/no questions and picks each question by how much it lowers the impurity of the resulting groups. Left unlimited, it memorizes the training data, so limit its depth and leaf size with cross-validation and judge it on a test set. The result is a model you can read as rules and explain in a meeting.</p></div>
+  <div class="post-note post-takeaway">
+    <p class="post-note-l">Key takeaway</p>
+    <p>A Decision Tree learns by asking a sequence of questions, choosing each split based on how much it reduces the impurity of the resulting groups. It repeats this process recursively until a stopping condition is reached.</p>
+    <p>Without constraints, a tree can become too complex and memorize its training data instead of learning patterns that generalize. Parameters such as <code>max_depth</code> and <code>min_samples_leaf</code>, together with cross-validation and pruning, help control this complexity.</p>
+    <p>The result is an interpretable model that turns data into a set of decision rules that can be examined, evaluated and communicated to business stakeholders.</p>
+  </div>
 
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
