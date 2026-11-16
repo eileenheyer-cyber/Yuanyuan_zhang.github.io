@@ -98,6 +98,11 @@
 
   <p>One fully grown tree is trained on each bootstrap sample. To predict a new customer, each tree votes and the majority wins. With five trees, for example, three might say churn and two stay: the prediction is churn, and the share of churn votes, 3 of 5 = 0.6, can serve as a churn score. In practice a forest uses 100 to 500 trees, so the score has many more possible values than a single tree’s leaf can give.</p>
 
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><svg viewBox="0 0 760 356" role="img" aria-label="Five trees vote on one new customer. Trees 1, 3 and 4 vote churn, trees 2 and 5 vote stay. The majority vote is churn, and the churn score is 3 divided by 5, which is 0.6." style="width:100%;min-width:560px;height:auto;font-family:Inter,sans-serif"><rect x="100" y="8" width="560" height="48" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="2"/><text x="380" y="38" text-anchor="middle" font-size="16" font-weight="600" fill="#0a0a0a">New customer: 14 months, month-to-month, 3 support calls</text><path d="M380 56 L108.0 110" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="52" y="110" width="112" height="56" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/><text x="108.0" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0a">Tree 1</text><path d="M108.0 166 L108.0 204" stroke="#0a0a0a" stroke-width="2.5" fill="none"/><path d="M101.0 197 L108.0 208 L115.0 197 Z" fill="#0a0a0a"/><rect x="52" y="210" width="112" height="48" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><text x="108.0" y="241" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">votes churn</text><path d="M108.0 258 L108.0 290" stroke="#0a0a0a" stroke-width="2" fill="none"/><path d="M380 56 L244.0 110" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="188" y="110" width="112" height="56" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/><text x="244.0" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0a">Tree 2</text><path d="M244.0 166 L244.0 204" stroke="#0a0a0a" stroke-width="2.5" fill="none"/><path d="M237.0 197 L244.0 208 L251.0 197 Z" fill="#0a0a0a"/><rect x="188" y="210" width="112" height="48" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="244.0" y="241" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">votes stay</text><path d="M244.0 258 L244.0 290" stroke="#0a0a0a" stroke-width="2" fill="none"/><path d="M380 56 L380.0 110" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="324" y="110" width="112" height="56" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/><text x="380.0" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0a">Tree 3</text><path d="M380.0 166 L380.0 204" stroke="#0a0a0a" stroke-width="2.5" fill="none"/><path d="M373.0 197 L380.0 208 L387.0 197 Z" fill="#0a0a0a"/><rect x="324" y="210" width="112" height="48" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><text x="380.0" y="241" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">votes churn</text><path d="M380.0 258 L380.0 290" stroke="#0a0a0a" stroke-width="2" fill="none"/><path d="M380 56 L516.0 110" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="460" y="110" width="112" height="56" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/><text x="516.0" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0a">Tree 4</text><path d="M516.0 166 L516.0 204" stroke="#0a0a0a" stroke-width="2.5" fill="none"/><path d="M509.0 197 L516.0 208 L523.0 197 Z" fill="#0a0a0a"/><rect x="460" y="210" width="112" height="48" fill="#dc452d" stroke="#0a0a0a" stroke-width="2"/><text x="516.0" y="241" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">votes churn</text><path d="M516.0 258 L516.0 290" stroke="#0a0a0a" stroke-width="2" fill="none"/><path d="M380 56 L652.0 110" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="596" y="110" width="112" height="56" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/><text x="652.0" y="145" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0a">Tree 5</text><path d="M652.0 166 L652.0 204" stroke="#0a0a0a" stroke-width="2.5" fill="none"/><path d="M645.0 197 L652.0 208 L659.0 197 Z" fill="#0a0a0a"/><rect x="596" y="210" width="112" height="48" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="652.0" y="241" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">votes stay</text><path d="M652.0 258 L652.0 290" stroke="#0a0a0a" stroke-width="2" fill="none"/><rect x="52" y="290" width="656" height="54" fill="#f5c548" stroke="#0a0a0a" stroke-width="2.5"/><text x="380" y="314" text-anchor="middle" font-size="17" font-weight="700" fill="#0a0a0a">Majority vote: churn (3 of 5 trees)</text><text x="380" y="334" text-anchor="middle" font-size="16" fill="#0a0a0a">Churn score = 3 ÷ 5 = 0.6</text></svg></div>
+    <figcaption><span>Chart 3</span> Each tree decides on its own. Here three of five trees say churn, so the forest predicts churn with a score of 0.6 (illustrative votes). With hundreds of trees the score can take many more values, which lets the forest rank customers instead of only sorting them into two groups.</figcaption>
+  </figure>
+
   <h3 id="why-averaging-reduces-variance">Why Averaging Reduces Variance</h3>
 
   <p>Think of each tree’s churn score for one customer as the true signal plus a random error that comes from its sample. If the errors of the trees are independent, they partly cancel when we average them. For <em>B</em> trees, each with error variance σ<sup>2</sup>, the variance of the average is:</p>
@@ -109,8 +114,8 @@
   <p>We can see it in the data. Two single trees trained on different samples disagree on about 23% of the test customers. Two bagged models of 100 trees each, trained on the same two kinds of samples, disagree on about 11.5%, half as often.</p>
 
   <figure class="post-fig post-fig-wide">
-    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-3-single-vs-bagging.svg" alt="Two dot charts with the same axes showing test accuracy for 30 training samples. Left, single trees: mean 0.676, range 0.650 to 0.692. Right, bagging with 100 trees: mean 0.719, range 0.700 to 0.734." loading="lazy"></div>
-    <figcaption><span>Chart 3</span> Every bagged model beats every single tree: the weakest of the 30 bagged models (0.700) is better than the best single tree (0.692). Averaging lifts the whole cloud of results, even though the spread within it stays similar.</figcaption>
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-4-single-vs-bagging.svg" alt="Two dot charts with the same axes showing test accuracy for 30 training samples. Left, single trees: mean 0.676, range 0.650 to 0.692. Right, bagging with 100 trees: mean 0.719, range 0.700 to 0.734." loading="lazy"></div>
+    <figcaption><span>Chart 4</span> Every bagged model beats every single tree: the weakest of the 30 bagged models (0.700) is better than the best single tree (0.692). Averaging lifts the whole cloud of results, even though the spread within it stays similar.</figcaption>
   </figure>
 
   <h3 id="out-of-bag">Out-of-Bag Observations</h3>
@@ -146,8 +151,8 @@
   <p>Bagging is therefore a random forest that shows all features at every split (<code>max_features=None</code> in scikit-learn).</p>
 
   <figure class="post-fig">
-    <img src="images/random-forest/chart-4-bagging-vs-forest.svg" alt="Line chart of test accuracy against the number of trees on a log scale. Bagging rises from 0.658 with one tree to about 0.717 and flattens. The random forest rises from 0.678 to about 0.731 and flattens. A dashed line shows a single fully grown tree at 0.674." loading="lazy">
-    <figcaption><span>Chart 4</span> Accuracy climbs quickly and flattens after roughly 100 trees, so extra trees cost time but do not cause overfitting. Random feature selection ends about 1.5 points above plain bagging, a small gap here because the table has only six features.</figcaption>
+    <img src="images/random-forest/chart-5-bagging-vs-forest.svg" alt="Line chart of test accuracy against the number of trees on a log scale. Bagging rises from 0.658 with one tree to about 0.717 and flattens. The random forest rises from 0.678 to about 0.731 and flattens. A dashed line shows a single fully grown tree at 0.674." loading="lazy">
+    <figcaption><span>Chart 5</span> Accuracy climbs quickly and flattens after roughly 100 trees, so extra trees cost time but do not cause overfitting. Random feature selection ends about 1.5 points above plain bagging, a small gap here because the table has only six features.</figcaption>
   </figure>
 
   <p>That gap is about as large as the noise in our test set: with 1,250 test customers, an accuracy of 0.73 is uncertain by about ±1.3 points, so we should not read too much into it. Random feature selection matters most when there are many features and a few strong ones would otherwise dominate every tree.</p>
@@ -204,11 +209,11 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="oob-vs-test">Out-of-Bag Score vs. Test Score</h3>
 
-  <p>The OOB score is useful because it tells us how the forest will do on new customers without spending a separate test set. Chart 5 compares it with the test accuracy for forests of 25 to 500 trees.</p>
+  <p>The OOB score is useful because it tells us how the forest will do on new customers without spending a separate test set. Chart 6 compares it with the test accuracy for forests of 25 to 500 trees.</p>
 
   <figure class="post-fig">
-    <img src="images/random-forest/chart-5-oob-vs-test.svg" alt="Line chart of test accuracy and out-of-bag accuracy for forests of 25 to 500 trees. Test accuracy stays between 0.746 and 0.754. Out-of-bag accuracy stays between 0.739 and 0.742." loading="lazy">
-    <figcaption><span>Chart 5</span> The out-of-bag score follows the test score closely, within about one point, and both stay flat from about 100 trees on. You can tune and judge a forest on the training data alone.</figcaption>
+    <img src="images/random-forest/chart-6-oob-vs-test.svg" alt="Line chart of test accuracy and out-of-bag accuracy for forests of 25 to 500 trees. Test accuracy stays between 0.746 and 0.754. Out-of-bag accuracy stays between 0.739 and 0.742." loading="lazy">
+    <figcaption><span>Chart 6</span> The out-of-bag score follows the test score closely, within about one point, and both stay flat from about 100 trees on. You can tune and judge a forest on the training data alone.</figcaption>
   </figure>
 
   <h3 id="comparing-with-a-single-tree">Comparing with a Single Tree</h3>
@@ -226,7 +231,7 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
   </table></div>
 
   <ul class="post-points post-points-color">
-    <li><strong>Against the fully grown tree, the forest wins clearly.</strong> Accuracy rises by 7.6 points and AUC by 0.18. This is the variance reduction from Chart 3 at work.</li>
+    <li><strong>Against the fully grown tree, the forest wins clearly.</strong> Accuracy rises by 7.6 points and AUC by 0.18. This is the variance reduction from Chart 4 at work.</li>
     <li><strong>Against a well-pruned tree, the gap is small.</strong> The accuracy difference of 0.4 points is far below the ±1.3 points of noise in the test set, and the forest has a slightly higher AUC (0.824 vs. 0.817). Its score is an average over 300 trees, so it can tell customers apart inside a region where a tree gives everyone the same value.</li>
   </ul>
 
@@ -236,11 +241,11 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="importance-in-a-forest">Feature Importance in a Forest</h3>
 
-  <p>A forest measures importance in the same way as a tree: how much a feature reduces impurity across all its splits, here averaged over all 300 trees. Chart 6 compares it with the pruned tree.</p>
+  <p>A forest measures importance in the same way as a tree: how much a feature reduces impurity across all its splits, here averaged over all 300 trees. Chart 7 compares it with the pruned tree.</p>
 
   <figure class="post-fig post-fig-wide">
-    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-6-feature-importance.svg" alt="Two horizontal bar charts with the same axes. Pruned single tree: month-to-month contract 0.73, tenure 0.14, support calls 0.07, monthly charges 0.04, one-year contract 0.00, two-year contract 0.01. Random forest: month-to-month contract 0.34, tenure 0.30, support calls 0.09, monthly charges 0.06, one-year contract 0.10, two-year contract 0.10." loading="lazy"></div>
-    <figcaption><span>Chart 6</span> The pruned tree gives almost all the credit to one question. In the forest, other features get their turn at the top of many trees, so the credit is shared. The contract type still leads: its three columns together add up to 0.54.</figcaption>
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-7-feature-importance.svg" alt="Two horizontal bar charts with the same axes. Pruned single tree: month-to-month contract 0.73, tenure 0.14, support calls 0.07, monthly charges 0.04, one-year contract 0.00, two-year contract 0.01. Random forest: month-to-month contract 0.34, tenure 0.30, support calls 0.09, monthly charges 0.06, one-year contract 0.10, two-year contract 0.10." loading="lazy"></div>
+    <figcaption><span>Chart 7</span> The pruned tree gives almost all the credit to one question. In the forest, other features get their turn at the top of many trees, so the credit is shared. The contract type still leads: its three columns together add up to 0.54.</figcaption>
   </figure>
 
   <h3 id="permutation-importance">Why Permutation Importance Is Safer</h3>
