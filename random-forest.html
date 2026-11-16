@@ -181,28 +181,15 @@
 
   <h3 id="random-features">The Solution: Random Feature Selection</h3>
 
-  <p>This is where Random Forest goes one step further than bagging.</p>
+  <p>A random forest adds one rule to bagging: at every split, a tree may only look at a random subset of the features.</p>
 
-  <p>Instead of allowing every tree to consider all available features at each split, Random Forest selects a random subset of features.</p>
+  <p>Our churn data has four features: contract type, tenure, monthly charges and support calls. At one split, a tree might only be allowed to look at tenure and support calls. At a split in another tree, the choice might be contract type and monthly charges. Each tree must find the best split among the features it is allowed to see.</p>
 
-  <p>Imagine our telecom dataset contains:</p>
+  <p>Sometimes contract type is on the list, and sometimes it is not. When it is missing at the top of the tree, the tree has to start with a different question, such as tenure, and from there it grows a very different tree. It is like giving each colleague only part of the report: they can no longer all rely on the same strongest fact, so their estimates, and their mistakes, become less alike.</p>
 
-  <ul class="post-points post-points-color">
-    <li>Contract type</li>
-    <li>Customer tenure</li>
-    <li>Monthly charges</li>
-    <li>Number of support calls</li>
-    <li>Payment method</li>
-    <li>Internet service</li>
-  </ul>
+  <p>Each single tree gets a little weaker, because it sometimes cannot use the best feature. But the trees are now much less correlated, so the shared mistakes (the first term in the formula) become smaller and the average becomes better. Weaker alone, stronger together.</p>
 
-  <p>At one split, a tree might only consider contract type, tenure and monthly charges. Another tree might consider support calls, payment method and internet service.</p>
-
-  <p>Each tree must find the best split among the features available to it.</p>
-
-  <p>Sometimes contract type will be available. Sometimes it won't.</p>
-
-  <p>This encourages trees to explore different decision paths, reducing their correlation and making aggregation more effective.</p>
+  <p>How many features does a tree get to see? By default, scikit-learn uses the square root of the number of features for classification, which you can change with the <code>max_features</code> setting.</p>
 
   <p><strong>Bagging creates diversity through different samples. Random feature selection creates additional diversity through different features. Together, they form a Random Forest.</strong></p>
 
