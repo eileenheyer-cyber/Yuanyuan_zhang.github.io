@@ -177,6 +177,10 @@
 
   <p>Split B asks <em>“Is the tenure under 12 months?”</em>. It creates a group of 12 customers (7 churned, 5 stayed, Gini 0.49) and a group of 8 customers (1 churned, 7 stayed, Gini 0.22). The weighted Gini is 0.38, a drop of only 0.10. The contract question separates the customers better, so it becomes the root.</p>
 
+  <p>Why is Split A better? It separates churners from stayers more cleanly. Month-to-month customers churn in 7 of 10 cases, while only 1 of 10 customers on other contracts leaves, so the two groups behave very differently. Both groups end up fairly pure, and the weighted Gini falls from 0.48 to 0.30.</p>
+
+  <p>Split B is weaker because its largest group stays mixed. Among the 12 customers with under 12 months of tenure, 7 churned and 5 stayed, which is nearly a coin flip (Gini 0.49, close to the maximum of 0.5). The tenure question helps a little, but it leaves most of the uncertainty in place, so the weighted Gini only falls to 0.38.</p>
+
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><svg viewBox="0 0 900 480" role="img" aria-label="Comparison of two possible splits of the same 20 customers (8 churned, 12 stayed, Gini 0.48). Split A, month-to-month contract: 10 customers with 7 churned and 3 stayed (Gini 0.42) and 10 customers with 1 churned and 9 stayed (Gini 0.18); weighted Gini 0.30, a drop of 0.18, winner. Split B, tenure under 12 months: 12 customers with 7 churned and 5 stayed (Gini 0.49) and 8 customers with 1 churned and 7 stayed (Gini 0.22); weighted Gini 0.38, a drop of 0.10." style="width:100%;min-width:700px;height:auto;font-family:Inter,sans-serif;fill:#0a0a0a">
       <g fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M450 86 L225 120 M450 86 L675 120 M225 158 L125 190 M225 158 L325 190 M675 158 L575 190 M675 158 L775 190"/><path d="M125 302 V318 H325 V302 M225 318 V335"/><path d="M575 302 V318 H775 V302 M675 318 V335"/></g>
