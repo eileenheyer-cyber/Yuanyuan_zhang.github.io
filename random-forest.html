@@ -46,7 +46,7 @@
     <ul>
       <li><a href="#unstable-tree">Why a Single Decision Tree Is Unstable</a></li>
       <li><details><summary><a href="#bagging">Bagging: Averaging Many Trees to Reduce Variance</a></summary><ul><li><a href="#bootstrap-sampling">Step 1: Bootstrap Sampling</a></li><li><a href="#training-and-voting">Step 2: Training and Voting</a></li><li><a href="#why-averaging-reduces-variance">Why Averaging Reduces Variance</a></li><li><a href="#out-of-bag">Out-of-Bag Observations</a></li></ul></details></li>
-      <li><details><summary><a href="#random-forest">From Bagging to Random Forest: Random Feature Selection</a></summary><ul><li><a href="#trees-too-similar">The Problem: Trees Are Still Too Similar</a></li><li><a href="#random-features">The Fix: A Random Subset of Features at Each Split</a></li></ul></details></li>
+      <li><details><summary><a href="#random-forest">From Bagging to Random Forest: Why Tree Diversity Matters</a></summary><ul><li><a href="#trees-too-similar">The Problem: Bagging Trees Can Still Be Too Similar</a></li><li><a href="#why-correlation-matters">Why Correlation Matters</a></li><li><a href="#random-features">The Solution: Random Feature Selection</a></li></ul></details></li>
       <li><a href="#python">Training a Random Forest in Python</a></li>
       <li><a href="#hyperparameters">Key Hyperparameters of a Random Forest</a></li>
       <li><details><summary><a href="#evaluating">Evaluating a Random Forest</a></summary><ul><li><a href="#oob-vs-test">Out-of-Bag Score vs. Test Score</a></li><li><a href="#comparing-with-a-single-tree">Comparing with a Single Tree</a></li></ul></details></li>
@@ -126,36 +126,89 @@
 
   <p>So each tree leaves out about 37% of the customers, and each customer is out of the bag for about 37% of the trees. This gives a free test: predict every customer using only the trees that never saw them, and compare with what really happened. The result is the <strong>out-of-bag (OOB) score</strong>, an honest accuracy estimate that needs no separate test set.</p>
 
-  <h2 id="random-forest" style="scroll-margin-top:90px">From Bagging to Random Forest: Random Feature Selection</h2>
+  <h2 id="random-forest" style="scroll-margin-top:90px">From Bagging to Random Forest: Why Tree Diversity Matters</h2>
 
-  <h3 id="trees-too-similar">The Problem: Trees Are Still Too Similar</h3>
+  <h3 id="trees-too-similar">The Problem: Bagging Trees Can Still Be Too Similar</h3>
 
-  <p>The formula in the last section assumed independent trees, but bagged trees are not independent: they come from overlapping samples of the same customers. In our churn data the contract type is by far the strongest signal, so every bootstrap tree asks about the contract first, and the trees end up looking alike. If the correlation between trees is ρ, the variance of the average becomes:</p>
+  <p>Bagging creates different trees by training each one on a different bootstrap sample. But different samples do not necessarily produce very different trees.</p>
 
-  <p class="post-formula post-formula-plain"><strong>Variance of the average = ρσ<sup>2</sup> + <span class="frac"><span>(1 − ρ) σ<sup>2</sup></span><span><em>B</em></span></span></strong></p>
+  <p>Remember our telecom churn example. Contract type is the strongest predictor of customer churn. Even though every tree receives a different sample of customers, contract type is likely to remain the best feature for the first split.</p>
 
-  <p>With σ<sup>2</sup> = 0.04 and <em>B</em> = 100 trees, three cases show the effect (illustrative numbers):</p>
+  <p>As a result, many trees may start with the same question and learn similar decision rules. They are different, but not different enough.</p>
+
+  <p>Why does this matter? Because averaging similar trees provides less variance reduction than averaging diverse trees.</p>
+
+  <h3 id="why-correlation-matters">Why Correlation Matters</h3>
+
+  <p>To understand this, let's look at the variance of an average of B trees, assuming they have the same variance and the same pairwise correlation:</p>
+
+  <p class="post-formula post-formula-plain"><strong>Var(<span style="text-decoration:overline"><em>T</em></span>) = ρσ<sup>2</sup> + <span class="frac"><span>(1 − ρ) σ<sup>2</sup></span><span><em>B</em></span></span></strong></p>
+
+  <p>Here:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>ρ = 0 (independent trees):</strong> variance 0.0004, standard deviation 0.02.</li>
-    <li><strong>ρ = 0.3:</strong> variance 0.3 × 0.04 + 0.7 × 0.04 ÷ 100 = 0.01228, standard deviation 0.11.</li>
-    <li><strong>ρ = 0.8 (very similar trees):</strong> variance 0.032 + 0.00008 = 0.03208, standard deviation 0.18.</li>
+    <li><em>B</em> = number of trees</li>
+    <li>σ<sup>2</sup> = variance of an individual tree</li>
+    <li>ρ = correlation between the trees</li>
   </ul>
 
-  <p>The first term, ρσ<sup>2</sup>, does not depend on the number of trees. Adding more trees only shrinks the second term, so with similar trees the vote stops improving early. The only way to lower the first term is to make the trees less alike.</p>
+  <p>The formula contains two components:</p>
 
-  <h3 id="random-features">The Fix: A Random Subset of Features at Each Split</h3>
+  <ul class="post-points post-points-color">
+    <li><strong>The first term:</strong> Variance that remains because the trees are correlated.</li>
+    <li><strong>The second term:</strong> Variance that decreases as we add more trees.</li>
+  </ul>
 
-  <p>A random forest adds one rule to bagging: at every split, the tree may only choose among a random subset of the features. For classification the usual subset size is the square root of the number of features. Our table has 6 features, so each split sees 2 randomly chosen ones. Whenever the contract type is not among them, the tree has to split on tenure or support calls instead, and its structure changes. The trees become more different from each other, ρ falls, and the vote gains more from averaging. Each tree alone gets a little weaker, but the forest as a whole gets better.</p>
+  <p>Let's assume each tree has a variance of 0.04 and we train 100 trees. What happens when their correlation changes?</p>
 
-  <p>Bagging is therefore a random forest that shows all features at every split (<code>max_features=None</code> in scikit-learn).</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Tree correlation</th><th>Variance of average</th><th>Standard deviation</th></tr></thead>
+    <tbody>
+      <tr><td>0.0</td><td>0.00040</td><td>0.020</td></tr>
+      <tr><td>0.3</td><td>0.01228</td><td>0.111</td></tr>
+      <tr><td>0.8</td><td>0.03208</td><td>0.179</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>These are illustrative values, but they reveal an important pattern.</p>
+
+  <p>When trees are independent, averaging reduces variance substantially. When trees are highly correlated, much more variance remains, even with 100 trees.</p>
+
+  <p>Adding more trees mainly reduces the second term. The first term remains unchanged as long as the correlation stays the same.</p>
+
+  <p><strong>The lesson: More trees help, but less correlated trees help more.</strong></p>
+
+  <h3 id="random-features">The Solution: Random Feature Selection</h3>
+
+  <p>This is where Random Forest goes one step further than bagging.</p>
+
+  <p>Instead of allowing every tree to consider all available features at each split, Random Forest selects a random subset of features.</p>
+
+  <p>Imagine our telecom dataset contains:</p>
+
+  <ul class="post-points post-points-color">
+    <li>Contract type</li>
+    <li>Customer tenure</li>
+    <li>Monthly charges</li>
+    <li>Number of support calls</li>
+    <li>Payment method</li>
+    <li>Internet service</li>
+  </ul>
+
+  <p>At one split, a tree might only consider contract type, tenure and monthly charges. Another tree might consider support calls, payment method and internet service.</p>
+
+  <p>Each tree must find the best split among the features available to it.</p>
+
+  <p>Sometimes contract type will be available. Sometimes it won't.</p>
+
+  <p>This encourages trees to explore different decision paths, reducing their correlation and making aggregation more effective.</p>
+
+  <p><strong>Bagging creates diversity through different samples. Random feature selection creates additional diversity through different features. Together, they form a Random Forest.</strong></p>
 
   <figure class="post-fig">
     <img src="images/random-forest/chart-5-bagging-vs-forest.svg" alt="Line chart of test accuracy against the number of trees on a log scale. Bagging rises from 0.658 with one tree to about 0.717 and flattens. The random forest rises from 0.678 to about 0.731 and flattens. A dashed line shows a single fully grown tree at 0.674." loading="lazy">
     <figcaption><span>Chart 5</span> Accuracy climbs quickly and flattens after roughly 100 trees, so extra trees cost time but do not cause overfitting. Random feature selection ends about 1.5 points above plain bagging, a small gap here because the table has only six features.</figcaption>
   </figure>
-
-  <p>That gap is about as large as the noise in our test set: with 1,250 test customers, an accuracy of 0.73 is uncertain by about ±1.3 points, so we should not read too much into it. Random feature selection matters most when there are many features and a few strong ones would otherwise dominate every tree.</p>
 
   <h2 id="python" style="scroll-margin-top:90px">Training a Random Forest in Python</h2>
 
