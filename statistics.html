@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116a">
+  <link rel="stylesheet" href="style.css?v=20261116d">
 </head>
 <body class="stats-page">
 
@@ -35,6 +35,11 @@
     <h1 class="section-title">Nerding Out on Data.</h1>
     <p class="section-intro">Statistics, machine learning, and everything in between.<br>A collection of visual explorations into the fascinating logic behind data.</p>
 
+    <figure class="dot-demo">
+      <canvas id="galton" role="img" aria-label="Animation: dots fall through rows of pegs and pile up into a bell curve"></canvas>
+      <figcaption>The central limit theorem in motion: every dot takes ten random steps, left or right. Together the dots build a bell curve.</figcaption>
+    </figure>
+
     <nav class="jump-bar" aria-label="Jump to a topic">
       <div class="jump-row"><a class="jump-track" href="#statistics">Statistics</a><a href="#data-fundamentals">Data fundamentals</a><a href="#probability">Probability</a><a href="#sampling">Sampling</a><a href="#inference">Inference &amp; experiments</a><a href="#regression">Regression analysis</a><a href="#glm">Generalized linear models</a></div>
       <div class="jump-row"><a class="jump-track" href="#machine-learning">Machine Learning</a><a href="#model-fundamentals">Model fundamentals</a><a href="#classification">Classification</a><a href="#unsupervised">Unsupervised learning</a></div>
@@ -42,422 +47,152 @@
 
     <div class="track-head" id="statistics"><p class="overline">Track 1</p><h2>Statistics</h2><p>The foundations: describe data, reason about uncertainty, and test whether a difference is real.</p></div>
 
-    <div class="theme-head" id="data-fundamentals"><h2>Data fundamentals</h2><p>The basics of working with data: summarise a dataset, explore it, and structure a project from question to decision.</p></div>
-    <div class="project-grid">
+    <section class="series" id="data-fundamentals">
+      <div class="series-info">
+        <p class="series-no">§01</p>
+        <h2 class="series-title">Data fundamentals</h2>
+        <p class="series-desc">The basics of working with data: summarise a dataset, explore it, and structure a project from question to decision.</p>
+        <p class="series-count">4 posts</p>
+        <div class="series-cover"><img src="images/descriptive-statistics-cover.webp?v=20261012" alt="Descriptive Statistics: measures of central tendency, dispersion and position" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="descriptive-statistics.html" data-cover="images/descriptive-statistics-cover.webp?v=20261012" data-alt="Descriptive Statistics: measures of central tendency, dispersion and position"><span class="sl-no">01</span><span class="sl-title">Descriptive statistics</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="iqr.html" data-cover="images/iqr-cover.webp" data-alt="IQR: a box plot showing the middle 50% of the data"><span class="sl-no">02</span><span class="sl-title">IQR</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="pace-framework.html" data-cover="images/pace-framework-cover.webp?v=20261012" data-alt="The PACE Framework: how to structure a data project that leads to reliable decisions, with the four stages Plan, Analyze, Construct and Execute"><span class="sl-no">03</span><span class="sl-title">From Question to Decision: the PACE Framework</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="datenviz-eda.html" data-cover="images/eda-cover.webp" data-alt="Exploratory Data Analysis: distributions, group comparisons, relationships and outliers, with Python, pandas, NumPy and Matplotlib"><span class="sl-no">04</span><span class="sl-title">Exploratory Data Analysis</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="descriptive-statistics.html">
-        <span class="project-card-img"><img src="images/descriptive-statistics-cover.webp?v=20261012" alt="Descriptive Statistics: measures of central tendency, dispersion and position" width="2354" height="1572" loading="lazy" style="object-position:top center"></span>
-        <span class="project-card-body">
-          <span class="project-type">Descriptive statistics</span>
-          <span class="project-title">Descriptive statistics</span>
-          <p>How to read the story hidden in data: center, spread and position.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Mean</span><span>Std. deviation</span><span>Quartiles</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
+    <section class="series" id="probability">
+      <div class="series-info">
+        <p class="series-no">§02</p>
+        <h2 class="series-title">Probability</h2>
+        <p class="series-desc">From single events to distributions: the language of uncertainty.</p>
+        <p class="series-count">7 posts</p>
+        <div class="series-cover"><img src="images/probability-basics-cover.webp" alt="Probability Basics: how likely is an event? A tumbling die in bold geometric shapes" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="probability-basics.html" data-cover="images/probability-basics-cover.webp" data-alt="Probability Basics: how likely is an event? A tumbling die in bold geometric shapes"><span class="sl-no">01</span><span class="sl-title">Probability Basics</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="conditional-probability.html" data-cover="images/conditional-probability-cover.webp" data-alt="Conditional Probability and Independence: two overlapping circles A and B"><span class="sl-no">02</span><span class="sl-title">Conditional Probability &amp; Independence</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="bayes-theorem.html" data-cover="images/bayes-theorem-cover.webp" data-alt="Bayes’ Theorem: a blue head for the prior, a yellow cone of evidence and a red head for the posterior"><span class="sl-no">03</span><span class="sl-title">Bayes’ Theorem</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="random-variables-distributions.html" data-cover="images/random-variables-distributions-cover.webp" data-alt="Probability Distributions: three overlapping bell curves in red, blue and yellow"><span class="sl-no">04</span><span class="sl-title">Random Variables &amp; Probability Distributions</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="discrete-distributions.html" data-cover="images/discrete-distributions-cover.webp" data-alt="Four Common Discrete Distributions: uniform, Bernoulli, binomial and Poisson"><span class="sl-no">05</span><span class="sl-title">Four Common Discrete Distributions</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="normal-distribution.html" data-cover="images/normal-distribution-cover.webp?v=20261008c" data-alt="Normal Distribution: a bell curve with the areas within 1, 2 and 3 standard deviations marked as 68%, 95% and 99.7%"><span class="sl-no">06</span><span class="sl-title">Normal Distribution</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="common-continuous-distributions.html" data-cover="images/common-continuous-distributions-cover.webp?v=1" data-alt="Common Continuous Distributions: a flat uniform block, a bell curve, an exponential decay and skewed curves in red, yellow, blue and black"><span class="sl-no">07</span><span class="sl-title">Common Continuous Distributions</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="iqr.html">
-        <span class="project-card-img"><img src="images/iqr-cover.webp" alt="IQR: a box plot showing the middle 50% of the data" width="2360" height="1572" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Descriptive statistics</span>
-          <span class="project-title">IQR</span>
-          <p>The middle 50% of your data: spread, outliers and box plots.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Quartiles</span><span>Outliers</span><span>Box plot</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
+    <section class="series" id="sampling">
+      <div class="series-info">
+        <p class="series-no">§03</p>
+        <h2 class="series-title">Sampling</h2>
+        <p class="series-desc">How to choose the data you analyze, and how to avoid bias.</p>
+        <p class="series-count">2 posts</p>
+        <div class="series-cover"><img src="images/sampling-methods-cover.webp?v=2" alt="Sampling: a population of colored shapes in a circle and a small sample picked from it" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="sampling-methods.html" data-cover="images/sampling-methods-cover.webp?v=2" data-alt="Sampling: a population of colored shapes in a circle and a small sample picked from it"><span class="sl-no">01</span><span class="sl-title">Sampling Methods</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="central-limit-theorem.html" data-cover="images/central-limit-theorem-cover.webp" data-alt="Central Limit Theorem: a population, repeated samples, and a bell-shaped distribution of sample means"><span class="sl-no">02</span><span class="sl-title">Central Limit Theorem</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="pace-framework.html">
-        <span class="project-card-img"><img src="images/pace-framework-cover.webp?v=20261012" alt="The PACE Framework: how to structure a data project that leads to reliable decisions, with the four stages Plan, Analyze, Construct and Execute" width="2374" height="1568" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Data fundamentals</span>
-          <span class="project-title">From Question to Decision: the PACE Framework</span>
-          <p>How Plan, Analyze, Construct and Execute structure a data project, up to the executive summary.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>PACE</span><span>Workflow</span><span>Executive summary</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
+    <section class="series" id="inference">
+      <div class="series-info">
+        <p class="series-no">§04</p>
+        <h2 class="series-title">Inference &amp; experiments</h2>
+        <p class="series-desc">Test whether a change really made a difference.</p>
+        <p class="series-count">7 posts</p>
+        <div class="series-cover"><img src="images/hypothesis-testing-cover.webp" alt="Hypothesis testing: null and alternative hypothesis boxes above a bell curve with red rejection regions in both tails" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="hypothesis-testing.html" data-cover="images/hypothesis-testing-cover.webp" data-alt="Hypothesis testing: null and alternative hypothesis boxes above a bell curve with red rejection regions in both tails"><span class="sl-no">01</span><span class="sl-title">Hypothesis Testing</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="confidence-intervals.html" data-cover="images/confidence-intervals-cover.webp?v=2" data-alt="Confidence intervals: sample estimates with error bars around a true value, most of them crossing it"><span class="sl-no">02</span><span class="sl-title">Confidence Intervals</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="t-test-vs-z-test.html" data-cover="images/t-test-vs-z-test-cover.webp" data-alt="T-Test vs. Z-Test: a standard normal curve in red and a wider t-distribution in blue"><span class="sl-no">03</span><span class="sl-title">T-Test vs. Z-Test</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="t-test.html" data-cover="images/t-test-cover.webp" data-alt="T-Test: Is the difference real? Two box plots in blue and yellow next to a t-distribution with red rejection regions at the critical values, surrounded by geometric shapes"><span class="sl-no">04</span><span class="sl-title">The t-Test</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="chi-squared-test.html" data-cover="images/chi-squared-test-cover.webp" data-alt="Chi-Squared Test: observed and expected value tables next to a chi-squared curve with the rejection region in red, surrounded by blue, red and yellow geometric shapes"><span class="sl-no">05</span><span class="sl-title">Chi-Squared Test</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="anova.html" data-cover="images/anova-cover.webp" data-alt="ANOVA: comparing multiple group means. Dot plots of email, social and search orders with their group means, the overall mean and the between-group and within-group variation, next to blue, yellow, red and black geometric shapes"><span class="sl-no">06</span><span class="sl-title">ANOVA</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="ab-testing.html" data-cover="images/ab-testing-cover.webp" data-alt="A/B testing: users randomly split into a control group and a treatment group"><span class="sl-no">07</span><span class="sl-title">A/B Testing</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="datenviz-eda.html">
-        <span class="project-card-img"><img src="images/eda-cover.webp" alt="Exploratory Data Analysis: distributions, group comparisons, relationships and outliers, with Python, pandas, NumPy and Matplotlib" width="1672" height="941" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Exploratory analysis · Retail</span>
-          <span class="project-title">Exploratory Data Analysis</span>
-          <p>Systematic exploration of NordHome's retail data — distributions, group comparisons, relationships and outliers.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Python</span><span>Pandas</span><span>NumPy</span><span>Matplotlib</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
+    <section class="series" id="regression">
+      <div class="series-info">
+        <p class="series-no">§05</p>
+        <h2 class="series-title">Regression analysis</h2>
+        <p class="series-desc">Model how a numeric outcome depends on other variables: fit a line, check its assumptions, and evaluate the fit.</p>
+        <p class="series-count">5 posts</p>
+        <div class="series-cover"><img src="images/simple-linear-regression-cover.webp?v=2" alt="Simple Linear Regression: bold title next to a scatter plot of blue and red points with a fitted line, surrounded by yellow, blue and red geometric shapes" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="simple-linear-regression.html" data-cover="images/simple-linear-regression-cover.webp?v=2" data-alt="Simple Linear Regression: bold title next to a scatter plot of blue and red points with a fitted line, surrounded by yellow, blue and red geometric shapes"><span class="sl-no">01</span><span class="sl-title">Simple Linear Regression</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="least-squares.html" data-cover="images/ols-cover.webp?v=2" data-alt="Ordinary Least Squares: bold title next to a scatter plot with a red fitted line, dashed residuals and a squared-residual box, surrounded by yellow, red, blue and black geometric shapes"><span class="sl-no">02</span><span class="sl-title">OLS: Finding the Best-Fit Line</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="multiple-linear-regression.html" data-cover="images/multiple-linear-regression-cover.webp" data-alt="Multiple Linear Regression: bold title next to three predictors X1, X2 and X3 feeding a fitted plane with data points above and below it, surrounded by blue, red, yellow and black geometric shapes"><span class="sl-no">03</span><span class="sl-title">Multiple Linear Regression</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="regression-assumptions.html" data-cover="images/regression-assumptions-cover.webp?v=2" data-alt="Regression Assumptions: four small charts labelled Linearity, Independence, Normality and Homoscedasticity next to a bold title, with yellow, red, blue and black geometric shapes"><span class="sl-no">04</span><span class="sl-title">The Four Assumptions of Simple Linear Regression</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="regression-evaluation.html" data-cover="images/evaluating-regression-cover.webp" data-alt="Evaluating and interpreting a regression model: a blue circle with a fitted line for model fit, a red rectangle with a confidence band for uncertainty and a yellow triangle showing extrapolation beyond the observed data range"><span class="sl-no">05</span><span class="sl-title">Evaluating and Interpreting a Regression Model</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-    </div>
-
-    <div class="theme-head" id="probability"><h2>Probability</h2><p>From single events to distributions: the language of uncertainty.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="probability-basics.html">
-        <span class="project-card-img"><img src="images/probability-basics-cover.webp" alt="Probability Basics: how likely is an event? A tumbling die in bold geometric shapes" width="2336" height="1552" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Probability Basics</span>
-          <p>How likely is an event? Outcomes, events, and the complement, addition and multiplication rules.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Probability</span><span>Events</span><span>P(A)</span><span>Rules</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="conditional-probability.html">
-        <span class="project-card-img"><img src="images/conditional-probability-cover.webp" alt="Conditional Probability and Independence: two overlapping circles A and B" width="2354" height="1566" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Conditional Probability &amp; Independence</span>
-          <p>When does one event change the probability of another? Dependent events and P(B | A).</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Conditional</span><span>P(B | A)</span><span>Independence</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="bayes-theorem.html">
-        <span class="project-card-img"><img src="images/bayes-theorem-cover.webp" alt="Bayes’ Theorem: a blue head for the prior, a yellow cone of evidence and a red head for the posterior" width="2356" height="1562" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Bayes’ Theorem</span>
-          <p>How to update a belief with new evidence: prior, likelihood, posterior, and why an alert can still be wrong.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Prior</span><span>Posterior</span><span>P(A | B)</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="random-variables-distributions.html">
-        <span class="project-card-img"><img src="images/random-variables-distributions-cover.webp" alt="Probability Distributions: three overlapping bell curves in red, blue and yellow" width="2358" height="1566" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Random Variables &amp; Probability Distributions</span>
-          <p>From a random variable to PMF, PDF and CDF: how to describe uncertainty in discrete and continuous data.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>PMF</span><span>PDF</span><span>CDF</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="discrete-distributions.html">
-        <span class="project-card-img"><img src="images/discrete-distributions-cover.webp" alt="Four Common Discrete Distributions: uniform, Bernoulli, binomial and Poisson" width="2370" height="1568" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Four Common Discrete Distributions</span>
-          <p>Uniform, Bernoulli, binomial and Poisson: what each one models and when to use it.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Binomial</span><span>Poisson</span><span>Bernoulli</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="normal-distribution.html">
-        <span class="project-card-img"><img src="images/normal-distribution-cover.webp?v=20261008c" alt="Normal Distribution: a bell curve with the areas within 1, 2 and 3 standard deviations marked as 68%, 95% and 99.7%" width="2342" height="1554" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Normal Distribution</span>
-          <p>The bell curve and the 68-95-99.7 rule: what is typical, what is rare, and how to spot outliers.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Empirical rule</span><span>Z-score</span><span>Bell curve</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="common-continuous-distributions.html">
-        <span class="project-card-img"><img src="images/common-continuous-distributions-cover.webp?v=1" alt="Common Continuous Distributions: a flat uniform block, a bell curve, an exponential decay and skewed curves in red, yellow, blue and black" width="2232" height="1488" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Probability</span>
-          <span class="project-title">Common Continuous Distributions</span>
-          <p>Uniform, normal, exponential and log-normal: what each one models and when to use it.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Uniform</span><span>Exponential</span><span>Log-normal</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="sampling"><h2>Sampling</h2><p>How to choose the data you analyze, and how to avoid bias.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="sampling-methods.html">
-        <span class="project-card-img"><img src="images/sampling-methods-cover.webp?v=2" alt="Sampling: a population of colored shapes in a circle and a small sample picked from it" width="2310" height="1540" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Sampling</span>
-          <span class="project-title">Sampling Methods</span>
-          <p>Probability and non-probability sampling: how each method works and how it can bias your data.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Random</span><span>Stratified</span><span>Bias</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="central-limit-theorem.html">
-        <span class="project-card-img"><img src="images/central-limit-theorem-cover.webp" alt="Central Limit Theorem: a population, repeated samples, and a bell-shaped distribution of sample means" width="2289" height="1526" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Sampling</span>
-          <span class="project-title">Central Limit Theorem</span>
-          <p>Sampling distributions, standard error, and why the means of repeated samples form a bell curve.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Sampling distribution</span><span>Standard error</span><span>Normal</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="inference"><h2>Inference &amp; experiments</h2><p>Test whether a change really made a difference.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="hypothesis-testing.html">
-        <span class="project-card-img"><img src="images/hypothesis-testing-cover.webp" alt="Hypothesis testing: null and alternative hypothesis boxes above a bell curve with red rejection regions in both tails" width="2340" height="1550" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">Hypothesis Testing</span>
-          <p>Is a difference real or just luck? Significance level, p-value, t-test and power, shown on a checkout redesign example.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Significance level</span><span>P-value</span><span>Power</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="confidence-intervals.html">
-        <span class="project-card-img"><img src="images/confidence-intervals-cover.webp?v=2" alt="Confidence intervals: sample estimates with error bars around a true value, most of them crossing it" width="1800" height="1200" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">Confidence Intervals</span>
-          <p>Why a range beats a single estimate, how to read a 95% interval, and what it does not mean.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Confidence interval</span><span>Z-score</span><span>Margin of error</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="t-test-vs-z-test.html">
-        <span class="project-card-img"><img src="images/t-test-vs-z-test-cover.webp" alt="T-Test vs. Z-Test: a standard normal curve in red and a wider t-distribution in blue" width="2354" height="1566" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">T-Test vs. Z-Test</span>
-          <p>How to choose the right test for averages and conversion rates with a simple decision tree.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>T-test</span><span>Z-test</span><span>Decision tree</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="t-test.html">
-        <span class="project-card-img"><img src="images/t-test-cover.webp" alt="T-Test: Is the difference real? Two box plots in blue and yellow next to a t-distribution with red rejection regions at the critical values, surrounded by geometric shapes" width="2256" height="1494" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">The t-Test</span>
-          <p>Is the difference between averages real? One-sample, two-sample and paired t-tests on a checkout redesign.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Student’s t-test</span><span>Welch’s t-test</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="chi-squared-test.html">
-        <span class="project-card-img"><img src="images/chi-squared-test-cover.webp" alt="Chi-Squared Test: observed and expected value tables next to a chi-squared curve with the rejection region in red, surrounded by blue, red and yellow geometric shapes" width="2338" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">Chi-Squared Test</span>
-          <p>Is there a relationship between two categories? Compare observed with expected values.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Observed vs. expected</span><span>Degrees of freedom</span><span>Categorical data</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="anova.html">
-        <span class="project-card-img"><img src="images/anova-cover.webp" alt="ANOVA: comparing multiple group means. Dot plots of email, social and search orders with their group means, the overall mean and the between-group and within-group variation, next to blue, yellow, red and black geometric shapes" width="2368" height="1582" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Inference</span>
-          <span class="project-title">ANOVA</span>
-          <p>Do three or more groups have different averages? Compare the variation between groups with the variation within them.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>F-statistic</span><span>Post-hoc tests</span><span>Interaction effects</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="ab-testing.html">
-        <span class="project-card-img"><img src="images/ab-testing-cover.webp" alt="A/B testing: users randomly split into a control group and a treatment group" width="2812" height="1560" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Experimentation</span>
-          <span class="project-title">A/B Testing</span>
-          <p>How to design an experiment and tell whether a change really made things better.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Hypothesis</span><span>Randomization</span><span>p-value</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="regression"><h2>Regression analysis</h2><p>Model how a numeric outcome depends on other variables: fit a line, check its assumptions, and evaluate the fit.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="simple-linear-regression.html">
-        <span class="project-card-img"><img src="images/simple-linear-regression-cover.webp?v=2" alt="Simple Linear Regression: bold title next to a scatter plot of blue and red points with a fitted line, surrounded by yellow, blue and red geometric shapes" width="2772" height="1550" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">Simple Linear Regression</span>
-          <p>Predict sales from advertising spend and learn what the intercept and slope of a fitted line really mean.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Slope</span><span>Intercept</span><span>Fitted line</span><span>Prediction</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="least-squares.html">
-        <span class="project-card-img"><img src="images/ols-cover.webp?v=2" alt="Ordinary Least Squares: bold title next to a scatter plot with a red fitted line, dashed residuals and a squared-residual box, surrounded by yellow, red, blue and black geometric shapes" width="2767" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">OLS: Finding the Best-Fit Line</span>
-          <p>How residuals and the sum of squared residuals turn "fits well" into a number, and how OLS finds the best line.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>OLS</span><span>Residuals</span><span>SSR</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="multiple-linear-regression.html">
-        <span class="project-card-img"><img src="images/multiple-linear-regression-cover.webp" alt="Multiple Linear Regression: bold title next to three predictors X1, X2 and X3 feeding a fitted plane with data points above and below it, surrounded by blue, red, yellow and black geometric shapes" width="2344" height="1568" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">Multiple Linear Regression</span>
-          <p>Predict a customer's net revenue from several drivers at once, and learn to read each coefficient on its own.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Multicollinearity</span><span>VIF</span><span>Adjusted R²</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="regression-assumptions.html">
-        <span class="project-card-img"><img src="images/regression-assumptions-cover.webp?v=2" alt="Regression Assumptions: four small charts labelled Linearity, Independence, Normality and Homoscedasticity next to a bold title, with yellow, red, blue and black geometric shapes" width="2772" height="1559" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">The Four Assumptions of Simple Linear Regression</span>
-          <p>When can you trust a fitted line? Linearity, independence, normality and constant variance, and how to check them.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Linearity</span><span>Normality</span><span>Homoscedasticity</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="regression-evaluation.html">
-        <span class="project-card-img"><img src="images/evaluating-regression-cover.webp" alt="Evaluating and interpreting a regression model: a blue circle with a fitted line for model fit, a red rectangle with a confidence band for uncertainty and a yellow triangle showing extrapolation beyond the observed data range" width="2343" height="1562" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Regression analysis</span>
-          <span class="project-title">Evaluating and Interpreting a Regression Model</span>
-          <p>How well does the model fit and how reliable are its estimates? R², error metrics, p-values and confidence intervals.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Model fit</span><span>R²</span><span>Confidence intervals</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="glm"><h2>Generalized linear models</h2><p>Extend regression to outcomes that are not a plain number: yes or no, counts, rates.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="glm.html">
-        <span class="project-card-img"><img src="images/glm-cover.webp" alt="Generalized Linear Models: a blue circle with a regression line, a red rectangle with an S-shaped logistic curve and a yellow triangle with rising bars" width="2362" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Generalized linear models</span>
-          <span class="project-title">Generalized Linear Models</span>
-          <p>One framework behind linear, logistic and Poisson regression: link functions for continuous, binary and count outcomes.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>GLM</span><span>Logistic</span><span>Poisson</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="logistic-regression.html">
-        <span class="project-card-img"><img src="images/logistic-regression-cover.webp?v=2" alt="Logistic Regression: bold title and the subtitle Modeling Probabilities for Binary Outcomes above an S-shaped probability curve with blue points near 0, red points near 1 and a dashed decision boundary, between a yellow circle, black and red rectangles and a large blue circle" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Generalized linear models</span>
-          <span class="project-title">Logistic Regression</span>
-          <p>Predict a yes/no outcome as a probability and read the coefficients as odds ratios.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Probability</span><span>Odds ratio</span><span>MLE</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
+    <section class="series" id="glm">
+      <div class="series-info">
+        <p class="series-no">§06</p>
+        <h2 class="series-title">Generalized linear models</h2>
+        <p class="series-desc">Extend regression to outcomes that are not a plain number: yes or no, counts, rates.</p>
+        <p class="series-count">2 posts</p>
+        <div class="series-cover"><img src="images/glm-cover.webp" alt="Generalized Linear Models: a blue circle with a regression line, a red rectangle with an S-shaped logistic curve and a yellow triangle with rising bars" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="glm.html" data-cover="images/glm-cover.webp" data-alt="Generalized Linear Models: a blue circle with a regression line, a red rectangle with an S-shaped logistic curve and a yellow triangle with rising bars"><span class="sl-no">01</span><span class="sl-title">Generalized Linear Models</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="logistic-regression.html" data-cover="images/logistic-regression-cover.webp?v=2" data-alt="Logistic Regression: bold title and the subtitle Modeling Probabilities for Binary Outcomes above an S-shaped probability curve with blue points near 0, red points near 1 and a dashed decision boundary, between a yellow circle, black and red rectangles and a large blue circle"><span class="sl-no">02</span><span class="sl-title">Logistic Regression</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
     <div class="track-head" id="machine-learning"><p class="overline">Track 2</p><h2>Machine Learning</h2><p>Prepare data, build models that predict and group, and check that they generalise.</p></div>
 
-    <div class="theme-head" id="model-fundamentals"><h2>Model fundamentals</h2><p>What every model needs: well-built features, and the right level of complexity.</p></div>
-    <div class="project-grid">
+    <section class="series" id="model-fundamentals">
+      <div class="series-info">
+        <p class="series-no">§07</p>
+        <h2 class="series-title">Model fundamentals</h2>
+        <p class="series-desc">What every model needs: well-built features, and the right level of complexity.</p>
+        <p class="series-count">4 posts</p>
+        <div class="series-cover"><img src="images/feature-engineering-cover.webp?v=20261111" alt="Feature Engineering: raw data in a table, turned into features, leading to a better model, on a Bauhaus-style background" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="feature-engineering.html" data-cover="images/feature-engineering-cover.webp?v=20261111" data-alt="Feature Engineering: raw data in a table, turned into features, leading to a better model, on a Bauhaus-style background"><span class="sl-no">01</span><span class="sl-title">Feature Engineering</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="one-hot-encoding.html" data-cover="images/one-hot-encoding-cover.webp" data-alt="One-Hot Encoding: a product category column turned into one yes/no column per category"><span class="sl-no">02</span><span class="sl-title">One-Hot Encoding</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="overfitting-underfitting.html" data-cover="images/overfitting-underfitting-cover.webp" data-alt="Overfitting and Underfitting: bold title above three scatter plots showing a straight line that is too simple, a smooth curve that fits well and a wiggly curve that is too complex, surrounded by red, yellow, blue and black geometric shapes"><span class="sl-no">03</span><span class="sl-title">Overfitting and Underfitting</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="variable-selection-regularization.html" data-cover="images/variable-selection-regularization-cover.webp?v=2" data-alt="Variable Selection &amp;amp; Regularization: bold title above three stepped blocks that go from all predictors to useful ones to regularized, with Ridge and Lasso coefficient lines shrinking and a validation error curve marking the best penalty, between a red and a blue circle"><span class="sl-no">04</span><span class="sl-title">Variable Selection vs. Regularization: Managing Model Complexity</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="feature-engineering.html">
-        <span class="project-card-img"><img src="images/feature-engineering-cover.webp?v=20261111" alt="Feature Engineering: raw data in a table, turned into features, leading to a better model, on a Bauhaus-style background" width="2252" height="1504" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Model fundamentals</span>
-          <span class="project-title">Feature Engineering</span>
-          <p>How to turn raw columns into features a model can learn from, without leaking the test set.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Feature engineering</span><span>Data leakage</span><span>Pipelines</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
+    <section class="series" id="classification">
+      <div class="series-info">
+        <p class="series-no">§08</p>
+        <h2 class="series-title">Classification</h2>
+        <p class="series-desc">Predict which category an observation belongs to: yes or no, churn or stay, spam or not.</p>
+        <p class="series-count">4 posts</p>
+        <div class="series-cover"><img src="images/logistic-regression-metrics-cover.webp" alt="Common Logistic Regression Metrics: bold title with the subtitle Evaluate, Compare, Choose the right model above three small charts: an ROC curve, a confusion matrix with TP, FN, FP and TN cells, and precision and recall curves against the decision threshold, between a yellow circle, a blue circle and red and black rectangles" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="logistic-regression-metrics.html" data-cover="images/logistic-regression-metrics-cover.webp" data-alt="Common Logistic Regression Metrics: bold title with the subtitle Evaluate, Compare, Choose the right model above three small charts: an ROC curve, a confusion matrix with TP, FN, FP and TN cells, and precision and recall curves against the decision threshold, between a yellow circle, a blue circle and red and black rectangles"><span class="sl-no">01</span><span class="sl-title">Common Logistic Regression Metrics</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="naive-bayes-classifier.html" data-cover="images/naive-bayes-classifier-cover.webp" data-alt="Naive Bayes Classifier: bold title with the subtitle A probabilistic approach to classification, an envelope branching into Spam and Not Spam labels, and the formula P(Y|X) = P(X|Y)P(Y) / P(X) in a yellow circle, between blue, red and black geometric shapes"><span class="sl-no">02</span><span class="sl-title">Naive Bayes Classifier</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="decision-tree.html" data-cover="images/decision-tree-cover.webp" data-alt="Decision Tree: How Machines Make Decisions. Bold title beside a small tree with a red circle at the top asking Age at most 30, yellow and blue boxes with a second question, and four blue circles as leaves labelled Buy and Not Buy, between a yellow square and a blue circle"><span class="sl-no">03</span><span class="sl-title">Decision Trees</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="random-forest.html" data-cover="images/random-forest-cover.webp" data-alt="Random Forest: Why Many Trees Beat One. Bold title beside one green tree with an arrow pointing to a grid of nine green trees on a yellow square, with a red half circle and a blue rectangle"><span class="sl-no">04</span><span class="sl-title">Random Forest and Bagging</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
-      <a class="project-card" href="one-hot-encoding.html">
-        <span class="project-card-img"><img src="images/one-hot-encoding-cover.webp" alt="One-Hot Encoding: a product category column turned into one yes/no column per category" width="2337" height="1558" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Model fundamentals</span>
-          <span class="project-title">One-Hot Encoding</span>
-          <p>How to turn categories into numbers a model can use, without inventing an order that isn't there.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>One-hot encoding</span><span>Categorical data</span><span>Dummy variables</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="overfitting-underfitting.html">
-        <span class="project-card-img"><img src="images/overfitting-underfitting-cover.webp" alt="Overfitting and Underfitting: bold title above three scatter plots showing a straight line that is too simple, a smooth curve that fits well and a wiggly curve that is too complex, surrounded by red, yellow, blue and black geometric shapes" width="2354" height="1570" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Model fundamentals</span>
-          <span class="project-title">Overfitting and Underfitting</span>
-          <p>Why a model can be too simple or too flexible, and how to tell the difference before it fails on new data.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Bias-variance</span><span>Overfitting</span><span>Adjusted R²</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="variable-selection-regularization.html">
-        <span class="project-card-img"><img src="images/variable-selection-regularization-cover.webp?v=2" alt="Variable Selection &amp; Regularization: bold title above three stepped blocks that go from all predictors to useful ones to regularized, with Ridge and Lasso coefficient lines shrinking and a validation error curve marking the best penalty, between a red and a blue circle" width="2331" height="1554" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Model fundamentals</span>
-          <span class="project-title">Variable Selection vs. Regularization: Managing Model Complexity</span>
-          <p>Choose which predictors to keep or shrink their coefficients: forward selection, Ridge and Lasso compared on one example.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Variable selection</span><span>Regularization</span><span>Lasso &amp; Ridge</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="classification"><h2>Classification</h2><p>Predict which category an observation belongs to: yes or no, churn or stay, spam or not.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="logistic-regression-metrics.html">
-        <span class="project-card-img"><img src="images/logistic-regression-metrics-cover.webp" alt="Common Logistic Regression Metrics: bold title with the subtitle Evaluate, Compare, Choose the right model above three small charts: an ROC curve, a confusion matrix with TP, FN, FP and TN cells, and precision and recall curves against the decision threshold, between a yellow circle, a blue circle and red and black rectangles" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Classification</span>
-          <span class="project-title">Common Logistic Regression Metrics</span>
-          <p>Judge a classifier with the confusion matrix, precision, recall and the ROC curve.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Confusion matrix</span><span>Precision and recall</span><span>ROC curve</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="naive-bayes-classifier.html">
-        <span class="project-card-img"><img src="images/naive-bayes-classifier-cover.webp" alt="Naive Bayes Classifier: bold title with the subtitle A probabilistic approach to classification, an envelope branching into Spam and Not Spam labels, and the formula P(Y|X) = P(X|Y)P(Y) / P(X) in a yellow circle, between blue, red and black geometric shapes" width="2244" height="1496" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Classification</span>
-          <span class="project-title">Naive Bayes Classifier</span>
-          <p>Turn Bayes’ theorem into a fast classifier and build a spam filter step by step.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Bayes</span><span>Smoothing</span><span>Spam</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="decision-tree.html">
-        <span class="project-card-img"><img src="images/decision-tree-cover.webp" alt="Decision Tree: How Machines Make Decisions. Bold title beside a small tree with a red circle at the top asking Age at most 30, yellow and blue boxes with a second question, and four blue circles as leaves labelled Buy and Not Buy, between a yellow square and a blue circle" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Classification</span>
-          <span class="project-title">Decision Trees</span>
-          <p>Split customers into clear if/else rules and learn how to grow, prune and evaluate a tree.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Gini impurity</span><span>Pruning</span><span>Feature importance</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="random-forest.html">
-        <span class="project-card-img"><img src="images/random-forest-cover.webp" alt="Random Forest: Why Many Trees Beat One. Bold title beside one green tree with an arrow pointing to a grid of nine green trees on a yellow square, with a red half circle and a blue rectangle" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Classification</span>
-          <span class="project-title">Random Forest and Bagging</span>
-          <p>Combine many decision trees so that one unlucky sample no longer decides the prediction.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Bagging</span><span>Bootstrap sampling</span><span>Out-of-bag error</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
-
-    <div class="theme-head" id="unsupervised"><h2>Unsupervised learning</h2><p>Find structure in data without labels: customer segments, similar products, hidden patterns.</p></div>
-    <div class="project-grid">
-
-      <a class="project-card" href="k-means.html">
-        <span class="project-card-img"><img src="images/k-means-cover.webp" alt="K-Means Clustering: bold title with the subtitle Grouping Data into K Clusters next to red, blue and yellow dot clusters with black plus-shaped centroids, separated by dashed lines, with a large red circle, a blue square and a yellow semicircle" width="2252" height="1502" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Unsupervised learning</span>
-          <span class="project-title">K-Means Clustering</span>
-          <p>Group similar observations without labels: centroids, the elbow method and customer segments.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>Centroids</span><span>Elbow method</span><span>Segmentation</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-      <a class="project-card" href="when-kmeans-fails.html">
-        <span class="project-card-img"><img src="images/when-kmeans-fails-cover.webp" alt="When K-Means Fails: bold title with the subtitle GMM, DBSCAN, HDBSCAN and Agglomerative Clustering Explained next to blue, yellow and red squares showing moon-shaped, ring-shaped and round dot clusters, with a magnifying glass over three clusters" width="1536" height="1024" loading="lazy"></span>
-        <span class="project-card-body">
-          <span class="project-type">Unsupervised learning</span>
-          <span class="project-title">When K-Means Fails</span>
-          <p>GMM, DBSCAN, HDBSCAN and agglomerative clustering: how they work and when to use each.</p>
-        </span>
-        <span class="project-card-foot"><span class="project-tags"><span>GMM</span><span>DBSCAN</span><span>Linkage</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
-      </a>
-
-    </div>
+    <section class="series" id="unsupervised">
+      <div class="series-info">
+        <p class="series-no">§09</p>
+        <h2 class="series-title">Unsupervised learning</h2>
+        <p class="series-desc">Find structure in data without labels: customer segments, similar products, hidden patterns.</p>
+        <p class="series-count">2 posts</p>
+        <div class="series-cover"><img src="images/k-means-cover.webp" alt="K-Means Clustering: bold title with the subtitle Grouping Data into K Clusters next to red, blue and yellow dot clusters with black plus-shaped centroids, separated by dashed lines, with a large red circle, a blue square and a yellow semicircle" loading="lazy"></div>
+      </div>
+      <ol class="series-list">
+        <li><a href="k-means.html" data-cover="images/k-means-cover.webp" data-alt="K-Means Clustering: bold title with the subtitle Grouping Data into K Clusters next to red, blue and yellow dot clusters with black plus-shaped centroids, separated by dashed lines, with a large red circle, a blue square and a yellow semicircle"><span class="sl-no">01</span><span class="sl-title">K-Means Clustering</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="when-kmeans-fails.html" data-cover="images/when-kmeans-fails-cover.webp" data-alt="When K-Means Fails: bold title with the subtitle GMM, DBSCAN, HDBSCAN and Agglomerative Clustering Explained next to blue, yellow and red squares showing moon-shaped, ring-shaped and round dot clusters, with a magnifying glass over three clusters"><span class="sl-no">02</span><span class="sl-title">When K-Means Fails</span><span class="sl-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
 
   </section>
 
@@ -468,6 +203,76 @@
   <p><a href="#top">Back to top ↑</a></p>
 </footer>
 
+<script>
+/* Galton board: dots fall through pegs and pile up into a bell curve */
+(function () {
+  var cv = document.getElementById('galton'); if (!cv) return;
+  var ctx = cv.getContext('2d'), ROWS = 10, BINS = ROWS + 1, MAXH = 11, STEP = 75;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cs = getComputedStyle(document.body);
+  var MINT = cs.getPropertyValue('--mint').trim() || '#86efac';
+  var TEAL = cs.getPropertyValue('--accent').trim() || '#2dd4bf';
+  var LINE = cs.getPropertyValue('--line').trim() || '#21403a';
+  var W, H = 380, dpr, dx, dy, r, top = 16, floor = H - 14, counts, balls, last, pause, spawn;
+  function reset() { counts = []; for (var i = 0; i < BINS; i++) counts.push(0); balls = []; last = 0; pause = 0; spawn = 0; }
+  function size() {
+    dpr = window.devicePixelRatio || 1; W = cv.clientWidth;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dx = Math.min(W / (BINS + 1), 54); r = dx * 0.11;
+    dy = (floor - MAXH * r * 2.3 - top - 6) / ROWS;
+  }
+  function nx(row, k) { return W / 2 + (k - row / 2) * dx; }
+  function ny(row) { return top + dy * row; }
+  function binX(k) { return W / 2 + (k - (BINS - 1) / 2) * dx; }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = LINE;
+    for (var row = 0; row < ROWS; row++) for (var k = 0; k <= row; k++) { ctx.beginPath(); ctx.arc(nx(row, k), ny(row), 2.4, 0, 6.2832); ctx.fill(); }
+    ctx.fillStyle = MINT;
+    for (var b = 0; b < BINS; b++) for (var n = 0; n < counts[b]; n++) { ctx.beginPath(); ctx.arc(binX(b), floor - r - n * r * 2.3, r, 0, 6.2832); ctx.fill(); }
+    ctx.fillStyle = TEAL;
+    balls.forEach(function (bl) { ctx.beginPath(); ctx.arc(bl.x, bl.y, r, 0, 6.2832); ctx.fill(); });
+  }
+  function frame(t) {
+    if (!last) last = t;
+    var dt = Math.min(t - last, 60); last = t;
+    if (pause > 0) { pause -= dt; if (pause <= 0) reset(); draw(); return requestAnimationFrame(frame); }
+    spawn += dt;
+    if (spawn > 85) { spawn = 0; balls.push({ row: 0, k: 0, p: 0, x: W / 2, y: ny(0) }); }
+    balls = balls.filter(function (bl) {
+      bl.p += dt / STEP;
+      while (bl.p >= 1 && bl.row < ROWS) { bl.p -= 1; bl.k += (bl.dir ? 1 : 0); bl.row++; bl.dir = Math.random() < 0.5; }
+      if (bl.dir === undefined) bl.dir = Math.random() < 0.5;
+      if (bl.row >= ROWS) {
+        if (counts[bl.k] < MAXH) counts[bl.k]++;
+        if (counts[bl.k] >= MAXH) pause = 2200;
+        return false;
+      }
+      var e = bl.p * bl.p * (3 - 2 * bl.p);
+      bl.x = nx(bl.row, bl.k) + (nx(bl.row + 1, bl.k + (bl.dir ? 1 : 0)) - nx(bl.row, bl.k)) * e;
+      bl.y = ny(bl.row) + dy * e;
+      return true;
+    });
+    draw(); requestAnimationFrame(frame);
+  }
+  function still() { reset(); for (var i = 0; i < 300; i++) { var k = 0; for (var j = 0; j < ROWS; j++) k += Math.random() < 0.5 ? 1 : 0; if (counts[k] < MAXH) counts[k]++; } draw(); }
+  window.addEventListener('resize', function () { size(); if (reduce) still(); });
+  size(); reset();
+  if (reduce) still(); else requestAnimationFrame(frame);
+})();
+
+/* Hover a post to preview its cover in the series column */
+document.querySelectorAll('.series').forEach(function (sec) {
+  var img = sec.querySelector('.series-cover img'); if (!img) return;
+  var home = { src: img.getAttribute('src'), alt: img.getAttribute('alt') };
+  sec.querySelectorAll('.series-list a').forEach(function (a) {
+    function show() { img.src = a.dataset.cover; img.alt = a.dataset.alt; }
+    function hide() { img.src = home.src; img.alt = home.alt; }
+    a.addEventListener('mouseenter', show); a.addEventListener('focus', show);
+    a.addEventListener('mouseleave', hide); a.addEventListener('blur', hide);
+  });
+});
+</script>
 <script src="script.js"></script>
 <script src="i18n.js"></script>
 </body>
