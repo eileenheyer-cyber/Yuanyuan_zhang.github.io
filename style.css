@@ -2057,3 +2057,19 @@ body.stats-page { --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Geo
   .stair { position: static; width: auto; height: auto; flex-direction: row; align-items: baseline; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; }
   .stair-meta { margin-left: auto; }
 }
+
+/* Series: one column, header on top, posts side by side */
+.series { display: block; padding: 48px 0; }
+.series-info { display: grid; grid-template-columns: 1fr 300px; grid-template-areas: "no cover" "title cover" "desc cover" "count cover"; column-gap: 48px; align-content: start; margin-bottom: 28px; }
+.series-no { grid-area: no; }
+.series-title { grid-area: title; }
+.series-desc { grid-area: desc; max-width: 46ch; margin-bottom: 14px; }
+.series-count { grid-area: count; margin-bottom: 0; }
+.series-cover { grid-area: cover; max-width: none; width: 300px; align-self: start; }
+.series-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; border-top: 1px solid rgba(33, 64, 58, 0.55); }
+.series-list li:first-child a { padding-top: 15px; }
+@media (max-width: 860px) {
+  .series-info { display: block; }
+  .series-cover { display: none; }
+  .series-list { grid-template-columns: 1fr; }
+}
