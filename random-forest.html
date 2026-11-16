@@ -140,24 +140,25 @@
 
   <h3 id="why-correlation-matters">Why Correlation Matters</h3>
 
-  <p>To understand this, let's look at the variance of an average of B trees, assuming they have the same variance and the same pairwise correlation:</p>
+  <p>Let's put numbers on this. Every tree's prediction contains some random error. When we average <em>B</em> trees, the error of the average depends on two things: how large the error of a single tree is, and how alike the trees are.</p>
 
   <p class="post-formula post-formula-plain"><strong>Var(<em style="text-decoration:overline">T</em>) = ρσ<sup>2</sup> + <span class="frac"><span>(1 − ρ) σ<sup>2</sup></span><span><em>B</em></span></span></strong></p>
 
-  <p>Here:</p>
-
   <ul class="post-points post-points-color">
+    <li><em style="text-decoration:overline">T</em> = the average prediction of the <em>B</em> trees</li>
     <li><em>B</em> = number of trees</li>
-    <li>σ<sup>2</sup> = variance of an individual tree</li>
-    <li>ρ = correlation between the trees</li>
+    <li>σ<sup>2</sup> = variance of one individual tree</li>
+    <li>ρ = correlation between the trees: 0 means completely different, 1 means identical</li>
   </ul>
 
-  <p>The formula contains two components:</p>
+  <p>Just like the colleagues' mistakes, the formula has two parts:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>The first term:</strong> Variance that remains because the trees are correlated.</li>
-    <li><strong>The second term:</strong> Variance that decreases as we add more trees.</li>
+    <li><strong>The first term, ρσ<sup>2</sup>: the shared mistakes.</strong> All trees make them together, like colleagues reading the same report. <em>B</em> does not appear here, so adding more trees cannot remove them.</li>
+    <li><strong>The second term, <span class="frac"><span>(1 − ρ) σ<sup>2</sup></span><span><em>B</em></span></span>: the individual mistakes.</strong> Each tree makes them on its own, so they cancel out as we add trees. The more trees, the smaller this term.</li>
   </ul>
+
+  <p>Two extreme cases make this clear. If the trees are identical (ρ = 1), the formula gives σ<sup>2</sup>, the same as a single tree, so a thousand copies of one tree achieve nothing. If the trees are completely independent (ρ = 0), only σ<sup>2</sup> ÷ <em>B</em> is left, and the variance shrinks in proportion to the number of trees.</p>
 
   <p>Let's assume each tree has a variance of 0.04 and we train 100 trees. What happens when their correlation changes?</p>
 
