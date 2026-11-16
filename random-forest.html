@@ -61,18 +61,12 @@
 
   <p>This is not a rare accident. Two trees trained on different samples give a different answer for about 23% of the customers in our test set. The reason is that a tree without limits keeps asking questions until every leaf contains only one kind of customer. A tree trained on 3,000 of our customers ends with almost 900 leaves, and a tree trained on all 3,750 training customers reaches a training accuracy of 99.6% against a test accuracy of 67.4%. Many of the late questions fit noise that belongs to one sample, and another sample brings different noise.</p>
 
-  <p>This is where the bias-variance trade-off becomes important. A fully grown decision tree can capture complex patterns with relatively little bias, but it is also highly sensitive to changes in the training data, resulting in high variance.</p>
-
   <ul class="post-points post-points-color">
-    <li>Bias describes systematic errors that occur when a model is too simple to capture the underlying patterns.</li>
-    <li>Variance describes how much a model's predictions change when it is trained on different samples of data.</li>
+    <li><strong>Bias</strong> is the error of a model that is too simple to capture the pattern. A fully grown tree has very little of it.</li>
+    <li><strong>Variance</strong> is how much the model changes when the training sample changes. A fully grown tree has a lot of it.</li>
   </ul>
 
-  <p>A fully grown decision tree tends to have low bias but high variance. It can learn the training data extremely well, including patterns that do not generalise to new customers.</p>
-
-  <p>The interesting question is: What if we could combine many such trees? If their errors are not too strongly correlated, some of their individual mistakes can cancel each other out.</p>
-
-  <p>This is the intuition behind Random Forest.</p>
+  <p>The trade-off between the two is explained in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>. Here the point is simple: a tree’s mistakes are partly random, and random mistakes can be averaged away.</p>
 
   <figure class="post-fig">
     <img src="images/random-forest/chart-1-tree-spread.svg" alt="Dot chart of test accuracy for 30 fully grown decision trees, each trained on a different random sample. The dots range from 0.650 to 0.692 around a mean of 0.676." loading="lazy">
