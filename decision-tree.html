@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116c">
+  <link rel="stylesheet" href="style.css?v=20261116e">
 </head>
 <body>
 
@@ -204,14 +204,13 @@
     <figcaption><span>Chart 2</span> Both splits start from the same 20 customers. The contract question produces two purer groups than the tenure question, so its weighted Gini is lower and the tree picks it.</figcaption>
   </figure>
 
-  <figure class="post-fig">
-    <img src="images/decision-tree/chart-2-gini-split.svg" alt="Bar chart of weighted Gini impurity: 0.48 before any split, 0.30 after splitting on contract and 0.38 after splitting on tenure." loading="lazy">
-    <figcaption><span>Chart 3</span> The contract question leaves the groups purer than the tenure question, so the tree picks it first.</figcaption>
-  </figure>
+  <p>Why is Split A better? It creates two more homogeneous groups. Among month-to-month customers, 7 out of 10 churned. Among customers with other contracts, only 1 out of 10 churned. The weighted Gini drops from 0.48 to 0.30.</p>
 
-  <p>A real tree does not compare only two questions. For every feature it tries every possible cut-off (tenure ≤ 5 months, ≤ 6 months, and so on) and keeps the split with the largest drop.</p>
+  <p>Split B is weaker. Its largest group remains highly mixed: among customers with less than 12 months of tenure, 7 churned and 5 stayed (Gini = 0.49). The split reduces impurity, but not as effectively. Its weighted Gini is 0.38.</p>
 
-  <p><strong>A decision tree does not simply pick the most important feature.</strong> At each node it evaluates the candidate splits and selects the one with the lowest weighted impurity according to its splitting criterion. A feature that wins at the root can still be unhelpful further down, once the groups are already purer.</p>
+  <p>A Decision Tree evaluates possible features and split points at each node, selecting the split that produces the lowest weighted impurity. For numerical features, it tests different thresholds (e.g. tenure ≤ 5, ≤ 6 months) and chooses the best one.</p>
+
+  <p>Importantly, the best feature can change at every node. Once a split creates smaller groups, the tree repeats the process independently on each branch.</p>
 
   <h3 id="growing-the-tree">Growing the Tree: Repeat on Every Branch</h3>
 
@@ -260,12 +259,12 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:640px" src="images/decision-tree/chart-3-fitted-tree.svg" alt="The fitted decision tree of depth 3. Root: month-to-month contract. Month-to-month customers continue to: tenure up to 25 months, then support calls up to 1. Other customers continue to: support calls up to 3, then tenure up to 11 or 4 months. Eight leaves are colored blue for stay and red for churn; the leaf with month-to-month contract, tenure up to 25 months and more than one support call has 245 customers of whom 76 percent churned." loading="lazy"></div>
-    <figcaption><span>Chart 4</span> The fitted tree, redrawn in this site’s colors. Maria follows Yes, Yes, No and lands in a churn leaf where 76% of 245 similar customers churned.</figcaption>
+    <figcaption><span>Chart 3</span> The fitted tree, redrawn in this site’s colors. Maria follows Yes, Yes, No and lands in a churn leaf where 76% of 245 similar customers churned.</figcaption>
   </figure>
 
   <h3 id="predict-new-customer">Read the Tree and Predict</h3>
 
-  <p>Chart 4 shows what the tree learned from the training data. Each beige box is a question, and the two branches below it are the answers. The first question is whether the contract is month-to-month, just like in Chart 1. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data.</p>
+  <p>Chart 3 shows what the tree learned from the training data. Each beige box is a question, and the two branches below it are the answers. The first question is whether the contract is month-to-month, just like in Chart 1. Training and test accuracy are close (0.767 and 0.746), so a tree with depth 3 does not memorize the training data.</p>
 
   <p>To predict for Maria from the start of the post (8 months of tenure, 3 support calls, month-to-month contract), follow the answers from the root down: month-to-month (yes), tenure up to 25 months (yes), more than one support call. She lands in a churn leaf where 76% of 245 similar training customers churned. This 76% is the share of training customers in that leaf who churned, and <code>tree.predict_proba</code> returns it for new customers. It describes the training data in the leaf and is not a calibrated confidence score: a leaf with only a few customers can be far off.</p>
 
@@ -300,7 +299,7 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-4-train-vs-test.svg" alt="Line chart of accuracy against max_depth from 1 to 15. Training accuracy rises from 0.70 to 0.98. Test accuracy peaks at 0.76 at depth 4 and then falls to 0.66." loading="lazy">
-    <figcaption><span>Chart 5</span> Training accuracy keeps rising with depth, but test accuracy peaks at depth 4 and then falls: beyond that, the tree is memorizing.</figcaption>
+    <figcaption><span>Chart 4</span> Training accuracy keeps rising with depth, but test accuracy peaks at depth 4 and then falls: beyond that, the tree is memorizing.</figcaption>
   </figure>
 
   <h3 id="pruning">Pruning: Keeping the Tree Small</h3>
@@ -320,7 +319,7 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
     <li><strong>Test data.</strong> Used once, at the end, to estimate how the final tree performs on new customers.</li>
   </ul>
 
-  <p>Chart 5 uses the test set only to show the idea. To choose the limits we use 5-fold cross-validation on the training data: the training set is split into five parts, and each part takes a turn as validation data.</p>
+  <p>Chart 4 uses the test set only to show the idea. To choose the limits we use 5-fold cross-validation on the training data: the training set is split into five parts, and each part takes a turn as validation data.</p>
 
   <p>Scikit-learn’s <code>GridSearchCV</code> tries every combination of the limits and returns the best one. Here it picks <code>DecisionTreeClassifier(max_depth=4, min_samples_leaf=50)</code>: at most 4 questions in a row and at least 50 customers in every leaf, with a cross-validated accuracy of 0.762. It has 16 leaves instead of 412. Its test accuracy (0.756) is far higher than that of the unlimited tree (0.644), and close to its training accuracy (0.773), a sign that it generalizes.</p>
 
@@ -391,7 +390,7 @@ print(importances.sort_values(ascending=False).round(2))
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-5-feature-importance.svg" alt="Horizontal bar chart of feature importance in the pruned tree: contract month-to-month 0.58, tenure in months 0.29, support calls 0.10, contract two year 0.02, monthly charges 0.01, contract one year 0.00." loading="lazy">
-    <figcaption><span>Chart 6</span> Three features do almost all of the work: the contract type, the tenure and the number of support calls. Monthly charges barely matter in this tree.</figcaption>
+    <figcaption><span>Chart 5</span> Three features do almost all of the work: the contract type, the tenure and the number of support calls. Monthly charges barely matter in this tree.</figcaption>
   </figure>
 
   <p>Be careful with this chart. It shows how much a feature is used, not in which direction it acts: to see that short tenure goes with more churn, look at the tree in Chart 4. One-hot encoding also splits the contract into several columns, so its importance is spread across them (0.58 + 0.02 + 0.00). Two further limits matter:</p>
