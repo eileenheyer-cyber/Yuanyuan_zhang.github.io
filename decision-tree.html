@@ -51,7 +51,7 @@
     <p style="margin:14px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 2 · Build</p>
     <ul style="counter-reset:none">
       <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#fit-the-tree">Train the Tree</a></li><li><a href="#predict-new-customer">Read the Tree and Predict</a></li><li><a href="#hyperparameters">Hyperparameters: Controlling the Tree</a></li></ul></details></li>
-      <li><details><summary><a href="#overfitting-pruning">Overfitting and Pruning</a></summary><ul><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
+      <li><details><summary><a href="#overfitting-pruning">Overfitting: When a Decision Tree Learns Too Much</a></summary><ul><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
     </ul>
     <p style="margin:14px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 3 · Interpret</p>
     <ul style="counter-reset:none">
@@ -286,11 +286,21 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <p>The tree above uses <code>max_depth=3</code>. The pruned tree in <a href="#overfitting-pruning">Overfitting and Pruning</a> uses <code>max_depth=4</code> and <code>min_samples_leaf=50</code>.</p>
 
-  <h2 id="overfitting-pruning" style="scroll-margin-top:90px">Overfitting and Pruning</h2>
+  <h2 id="overfitting-pruning" style="scroll-margin-top:90px">Overfitting: When a Decision Tree Learns Too Much</h2>
 
-  <p>A depth-3 tree has only 8 leaves. What happens if we remove all limits and let the tree grow until it can?</p>
+  <p>Without restrictions on tree growth, the model reaches a depth of 23 and creates 412 leaf nodes. It achieves 100% accuracy on the training data, correctly classifying every training customer. But when tested on new customers, accuracy drops to just 64.4%.</p>
 
-  <p>Without limits, the tree grows to a depth of 23 with 412 leaves. It classifies every training customer correctly (100% accuracy), but on new customers it reaches 64.4%, barely better than predicting “stay” for everyone (64%). (This 64% is simply the share of customers who stay, since 36% churn, so it is what a model gets without learning anything.) With 412 leaves, many of them hold only a handful of customers, so the tree has memorized noise instead of learning a pattern. Perfect training accuracy only shows that the tree remembers the training customers; it does not guarantee that it works on new ones. This is overfitting; the <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> post explains the bias-variance trade-off behind it.</p>
+  <p>To understand how poor this result is, consider a simple baseline: predicting "Stay" for every customer. Since approximately 64% of customers stay, this naive approach would already achieve 64% accuracy without learning any patterns at all.</p>
+
+  <p>The tree performs only slightly better.</p>
+
+  <p>Why? With 412 leaves, many nodes contain only a handful of customers. Instead of learning patterns that generalize, the tree has started memorizing individual observations and noise in the training data.</p>
+
+  <p>This is called overfitting: the model performs exceptionally well on the data it has seen but struggles to make accurate predictions on new, unseen data.</p>
+
+  <p>The key lesson is that perfect training accuracy does not necessarily mean a good model. What matters is how well it generalizes.</p>
+
+  <p>The <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> article explores the bias-variance trade-off behind this problem.</p>
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-4-train-vs-test.svg" alt="Line chart of accuracy against max_depth from 1 to 15. Training accuracy rises from 0.70 to 0.98. Test accuracy peaks at 0.76 at depth 4 and then falls to 0.66." loading="lazy">
