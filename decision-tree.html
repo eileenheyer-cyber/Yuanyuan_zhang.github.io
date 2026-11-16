@@ -99,11 +99,11 @@
 
   <p><strong>Gini impurity</strong> is that score. It is the probability that two customers drawn at random from a group have different outcomes. A group of only churners, or only stayers, has a Gini impurity of 0 (the group is <em>pure</em>). A 50/50 group has the highest value for two classes: 0.5.</p>
 
-  <p class="post-formula"><strong>Gini = 1 − (p<sub>churn</sub><sup>2</sup> + p<sub>stay</sub><sup>2</sup>)</strong><span>p = share of customers in the group with that outcome.</span></p>
+  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (<em>p</em><sub>churn</sub><sup>2</sup> + <em>p</em><sub>stay</sub><sup>2</sup>)</strong><span><em>p</em> = share of customers in the group with that outcome.</span></p>
 
   <p>Take 20 customers: 8 churned and 12 stayed. The shares are 0.40 and 0.60.</p>
 
-  <p class="post-formula"><strong>Gini = 1 − (0.40<sup>2</sup> + 0.60<sup>2</sup>) = 1 − (0.16 + 0.36) = 0.48</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (0.40<sup>2</sup> + 0.60<sup>2</sup>) = 1 − (0.16 + 0.36) = 0.48</strong></p>
 
   <p>0.48 is close to the maximum of 0.5, so this group is very mixed. A tree that predicted “stay” for all 20 customers would be wrong for 40% of them. The tree’s job is to ask questions that push this number down.</p>
 
@@ -122,7 +122,7 @@
 
   <p>A split creates two groups, so we take the weighted average of their impurities. Each group is weighted by its share of the customers:</p>
 
-  <p class="post-formula"><strong>Weighted Gini = <span class="frac"><span>10</span><span>20</span></span> × 0.42 + <span class="frac"><span>10</span><span>20</span></span> × 0.18 = 0.30</strong></p>
+  <p class="post-formula post-formula-plain"><strong>Weighted Gini = <span class="frac"><span>10</span><span>20</span></span> × 0.42 + <span class="frac"><span>10</span><span>20</span></span> × 0.18 = 0.30</strong></p>
 
   <p>The impurity fell from 0.48 to 0.30, a drop of 0.18. This drop is what the tree uses to compare questions: the larger it is, the cleaner the two groups became.</p>
 
