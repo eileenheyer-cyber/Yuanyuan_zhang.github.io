@@ -324,6 +324,21 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <p>Scikit-learn’s <code>GridSearchCV</code> tries every combination of the limits and returns the best one. Here it picks <code>DecisionTreeClassifier(max_depth=4, min_samples_leaf=50)</code>: at most 4 questions in a row and at least 50 customers in every leaf, with a cross-validated accuracy of 0.762. It has 16 leaves instead of 412. Its test accuracy (0.756) is far higher than that of the unlimited tree (0.644), and close to its training accuracy (0.773), a sign that it generalizes.</p>
 
+  <p>The grid tested every combination below. Each cell is the cross-validated accuracy on the training data; the best combination is highlighted.</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th colspan="4">min_samples_leaf</th></tr><tr><th>max_depth</th><th>1</th><th>10</th><th>25</th><th>50</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2</strong></td><td>0.751</td><td>0.751</td><td>0.751</td><td>0.751</td></tr>
+      <tr><td><strong>3</strong></td><td>0.750</td><td>0.746</td><td>0.746</td><td>0.747</td></tr>
+      <tr><td><strong>4</strong></td><td>0.759</td><td>0.755</td><td>0.758</td><td style="background:#f5c548"><strong>0.762</strong></td></tr>
+      <tr><td><strong>5</strong></td><td>0.754</td><td>0.753</td><td>0.758</td><td>0.761</td></tr>
+      <tr><td><strong>6</strong></td><td>0.757</td><td>0.756</td><td>0.759</td><td>0.756</td></tr>
+      <tr><td><strong>8</strong></td><td>0.730</td><td>0.747</td><td>0.754</td><td>0.756</td></tr>
+      <tr><td><strong>10</strong></td><td>0.725</td><td>0.741</td><td>0.754</td><td>0.756</td></tr>
+    </tbody>
+  </table></div>
+
   <p class="overline" style="margin:56px 0 -6px">Part 3 · Interpret</p>
 
   <h2 id="evaluating" style="scroll-margin-top:90px">Evaluating a Decision Tree</h2>
