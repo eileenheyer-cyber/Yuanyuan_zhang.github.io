@@ -250,12 +250,18 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="oob-vs-test">Out-of-Bag Score vs. Test Score</h3>
 
-  <p>The OOB score is useful because it tells us how the forest will do on new customers without spending a separate test set. Chart 6 compares it with the test accuracy for forests of 25 to 500 trees.</p>
+  <p>Remember that every customer is out of the bag for about 37% of the trees. The OOB score uses only those trees to predict that customer. It is like testing the forest on customers it has never seen, without setting aside a test set.</p>
+
+  <p>Why is this useful? A test set is precious. If we use it again and again to compare settings, we slowly tune the forest to that test set. With the OOB score we can tune on the training data alone and use the test set only once, at the end. It also helps when the dataset is small and we cannot spare 25% of it for testing.</p>
+
+  <p>Does it give the same answer as a real test set? Chart 6 compares both for forests of 25 to 500 trees.</p>
 
   <figure class="post-fig">
     <img src="images/random-forest/chart-6-oob-vs-test.svg" alt="Line chart of test accuracy and out-of-bag accuracy for forests of 25 to 500 trees. Test accuracy stays between 0.746 and 0.754. Out-of-bag accuracy stays between 0.739 and 0.742." loading="lazy">
-    <figcaption><span>Chart 6</span> The out-of-bag score follows the test score closely, within about one point, and both stay flat from about 100 trees on. You can tune and judge a forest on the training data alone.</figcaption>
+    <figcaption><span>Chart 6</span> The OOB score, which needs no test set, lands within about one point of the test accuracy, and both stop changing after about 100 trees.</figcaption>
   </figure>
+
+  <p>The OOB score stays at about 0.74 and the test accuracy at about 0.75. That is a difference of roughly one point, smaller than the ±1.3 points of noise in our test set. The OOB score is slightly lower because each customer is judged by only about a third of the trees. Both lines are flat from about 100 trees on, so more trees do not change the picture.</p>
 
   <h3 id="comparing-with-a-single-tree">Comparing with a Single Tree</h3>
 
