@@ -296,12 +296,22 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="importance-in-a-forest">Feature Importance in a Forest</h3>
 
-  <p>A forest measures importance in the same way as a tree: how much a feature reduces impurity across all its splits, here averaged over all 300 trees. Chart 7 compares it with the pruned tree.</p>
+  <p>Which features does the model rely on most? A forest answers this in the same way as a tree. Every time a feature is used for a split, we record how much that split reduces the impurity, meaning how mixed churners and stayers are in a group. We add this up per feature over all 300 trees. The numbers are shares of the total, so they add up to about 1. Chart 7 compares the forest with the pruned tree.</p>
 
   <figure class="post-fig post-fig-wide">
-    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-7-feature-importance.svg" alt="Two horizontal bar charts with the same axes. Pruned single tree: month-to-month contract 0.73, tenure 0.14, support calls 0.07, monthly charges 0.04, one-year contract 0.00, two-year contract 0.01. Random forest: month-to-month contract 0.34, tenure 0.30, support calls 0.09, monthly charges 0.06, one-year contract 0.10, two-year contract 0.10." loading="lazy"></div>
-    <figcaption><span>Chart 7</span> The pruned tree gives almost all the credit to one question. In the forest, other features get their turn at the top of many trees, so the credit is shared. The contract type still leads: its three columns together add up to 0.54.</figcaption>
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-7-feature-importance.svg" alt="Two horizontal bar charts with the same axes. Pruned single tree: contract type 0.74, tenure 0.14, support calls 0.07, monthly charges 0.04. Random forest: contract type 0.54, tenure 0.30, support calls 0.09, monthly charges 0.06." loading="lazy"></div>
+    <figcaption><span>Chart 7</span> The pruned tree gives almost three quarters of the credit to the contract type. In the forest, other features get their turn at the top of many trees, so tenure rises to 0.30 and the contract type falls to 0.54.</figcaption>
   </figure>
+
+  <p>Three things stand out:</p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>The contract type leads in both models,</strong> but the pruned tree gives it almost three quarters of the credit (0.74), the forest only about half (0.54).</li>
+    <li><strong>Tenure doubles in the forest,</strong> from 0.14 to 0.30. The reason is random feature selection: when the contract type is not available at a split, the tree has to use another feature, such as tenure.</li>
+    <li><strong>Support calls and monthly charges stay minor</strong> in both models.</li>
+  </ul>
+
+  <p>Two things to keep in mind. After one-hot encoding the contract type is stored as three columns (month-to-month, one-year, two-year), and the chart adds them together. And importance shows how much a feature is used, not whether it raises or lowers churn.</p>
 
   <h3 id="permutation-importance">Why Permutation Importance Is Safer</h3>
 
