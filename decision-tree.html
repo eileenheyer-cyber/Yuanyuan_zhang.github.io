@@ -51,7 +51,7 @@
     <p style="margin:14px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 2 · Build</p>
     <ul style="counter-reset:none">
       <li><details><summary><a href="#python">Building a Decision Tree in Python</a></summary><ul><li><a href="#fit-the-tree">Train the Tree</a></li><li><a href="#predict-new-customer">Read the Tree and Predict</a></li><li><a href="#hyperparameters">Hyperparameters: Controlling the Tree</a></li></ul></details></li>
-      <li><details><summary><a href="#overfitting-pruning">Overfitting: When a Decision Tree Learns Too Much</a></summary><ul><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
+      <li><details><summary><a href="#overfitting-pruning">Overfitting and Pruning</a></summary><ul><li><a href="#overfitting">Overfitting: When a Decision Tree Learns Too Much</a></li><li><a href="#pruning">Pruning: Keeping the Tree Small</a></li></ul></details></li>
     </ul>
     <p style="margin:14px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 3 · Interpret</p>
     <ul style="counter-reset:none">
@@ -286,7 +286,9 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <p>The tree above uses <code>max_depth=3</code>. The pruned tree in <a href="#overfitting-pruning">Overfitting and Pruning</a> uses <code>max_depth=4</code> and <code>min_samples_leaf=50</code>.</p>
 
-  <h2 id="overfitting-pruning" style="scroll-margin-top:90px">Overfitting: When a Decision Tree Learns Too Much</h2>
+  <h2 id="overfitting-pruning" style="scroll-margin-top:90px">Overfitting and Pruning</h2>
+
+  <h3 id="overfitting">Overfitting: When a Decision Tree Learns Too Much</h3>
 
   <p>Without restrictions on tree growth, the model reaches a depth of 23 and creates 412 leaf nodes. It achieves 100% accuracy on the training data, correctly classifying every training customer. But when tested on new customers, accuracy drops to just 64.4%.</p>
 
