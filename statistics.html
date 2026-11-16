@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116d">
+  <link rel="stylesheet" href="style.css?v=20261116e">
 </head>
 <body class="stats-page">
 
@@ -35,15 +35,16 @@
     <h1 class="section-title">Nerding Out on Data.</h1>
     <p class="section-intro">Statistics, machine learning, and everything in between.<br>A collection of visual explorations into the fascinating logic behind data.</p>
 
-    <figure class="dot-demo">
-      <canvas id="galton" role="img" aria-label="Animation: dots fall through rows of pegs and pile up into a bell curve"></canvas>
-      <figcaption>The central limit theorem in motion: every dot takes ten random steps, left or right. Together the dots build a bell curve.</figcaption>
-    </figure>
-
-    <nav class="jump-bar" aria-label="Jump to a topic">
-      <div class="jump-row"><a class="jump-track" href="#statistics">Statistics</a><a href="#data-fundamentals">Data fundamentals</a><a href="#probability">Probability</a><a href="#sampling">Sampling</a><a href="#inference">Inference &amp; experiments</a><a href="#regression">Regression analysis</a><a href="#glm">Generalized linear models</a></div>
-      <div class="jump-row"><a class="jump-track" href="#machine-learning">Machine Learning</a><a href="#model-fundamentals">Model fundamentals</a><a href="#classification">Classification</a><a href="#unsupervised">Unsupervised learning</a></div>
-    </nav>
+    <div class="stairs" id="stairs">
+      <canvas aria-hidden="true"></canvas>
+      <a class="stair" href="#data-fundamentals" style="--i:0"><span class="stair-no">01</span><span class="stair-name">Foundations</span><span class="stair-meta">4 posts</span></a>
+      <a class="stair" href="#probability" style="--i:1"><span class="stair-no">02</span><span class="stair-name">Probability &amp; sampling</span><span class="stair-meta">9 posts</span></a>
+      <a class="stair" href="#inference" style="--i:2"><span class="stair-no">03</span><span class="stair-name">Inference</span><span class="stair-meta">7 posts</span></a>
+      <a class="stair" href="#regression" style="--i:3"><span class="stair-no">04</span><span class="stair-name">Modelling</span><span class="stair-meta">7 posts</span></a>
+      <a class="stair" href="#model-fundamentals" style="--i:4"><span class="stair-no">05</span><span class="stair-name">Machine learning basics</span><span class="stair-meta">4 posts</span></a>
+      <a class="stair" href="#classification" style="--i:5"><span class="stair-no">06</span><span class="stair-name">Machine learning in practice</span><span class="stair-meta">6 posts</span></a>
+    </div>
+    <p class="stairs-caption">Six steps from the basics to machine learning. Hover a step to call the dots, click to jump in.</p>
 
     <div class="track-head" id="statistics"><p class="overline">Track 1</p><h2>Statistics</h2><p>The foundations: describe data, reason about uncertainty, and test whether a difference is real.</p></div>
 
@@ -204,61 +205,89 @@
 </footer>
 
 <script>
-/* Galton board: dots fall through pegs and pile up into a bell curve */
+/* Learning staircase: dots live on the steps and react to the visitor */
 (function () {
-  var cv = document.getElementById('galton'); if (!cv) return;
-  var ctx = cv.getContext('2d'), ROWS = 10, BINS = ROWS + 1, MAXH = 11, STEP = 75;
+  var box = document.getElementById('stairs'); if (!box) return;
+  var cv = box.querySelector('canvas'), ctx = cv.getContext('2d');
+  var stairs = Array.prototype.slice.call(box.querySelectorAll('.stair'));
+  var N = stairs.length, DOTS = 90, R = 4.6, G = 0.35;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cs = getComputedStyle(document.body);
   var MINT = cs.getPropertyValue('--mint').trim() || '#86efac';
   var TEAL = cs.getPropertyValue('--accent').trim() || '#2dd4bf';
-  var LINE = cs.getPropertyValue('--line').trim() || '#21403a';
-  var W, H = 380, dpr, dx, dy, r, top = 16, floor = H - 14, counts, balls, last, pause, spawn;
-  function reset() { counts = []; for (var i = 0; i < BINS; i++) counts.push(0); balls = []; last = 0; pause = 0; spawn = 0; }
-  function size() {
-    dpr = window.devicePixelRatio || 1; W = cv.clientWidth;
+  var W = 0, H = 0, sw = 0, tops = [], dpr = 1, dots = [], hovered = -1, mouse = null, running = false, visible = true;
+
+  function measure() {
+    var b = box.getBoundingClientRect();
+    W = b.width; H = b.height; dpr = window.devicePixelRatio || 1;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    dx = Math.min(W / (BINS + 1), 54); r = dx * 0.11;
-    dy = (floor - MAXH * r * 2.3 - top - 6) / ROWS;
+    sw = W / N; tops = stairs.map(function (s) { return s.getBoundingClientRect().top - b.top; });
   }
-  function nx(row, k) { return W / 2 + (k - row / 2) * dx; }
-  function ny(row) { return top + dy * row; }
-  function binX(k) { return W / 2 + (k - (BINS - 1) / 2) * dx; }
+  function stepAt(x) { return Math.max(0, Math.min(N - 1, Math.floor(x / sw))); }
+  function floorAt(x) { return tops[stepAt(x)] - R; }
+  function make() {
+    dots = [];
+    for (var i = 0; i < DOTS; i++) {
+      var home = i % N, slot = Math.random();
+      var x = (home + 0.12 + slot * 0.76) * sw;
+      dots.push({ i: i, home: home, slot: slot, x: x, y: floorAt(x), vx: 0, vy: 0, ground: true, wait: Math.random() * 200 });
+    }
+  }
+  function tick() {
+    if (!running) return;
+    for (var k = 0; k < dots.length; k++) {
+      var d = dots[k];
+      var step = (hovered >= 0 && d.i % 2 === 0) ? hovered : d.home;
+      d.wait -= 1; if (d.wait <= 0) { d.slot = Math.random(); d.wait = 90 + Math.random() * 260; }
+      var tx = (step + 0.12 + d.slot * 0.76) * sw, dxT = tx - d.x;
+      d.vx += Math.max(-0.22, Math.min(0.22, dxT * 0.004)); d.vx *= 0.92;
+      if (d.ground) {
+        var excited = hovered >= 0 && stepAt(d.x) === hovered;
+        if (Math.abs(dxT) > 8 && Math.random() < 0.035) d.vy = -4.2;
+        else if (Math.random() < (excited ? 0.03 : 0.004)) d.vy = excited ? -5 : -2.8;
+      }
+      if (mouse) {
+        var mx = d.x - mouse.x, my = d.y - mouse.y, md = Math.sqrt(mx * mx + my * my);
+        if (md < 52 && md > 0.1) { d.vx += mx / md * 1.1; d.vy -= 1.3; d.ground = false; }
+      }
+      d.vy += G; var ox = d.x; d.x += d.vx; d.y += d.vy;
+      if (d.x < R) { d.x = R; d.vx *= -0.3; } if (d.x > W - R) { d.x = W - R; d.vx *= -0.3; }
+      var f = floorAt(d.x);
+      if (f < ox * 0 + d.y - 1 && floorAt(ox) > f + 1 && d.y > f + 1) {
+        d.x = ox; d.vx *= -0.2;
+        if (d.ground) { d.vy = -Math.sqrt(2 * G * (floorAt(ox) - f + 14)); d.ground = false; }
+      }
+      f = floorAt(d.x);
+      if (d.y >= f) { d.y = f; if (d.vy > 1.2) d.vy *= -0.28; else d.vy = 0; d.ground = d.vy === 0; } else { d.ground = false; }
+    }
+  }
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = LINE;
-    for (var row = 0; row < ROWS; row++) for (var k = 0; k <= row; k++) { ctx.beginPath(); ctx.arc(nx(row, k), ny(row), 2.4, 0, 6.2832); ctx.fill(); }
-    ctx.fillStyle = MINT;
-    for (var b = 0; b < BINS; b++) for (var n = 0; n < counts[b]; n++) { ctx.beginPath(); ctx.arc(binX(b), floor - r - n * r * 2.3, r, 0, 6.2832); ctx.fill(); }
-    ctx.fillStyle = TEAL;
-    balls.forEach(function (bl) { ctx.beginPath(); ctx.arc(bl.x, bl.y, r, 0, 6.2832); ctx.fill(); });
+    for (var k = 0; k < dots.length; k++) {
+      var d = dots[k], on = hovered >= 0 && stepAt(d.x) === hovered;
+      ctx.fillStyle = on ? TEAL : MINT; ctx.globalAlpha = on ? 1 : 0.85;
+      ctx.beginPath(); ctx.arc(d.x, d.y, R, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
   }
-  function frame(t) {
-    if (!last) last = t;
-    var dt = Math.min(t - last, 60); last = t;
-    if (pause > 0) { pause -= dt; if (pause <= 0) reset(); draw(); return requestAnimationFrame(frame); }
-    spawn += dt;
-    if (spawn > 85) { spawn = 0; balls.push({ row: 0, k: 0, p: 0, x: W / 2, y: ny(0) }); }
-    balls = balls.filter(function (bl) {
-      bl.p += dt / STEP;
-      while (bl.p >= 1 && bl.row < ROWS) { bl.p -= 1; bl.k += (bl.dir ? 1 : 0); bl.row++; bl.dir = Math.random() < 0.5; }
-      if (bl.dir === undefined) bl.dir = Math.random() < 0.5;
-      if (bl.row >= ROWS) {
-        if (counts[bl.k] < MAXH) counts[bl.k]++;
-        if (counts[bl.k] >= MAXH) pause = 2200;
-        return false;
-      }
-      var e = bl.p * bl.p * (3 - 2 * bl.p);
-      bl.x = nx(bl.row, bl.k) + (nx(bl.row + 1, bl.k + (bl.dir ? 1 : 0)) - nx(bl.row, bl.k)) * e;
-      bl.y = ny(bl.row) + dy * e;
-      return true;
-    });
-    draw(); requestAnimationFrame(frame);
-  }
-  function still() { reset(); for (var i = 0; i < 300; i++) { var k = 0; for (var j = 0; j < ROWS; j++) k += Math.random() < 0.5 ? 1 : 0; if (counts[k] < MAXH) counts[k]++; } draw(); }
-  window.addEventListener('resize', function () { size(); if (reduce) still(); });
-  size(); reset();
-  if (reduce) still(); else requestAnimationFrame(frame);
+  function loop() { if (!running) return; tick(); draw(); requestAnimationFrame(loop); }
+  function start() { if (running || reduce || !visible || cv.offsetParent === null) return; running = true; requestAnimationFrame(loop); }
+  function stop() { running = false; }
+
+  stairs.forEach(function (s, i) {
+    s.addEventListener('mouseenter', function () { hovered = i; });
+    s.addEventListener('mouseleave', function () { hovered = -1; });
+    s.addEventListener('focus', function () { hovered = i; });
+    s.addEventListener('blur', function () { hovered = -1; });
+  });
+  box.addEventListener('mousemove', function (e) { var b = box.getBoundingClientRect(); mouse = { x: e.clientX - b.left, y: e.clientY - b.top }; });
+  box.addEventListener('mouseleave', function () { mouse = null; });
+  window.addEventListener('resize', function () {
+    measure(); dots.forEach(function (d) { d.x = Math.min(d.x, W - R); d.y = Math.min(d.y, floorAt(d.x)); }); if (reduce) draw();
+  });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; visible ? start() : stop(); }).observe(box);
+  measure(); make();
+  if (reduce) { draw(); } else { start(); }
 })();
 
 /* Hover a post to preview its cover in the series column */

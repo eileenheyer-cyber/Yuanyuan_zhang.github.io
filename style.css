@@ -2035,3 +2035,25 @@ body.stats-page { --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Geo
 .series-list a:hover .sl-arrow { opacity: 1; }
 .knowledge-page .track-head h2 { font-family: var(--serif); font-weight: 400; }
 @media (max-width: 860px) { .series { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; } .series-cover { display: none; } .series-desc { max-width: none; } }
+
+/* Learning staircase hero */
+.stairs { position: relative; max-width: 1000px; height: 400px; margin: 8px auto 0; }
+.stairs canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.stair {
+  position: absolute; bottom: 0; left: calc(var(--i) * 100% / 6); width: calc(100% / 6);
+  height: calc(86px + var(--i) * 48px);
+  display: flex; flex-direction: column; justify-content: flex-start; gap: 3px; padding: 14px 14px 0;
+  background: var(--surface); border: 1px solid var(--line); border-bottom: none; border-radius: 8px 8px 0 0;
+  color: var(--ink); text-decoration: none; transition: background 0.2s, border-color 0.2s;
+}
+.stair:hover, .stair:focus-visible { background: #17302b; border-color: var(--accent); outline: none; }
+.stair-no { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--mint); }
+.stair-name { font-family: var(--serif); font-size: 1.02rem; line-height: 1.2; }
+.stair-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+.stairs-caption { margin: 14px 0 0; text-align: center; font-size: 0.84rem; color: var(--muted); }
+@media (max-width: 760px) {
+  .stairs { height: auto; display: flex; flex-direction: column; gap: 8px; }
+  .stairs canvas { display: none; }
+  .stair { position: static; width: auto; height: auto; flex-direction: row; align-items: baseline; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; }
+  .stair-meta { margin-left: auto; }
+}
