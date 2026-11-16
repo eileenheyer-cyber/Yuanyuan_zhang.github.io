@@ -250,7 +250,13 @@ tree.fit(X_train, y_train)
 print(f&quot;Train accuracy: {tree.score(X_train, y_train):.3f}&quot;)
 print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre>
 
-  <p>Three steps matter here. A tree cannot read text such as “Month-to-month”, so <code>get_dummies</code> turns the contract column into 0/1 columns (see <a href="one-hot-encoding.html">One-Hot Encoding</a>); numeric features need no scaling. <code>train_test_split</code> keeps 25% of the customers as a test set that the tree never sees while learning, and <code>stratify=y</code> keeps the churn share the same in both parts. <code>DecisionTreeClassifier</code> then learns the splits from the training data; <code>max_depth=3</code> limits the tree to three questions in a row.</p>
+  <p>Three steps matter here:</p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>Prepare the data.</strong> A tree cannot read text such as “Month-to-month”, so <code>get_dummies</code> turns the contract column into 0/1 columns (see <a href="one-hot-encoding.html">One-Hot Encoding</a>). Numeric features need no scaling.</li>
+    <li><strong>Split the data.</strong> <code>train_test_split</code> keeps 25% of the customers as a test set that the tree never sees while learning, and <code>stratify=y</code> keeps the churn share the same in both parts.</li>
+    <li><strong>Train the tree.</strong> <code>DecisionTreeClassifier</code> then learns the splits from the training data; <code>max_depth=3</code> limits the tree to three questions in a row.</li>
+  </ul>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:640px" src="images/decision-tree/chart-3-fitted-tree.svg" alt="The fitted decision tree of depth 3. Root: month-to-month contract. Month-to-month customers continue to: tenure up to 25 months, then support calls up to 1. Other customers continue to: support calls up to 3, then tenure up to 11 or 4 months. Eight leaves are colored blue for stay and red for churn; the leaf with month-to-month contract, tenure up to 25 months and more than one support call has 245 customers of whom 76 percent churned." loading="lazy"></div>
