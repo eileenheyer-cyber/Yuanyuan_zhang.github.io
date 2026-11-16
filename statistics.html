@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116a">
+  <link rel="stylesheet" href="style.css?v=20261116b">
 </head>
 <body class="stats-page">
 
@@ -36,9 +36,57 @@
     <p class="section-intro">Statistics, machine learning, and everything in between.<br>A collection of visual explorations into the fascinating logic behind data.</p>
 
     <nav class="jump-bar" aria-label="Jump to a topic">
+      <div class="jump-row"><a href="#start-here">Start here</a><a href="#by-question">By business question</a></div>
       <div class="jump-row"><a class="jump-track" href="#statistics">Statistics</a><a href="#data-fundamentals">Data fundamentals</a><a href="#probability">Probability</a><a href="#sampling">Sampling</a><a href="#inference">Inference &amp; experiments</a><a href="#regression">Regression analysis</a><a href="#glm">Generalized linear models</a></div>
       <div class="jump-row"><a class="jump-track" href="#machine-learning">Machine Learning</a><a href="#model-fundamentals">Model fundamentals</a><a href="#classification">Classification</a><a href="#unsupervised">Unsupervised learning</a></div>
     </nav>
+
+    <div class="theme-head" id="start-here"><h2>Start here</h2><p>Three posts that show how I explain data: a business question, a worked example, and a visual.</p></div>
+    <div class="project-grid featured-grid">
+
+      <a class="project-card" href="ab-testing.html">
+        <span class="project-card-img"><img src="images/ab-testing-cover.webp" alt="A/B testing: users randomly split into a control group and a treatment group" width="2812" height="1560" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Experimentation</span>
+          <span class="project-title">A/B Testing</span>
+          <p>How to design an experiment and tell whether a change really made things better.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Hypothesis</span><span>Randomization</span><span>p-value</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="project-card" href="random-forest.html">
+        <span class="project-card-img"><img src="images/random-forest-cover.webp" alt="Random Forest: Why Many Trees Beat One. Bold title beside one green tree with an arrow pointing to a grid of nine green trees on a yellow square, with a red half circle and a blue rectangle" width="1536" height="1024" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Classification</span>
+          <span class="project-title">Random Forest and Bagging</span>
+          <p>Combine many decision trees so that one unlucky sample no longer decides the prediction.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Bagging</span><span>Bootstrap sampling</span><span>Out-of-bag error</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="project-card" href="k-means.html">
+        <span class="project-card-img"><img src="images/k-means-cover.webp" alt="K-Means Clustering: bold title with the subtitle Grouping Data into K Clusters next to red, blue and yellow dot clusters with black plus-shaped centroids, separated by dashed lines, with a large red circle, a blue square and a yellow semicircle" width="2252" height="1502" loading="lazy"></span>
+        <span class="project-card-body">
+          <span class="project-type">Unsupervised learning</span>
+          <span class="project-title">K-Means Clustering</span>
+          <p>Group similar observations without labels: centroids, the elbow method and customer segments.</p>
+        </span>
+        <span class="project-card-foot"><span class="project-tags"><span>Centroids</span><span>Elbow method</span><span>Segmentation</span></span><span class="project-arrow" aria-hidden="true">→</span></span>
+      </a>
+
+    </div>
+
+    <div class="theme-head" id="by-question"><h2>By business question</h2><p>Not sure where to look? Start from the question you are trying to answer.</p></div>
+    <div class="question-index">
+      <div class="question-row"><p>Did my change really work?</p><div><a href="ab-testing.html">A/B Testing</a><a href="hypothesis-testing.html">Hypothesis Testing</a><a href="t-test.html">The t-Test</a></div></div>
+      <div class="question-row"><p>Is there a link between two categories?</p><div><a href="chi-squared-test.html">Chi-Squared Test</a></div></div>
+      <div class="question-row"><p>Which marketing channel performs best?</p><div><a href="anova.html">ANOVA</a></div></div>
+      <div class="question-row"><p>What drives revenue?</p><div><a href="multiple-linear-regression.html">Multiple Linear Regression</a><a href="regression-evaluation.html">Regression Evaluation</a></div></div>
+      <div class="question-row"><p>Who is likely to churn?</p><div><a href="logistic-regression.html">Logistic Regression</a><a href="decision-tree.html">Decision Trees</a><a href="random-forest.html">Random Forest</a></div></div>
+      <div class="question-row"><p>Which customers are similar?</p><div><a href="k-means.html">K-Means</a><a href="when-kmeans-fails.html">When K-Means Fails</a></div></div>
+      <div class="question-row"><p>Is my model only memorising the data?</p><div><a href="overfitting-underfitting.html">Overfitting and Underfitting</a><a href="variable-selection-regularization.html">Variable Selection vs. Regularization</a></div></div>
+      <div class="question-row"><p>How do I prepare messy data for a model?</p><div><a href="feature-engineering.html">Feature Engineering</a><a href="one-hot-encoding.html">One-Hot Encoding</a></div></div>
+    </div>
 
     <div class="track-head" id="statistics"><p class="overline">Track 1</p><h2>Statistics</h2><p>The foundations: describe data, reason about uncertainty, and test whether a difference is real.</p></div>
 
@@ -468,6 +516,28 @@
   <p><a href="#top">Back to top ↑</a></p>
 </footer>
 
+<script>
+/* Show only the first 4 cards of each long group */
+document.querySelectorAll('.knowledge-page .project-grid:not(.featured-grid)').forEach(function (grid) {
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.project-card'));
+  if (cards.length <= 5) return;
+  var extra = cards.slice(4);
+  extra.forEach(function (c) { c.classList.add('is-collapsed'); });
+  var wrap = document.createElement('p');
+  wrap.className = 'section-more';
+  var btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'btn show-all';
+  btn.textContent = 'Show all ' + cards.length + ' posts ↓';
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    extra.forEach(function (c) { c.classList.toggle('is-collapsed', open); });
+    btn.setAttribute('aria-expanded', String(!open));
+    btn.textContent = open ? 'Show all ' + cards.length + ' posts ↓' : 'Show fewer ↑';
+  });
+  wrap.appendChild(btn);
+  grid.parentNode.insertBefore(wrap, grid.nextSibling);
+});
+</script>
 <script src="script.js"></script>
 <script src="i18n.js"></script>
 </body>
