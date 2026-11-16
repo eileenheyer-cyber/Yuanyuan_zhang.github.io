@@ -46,7 +46,7 @@
     <p style="margin:0 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 1 · Understand</p>
     <ul>
       <li><a href="#how-a-tree-predicts">How a Decision Tree Makes a Prediction</a></li>
-      <li><details><summary><a href="#splits">How a Decision Tree Chooses Its Splits</a></summary><ul><li><a href="#gini-impurity">Gini Impurity: How Mixed Is a Group?</a></li><li><a href="#comparing-splits">Comparing Two Possible Splits</a></li><li><a href="#growing-the-tree">Growing the Tree: Repeat on Every Branch</a></li></ul></details></li>
+      <li><details><summary><a href="#splits">How a Decision Tree Chooses Its Splits</a></summary><ul><li><a href="#gini-impurity">Gini Impurity: How Mixed Is a Group?</a></li><li><a href="#the-formula">The formula</a></li><li><a href="#calculate-gini">Let's calculate it</a></li><li><a href="#what-048-tells-us">What does 0.48 tell us?</a></li><li><a href="#comparing-splits">Comparing Two Possible Splits</a></li><li><a href="#growing-the-tree">Growing the Tree: Repeat on Every Branch</a></li></ul></details></li>
     </ul>
     <p style="margin:14px 0 6px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700">Part 2 · Build</p>
     <ul style="counter-reset:none">
@@ -111,13 +111,36 @@
 
   <p><strong>Gini impurity</strong> measures the probability that two randomly selected customers have different outcomes. It ranges from 0 to 0.5 for a two-class problem. A value of 0 means the group is perfectly pure, while a value closer to 0.5 indicates a more mixed group.</p>
 
-  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (<em>p</em><sub>churn</sub><sup>2</sup> + <em>p</em><sub>stay</sub><sup>2</sup>)</strong><span><em>p</em> = share of customers in the group with that outcome.</span></p>
+  <h3 id="the-formula">The formula</h3>
 
-  <p>Take 20 customers: 8 churned and 12 stayed. The shares are 0.40 and 0.60.</p>
+  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (<em>p</em><sub>churn</sub><sup>2</sup> + <em>p</em><sub>stay</sub><sup>2</sup>)</strong></p>
 
-  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (0.40<sup>2</sup> + 0.60<sup>2</sup>) = 1 − (0.16 + 0.36) = 0.48</strong></p>
+  <p>Where:</p>
 
-  <p>0.48 is close to the maximum of 0.5, so this group is very mixed. A tree that predicted “stay” for all 20 customers would be wrong for 40% of them. The tree’s job is to ask questions that push this number down.</p>
+  <p class="post-formula post-formula-plain"><strong><em>p</em><sub>i</sub> = <span class="frac"><span>Number of observations in class <em>i</em></span><span>Total observations in the group</span></span></strong></p>
+
+  <h3 id="calculate-gini">Let's calculate it</h3>
+
+  <p>Take a group of 20 customers:</p>
+
+  <ul class="post-points post-points-color">
+    <li>8 customers churned (40%).</li>
+    <li>12 customers stayed (60%).</li>
+  </ul>
+
+  <p>The class proportions are 0.40 and 0.60.</p>
+
+  <p class="post-formula post-formula-plain"><strong>Gini = 1 − (0.40<sup>2</sup> + 0.60<sup>2</sup>)</strong></p>
+
+  <p class="post-formula post-formula-plain"><strong>= 1 − (0.16 + 0.36) = 0.48</strong></p>
+
+  <h3 id="what-048-tells-us">What does 0.48 tell us?</h3>
+
+  <p>A Gini impurity of 0.48 is close to the maximum of 0.5, meaning the group is highly mixed.</p>
+
+  <p>If we predicted "Stay" for all 20 customers, we would misclassify 8 of them (40%).</p>
+
+  <p>The tree's goal is to find questions that split this mixed group into smaller, more homogeneous groups. It evaluates each potential split by calculating the weighted Gini impurity of the resulting groups. The split with the lowest weighted impurity is preferred.</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Mix of the group</th><th>Churned / stayed</th><th>Gini impurity</th><th>Misclassification rate</th></tr></thead>
