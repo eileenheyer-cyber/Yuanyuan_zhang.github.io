@@ -315,15 +315,24 @@ print(f&quot;OOB accuracy:  {forest.oob_score_:.3f}&quot;)</code></pre>
 
   <h3 id="permutation-importance">Why Permutation Importance Is Safer</h3>
 
-  <p>Impurity-based importance has a known weakness: it favors features with many possible split points. Monthly charges, a continuous number, gets 0.06 in the forest. A more direct test is <strong>permutation importance</strong>: shuffle one column of the test set, so that it carries no information, and measure how much accuracy drops. A large drop means the model relied on that feature (scikit-learn: <code>permutation_importance</code>).</p>
+  <p>Impurity-based importance has a weakness: it counts how often the trees used a feature, not whether the predictions really need it. Monthly charges, a number with many possible split points, gets 0.06 in Chart 7, although it adds almost nothing. <strong>Permutation importance</strong> asks a more direct question: what happens to the predictions if the information in a feature is taken away?</p>
+
+  <p>Here is how it works for tenure:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>Month-to-month contract: −0.055.</strong> Shuffling it costs 5.5 points of accuracy.</li>
-    <li><strong>Tenure: −0.046</strong> and <strong>support calls: −0.026.</strong> Both matter, tenure more.</li>
-    <li><strong>Monthly charges: 0.000.</strong> Shuffling it changes nothing, so the 0.06 above overstated it.</li>
+    <li><strong>Score the forest on the test set:</strong> accuracy is 0.750.</li>
+    <li><strong>Shuffle the tenure values</strong> randomly among the test customers. Each customer now has someone else's tenure, so the information is gone, even though the column is still there.</li>
+    <li><strong>Score the forest again:</strong> accuracy falls to 0.703. The drop of 0.047 is the permutation importance of tenure.</li>
   </ul>
 
-  <p>The two rankings agree on the main drivers, but permutation importance shows more clearly which features the forest could do without.</p>
+  <p>We do the same for every feature, shuffle each one 30 times and average the drops. For the contract type, the three columns are shuffled together. A big drop means the model relies on the feature, and a drop of about zero means it can do without it (in scikit-learn: <code>permutation_importance</code>).</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/random-forest/chart-8-permutation-importance.svg" alt="Horizontal bar chart of the drop in test accuracy when a feature is shuffled: contract type 0.076, tenure 0.047, support calls 0.024, monthly charges 0.002." loading="lazy"></div>
+    <figcaption><span>Chart 8</span> Taking away the contract type costs the most accuracy, 7.6 points, followed by tenure and support calls. Shuffling monthly charges changes nothing, so the forest does not need it.</figcaption>
+  </figure>
+
+  <p>The ranking agrees with Chart 7 on the main drivers, but monthly charges looks different: the impurity-based chart gave it a small but real share, and here it is zero. Permutation importance is also measured on the test set, so it shows what matters for customers the model has not seen. One limit remains: if two features carry the same information, shuffling only one of them hurts little, because the model can use the other.</p>
 
   <h3 id="interpretability">What You Give Up: Interpretability</h3>
 
