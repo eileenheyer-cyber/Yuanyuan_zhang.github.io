@@ -151,7 +151,10 @@
 
   <p>The more evenly mixed the group, the higher the Gini impurity. For the 50/50 group the calculation is 1 − (0.50<sup>2</sup> + 0.50<sup>2</sup>) = 0.50, and for a pure group it is 1 − (0<sup>2</sup> + 1<sup>2</sup>) = 0.</p>
 
-  <p>Gini impurity is not the same as the misclassification rate. The misclassification rate asks: if we predict the majority outcome for everyone in this group, how many customers are wrong? For our 20 customers that is 8 out of 20, or 0.40. Gini impurity measures how mixed the group is and falls more smoothly as the groups get purer. That makes it a better guide for choosing splits: a split can make the groups cleaner without changing a single majority prediction, and only the Gini value shows this.</p>
+  <div class="post-note post-note-warn">
+    <p class="post-note-l">Watch out</p>
+    <p>Gini impurity is not the same as the misclassification rate. The misclassification rate asks: if we predict the majority outcome for everyone in this group, how many customers are wrong? For our 20 customers that is 8 out of 20, or 0.40. Gini impurity measures how mixed the group is and falls more smoothly as the groups get purer. That makes it a better guide for choosing splits: a split can make the groups cleaner without changing a single majority prediction, and only the Gini value shows this.</p>
+  </div>
 
   <h3 id="comparing-splits">Comparing Two Possible Splits</h3>
 
