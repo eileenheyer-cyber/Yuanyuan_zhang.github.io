@@ -61,55 +61,21 @@
 
   <p>The tree starts at the top with its first question: <em>Is the contract month-to-month?</em> Maria’s answer is yes, so we move down the “yes” branch. The next question is <em>Has the customer been with us for less than 12 months?</em> Again, yes. The last question is <em>Did the customer call support more than twice last month?</em> Yes. We arrive at a box with no further questions, and it says: <strong>churn</strong>.</p>
 
-  <figure class="post-fig">
-    <svg viewBox="0 0 700 460" role="img" aria-label="A small churn decision tree. Root: month-to-month contract? No leads to Stay (9% churned). Yes leads to: tenure under 12 months? No leads to Stay (27% churned). Yes leads to: more than 2 support calls? No leads to Stay (41% churned). Yes leads to Churn (78% churned). Maria’s path is highlighted and ends in the churn leaf." style="width:100%;height:auto;font-family:Inter,sans-serif">
-      <g fill="none" stroke="#0a0a0a" stroke-width="2">
-        <path d="M345 40 H465"/>
-        <path d="M345 150 H465"/>
-        <path d="M230 283 V315 H115 V347"/>
-      </g>
-      <g fill="none" stroke="#0a0a0a" stroke-width="5">
-        <path d="M230 63 V127"/>
-        <path d="M230 173 V237"/>
-        <path d="M230 283 V315 H345 V347"/>
-      </g>
-      <g font-size="14" fill="#0a0a0a" font-weight="600">
-        <text x="400" y="30" text-anchor="middle">No</text>
-        <text x="400" y="140" text-anchor="middle">No</text>
-        <text x="244" y="102">Yes</text>
-        <text x="244" y="212">Yes</text>
-        <text x="156" y="308" text-anchor="middle">No</text>
-        <text x="304" y="308" text-anchor="middle">Yes</text>
-      </g>
-      <g fill="#e9e1cd" stroke="#0a0a0a" stroke-width="3">
-        <rect x="105" y="17" width="250" height="46"/>
-        <rect x="105" y="127" width="250" height="46"/>
-        <rect x="105" y="237" width="250" height="46"/>
-      </g>
-      <g font-size="15" fill="#0a0a0a" text-anchor="middle" font-weight="600">
-        <text x="230" y="46">Month-to-month contract?</text>
-        <text x="230" y="156">Tenure under 12 months?</text>
-        <text x="230" y="266">More than 2 support calls?</text>
-      </g>
-      <g stroke="#0a0a0a" stroke-width="2">
-        <rect x="465" y="7" width="190" height="66" fill="#1d57b5"/>
-        <rect x="465" y="117" width="190" height="66" fill="#1d57b5"/>
-        <rect x="20" y="347" width="190" height="66" fill="#1d57b5"/>
-        <rect x="250" y="347" width="190" height="66" fill="#dc452d" stroke-width="4"/>
-      </g>
-      <g fill="#ffffff" text-anchor="middle">
-        <text x="560" y="35" font-size="17" font-weight="700">Stay</text>
-        <text x="560" y="57" font-size="14">9% churned</text>
-        <text x="560" y="145" font-size="17" font-weight="700">Stay</text>
-        <text x="560" y="167" font-size="14">27% churned</text>
-        <text x="115" y="375" font-size="17" font-weight="700">Stay</text>
-        <text x="115" y="397" font-size="14">41% churned</text>
-        <text x="345" y="375" font-size="17" font-weight="700">Churn</text>
-        <text x="345" y="397" font-size="14">78% churned</text>
-      </g>
-      <rect x="305" y="424" width="80" height="26" rx="13" fill="#f5c548" stroke="#0a0a0a" stroke-width="2"/>
-      <text x="345" y="442" font-size="14" font-weight="700" text-anchor="middle" fill="#0a0a0a">Maria</text>
-    </svg>
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><svg viewBox="0 0 880 480" role="img" aria-label="A small churn decision tree. Root: month-to-month contract? No leads to Stay (9% churned). Yes leads to: tenure under 12 months? No leads to Stay (27% churned). Yes leads to: more than 2 support calls? No leads to Stay (41% churned). Yes leads to Churn (78% churned). Maria’s path is highlighted and ends in the churn leaf." style="width:100%;min-width:640px;height:auto;font-family:Inter,sans-serif">
+      <g fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M330 61 L110 130"/><path d="M520 176 L360 245"/><path d="M680 291 L590 360"/></g>
+      <g fill="none" stroke="#0a0a0a" stroke-width="5"><path d="M330 61 L520 130"/><path d="M520 176 L680 245"/><path d="M680 291 L770 360"/></g>
+      <g font-size="14" font-weight="600" fill="#0a0a0a" paint-order="stroke" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"><text x="207" y="100" text-anchor="middle">No</text><text x="442" y="100" text-anchor="middle">Yes</text><text x="432" y="214" text-anchor="middle">No</text><text x="612" y="214" text-anchor="middle">Yes</text><text x="626" y="331" text-anchor="middle">No</text><text x="736" y="331" text-anchor="middle">Yes</text></g>
+      <rect x="220" y="15" width="220" height="46" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="3"/><text x="330" y="43" text-anchor="middle" font-size="15" font-weight="600" fill="#0a0a0a">Month-to-month contract?</text>
+      <rect x="410" y="130" width="220" height="46" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="3"/><text x="520" y="158" text-anchor="middle" font-size="15" font-weight="600" fill="#0a0a0a">Tenure under 12 months?</text>
+      <rect x="565" y="245" width="230" height="46" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="3"/><text x="680" y="273" text-anchor="middle" font-size="15" font-weight="600" fill="#0a0a0a">More than 2 support calls?</text>
+      <rect x="35" y="130" width="150" height="66" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="110" y="158" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">Stay</text><text x="110" y="180" text-anchor="middle" font-size="14" fill="#fff">9% churned</text>
+      <rect x="285" y="245" width="150" height="66" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="360" y="273" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">Stay</text><text x="360" y="295" text-anchor="middle" font-size="14" fill="#fff">27% churned</text>
+      <rect x="515" y="360" width="150" height="66" fill="#1d57b5" stroke="#0a0a0a" stroke-width="2"/><text x="590" y="388" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">Stay</text><text x="590" y="410" text-anchor="middle" font-size="14" fill="#fff">41% churned</text>
+      <rect x="695" y="360" width="150" height="66" fill="#dc452d" stroke="#0a0a0a" stroke-width="4"/><text x="770" y="388" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">Churn</text><text x="770" y="410" text-anchor="middle" font-size="14" fill="#fff">78% churned</text>
+      <rect x="730" y="438" width="80" height="26" rx="13" fill="#f5c548" stroke="#0a0a0a" stroke-width="2"/>
+      <text x="770" y="456" font-size="14" font-weight="700" text-anchor="middle" fill="#0a0a0a">Maria</text>
+    </svg></div>
     <figcaption><span>Chart 1</span> Every customer follows exactly one path, so the leaf where they land is the prediction and the share inside it is how confident the tree is (illustrative numbers).</figcaption>
   </figure>
 
