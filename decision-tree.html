@@ -379,6 +379,16 @@ print(grid.best_params_)   # {'max_depth': 4, 'min_samples_leaf': 50}</code></pr
 
   <p>A tree can be read as a list of rules. Every path from the root to a leaf is one rule. In the pruned tree, for example, one rule says: <em>month-to-month contract, tenure up to 25 months and more than one support call → churn.</em> To see which features matter most overall, scikit-learn adds up how much each feature reduced the impurity across all splits (<code>feature_importances_</code>):</p>
 
+  <pre class="post-code"><code>importances = pd.Series(best_tree.feature_importances_, index=X.columns)
+print(importances.sort_values(ascending=False).round(2))
+
+# contract_Month-to-month    0.58
+# tenure_months              0.29
+# support_calls              0.10
+# contract_Two year          0.02
+# monthly_charges            0.01
+# contract_One year          0.00</code></pre>
+
   <figure class="post-fig">
     <img src="images/decision-tree/chart-5-feature-importance.svg" alt="Horizontal bar chart of feature importance in the pruned tree: contract month-to-month 0.58, tenure in months 0.29, support calls 0.10, contract two year 0.02, monthly charges 0.01, contract one year 0.00." loading="lazy">
     <figcaption><span>Chart 6</span> Three features do almost all of the work: the contract type, the tenure and the number of support calls. Monthly charges barely matter in this tree.</figcaption>
