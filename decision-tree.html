@@ -290,19 +290,13 @@ print(f&quot;Test accuracy:  {tree.score(X_test, y_test):.3f}&quot;)</code></pre
 
   <h3 id="overfitting">Overfitting: When a Decision Tree Learns Too Much</h3>
 
-  <p>Without restrictions on tree growth, the model reaches a depth of 23 and creates 412 leaf nodes. It achieves 100% accuracy on the training data, correctly classifying every training customer. But when tested on new customers, accuracy drops to just 64.4%.</p>
+  <p>Without restrictions on growth, the tree reaches a depth of 23 with 412 leaf nodes. It classifies every training customer correctly (100% accuracy), but on new customers accuracy drops to just 64.4%.</p>
 
-  <p>To understand how poor this result is, consider a simple baseline: predicting "Stay" for every customer. Since approximately 64% of customers stay, this naive approach would already achieve 64% accuracy without learning any patterns at all.</p>
+  <p>How poor is that? Predicting "Stay" for every customer already gives 64% accuracy, because about 64% of customers stay, and that needs no learning at all. The tree is only slightly better.</p>
 
-  <p>The tree performs only slightly better.</p>
+  <p>The reason: with 412 leaves, many nodes hold only a handful of customers. Instead of learning patterns that generalize, the tree memorizes individual observations and noise. This is called overfitting: the model performs very well on data it has seen but poorly on new data.</p>
 
-  <p>Why? With 412 leaves, many nodes contain only a handful of customers. Instead of learning patterns that generalize, the tree has started memorizing individual observations and noise in the training data.</p>
-
-  <p>This is called overfitting: the model performs exceptionally well on the data it has seen but struggles to make accurate predictions on new, unseen data.</p>
-
-  <p>The key lesson is that perfect training accuracy does not necessarily mean a good model. What matters is how well it generalizes.</p>
-
-  <p>The <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> article explores the bias-variance trade-off behind this problem.</p>
+  <p>The key lesson: perfect training accuracy does not make a good model. What matters is how well it generalizes. The <a href="overfitting-underfitting.html">Overfitting and Underfitting</a> article explores the bias-variance trade-off behind this problem.</p>
 
   <figure class="post-fig">
     <img src="images/decision-tree/chart-4-train-vs-test.svg" alt="Line chart of accuracy against max_depth from 1 to 15. Training accuracy rises from 0.70 to 0.98. Test accuracy peaks at 0.76 at depth 4 and then falls to 0.66." loading="lazy">
