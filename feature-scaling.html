@@ -73,9 +73,13 @@
 
   <h2 id="why-scaling" style="scroll-margin-top:90px">Why Scaling Matters, and Which Models Need It</h2>
   <h3 id="why-units" style="scroll-margin-top:90px">Why units cause trouble</h3>
-  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges. Customer P has 60 months and €2,300, and customer Q has 26 months and €2,700. Which one is most similar to D? Q looks like the better match: almost the same tenure and a moderate spending gap. P has been a customer 36 months longer.</p>
-  <p>A model that compares raw numbers sees something else. The gap between D and P is 36 months and €400. The gap between D and Q is 2 months and €800. The euro gaps are so much larger than the month gaps that the model mostly compares euros, so P looks closer. It doesn’t know what a euro or a month is. It only sees the size of the numbers.</p>
-  <p>Scaling fixes this by converting every feature to a common scale before the model sees it. Chart 1 shows these customers and a few more. Switch between the two views to see how scaling changes the answer.</p>
+  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges.</p>
+  <p>Customer P has 60 months and €2,300, while customer Q has 26 months and €2,700.</p>
+  <p>Intuitively, Q looks more similar to D. Their tenure differs by only two months, compared with P’s 36-month difference.</p>
+  <p>But a distance-based model doesn’t understand what months or euros mean. It compares numerical values.</p>
+  <p>Using Euclidean distance, the distance between D and P is approximately 402, while the distance between D and Q is 800. Because the differences in euros are numerically much larger than the differences in months. As a result, total charges dominate the distance calculation, making P appear closer to D.</p>
+  <p>Scaling addresses this problem by transforming each feature onto a comparable numerical scale before calculating distances.</p>
+  <p>Chart 1 shows the same customers before and after Min-Max Scaling. Switch between the two views to see how changing the scale changes which customer appears most similar to D.</p>
   <figure class="post-fig post-fig-wide" id="fs-demo">
     <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
     <p class="fs-view" id="fs-view"></p>
@@ -96,7 +100,8 @@ var d=[["A",2,300],["B",8,900],["D",24,1900],["P",60,2300],["Q",26,2700],["F",48
 var n=d.length,mx=0,my=0;d.forEach(function(r){mx+=r[1]/n;my+=r[2]/n});
 var sx=0,sy=0;d.forEach(function(r){sx+=Math.pow(r[1]-mx,2)/n;sy+=Math.pow(r[2]-my,2)/n});sx=Math.sqrt(sx);sy=Math.sqrt(sy);
 var svg=document.getElementById("fs-svg"),di=2,INK="#0a0a0a";
-function pts(m){return d.map(function(r){return m?[(r[1]-mx)/sx,(r[2]-my)/sy]:[r[1],r[2]]})}
+var tmn=2,tmx=70,cmn=300,cmx=6000;
+function pts(m){return d.map(function(r){return m?[(r[1]-tmn)/(tmx-tmn),(r[2]-cmn)/(cmx-cmn)]:[r[1],r[2]]})}
 function dist(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2))}
 function fmt(v,m){return m?v.toFixed(2):Math.round(v).toLocaleString("en-US")}
 var s='<line x1="58" y1="300" x2="330" y2="300" stroke="'+INK+'"/><line x1="58" y1="10" x2="58" y2="300" stroke="'+INK+'"/><g id="fs-ticks"></g><text id="fs-xl" x="190" y="336" text-anchor="middle" font-size="12" fill="'+INK+'"></text><text id="fs-yl" transform="translate(10,155) rotate(-90)" text-anchor="middle" font-size="12" fill="'+INK+'"></text><line id="fs-ln" stroke="#dc452d" stroke-width="2" style="transition:all .6s"/>';
@@ -104,19 +109,19 @@ d.forEach(function(r,i){s+='<g id="fs-g'+i+'" style="transition:transform .6s"><
 svg.innerHTML=s;
 function draw(m){var p=pts(m);
 var ymin=Math.min.apply(null,p.map(function(r){return r[1]})),ymax=Math.max.apply(null,p.map(function(r){return r[1]}));
-var u=270/(ymax-ymin),cx=m?0:mx,cy=(ymin+ymax)/2;
+var u=(m?240:270)/(ymax-ymin),cx=m?0.5:mx,cy=(ymin+ymax)/2;
 function X(v){return 190+(v-cx)*u}function Y(v){return 155-(v-cy)*u}
 var best=-1,bd=1e18;p.forEach(function(r,i){if(i==di)return;var q=dist(r,p[di]);if(q<bd){bd=q;best=i}});
 var tk="",fm=function(v){return m?String(v).replace("-","\u2212"):v.toLocaleString("en-US")};
-(m?[-1,0,1,2]:[1000,2000,3000,4000,5000,6000]).forEach(function(v){var y=Y(v);if(y<12||y>298)return;tk+='<line x1="54" y1="'+y+'" x2="58" y2="'+y+'" stroke="'+INK+'"/><text x="50" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'});
-if(m){[-1,0,1].forEach(function(v){var x=X(v);if(x<64||x>326)return;tk+='<line x1="'+x+'" y1="300" x2="'+x+'" y2="305" stroke="'+INK+'"/><text x="'+x+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'})}
+(m?[0,0.25,0.5,0.75,1]:[1000,2000,3000,4000,5000,6000]).forEach(function(v){var y=Y(v);if(y<12||y>298)return;tk+='<line x1="54" y1="'+y+'" x2="58" y2="'+y+'" stroke="'+INK+'"/><text x="50" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'});
+if(m){[0,0.25,0.5,0.75,1].forEach(function(v){var x=X(v);if(x<64||x>326)return;tk+='<line x1="'+x+'" y1="300" x2="'+x+'" y2="305" stroke="'+INK+'"/><text x="'+x+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'})}
 else{var xm=(X(d[0][1])+X(d[n-1][1]))/2;tk+='<line x1="'+xm+'" y1="300" x2="'+xm+'" y2="305" stroke="'+INK+'"/><text x="'+xm+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">Tenure: 2 to 70 months, all in this narrow strip</text>'}
 document.getElementById("fs-ticks").innerHTML=tk;
 p.forEach(function(r,i){document.getElementById("fs-g"+i).style.transform="translate("+X(r[0])+"px,"+Y(r[1])+"px)";document.getElementById("fs-c"+i).setAttribute("fill",i==di?"#1d57b5":(i==best?"#dc452d":"#8c8c8c"))});
 var l=document.getElementById("fs-ln");l.setAttribute("x1",X(p[di][0]));l.setAttribute("y1",Y(p[di][1]));l.setAttribute("x2",X(p[best][0]));l.setAttribute("y2",Y(p[best][1]));
-document.getElementById("fs-view").textContent=m?"After scaling: both features count equally":"What the model sees before scaling";
-document.getElementById("fs-xl").textContent=m?"Tenure (scaled)":"Drawn to the same unit as the y axis";
-document.getElementById("fs-yl").textContent=m?"Total charges (scaled)":"Total charges (€)";
+document.getElementById("fs-view").textContent=m?"After min-max scaling: both features count equally":"What the model sees before scaling";
+document.getElementById("fs-xl").textContent=m?"Tenure (min-max scaled)":"Drawn to the same unit as the y axis";
+document.getElementById("fs-yl").textContent=m?"Total charges (min-max scaled)":"Total charges (€)";
 document.getElementById("fs-win").textContent="Customer "+d[best][0];
 var t='<tr><th>Gap to D</th><th>Tenure</th><th>Charges</th></tr>';
 [3,4].forEach(function(i){t+='<tr><td><strong>'+d[i][0]+'</strong></td><td>'+fmt(Math.abs(p[i][0]-p[di][0]),m)+(m?"":" months")+'</td><td>'+fmt(Math.abs(p[i][1]-p[di][1]),m)+(m?"":" €")+'</td></tr>'});
