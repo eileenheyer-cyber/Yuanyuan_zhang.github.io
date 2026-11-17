@@ -234,12 +234,12 @@ ma = MaxAbsScaler().fit_transform(charges)    # 0.10, 0.20, 0.30, 0.40, 1.00</co
   <p><strong>Use it when:</strong> your data has many zeros, such as counts of rarely used services.</p>
 
   <h3 id="robust" style="scroll-margin-top:90px">Robust Scaling</h3>
-  <p>Standardization measures every customer against the average. The problem is that the average can be dragged around by one big spender: in our example, E pulls the average up to €2,000, although three of the five customers pay €1,500 or less. Robust Scaling avoids this by measuring against the <em>middle</em> of the data instead of the average.</p>
-  <p><strong>Step 1: find the middle customer.</strong> Line up the customers from lowest to highest spending: A, B, C, D, E. The customer in the middle of the line is C, who pays €1,500. This value is called the median. If E paid €50,000 instead of €5,000, C would still be in the middle.</p>
-  <p><strong>Step 2: measure how wide the middle half is.</strong> Now ignore the lowest and the highest customers and look at the group in the middle. B pays €1,000 and D pays €2,000, so the middle half of the customers is spread over €1,000. This width is called the <a href="iqr.html">interquartile range (IQR)</a>. It is the “typical step” of Robust Scaling. Because it only looks at the middle, it doesn’t care how extreme E is.</p>
-  <p><strong>Step 3: put it together.</strong> Subtract the median, so the middle customer becomes 0. Then divide by the IQR, so one step means “one middle-half width”.</p>
-  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − median</span><span>IQR</span></span></strong></p>
-  <p>For customer E this gives (5,000 − 1,500) / 1,000 = 3.5. E is 3.5 steps above the middle customer. For customer A it gives (500 − 1,500) / 1,000 = −1.0, which is one step below.</p>
+  <p>Standardization uses the mean and standard deviation, which are sensitive to extreme values. In our example, customer E pulls the average up to €2,000, even though three of the five customers spend €1,500 or less.</p>
+  <p>Robust Scaling uses the median and <a href="iqr.html">interquartile range (IQR)</a> instead. The median represents the middle value (€1,500), while the IQR measures the spread of the middle 50% of customers (€2,000 − €1,000 = €1,000).</p>
+  <p>The transformation subtracts the median and divides by the IQR:</p>
+  <p class="post-formula post-formula-plain"><strong><em>X</em><sub>scaled</sub> = <span class="frac"><span><em>X</em> − Median</span><span>IQR</span></span></strong></p>
+  <p>This centers the data around zero and makes it less sensitive to extreme values.</p>
+  <p>For customer E this gives (5,000 − 1,500) / 1,000 = 3.5. E sits 3.5 IQRs above the median. For customer A it gives (500 − 1,500) / 1,000 = −1.0, which is one IQR below.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Customer</th><th>Total charges</th><th>Robust value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>−1.00</td></tr><tr><td>B</td><td>€1,000</td><td>−0.50</td></tr><tr><td>C</td><td>€1,500</td><td>0.00</td></tr><tr><td>D</td><td>€2,000</td><td>0.50</td></tr><tr><td>E</td><td>€5,000</td><td>3.50</td></tr></tbody>
