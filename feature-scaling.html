@@ -110,12 +110,12 @@ var best=-1,bd=1e18;p.forEach(function(r,i){if(i==di)return;var q=dist(r,p[di]);
 var tk="",fm=function(v){return m?String(v).replace("-","\u2212"):v.toLocaleString("en-US")};
 (m?[-1,0,1,2]:[1000,2000,3000,4000,5000,6000]).forEach(function(v){var y=Y(v);if(y<12||y>298)return;tk+='<line x1="54" y1="'+y+'" x2="58" y2="'+y+'" stroke="'+INK+'"/><text x="50" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'});
 if(m){[-1,0,1].forEach(function(v){var x=X(v);if(x<64||x>326)return;tk+='<line x1="'+x+'" y1="300" x2="'+x+'" y2="305" stroke="'+INK+'"/><text x="'+x+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'})}
-else{var xm=(X(d[0][1])+X(d[n-1][1]))/2;tk+='<line x1="'+xm+'" y1="300" x2="'+xm+'" y2="305" stroke="'+INK+'"/><text x="'+xm+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">2 to 70 months</text>'}
+else{var xm=(X(d[0][1])+X(d[n-1][1]))/2;tk+='<line x1="'+xm+'" y1="300" x2="'+xm+'" y2="305" stroke="'+INK+'"/><text x="'+xm+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">Tenure: 2 to 70 months, all in this narrow strip</text>'}
 document.getElementById("fs-ticks").innerHTML=tk;
 p.forEach(function(r,i){document.getElementById("fs-g"+i).style.transform="translate("+X(r[0])+"px,"+Y(r[1])+"px)";document.getElementById("fs-c"+i).setAttribute("fill",i==di?"#1d57b5":(i==best?"#dc452d":"#8c8c8c"))});
 var l=document.getElementById("fs-ln");l.setAttribute("x1",X(p[di][0]));l.setAttribute("y1",Y(p[di][1]));l.setAttribute("x2",X(p[best][0]));l.setAttribute("y2",Y(p[best][1]));
 document.getElementById("fs-view").textContent=m?"After scaling: both features count equally":"What the model sees before scaling";
-document.getElementById("fs-xl").textContent=m?"Tenure (scaled)":"Tenure, drawn to the same unit as the y axis";
+document.getElementById("fs-xl").textContent=m?"Tenure (scaled)":"Drawn to the same unit as the y axis";
 document.getElementById("fs-yl").textContent=m?"Total charges (scaled)":"Total charges (€)";
 document.getElementById("fs-win").textContent="Customer "+d[best][0];
 var t='<tr><th>Gap to D</th><th>Tenure</th><th>Charges</th></tr>';
