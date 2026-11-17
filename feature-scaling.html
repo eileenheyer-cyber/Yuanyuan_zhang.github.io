@@ -59,8 +59,22 @@
   <h2 id="introduction" style="scroll-margin-top:90px">Introduction</h2>
   <p>Imagine a telecom company that wants to find customers who behave alike. Two columns describe each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). A customer with 24 months of tenure and €1,900 in charges should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
   <p><strong>Feature scaling</strong> puts features on a comparable scale before the model sees them, so the units you happened to measure in don't decide the result. In this article we look at five scaling methods, when each one fits, and how to apply them without leaking information from the test set.</p>
-  <p>Chart 1 shows the problem. Customer D has 24 months of tenure and €1,900 in charges. Which customer looks most similar to D? Switch between the two views to see how scaling changes the answer.</p>
 
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#which-models">Which Models Need Scaling (and Which Don’t)</a></li>
+      <li><details><summary><a href="#scaling-methods">Scaling Methods</a></summary><ul><li><a href="#standardization">Standardization (Z-Score)</a></li><li><a href="#min-max">Min-Max Normalization</a></li><li><a href="#max-abs">Max Absolute Scaling</a></li><li><a href="#robust">Robust Scaling</a></li><li><a href="#unit-vector">Unit Vector Scaling</a></li></ul></details></li>
+      <li><a href="#choosing">Choosing the Right Scaling Method</a></li>
+      <li><a href="#fit-on-train">Fit on Training Data Only</a></li>
+      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+
+  <h2 id="which-models" style="scroll-margin-top:90px">Which Models Need Scaling (and Which Don’t)</h2>
+  <p>A model needs scaling when it compares the size of numbers. Distance-based models are the clearest case. In Chart 1, customer D has 24 months of tenure and €1,900 in charges. Which customer looks most similar to D? Switch between the two views to see how scaling changes the answer.</p>
   <figure class="post-fig post-fig-wide" id="fs-demo">
     <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
     <p class="fs-view" id="fs-view"></p>
@@ -109,22 +123,7 @@ draw(0);
 })();
     </script>
   </figure>
-
-  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
-  <div class="post-toc">
-    <p class="post-toc-title">In this article</p>
-    <ul>
-      <li><a href="#which-models">Which Models Need Scaling (and Which Don’t)</a></li>
-      <li><details><summary><a href="#scaling-methods">Scaling Methods</a></summary><ul><li><a href="#standardization">Standardization (Z-Score)</a></li><li><a href="#min-max">Min-Max Normalization</a></li><li><a href="#max-abs">Max Absolute Scaling</a></li><li><a href="#robust">Robust Scaling</a></li><li><a href="#unit-vector">Unit Vector Scaling</a></li></ul></details></li>
-      <li><a href="#choosing">Choosing the Right Scaling Method</a></li>
-      <li><a href="#fit-on-train">Fit on Training Data Only</a></li>
-      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
-      <li><a href="#key-takeaways">Key Takeaways</a></li>
-    </ul>
-  </div>
-
-  <h2 id="which-models" style="scroll-margin-top:90px">Which Models Need Scaling (and Which Don’t)</h2>
-  <p>A model needs scaling when it compares the size of numbers. Chart 1 is the clearest case: distance adds up raw differences, so a feature with large numbers dominates. Other models are hurt in less visible ways.</p>
+  <p>Other models are hurt in less visible ways. The table sums up which model families need scaling.</p>
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Model family</th><th>Needs scaling?</th><th>Why</th></tr></thead>
     <tbody><tr><td>Distance-based, such as <a href="k-means.html">K-Means Clustering</a> and k-nearest neighbors</td><td>Yes</td><td>Distances add up raw differences, so large units dominate.</td></tr><tr><td>Regularized and gradient-based, such as ridge, lasso and neural networks</td><td>Yes</td><td>The penalty and the learning steps treat features unequally when their units differ.</td></tr><tr><td>Support vector machines and PCA</td><td>Yes</td><td>Both rely on distances or variance, which depend on units.</td></tr><tr><td>Tree-based, such as a <a href="decision-tree.html">decision tree</a> or <a href="random-forest.html">random forest</a></td><td>No</td><td>A split asks “is charges above €1,500?”, and rescaling doesn’t change who lands on each side.</td></tr></tbody>
