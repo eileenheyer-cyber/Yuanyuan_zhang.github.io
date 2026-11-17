@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feature Scaling: Why Units Shouldn't Decide Your Model – Yuanyuan Zhang</title>
+  <meta name="description" content="Standardization, min-max, max absolute, robust and unit vector scaling explained with one churn example: when each method fits, and how to fit it on training data only.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261023a">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs post-fs">
+  <style>
+    .post-fs h2{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
+    .post-fs h3{font-size:1.15rem;margin:34px 0 10px}
+    .fs-btns{display:flex;gap:8px;margin:0 0 12px}
+    .fs-btn{flex:1;padding:10px 12px;font:inherit;font-weight:600;font-size:.92rem;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+    .fs-btn.on{background:#1d57b5;border-color:#1d57b5;color:#fff}
+    .fs-view{font-size:.9rem;font-weight:600;margin:0 0 8px;text-align:left}
+    .fs-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+    .fs-grid svg{width:100%;height:auto;display:block}
+    .fs-lab{font-size:.85rem;color:var(--muted);margin:0 0 4px;text-align:left}
+    .fs-win{font-size:1.5rem;font-weight:600;margin:0 0 10px;text-align:left}
+    .fs-tb{width:100%;border-collapse:collapse;font-size:.9rem}
+    .fs-tb th{font-weight:400;color:var(--muted);text-align:left;padding:4px 0}
+    .fs-tb td{padding:6px 0;border-top:1px solid var(--line)}
+    .fs-call{margin:12px 0 0;padding:10px 12px;border-left:3px solid #dc452d;background:var(--surface-alt);font-size:.9rem;line-height:1.5;text-align:left}
+    .fs-call.after{border-left-color:#1d57b5}
+    .fs-key{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:10px 0 0}
+    .fs-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+    .fs-zgrid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:start}
+    .fs-zgrid svg{width:100%;height:auto;display:block}
+    .fs-zarrow{font-size:2rem;font-weight:600;padding:90px 4px 0;color:#0a0a0a}
+    .fs-vals{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:8px 0 0;font-size:.8rem}
+    .fs-vl{flex:0 0 100%;font-size:.78rem;color:var(--muted)}
+    .fs-v{padding:2px 5px;background:var(--surface-alt);border:1px solid #0a0a0a22;border-radius:4px;font-variant-numeric:tabular-nums}
+    @media(max-width:620px){.fs-zgrid{grid-template-columns:1fr}.fs-zarrow{transform:rotate(90deg);text-align:center;padding:0}}
+    .fs-rob svg{width:100%;height:auto;display:block}
+    .fs-cmp{margin:28px 0;padding:18px 20px;background:var(--surface-alt);border:2px solid #0a0a0a;border-radius:0}
+    .fs-cmp-l{margin:0 0 14px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+    .post .fs-cmp-n{margin:-4px 0 12px;font-size:.88rem;text-align:left;color:var(--muted)}
+    .fs-mini{width:100%;height:auto;display:block;margin:0 0 8px}
+    .fs-cmp-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .fs-cmp-c{background:#fff;border:2px solid #1d57b5;padding:12px 14px;text-align:left}
+    .fs-cmp-c.c2{border-color:#f5c548}.fs-cmp-c.c3{border-color:#dc452d}
+    .fs-cmp-c h4{margin:0 0 6px;font-size:1rem}
+    .fs-cmp-f{margin:0 0 8px;font-size:.88rem;font-style:normal;text-align:left}
+    .fs-cmp-c ul{text-align:left;hyphens:none;list-style:none;margin:0;padding:0;font-size:.86rem;line-height:1.45}
+    .fs-cmp-c li{margin:0 0 6px;padding:0}.fs-cmp-c li span{font-weight:600}
+    .post .fs-cmp-b,.post .fs-cmp-f,.fs-cmp-c li{text-align:left;hyphens:none;-webkit-hyphens:none}
+    .post .fs-cmp-b{margin:18px 0 0;font-size:.92rem}
+    @media(max-width:760px){.fs-cmp-g{grid-template-columns:1fr}}
+    .fs-uv svg{width:100%;height:auto;display:block}
+    .fs-grid-eq{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+    @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
+  </style>
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Model fundamentals</p>
+  <h1 class="post-title">Feature Scaling: Why Units Shouldn’t Decide Your Model</h1>
+  <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">How standardization, normalization, and robust scaling put features on a fair footing.</p>
+
+  <p>A telecom company has two columns for each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). It wants to find customers who behave alike. A customer with 24 months and €1,900 should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
+  <p><strong>Feature scaling</strong> puts features on a comparable scale before the model sees them, so the units you happened to measure in don't decide the result. In this article we look at five scaling methods, when each one fits, and how to apply them without leaking information from the test set.</p>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><details><summary><a href="#why-scaling">Why Scaling Matters, and Which Models Need It</a></summary><ul><li><a href="#why-units">Why units cause trouble</a></li><li><a href="#which-models">Which models need scaling, and which don’t</a></li></ul></details></li>
+      <li><details><summary><a href="#scaling-methods">Scaling Methods</a></summary><ul><li><a href="#standardization">Standardization (Z-Score)</a></li><li><a href="#min-max">Min-Max Normalization</a></li><li><a href="#max-abs">Max Absolute Scaling</a></li><li><a href="#robust">Robust Scaling</a></li><li><a href="#unit-vector">Unit Vector Scaling</a></li></ul></details></li>
+      <li><a href="#choosing">Choosing the Right Scaling Method</a></li>
+      <li><a href="#fit-on-train">Fit on Training Data Only</a></li>
+      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+
+  <h2 id="why-scaling" style="scroll-margin-top:90px">Why Scaling Matters, and Which Models Need It</h2>
+  <h3 id="why-units" style="scroll-margin-top:90px">Why units cause trouble</h3>
+  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges. Customer P has 60 months and €2,300, while customer Q has 26 months and €2,700.</p>
+  <p>Intuitively, Q looks more similar to D. Their tenure differs by only two months, compared with P’s 36-month difference.</p>
+  <p>A distance-based model doesn’t see it that way. It doesn’t understand what months or euros mean. It compares numerical values and measures how far apart two customers are with <strong>Euclidean distance</strong>: the straight-line distance between two points, the one you would measure with a ruler on a chart. Take the gap in each feature (the difference between the two customers), square it, add the squares, and take the square root.</p>
+  <p class="post-formula post-formula-plain"><strong><em>d</em> = √((tenure gap)² + (charges gap)²)</strong></p>
+  <p class="post-formula post-formula-plain"><strong>D to P: √(36² + 400²) = √161,296 ≈ 400</strong></p>
+  <p class="post-formula post-formula-plain"><strong>D to Q: √(2² + 800²) = √640,004 ≈ 800</strong></p>
+  <p>The smaller the distance, the more similar the two customers look to the model, so the model picks P. The distance to P is almost the same as the euro gap alone: the 36 months barely add anything, because the differences in euros are numerically much larger than the differences in months. As a result, total charges dominate the distance calculation, making P appear closer to D.</p>
+  <p>Scaling addresses this problem by transforming each feature onto a comparable numerical scale before calculating distances. After Min-Max Scaling, the same gaps are measured on a 0 to 1 scale:</p>
+  <p class="post-formula post-formula-plain"><strong>D to P: √(0.53² + 0.07²) ≈ 0.53</strong></p>
+  <p class="post-formula post-formula-plain"><strong>D to Q: √(0.03² + 0.14²) ≈ 0.14</strong></p>
+  <p>Now Q is the closer customer, because the tenure gap counts as much as the charges gap.</p>
+  <p>Chart 1 shows the same customers before and after Min-Max Scaling. Switch between the two views to see how changing the scale changes which customer appears most similar to D.</p>
+  <figure class="post-fig post-fig-wide" id="fs-demo">
+    <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
+    <p class="fs-view" id="fs-view"></p>
+    <div class="fs-grid">
+      <svg id="fs-svg" viewBox="0 0 340 340" role="img" aria-label="Seven customers plotted by tenure and total charges with the same unit on both axes. Switching to After scaling spreads them out and changes which customer is closest to customer D."></svg>
+      <div>
+        <p class="fs-lab">Most similar to customer D</p>
+        <p class="fs-win" id="fs-win"></p>
+        <table class="fs-tb" id="fs-tb"></table>
+        <p class="fs-call" id="fs-call" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="fs-key"><span><i style="background:#1d57b5"></i>Customer D</span><span><i style="background:#dc452d"></i>Most similar customer</span><span><i style="background:#8c8c8c"></i>Other customers</span></div>
+    <figcaption><span>Chart 1</span> Without scaling, euros overpower months and the nearest customer to D is chosen by spending alone. After scaling, tenure counts too. Simulated data.</figcaption>
+    <script>
+(function(){
+var d=[["A",2,300],["B",8,900],["D",24,1900],["P",60,2300],["Q",26,2700],["F",48,4200],["G",70,6000]];
+var n=d.length,mx=0,my=0;d.forEach(function(r){mx+=r[1]/n;my+=r[2]/n});
+var sx=0,sy=0;d.forEach(function(r){sx+=Math.pow(r[1]-mx,2)/n;sy+=Math.pow(r[2]-my,2)/n});sx=Math.sqrt(sx);sy=Math.sqrt(sy);
+var svg=document.getElementById("fs-svg"),di=2,INK="#0a0a0a";
+var tmn=2,tmx=70,cmn=300,cmx=6000;
+function pts(m){return d.map(function(r){return m?[(r[1]-tmn)/(tmx-tmn),(r[2]-cmn)/(cmx-cmn)]:[r[1],r[2]]})}
+function dist(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2))}
+function fmt(v,m){return m?v.toFixed(2):Math.round(v).toLocaleString("en-US")}
+var s='<line x1="58" y1="300" x2="330" y2="300" stroke="'+INK+'"/><line x1="58" y1="10" x2="58" y2="300" stroke="'+INK+'"/><g id="fs-ticks"></g><text id="fs-xl" x="190" y="336" text-anchor="middle" font-size="12" fill="'+INK+'"></text><text id="fs-yl" transform="translate(10,155) rotate(-90)" text-anchor="middle" font-size="12" fill="'+INK+'"></text><line id="fs-ln" stroke="#dc452d" stroke-width="2" style="transition:all .6s"/>';
+d.forEach(function(r,i){s+='<g id="fs-g'+i+'" style="transition:transform .6s"><circle id="fs-c'+i+'" r="8" stroke="'+INK+'" stroke-width="1"/><text x="12" y="4" font-size="12" font-weight="600" fill="'+INK+'">'+r[0]+'</text></g>'});
+svg.innerHTML=s;
+function draw(m){var p=pts(m);
+var ymin=Math.min.apply(null,p.map(function(r){return r[1]})),ymax=Math.max.apply(null,p.map(function(r){return r[1]}));
+var u=(m?240:270)/(ymax-ymin),cx=m?0.5:mx,cy=(ymin+ymax)/2;
+function X(v){return 190+(v-cx)*u}function Y(v){return 155-(v-cy)*u}
+var best=-1,bd=1e18;p.forEach(function(r,i){if(i==di)return;var q=dist(r,p[di]);if(q<bd){bd=q;best=i}});
+var tk="",fm=function(v){return m?String(v).replace("-","\u2212"):v.toLocaleString("en-US")};
+(m?[0,0.25,0.5,0.75,1]:[1000,2000,3000,4000,5000,6000]).forEach(function(v){var y=Y(v);if(y<12||y>298)return;tk+='<line x1="54" y1="'+y+'" x2="58" y2="'+y+'" stroke="'+INK+'"/><text x="50" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'});
+if(m){[0,0.25,0.5,0.75,1].forEach(function(v){var x=X(v);if(x<64||x>326)return;tk+='<line x1="'+x+'" y1="300" x2="'+x+'" y2="305" stroke="'+INK+'"/><text x="'+x+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">'+fm(v)+'</text>'})}
+else{var xm=(X(d[0][1])+X(d[n-1][1]))/2;tk+='<line x1="'+xm+'" y1="300" x2="'+xm+'" y2="305" stroke="'+INK+'"/><text x="'+xm+'" y="319" text-anchor="middle" font-size="12" fill="'+INK+'">Tenure: 2 to 70 months, all in this narrow strip</text>'}
+document.getElementById("fs-ticks").innerHTML=tk;
+p.forEach(function(r,i){document.getElementById("fs-g"+i).style.transform="translate("+X(r[0])+"px,"+Y(r[1])+"px)";document.getElementById("fs-c"+i).setAttribute("fill",i==di?"#1d57b5":(i==best?"#dc452d":"#8c8c8c"))});
+var l=document.getElementById("fs-ln");l.setAttribute("x1",X(p[di][0]));l.setAttribute("y1",Y(p[di][1]));l.setAttribute("x2",X(p[best][0]));l.setAttribute("y2",Y(p[best][1]));
+document.getElementById("fs-view").textContent=m?"After min-max scaling: both features count equally":"What the model sees before scaling";
+document.getElementById("fs-xl").textContent=m?"Tenure (min-max scaled)":"Drawn to the same unit as the y axis";
+document.getElementById("fs-yl").textContent=m?"Total charges (min-max scaled)":"Total charges (€)";
+document.getElementById("fs-win").textContent="Customer "+d[best][0];
+var t='<tr><th>Gap to D</th><th>Tenure</th><th>Charges</th></tr>';
+[3,4].forEach(function(i){t+='<tr><td><strong>'+d[i][0]+'</strong></td><td>'+fmt(Math.abs(p[i][0]-p[di][0]),m)+(m?"":" months")+'</td><td>'+fmt(Math.abs(p[i][1]-p[di][1]),m)+(m?"":" €")+'</td></tr>'});
+document.getElementById("fs-tb").innerHTML=t;
+var c=document.getElementById("fs-call");c.className="fs-call"+(m?" after":"");
+c.textContent=m?"Now the 36-month gap counts, so P is no longer close to D. Q has a similar tenure and a moderate spending gap, so Q wins.":"D and P look close only because months are tiny numbers next to euros. This is the problem: a 36-month gap is almost ignored next to a 400 € gap.";
+document.getElementById("fs-b0").className="fs-btn"+(m?"":" on");document.getElementById("fs-b1").className="fs-btn"+(m?" on":"")}
+document.getElementById("fs-b0").onclick=function(){draw(0)};document.getElementById("fs-b1").onclick=function(){draw(1)};
+draw(0);
+})();
+    </script>
+  </figure>
+  <h3 id="which-models" style="scroll-margin-top:90px">Which models need scaling, and which don’t</h3>
+  <p>A model needs scaling when it compares the size of numbers. Distance-based models are the clearest case, as Chart 1 shows. Other models are hurt in less visible ways. The table sums up which model families need scaling.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model family</th><th>Needs scaling?</th><th>Why</th></tr></thead>
+    <tbody><tr><td>Distance-based, such as <a href="k-means.html">K-Means Clustering</a> and k-nearest neighbors</td><td>Yes</td><td>Distances add up raw differences, so large units dominate.</td></tr><tr><td>Regularized and gradient-based, such as ridge, lasso and neural networks</td><td>Yes</td><td>The penalty and the learning steps treat features unequally when their units differ.</td></tr><tr><td>Support vector machines and PCA</td><td>Yes</td><td>Both rely on distances or variance, which depend on units.</td></tr><tr><td>Tree-based, such as a <a href="decision-tree.html">decision tree</a> or <a href="random-forest.html">random forest</a></td><td>No</td><td>A split asks “is charges above €1,500?”, and rescaling doesn’t change who lands on each side.</td></tr></tbody>
+  </table></div>
+  <p>Take a ridge model on the telecom data. The penalty shrinks every coefficient by the same rule. A coefficient for euros is naturally tiny and one for months is naturally larger, so the same penalty hits the two features unequally, only because of their units. See <a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> for how that penalty works.</p>
+
+  <h2 id="scaling-methods" style="scroll-margin-top:90px">Scaling Methods</h2>
+  <p>This section covers five methods. All of them are shown on the same example: five customers and one column, total charges. Customer A pays €500, B pays €1,000, C pays €1,500, D pays €2,000 and E pays €5,000. Customer E is a heavy spender, so the differences between the methods are easy to see.</p>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Terms used in this section</p>
+    <ul class="post-points post-points-color">
+      <li><strong>Average (mean).</strong> All values added up and divided by how many there are. For our five customers: €2,000.</li>
+      <li><strong>Standard deviation.</strong> The typical distance between a customer and the average. Small means customers are alike, large means they are spread out.</li>
+      <li><strong>Median.</strong> The value of the customer in the middle when everyone is lined up from lowest to highest.</li>
+      <li><strong>Outlier.</strong> A value far away from the rest, like customer E.</li>
+    </ul>
+  </div>
+
+  <h3 id="standardization" style="scroll-margin-top:90px">Standardization (Z-Score)</h3>
+  <p>Standardization asks one question about every customer: how far above or below the average are you, counted in typical steps?</p>
+  <p>Heights show how this works. Someone who is 190 cm tall in a group that averages 175 cm is clearly tall. But how tall? That depends on how much heights usually vary. If most people are within 8 cm of the average, 15 cm above is almost two typical steps up. The size of a typical step is the standard deviation.</p>
+  <p>The same idea fixes the telecom problem. Average total charges are €2,000 and a typical step is about €1,581 (the population standard deviation, which is what scikit-learn uses). If tenure has a typical step of 24 months, a customer 24 months above the average tenure is one step up. Now euros and months are measured in the same unit, steps, so one step in tenure counts as much as one step in spending.</p>
+  <p>In words: take the value, subtract the average, and divide by the size of a typical step.</p>
+  <p class="post-formula post-formula-plain"><strong><em>z</em> = <span class="frac"><span><em>x</em> − mean</span><span>standard deviation</span></span></strong></p>
+  <p>Customer A gets z = (500 − 2,000) / 1,581 = −0.95. A spends almost one typical step less than the average customer.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Standardized value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>−0.95</td></tr><tr><td>B</td><td>€1,000</td><td>−0.63</td></tr><tr><td>C</td><td>€1,500</td><td>−0.32</td></tr><tr><td>D</td><td>€2,000</td><td>0.00</td></tr><tr><td>E</td><td>€5,000</td><td>1.90</td></tr></tbody>
+  </table></div>
+  <p>E has z = 1.90, so E spends about 1.9 typical steps above the average. Negative values mean below average and 0 means exactly average. Standardization is the default choice for most models. Its weak spot is outliers, because a customer like E pulls both the average and the typical step.</p>
+  <figure class="post-fig post-fig-wide fs-zc">
+    <div class="fs-zgrid"><div><svg viewBox="0 0 320 250" role="img" aria-label="Bell curve of total charges, mean 2,000 euros."><text x="20" y="20" font-size="14" font-weight="600" fill="#0a0a0a">Before: original</text><text x="20" y="38" font-size="12.5" fill="#555">mean €2,000, std €1,581</text><path d="M 20.0 170 L 20.0 166.9 L 25.4 166.0 L 30.8 164.9 L 36.2 163.6 L 41.5 162.0 L 46.9 160.1 L 52.3 157.8 L 57.7 155.2 L 63.1 152.2 L 68.5 148.8 L 73.8 145.0 L 79.2 140.8 L 84.6 136.2 L 90.0 131.3 L 95.4 126.2 L 100.8 120.9 L 106.2 115.4 L 111.5 110.0 L 116.9 104.6 L 122.3 99.6 L 127.7 94.8 L 133.1 90.6 L 138.5 86.9 L 143.8 84.0 L 149.2 81.8 L 154.6 80.4 L 160.0 80.0 L 160.0 170 Z" fill="#1d57b5" opacity="0.85"/><path d="M 160.0 170 L 160.0 80.0 L 165.4 80.4 L 170.8 81.8 L 176.2 84.0 L 181.5 86.9 L 186.9 90.6 L 192.3 94.8 L 197.7 99.6 L 203.1 104.6 L 208.5 110.0 L 213.8 115.4 L 219.2 120.9 L 224.6 126.2 L 230.0 131.3 L 235.4 136.2 L 240.8 140.8 L 246.2 145.0 L 251.5 148.8 L 256.9 152.2 L 262.3 155.2 L 267.7 157.8 L 273.1 160.1 L 278.5 162.0 L 283.8 163.6 L 289.2 164.9 L 294.6 166.0 L 300.0 166.9 L 300.0 170 Z" fill="#dc452d" opacity="0.85"/><path d="M 20.0 166.9 L 25.4 166.0 L 30.8 164.9 L 36.2 163.6 L 41.5 162.0 L 46.9 160.1 L 52.3 157.8 L 57.7 155.2 L 63.1 152.2 L 68.5 148.8 L 73.8 145.0 L 79.2 140.8 L 84.6 136.2 L 90.0 131.3 L 95.4 126.2 L 100.8 120.9 L 106.2 115.4 L 111.5 110.0 L 116.9 104.6 L 122.3 99.6 L 127.7 94.8 L 133.1 90.6 L 138.5 86.9 L 143.8 84.0 L 149.2 81.8 L 154.6 80.4 L 160.0 80.0 L 165.4 80.4 L 170.8 81.8 L 176.2 84.0 L 181.5 86.9 L 186.9 90.6 L 192.3 94.8 L 197.7 99.6 L 203.1 104.6 L 208.5 110.0 L 213.8 115.4 L 219.2 120.9 L 224.6 126.2 L 230.0 131.3 L 235.4 136.2 L 240.8 140.8 L 246.2 145.0 L 251.5 148.8 L 256.9 152.2 L 262.3 155.2 L 267.7 157.8 L 273.1 160.1 L 278.5 162.0 L 283.8 163.6 L 289.2 164.9 L 294.6 166.0 L 300.0 166.9" fill="none" stroke="#0a0a0a" stroke-width="2"/><line x1="160.0" y1="72" x2="160.0" y2="176" stroke="#0a0a0a" stroke-width="2.5"/><text x="160.0" y="66" font-size="12.5" font-weight="600" text-anchor="middle" fill="#0a0a0a">mean</text><line x1="20" y1="170" x2="300" y2="170" stroke="#0a0a0a"/><line x1="106.2" y1="170" x2="106.2" y2="175" stroke="#0a0a0a"/><text x="106.2" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€419</text><line x1="160.0" y1="170" x2="160.0" y2="175" stroke="#0a0a0a"/><text x="160.0" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€2,000</text><line x1="213.8" y1="170" x2="213.8" y2="175" stroke="#0a0a0a"/><text x="213.8" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€3,581</text><text x="68.5" y="156" font-size="12.5" text-anchor="middle" fill="#fff"></text><text x="76.5" y="212" font-size="12.5" font-weight="500" text-anchor="middle" fill="#1d57b5">below the mean</text><text x="243.5" y="212" font-size="12.5" font-weight="500" text-anchor="middle" fill="#dc452d">above the mean</text></svg><div class="fs-vals"><span class="fs-vl">Original total charges (A to E)</span><span class="fs-v">€500</span><span class="fs-v">€1,000</span><span class="fs-v">€1,500</span><span class="fs-v">€2,000</span><span class="fs-v">€5,000</span></div></div><div class="fs-zarrow" aria-hidden="true">→</div><div><svg viewBox="0 0 320 250" role="img" aria-label="The same bell curve centered at 0 with standard deviation 1."><text x="20" y="20" font-size="14" font-weight="600" fill="#0a0a0a">After: standardized</text><text x="20" y="38" font-size="12.5" fill="#555">mean 0, standard deviation 1</text><path d="M 20.0 170 L 20.0 166.9 L 25.4 166.0 L 30.8 164.9 L 36.2 163.6 L 41.5 162.0 L 46.9 160.1 L 52.3 157.8 L 57.7 155.2 L 63.1 152.2 L 68.5 148.8 L 73.8 145.0 L 79.2 140.8 L 84.6 136.2 L 90.0 131.3 L 95.4 126.2 L 100.8 120.9 L 106.2 115.4 L 111.5 110.0 L 116.9 104.6 L 122.3 99.6 L 127.7 94.8 L 133.1 90.6 L 138.5 86.9 L 143.8 84.0 L 149.2 81.8 L 154.6 80.4 L 160.0 80.0 L 160.0 170 Z" fill="#1d57b5" opacity="0.85"/><path d="M 160.0 170 L 160.0 80.0 L 165.4 80.4 L 170.8 81.8 L 176.2 84.0 L 181.5 86.9 L 186.9 90.6 L 192.3 94.8 L 197.7 99.6 L 203.1 104.6 L 208.5 110.0 L 213.8 115.4 L 219.2 120.9 L 224.6 126.2 L 230.0 131.3 L 235.4 136.2 L 240.8 140.8 L 246.2 145.0 L 251.5 148.8 L 256.9 152.2 L 262.3 155.2 L 267.7 157.8 L 273.1 160.1 L 278.5 162.0 L 283.8 163.6 L 289.2 164.9 L 294.6 166.0 L 300.0 166.9 L 300.0 170 Z" fill="#dc452d" opacity="0.85"/><path d="M 20.0 166.9 L 25.4 166.0 L 30.8 164.9 L 36.2 163.6 L 41.5 162.0 L 46.9 160.1 L 52.3 157.8 L 57.7 155.2 L 63.1 152.2 L 68.5 148.8 L 73.8 145.0 L 79.2 140.8 L 84.6 136.2 L 90.0 131.3 L 95.4 126.2 L 100.8 120.9 L 106.2 115.4 L 111.5 110.0 L 116.9 104.6 L 122.3 99.6 L 127.7 94.8 L 133.1 90.6 L 138.5 86.9 L 143.8 84.0 L 149.2 81.8 L 154.6 80.4 L 160.0 80.0 L 165.4 80.4 L 170.8 81.8 L 176.2 84.0 L 181.5 86.9 L 186.9 90.6 L 192.3 94.8 L 197.7 99.6 L 203.1 104.6 L 208.5 110.0 L 213.8 115.4 L 219.2 120.9 L 224.6 126.2 L 230.0 131.3 L 235.4 136.2 L 240.8 140.8 L 246.2 145.0 L 251.5 148.8 L 256.9 152.2 L 262.3 155.2 L 267.7 157.8 L 273.1 160.1 L 278.5 162.0 L 283.8 163.6 L 289.2 164.9 L 294.6 166.0 L 300.0 166.9" fill="none" stroke="#0a0a0a" stroke-width="2"/><line x1="160.0" y1="72" x2="160.0" y2="176" stroke="#0a0a0a" stroke-width="2.5"/><text x="160.0" y="66" font-size="12.5" font-weight="600" text-anchor="middle" fill="#0a0a0a">0 = the mean</text><line x1="20" y1="170" x2="300" y2="170" stroke="#0a0a0a"/><line x1="106.2" y1="170" x2="106.2" y2="175" stroke="#0a0a0a"/><text x="106.2" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">−1</text><line x1="160.0" y1="170" x2="160.0" y2="175" stroke="#0a0a0a"/><text x="160.0" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0</text><line x1="213.8" y1="170" x2="213.8" y2="175" stroke="#0a0a0a"/><text x="213.8" y="191" font-size="12.5" text-anchor="middle" fill="#0a0a0a">1</text><text x="68.5" y="156" font-size="12.5" text-anchor="middle" fill="#fff"></text><text x="76.5" y="212" font-size="12.5" font-weight="500" text-anchor="middle" fill="#1d57b5">negative</text><text x="243.5" y="212" font-size="12.5" font-weight="500" text-anchor="middle" fill="#dc452d">positive</text></svg><div class="fs-vals"><span class="fs-vl">Standardized values (A to E)</span><span class="fs-v">−0.95</span><span class="fs-v">−0.63</span><span class="fs-v">−0.32</span><span class="fs-v">0.00</span><span class="fs-v">1.90</span></div></div></div>
+    <figcaption><span>Chart 2</span> Standardization shifts the center to 0 and rescales the spread to 1. Blue is below the mean (negative), red is above it (positive), and the mean itself becomes 0. The curve is a stylized bell shape; the values are customers A to E from the table below.</figcaption>
+  </figure>
+  <div class="fs-call after"><strong>Standardization does not make the data normal.</strong> It only moves the center to 0 and rescales the spread to 1. A skewed distribution stays skewed: if the original data leans to one side, the standardized data leans the same way. The bell shape in Chart 2 is only a stylized picture of a normal distribution.</div>
+  <p>In Python, scikit-learn does both steps in one call. The scaler computes the average and the typical step from the column and applies them:</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+charges = np.array([[500], [1000], [1500], [2000], [5000]])
+z = StandardScaler().fit_transform(charges)   # −0.95, −0.63, −0.32, 0.00, 1.90</code></pre>
+  <p><strong>Use it when:</strong> you aren’t sure which method to pick, or the model is k-means, KNN, SVM, PCA or a regularized model.</p>
+
+  <h3 id="min-max" style="scroll-margin-top:90px">Min-Max Normalization</h3>
+  <p>Min-max normalization squeezes a column onto a ruler from 0 to 1. The smallest value becomes 0, the largest becomes 1, and everyone else lands in between in proportion.</p>
+  <p>Place all customers on a ruler by spending. The lowest spender stands at the left end and the highest spender at the right end. A customer who spends a quarter of the way from lowest to highest stands at 0.25.</p>
+  <p>In words: subtract the smallest value, then divide by the distance from the smallest to the largest.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − min</span><span>max − min</span></span></strong></p>
+  <p>The smallest value is €500 and the largest is €5,000, so the distance is €4,500. Customer C gets (1,500 − 500) / 4,500 = 0.22. C is 22% of the way from the lowest to the highest spender.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Min-max value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>0.00</td></tr><tr><td>B</td><td>€1,000</td><td>0.11</td></tr><tr><td>C</td><td>€1,500</td><td>0.22</td></tr><tr><td>D</td><td>€2,000</td><td>0.33</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
+  </table></div>
+  <p>The catch: E defines the right end of the ruler, so A to D are squeezed into the first third. One extreme value is enough to flatten everyone else.</p>
+  <figure class="post-fig post-fig-wide fs-z">
+    <div class="fs-grid fs-grid-eq"><svg viewBox="0 0 300 280" role="img" aria-label="Histogram of total charges in euros with smallest and biggest customer marked."><text x="28" y="20" font-size="14" font-weight="600" fill="#0a0a0a">Before: original</text><text x="28" y="38" font-size="12.5" fill="#555">smallest €41, biggest €7,735</text><rect x="28.0" y="98.0" width="32.5" height="117.0" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="60.5" y="110.3" width="32.5" height="104.7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="93.0" y="147.3" width="32.5" height="67.7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="125.5" y="178.1" width="32.5" height="36.9" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="158.0" y="190.4" width="32.5" height="24.6" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="190.5" y="208.8" width="32.5" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="223.0" y="208.8" width="32.5" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="255.5" y="208.8" width="32.5" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><line x1="28" y1="215" x2="288" y2="215" stroke="#0a0a0a"/><line x1="29.3" y1="62" x2="29.3" y2="221" stroke="#dc452d" stroke-width="2.5"/><circle cx="29.3" cy="215" r="5" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="32.3" y="58" font-size="12.5" font-weight="600" text-anchor="start" fill="#dc452d">min</text><line x1="279.4" y1="62" x2="279.4" y2="221" stroke="#dc452d" stroke-width="2.5"/><circle cx="279.4" cy="215" r="5" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="276.4" y="58" font-size="12.5" font-weight="600" text-anchor="end" fill="#dc452d">max</text><line x1="28.0" y1="215" x2="28.0" y2="220" stroke="#0a0a0a"/><text x="28.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€0</text><line x1="93.0" y1="215" x2="93.0" y2="220" stroke="#0a0a0a"/><text x="93.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€2,000</text><line x1="158.0" y1="215" x2="158.0" y2="220" stroke="#0a0a0a"/><text x="158.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€4,000</text><line x1="223.0" y1="215" x2="223.0" y2="220" stroke="#0a0a0a"/><text x="223.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€6,000</text><text x="158" y="259" font-size="12.5" fill="#555" text-anchor="middle">total charges (€)</text></svg><svg viewBox="0 0 300 280" role="img" aria-label="Histogram of total charges scaled to 0 to 1: smallest customer at 0, biggest at 1."><text x="28" y="20" font-size="14" font-weight="600" fill="#0a0a0a">After: Min-Max scaled</text><text x="28" y="38" font-size="12.5" fill="#555">smallest = 0, biggest = 1</text><rect x="28.0" y="82" width="104.0" height="133" fill="#f5c548" opacity="0.4"/><text x="32.0" y="76" font-size="12.5" fill="#0a0a0a">most customers: 0 to 0.4</text><rect x="28.0" y="98.0" width="32.4" height="117.0" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="60.4" y="110.3" width="33.8" height="104.7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="94.2" y="147.3" width="33.8" height="67.7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="128.0" y="178.1" width="33.8" height="36.9" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="161.8" y="190.4" width="33.8" height="24.6" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="195.6" y="208.8" width="33.8" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="229.4" y="208.8" width="33.8" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><rect x="263.2" y="208.8" width="24.8" height="6.2" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><line x1="28" y1="215" x2="288" y2="215" stroke="#0a0a0a"/><line x1="28.0" y1="62" x2="28.0" y2="221" stroke="#dc452d" stroke-width="2.5"/><circle cx="28.0" cy="215" r="5" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="31.0" y="58" font-size="12.5" font-weight="600" text-anchor="start" fill="#dc452d">min = 0</text><line x1="288.0" y1="62" x2="288.0" y2="221" stroke="#dc452d" stroke-width="2.5"/><circle cx="288.0" cy="215" r="5" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="285.0" y="58" font-size="12.5" font-weight="600" text-anchor="end" fill="#dc452d">max = 1</text><line x1="28.0" y1="215" x2="28.0" y2="220" stroke="#0a0a0a"/><text x="28.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0</text><line x1="80.0" y1="215" x2="80.0" y2="220" stroke="#0a0a0a"/><text x="80.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0.2</text><line x1="132.0" y1="215" x2="132.0" y2="220" stroke="#0a0a0a"/><text x="132.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0.4</text><line x1="184.0" y1="215" x2="184.0" y2="220" stroke="#0a0a0a"/><text x="184.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0.6</text><line x1="236.0" y1="215" x2="236.0" y2="220" stroke="#0a0a0a"/><text x="236.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0.8</text><line x1="288.0" y1="215" x2="288.0" y2="220" stroke="#0a0a0a"/><text x="288.0" y="235" font-size="12.5" text-anchor="middle" fill="#0a0a0a">1</text><text x="158" y="259" font-size="12.5" fill="#555" text-anchor="middle">scaled total charges</text></svg></div>
+    <div class="fs-key"><span><i style="background:#1d57b5"></i>Customers</span><span><i style="background:#f5c548"></i>Where most customers end up</span><span><i style="background:#dc452d"></i>Smallest and biggest value</span></div>
+    <figcaption><span>Chart 3</span> A simulated group of 60 customers before and after Min-Max Scaling. The smallest customer becomes 0 and the biggest becomes 1, but most customers are squeezed between 0 and 0.4. Simulated data.</figcaption>
+  </figure>
+  <div class="fs-call after"><strong>Min-Max Scaling guarantees the 0–1 range, but it does not fix outliers.</strong> One extreme value still decides where everyone else lands.</div>
+  <p>In Python (using the same <code>charges</code> column):</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import MinMaxScaler
+
+mm = MinMaxScaler().fit_transform(charges)    # 0.00, 0.11, 0.22, 0.33, 1.00</code></pre>
+  <p><strong>Use it when:</strong> the model needs inputs between 0 and 1, as neural networks often do, and the column has no extreme outliers.</p>
+
+  <h3 id="max-abs" style="scroll-margin-top:90px">Max Absolute Scaling</h3>
+  <p>Max absolute scaling divides every value by the biggest value in the column. Nothing else changes, in particular zero stays zero.</p>
+  <p>It turns amounts into shares of the biggest one. The biggest spender becomes 1, and someone who spends half as much becomes 0.5.</p>
+  <p>In words: divide each value by the largest absolute value, which is the largest value when you ignore minus signs.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>max |<em>x</em>|</span></span></strong></p>
+  <p>The largest value is €5,000, so customer B gets 1,000 / 5,000 = 0.20. B spends one fifth as much as the biggest spender.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Max absolute value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>0.10</td></tr><tr><td>B</td><td>€1,000</td><td>0.20</td></tr><tr><td>C</td><td>€1,500</td><td>0.30</td></tr><tr><td>D</td><td>€2,000</td><td>0.40</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
+  </table></div>
+  <p>Why does zero matter? Take a column like “international calls”, which is 0 for most customers. Methods that subtract something first would turn those zeros into other numbers and fill the table with non-zero values. Dividing keeps the zeros, so sparse data stays sparse. The weakness is the same as for min-max: one very large value squeezes the rest.</p>
+  <p>In Python:</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import MaxAbsScaler
+
+ma = MaxAbsScaler().fit_transform(charges)    # 0.10, 0.20, 0.30, 0.40, 1.00</code></pre>
+  <p><strong>Use it when:</strong> your data has many zeros, such as counts of rarely used services.</p>
+
+  <h3 id="robust" style="scroll-margin-top:90px">Robust Scaling</h3>
+  <p>Standardization uses the mean and standard deviation, which are sensitive to extreme values. In our example, customer E pulls the average up to €2,000, even though three of the five customers spend €1,500 or less.</p>
+  <p>Robust Scaling uses the median and <a href="iqr.html">interquartile range (IQR)</a> instead. The median represents the middle value (€1,500), while the IQR measures the spread of the middle 50% of customers (€2,000 − €1,000 = €1,000).</p>
+  <p>The transformation subtracts the median and divides by the IQR:</p>
+  <p class="post-formula post-formula-plain"><strong><em>X</em><sub>scaled</sub> = <span class="frac"><span><em>X</em> − Median</span><span>IQR</span></span></strong></p>
+  <p>This centers the data around zero and makes it less sensitive to extreme values.</p>
+  <p>For customer E this gives (5,000 − 1,500) / 1,000 = 3.5. E sits 3.5 IQRs above the median. For customer A it gives (500 − 1,500) / 1,000 = −1.0, which is one IQR below.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Robust value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>−1.00</td></tr><tr><td>B</td><td>€1,000</td><td>−0.50</td></tr><tr><td>C</td><td>€1,500</td><td>0.00</td></tr><tr><td>D</td><td>€2,000</td><td>0.50</td></tr><tr><td>E</td><td>€5,000</td><td>3.50</td></tr></tbody>
+  </table></div>
+  <p>The four typical customers are spread between −1.0 and 0.5, and E stands out at 3.5. You can still see that E is unusual, but E no longer squeezes everyone else.</p>
+  <p>Here is the proof. If E paid €50,000 instead of €5,000, A to D would still get −1.0, −0.5, 0.0 and 0.5, because the median and the middle half haven’t changed. Standardization would not be so stable: the average would jump to €11,000 and the typical step to about €19,500, so A to D would all land between about −0.54 and −0.46, almost on top of each other.</p>
+  <figure class="post-fig post-fig-wide fs-rob">
+    <svg viewBox="0 0 560 340" role="img" aria-label="Box plots of total charges before and after robust scaling: the box covering the middle half goes from 1,000 to 2,000 euros before and from minus 0.5 to 0.5 after; customer E sits far to the right in both."><text x="30" y="38" font-size="14" font-weight="600" fill="#0a0a0a">Before: total charges (€)</text><text x="30" y="56" font-size="12.5" fill="#555">median €1,500, middle half €1,000 to €2,000</text><rect x="127.3" y="82" width="87.3" height="36" fill="#f5c548" opacity="0.55" stroke="#0a0a0a" stroke-width="1.5"/><line x1="170.9" y1="82" x2="170.9" y2="118" stroke="#0a0a0a" stroke-width="3"/><line x1="83.6" y1="100" x2="127.3" y2="100" stroke="#0a0a0a" stroke-width="1.5"/><line x1="214.5" y1="100" x2="214.5" y2="100" stroke="#0a0a0a" stroke-width="1.5"/><line x1="83.6" y1="92" x2="83.6" y2="108" stroke="#0a0a0a" stroke-width="1.5"/><line x1="214.5" y1="92" x2="214.5" y2="108" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="83.6" cy="100" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="83.6" y="74" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">A</text><circle cx="127.3" cy="100" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="127.3" y="74" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">B</text><circle cx="170.9" cy="100" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="170.9" y="74" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">C</text><circle cx="214.5" cy="100" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="214.5" y="74" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">D</text><circle cx="476.4" cy="100" r="7" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="476.4" y="74" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">E</text><line x1="34" y1="134" x2="526" y2="134" stroke="#0a0a0a"/><line x1="40.0" y1="134" x2="40.0" y2="139" stroke="#0a0a0a"/><text x="40.0" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0</text><line x1="127.3" y1="134" x2="127.3" y2="139" stroke="#0a0a0a"/><text x="127.3" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€1,000</text><line x1="214.5" y1="134" x2="214.5" y2="139" stroke="#0a0a0a"/><text x="214.5" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€2,000</text><line x1="301.8" y1="134" x2="301.8" y2="139" stroke="#0a0a0a"/><text x="301.8" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€3,000</text><line x1="389.1" y1="134" x2="389.1" y2="139" stroke="#0a0a0a"/><text x="389.1" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€4,000</text><line x1="476.4" y1="134" x2="476.4" y2="139" stroke="#0a0a0a"/><text x="476.4" y="155" font-size="12.5" text-anchor="middle" fill="#0a0a0a">€5,000</text><text x="30" y="188" font-size="14" font-weight="600" fill="#0a0a0a">After: robust values</text><text x="30" y="206" font-size="12.5" fill="#555">median 0, middle half −0.5 to 0.5</text><rect x="127.3" y="232" width="87.3" height="36" fill="#f5c548" opacity="0.55" stroke="#0a0a0a" stroke-width="1.5"/><line x1="170.9" y1="232" x2="170.9" y2="268" stroke="#0a0a0a" stroke-width="3"/><line x1="83.6" y1="250" x2="127.3" y2="250" stroke="#0a0a0a" stroke-width="1.5"/><line x1="214.5" y1="250" x2="214.5" y2="250" stroke="#0a0a0a" stroke-width="1.5"/><line x1="83.6" y1="242" x2="83.6" y2="258" stroke="#0a0a0a" stroke-width="1.5"/><line x1="214.5" y1="242" x2="214.5" y2="258" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="83.6" cy="250" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="83.6" y="224" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">A</text><circle cx="127.3" cy="250" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="127.3" y="224" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">B</text><circle cx="170.9" cy="250" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="170.9" y="224" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">C</text><circle cx="214.5" cy="250" r="7" fill="#1d57b5" stroke="#fff" stroke-width="1.5"/><text x="214.5" y="224" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">D</text><circle cx="476.4" cy="250" r="7" fill="#dc452d" stroke="#fff" stroke-width="1.5"/><text x="476.4" y="224" font-size="13" font-weight="600" text-anchor="middle" fill="#0a0a0a">E</text><line x1="34" y1="284" x2="526" y2="284" stroke="#0a0a0a"/><line x1="83.6" y1="284" x2="83.6" y2="289" stroke="#0a0a0a"/><text x="83.6" y="305" font-size="12.5" text-anchor="middle" fill="#0a0a0a">−1</text><line x1="170.9" y1="284" x2="170.9" y2="289" stroke="#0a0a0a"/><text x="170.9" y="305" font-size="12.5" text-anchor="middle" fill="#0a0a0a">0</text><line x1="258.2" y1="284" x2="258.2" y2="289" stroke="#0a0a0a"/><text x="258.2" y="305" font-size="12.5" text-anchor="middle" fill="#0a0a0a">1</text><line x1="345.5" y1="284" x2="345.5" y2="289" stroke="#0a0a0a"/><text x="345.5" y="305" font-size="12.5" text-anchor="middle" fill="#0a0a0a">2</text><line x1="432.7" y1="284" x2="432.7" y2="289" stroke="#0a0a0a"/><text x="432.7" y="305" font-size="12.5" text-anchor="middle" fill="#0a0a0a">3</text></svg>
+    <div class="fs-key"><span><i style="background:#f5c548"></i>Middle half of customers (Q1 to Q3)</span><span><i style="background:#0a0a0a"></i>Median</span><span><i style="background:#dc452d"></i>Customer E</span></div>
+    <figcaption><span>Chart 4</span> Robust Scaling moves the median to 0 and makes the middle half exactly 1 wide. If E paid €50,000 instead of €5,000, the yellow box would not change at all.</figcaption>
+  </figure>
+  <p>In Python:</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import RobustScaler
+
+rob = RobustScaler().fit_transform(charges)   # −1.0, −0.5, 0.0, 0.5, 3.5</code></pre>
+  <p><strong>Use it when:</strong> your data has real outliers that you want to keep, such as a few very heavy spenders.</p>
+
+  <div class="fs-cmp">
+    <p class="fs-cmp-l">Comparison: the same five customers, three scalers</p>
+    <p class="fs-cmp-n">All three number lines run from −1.5 to 4, so you can compare how far the scaled values spread. Blue dots are customers A to D, red is the heavy spender E.</p>
+    <div class="fs-cmp-g">
+    <div class="fs-cmp-c c1"><h4>Standardization</h4><p class="fs-cmp-f"><em>z</em> = (<em>x</em> − mean) / std</p><svg class="fs-mini" viewBox="0 0 220 96" role="img" aria-label="Customers A to E on a number line from minus 1.5 to 4 after scaling."><rect x="24.0" y="26" width="46.5" height="36" fill="#f5c548" opacity="0.5"/><text x="47.3" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#0a0a0a">A–D</text><text x="133.6" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#dc452d">E</text><line x1="6" y1="62" x2="214" y2="62" stroke="#0a0a0a"/><line x1="28.2" y1="62" x2="28.2" y2="67" stroke="#0a0a0a"/><text x="28.2" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">−1</text><line x1="64.5" y1="62" x2="64.5" y2="67" stroke="#0a0a0a"/><text x="64.5" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">0</text><line x1="100.9" y1="62" x2="100.9" y2="67" stroke="#0a0a0a"/><text x="100.9" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">1</text><line x1="137.3" y1="62" x2="137.3" y2="67" stroke="#0a0a0a"/><text x="137.3" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">2</text><line x1="173.6" y1="62" x2="173.6" y2="67" stroke="#0a0a0a"/><text x="173.6" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">3</text><line x1="210.0" y1="62" x2="210.0" y2="67" stroke="#0a0a0a"/><text x="210.0" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">4</text><circle cx="30.0" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="41.6" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="52.9" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="64.5" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="133.6" cy="44" r="5.5" fill="#dc452d" stroke="#fff" stroke-width="1.2"/></svg><ul><li><span>Centers on</span> the mean</li><li><span>Unit</span> one standard deviation</li><li><span>Outliers</span> pull the mean and the std, so they distort the scale</li><li><span>Result for E</span> 1.90; A to D between −0.95 and 0.00</li></ul></div>
+    <div class="fs-cmp-c c2"><h4>Min-Max</h4><p class="fs-cmp-f">(<em>x</em> − min) / (max − min)</p><svg class="fs-mini" viewBox="0 0 220 96" role="img" aria-label="Customers A to E on a number line from minus 1.5 to 4 after scaling."><rect x="58.5" y="26" width="24.1" height="36" fill="#f5c548" opacity="0.5"/><text x="70.6" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#0a0a0a">A–D</text><text x="100.9" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#dc452d">E</text><line x1="6" y1="62" x2="214" y2="62" stroke="#0a0a0a"/><line x1="28.2" y1="62" x2="28.2" y2="67" stroke="#0a0a0a"/><text x="28.2" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">−1</text><line x1="64.5" y1="62" x2="64.5" y2="67" stroke="#0a0a0a"/><text x="64.5" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">0</text><line x1="100.9" y1="62" x2="100.9" y2="67" stroke="#0a0a0a"/><text x="100.9" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">1</text><line x1="137.3" y1="62" x2="137.3" y2="67" stroke="#0a0a0a"/><text x="137.3" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">2</text><line x1="173.6" y1="62" x2="173.6" y2="67" stroke="#0a0a0a"/><text x="173.6" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">3</text><line x1="210.0" y1="62" x2="210.0" y2="67" stroke="#0a0a0a"/><text x="210.0" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">4</text><circle cx="64.5" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="68.6" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="72.6" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="76.7" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="100.9" cy="44" r="5.5" fill="#dc452d" stroke="#fff" stroke-width="1.2"/></svg><ul><li><span>Output range</span> always 0 to 1</li><li><span>Unit</span> the full range, smallest to biggest</li><li><span>Outliers</span> very sensitive: E defines the maximum</li><li><span>Result for E</span> 1.00; A to D between 0.00 and 0.33</li></ul></div>
+    <div class="fs-cmp-c c3"><h4>Robust</h4><p class="fs-cmp-f">(<em>x</em> − median) / IQR</p><svg class="fs-mini" viewBox="0 0 220 96" role="img" aria-label="Customers A to E on a number line from minus 1.5 to 4 after scaling."><rect x="22.2" y="26" width="66.5" height="36" fill="#f5c548" opacity="0.5"/><text x="55.5" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#0a0a0a">A–D</text><text x="191.8" y="20" font-size="11" font-weight="600" text-anchor="middle" fill="#dc452d">E</text><line x1="6" y1="62" x2="214" y2="62" stroke="#0a0a0a"/><line x1="28.2" y1="62" x2="28.2" y2="67" stroke="#0a0a0a"/><text x="28.2" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">−1</text><line x1="64.5" y1="62" x2="64.5" y2="67" stroke="#0a0a0a"/><text x="64.5" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">0</text><line x1="100.9" y1="62" x2="100.9" y2="67" stroke="#0a0a0a"/><text x="100.9" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">1</text><line x1="137.3" y1="62" x2="137.3" y2="67" stroke="#0a0a0a"/><text x="137.3" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">2</text><line x1="173.6" y1="62" x2="173.6" y2="67" stroke="#0a0a0a"/><text x="173.6" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">3</text><line x1="210.0" y1="62" x2="210.0" y2="67" stroke="#0a0a0a"/><text x="210.0" y="82" font-size="11" text-anchor="middle" fill="#0a0a0a">4</text><circle cx="28.2" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="46.4" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="64.5" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="82.7" cy="44" r="5.5" fill="#1d57b5" stroke="#fff" stroke-width="1.2"/><circle cx="191.8" cy="44" r="5.5" fill="#dc452d" stroke="#fff" stroke-width="1.2"/></svg><ul><li><span>Centers on</span> the median</li><li><span>Unit</span> the width of the middle 50%</li><li><span>Outliers</span> hardly matter: E cannot move the median or the IQR</li><li><span>Result for E</span> 3.50; A to D between −1.00 and 0.50</li></ul></div>
+    </div>
+    <p class="fs-cmp-b">Rule of thumb: use Min-Max when you need a fixed 0 to 1 range and there are no extreme values, standardization as the general default, and Robust Scaling when real outliers stay in the data.</p>
+  </div>
+
+  <h3 id="unit-vector" style="scroll-margin-top:90px">Unit Vector Scaling</h3>
+  <p>The first four methods scale features column by column. Unit Vector Scaling works differently: it normalizes each row (each customer) independently.</p>
+  <p>It preserves the proportions between features but removes the overall magnitude. Think of each customer as an arrow: its direction represents the usage mix, while its length represents total usage. Unit Vector Scaling gives every arrow a length of 1 without changing its direction.</p>
+  <p>The length is calculated using the Euclidean norm:</p>
+  <p class="post-formula post-formula-plain"><strong>‖<em>X</em>‖<sub>2</sub> = √(<em>x</em><sub>1</sub>² + <em>x</em><sub>2</sub>² + ⋯ + <em>x</em><sub><em>n</em></sub>²)</strong></p>
+  <p>Each feature is then divided by this length:</p>
+  <p class="post-formula post-formula-plain"><strong><em>X</em><sub>scaled</sub> = <span class="frac"><span><em>X</em></span><span>‖<em>X</em>‖<sub>2</sub></span></span></strong></p>
+  <p>Consider two customers of a SaaS product, using it for reports and exports:</p>
+  <ul class="post-points">
+    <li>Customer X: a small team that creates 30 reports and exports 20 files per month.</li>
+    <li>Customer Y: a large team that creates 60 reports and exports 40 files per month.</li>
+  </ul>
+  <p>Their original usage differs, but their proportions are identical. Both produce the same normalized vector: (0.83, 0.55).</p>
+  <figure class="post-fig post-fig-wide fs-uv">
+    <svg viewBox="0 0 650 350" width="100%" role="img" aria-label="Two-dimensional diagram: customers X, Y and Z as arrows of reports created per month and data. Before scaling the arrows have different lengths; after unit vector scaling every arrow has length 1 and X and Y overlap."><text x="46" y="22" font-size="14" font-weight="600" fill="#0a0a0a">Before: arrows of different length</text><text x="46" y="40" font-size="12.5" fill="#555">length = √(reports² + exports²)</text><line x1="76" y1="286" x2="324" y2="286" stroke="#0a0a0a"/><line x1="76" y1="286" x2="76" y2="38" stroke="#0a0a0a"/><line x1="144.6" y1="286" x2="144.6" y2="291" stroke="#0a0a0a"/><text x="144.6" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">20</text><line x1="76" y1="217.4" x2="71" y2="217.4" stroke="#0a0a0a"/><text x="67" y="221.4" font-size="12" text-anchor="end" fill="#0a0a0a">20</text><line x1="213.1" y1="286" x2="213.1" y2="291" stroke="#0a0a0a"/><text x="213.1" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">40</text><line x1="76" y1="148.9" x2="71" y2="148.9" stroke="#0a0a0a"/><text x="67" y="152.9" font-size="12" text-anchor="end" fill="#0a0a0a">40</text><line x1="281.7" y1="286" x2="281.7" y2="291" stroke="#0a0a0a"/><text x="281.7" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">60</text><line x1="76" y1="80.3" x2="71" y2="80.3" stroke="#0a0a0a"/><text x="67" y="84.3" font-size="12" text-anchor="end" fill="#0a0a0a">60</text><text x="196" y="326" font-size="12.5" text-anchor="middle" fill="#555">reports created per month</text><text transform="translate(26 166) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#555">files exported per month</text><line x1="76" y1="286" x2="171.4" y2="222.4" stroke="#1d57b5" stroke-width="3"/><circle cx="178.9" cy="217.4" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="188.9" y="233.4" font-size="13" font-weight="600" fill="#0a0a0a">X</text><line x1="76" y1="286" x2="274.2" y2="153.8" stroke="#e0a800" stroke-width="3"/><circle cx="281.7" cy="148.9" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="292.7" y="142.9" font-size="13" font-weight="600" fill="#0a0a0a">Y</text><line x1="76" y1="286" x2="141.2" y2="122.9" stroke="#dc452d" stroke-width="3"/><circle cx="144.6" cy="114.6" r="7" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="155.6" y="118.6" font-size="13" font-weight="600" fill="#0a0a0a">Z</text><text x="356" y="22" font-size="14" font-weight="600" fill="#0a0a0a">After: every arrow has length 1</text><text x="356" y="40" font-size="12.5" fill="#555">divide each arrow by its length</text><line x1="386" y1="286" x2="634" y2="286" stroke="#0a0a0a"/><line x1="386" y1="286" x2="386" y2="38" stroke="#0a0a0a"/><line x1="495.1" y1="286" x2="495.1" y2="291" stroke="#0a0a0a"/><text x="495.1" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">0.5</text><line x1="386" y1="176.9" x2="381" y2="176.9" stroke="#0a0a0a"/><text x="377" y="180.9" font-size="12" text-anchor="end" fill="#0a0a0a">0.5</text><line x1="604.2" y1="286" x2="604.2" y2="291" stroke="#0a0a0a"/><text x="604.2" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">1</text><line x1="386" y1="67.8" x2="381" y2="67.8" stroke="#0a0a0a"/><text x="377" y="71.8" font-size="12" text-anchor="end" fill="#0a0a0a">1</text><text x="506" y="326" font-size="12.5" text-anchor="middle" fill="#555">reports created per month</text><text transform="translate(336 166) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#555">files exported per month</text><path d="M 604.2 286 A 218.2 218.2 0 0 0 386 67.8" fill="none" stroke="#8c8c8c" stroke-dasharray="4 4"/><text x="543.1" y="115.8" font-size="12" fill="#555">length 1</text><line x1="386" y1="286" x2="560.0" y2="170.0" stroke="#1d57b5" stroke-width="3"/><circle cx="567.5" cy="165.0" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><line x1="386" y1="286" x2="560.0" y2="170.0" stroke="#e0a800" stroke-width="3"/><circle cx="567.5" cy="165.0" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="578.5" y="159.0" font-size="13" font-weight="600" fill="#0a0a0a">X and Y</text><line x1="386" y1="286" x2="463.7" y2="91.8" stroke="#dc452d" stroke-width="3"/><circle cx="467.0" cy="83.4" r="7" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="478.0" y="87.4" font-size="13" font-weight="600" fill="#0a0a0a">Z</text></svg>
+    <div class="fs-key"><span><i style="background:#1d57b5"></i>Customer X: 30 reports, 20 exports</span><span><i style="background:#f5c548"></i>Customer Y: 60 reports, 40 exports</span><span><i style="background:#dc452d"></i>Customer Z: 20 reports, 50 exports</span></div>
+    <figcaption><span>Chart 5</span> Each customer is an arrow. Before scaling, X and Y have different lengths but point the same way. After scaling, both have length 1 and land on the same point, (0.83, 0.55). Z points in a different direction, so it lands elsewhere. Simulated data.</figcaption>
+  </figure>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Reports / exports</th><th>Length</th><th>Unit vector</th></tr></thead>
+    <tbody><tr><td>X</td><td>30 / 20</td><td>36.06</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>60 / 40</td><td>72.11</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>20 / 50</td><td>53.85</td><td>0.37 / 0.93</td></tr></tbody>
+  </table></div>
+  <p>Customer Z, a team that creates 20 reports and exports 50 files, has a different mix, so its arrow points in a different direction and its unit vector is different.</p>
+  <p>Unit Vector Scaling is useful when the relative proportions matter more than the total magnitude, for example, when comparing document vectors using cosine similarity. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
+  <p>In Python, scikit-learn’s <code>Normalizer</code> works on rows. Its default is exactly this length-1 rule:</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import Normalizer
+
+usage = np.array([[30, 20], [60, 40], [20, 50]])   # reports, exports (per month)
+unit = Normalizer(norm=&quot;l2&quot;).fit_transform(usage)  # (0.83, 0.55), (0.83, 0.55), (0.37, 0.93)</code></pre>
+  <p><strong>Use it when:</strong> only the mix of features matters, not their size.</p>
+
+  <h2 id="choosing" style="scroll-margin-top:90px">Choosing the Right Scaling Method</h2>
+  <p>The right method depends on your data and your model. This table sums up where each one fits and what to watch for.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Method</th><th>Best when</th><th>Main risk</th></tr></thead>
+    <tbody><tr><td>Standardization</td><td>Default for k-means, KNN, SVM, PCA and regularized models</td><td>Outliers pull the mean and standard deviation</td></tr><tr><td>Min-max</td><td>Bounded inputs are needed, with no extreme outliers</td><td>One outlier squeezes everyone else</td></tr><tr><td>Max absolute</td><td>Sparse data with many zeros</td><td>Same outlier problem as min-max</td></tr><tr><td>Robust</td><td>Outliers are real and should stay</td><td>Values aren’t bounded, outliers stay large</td></tr><tr><td>Unit vector</td><td>Only the mix of features matters</td><td>Erases the size of each customer</td></tr></tbody>
+  </table></div>
+  <p>A quick way to decide:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Outliers distort the column?</strong> Use robust scaling.</li>
+    <li><strong>Need values between 0 and 1?</strong> Use min-max, after checking for outliers.</li>
+    <li><strong>Sparse data with many zeros?</strong> Use max absolute scaling.</li>
+    <li><strong>Comparing customers by their mix, not their size?</strong> Use unit vector scaling.</li>
+    <li><strong>None of the above?</strong> Start with standardization.</li>
+  </ul>
+
+  <h2 id="fit-on-train" style="scroll-margin-top:90px">Fit on Training Data Only</h2>
+  <p>Suppose you standardize all 1,000 telecom customers first and split them into training and test sets afterwards. The mean and standard deviation then include the test customers, so the training step has already seen part of the test data. The leak is small for scaling, but it is real: test scores look slightly better than the model will do on new customers.</p>
+  <p>The rule is simple. Learn the scaling numbers (mean, standard deviation, minimum, maximum) on the training customers only, then apply those same numbers to the test customers.</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)   # learn mean and std on training data
+X_test_scaled = scaler.transform(X_test)         # reuse them, never refit</code></pre>
+  <p>With this setup, a test customer can fall outside the range seen in training, for example a min-max value above 1. That is expected and not a bug: it tells you the new customer is more extreme than anyone the model learned from. Columns that are already 0 or 1, such as the result of <a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a>, are usually left as they are. For a complete leakage-safe pipeline, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
+
+  <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“Before grouping our customers, we rescaled tenure and total charges. Tenure is measured in months, up to 72, while total charges run into the thousands of euros. Without rescaling, the model would have grouped customers almost only by how much they spend.</p>
+    <p class="post-callout-q">After rescaling, one typical step above average in tenure counts as much as one typical step above average in spending. In our test, a customer who had been with us 60 months stopped being called similar to one with 24 months just because their spending matched.</p>
+    <p class="post-callout-q">We learned the scaling from the training customers only, so our test results reflect how the model will treat new customers. The question we can now answer is: which customers behave alike in both how long they stay and how much they spend?”</p>
+  </div>
+
+  <h2 id="key-takeaways" style="scroll-margin-top:90px">Key Takeaways</h2>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Feature scaling puts features on a comparable scale so that units don’t decide the result. Distance-based, regularized and gradient-based models need it, tree-based models don’t. Standardization is a good default, robust scaling copes with outliers, and every method must be fitted on training data only.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a> The wider workflow that scaling belongs to, including a leakage-safe pipeline.</li>
+    <li><a href="k-means.html">K-Means Clustering</a> A distance-based model that depends on scaled features.</li>
+    <li><a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> Why a regularization penalty needs features on the same scale.</li>
+    <li><a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a> The other common preparation step for categorical columns.</li>
+  </ul>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
