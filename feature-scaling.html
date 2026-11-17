@@ -73,8 +73,9 @@
 
   <h2 id="why-scaling" style="scroll-margin-top:90px">Why Scaling Matters, and Which Models Need It</h2>
   <h3 id="why-units" style="scroll-margin-top:90px">Why units cause trouble</h3>
-  <p>Compare two flats using two numbers: the rent in euros and the number of rooms. One flat costs €900 and has 2 rooms. Another costs €920 and has 5 rooms. The rent differs by 20 and the rooms differ by 3. To a model that compares raw numbers, the rent gap looks much bigger, even though €20 is nothing and three extra rooms is a big difference. The model doesn’t know what a euro or a room is. It only sees the size of the numbers.</p>
-  <p>Scaling fixes this by converting every feature to a common scale before the model sees it. Chart 1 shows the same problem with our telecom customers. Customer D has 24 months of tenure and €1,900 in charges. Which customer looks most similar to D? Switch between the two views to see how scaling changes the answer.</p>
+  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges. Customer P has 60 months and €2,300, and customer Q has 26 months and €2,700. Which one is most similar to D? Q looks like the better match: almost the same tenure and a moderate spending gap. P has been a customer 36 months longer.</p>
+  <p>A model that compares raw numbers sees something else. The gap between D and P is 36 months and €400. The gap between D and Q is 2 months and €800. The euro gaps are so much larger than the month gaps that the model mostly compares euros, so P looks closer. It doesn’t know what a euro or a month is. It only sees the size of the numbers.</p>
+  <p>Scaling fixes this by converting every feature to a common scale before the model sees it. Chart 1 shows these customers and a few more. Switch between the two views to see how scaling changes the answer.</p>
   <figure class="post-fig post-fig-wide" id="fs-demo">
     <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
     <p class="fs-view" id="fs-view"></p>
