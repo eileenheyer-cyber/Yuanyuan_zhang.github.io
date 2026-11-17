@@ -47,8 +47,6 @@
     .fs-call.after{border-left-color:#1d57b5}
     .fs-key{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:10px 0 0}
     .fs-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
-    .fs-btns-s{margin:0 0 8px}.fs-btns-s .fs-btn{padding:7px 10px;font-size:.85rem;flex:none;min-width:130px}
-    .fs-sw{display:flex;align-items:center;gap:12px;margin:6px 0 0;font-size:.82rem;color:var(--muted)}.fs-sw input{flex:1;accent-color:#1d57b5}
     .fs-steps svg{width:100%;height:auto;display:block;background:#fff}
     @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
   </style>
@@ -177,7 +175,7 @@ draw(0);
     <thead><tr><th>Customer</th><th>Total charges</th><th>Standardized value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>−0.95</td></tr><tr><td>B</td><td>€1,000</td><td>−0.63</td></tr><tr><td>C</td><td>€1,500</td><td>−0.32</td></tr><tr><td>D</td><td>€2,000</td><td>0.00</td></tr><tr><td>E</td><td>€5,000</td><td>1.90</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="std"><div class="fs-btns fs-btns-s"><button type="button" class="fs-btn on" data-v="0">Step by step</button><button type="button" class="fs-btn" data-v="1">Slider</button></div><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of standardization scaling shown on number lines; switch between step-by-step rows and a slider."></svg><div class="fs-sw" style="display:none"><span>Original</span><input type="range" min="0" max="2" step="0.01" value="0" aria-label="Move through the scaling steps"><span>Scaled</span></div><figcaption><span>Chart 2</span> Four of the five customers sit within one typical step of the average. Only E is clearly above it.</figcaption></figure>
+  <figure class="post-fig post-fig-wide fs-steps" data-m="std"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of standardization scaling shown on number lines."></svg><figcaption><span>Chart 2</span> Four of the five customers sit within one typical step of the average. Only E is clearly above it.</figcaption></figure>
   <p>E has z = 1.90, so E spends about 1.9 typical steps above the average. Negative values mean below average and 0 means exactly average. Standardization is the default choice for most models. Its weak spot is outliers, because a customer like E pulls both the average and the typical step.</p>
   <p>In Python, scikit-learn does both steps in one call. The scaler computes the average and the typical step from the column and applies them:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
@@ -197,7 +195,7 @@ z = StandardScaler().fit_transform(charges)   # −0.95, −0.63, −0.32, 0.00,
     <thead><tr><th>Customer</th><th>Total charges</th><th>Min-max value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>0.00</td></tr><tr><td>B</td><td>€1,000</td><td>0.11</td></tr><tr><td>C</td><td>€1,500</td><td>0.22</td></tr><tr><td>D</td><td>€2,000</td><td>0.33</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="mm"><div class="fs-btns fs-btns-s"><button type="button" class="fs-btn on" data-v="0">Step by step</button><button type="button" class="fs-btn" data-v="1">Slider</button></div><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of min-max scaling shown on number lines; switch between step-by-step rows and a slider."></svg><div class="fs-sw" style="display:none"><span>Original</span><input type="range" min="0" max="2" step="0.01" value="0" aria-label="Move through the scaling steps"><span>Scaled</span></div><figcaption><span>Chart 3</span> E defines the right end of the ruler, so the four other customers are squeezed into the first third.</figcaption></figure>
+  <figure class="post-fig post-fig-wide fs-steps" data-m="mm"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of min-max scaling shown on number lines."></svg><figcaption><span>Chart 3</span> E defines the right end of the ruler, so the four other customers are squeezed into the first third.</figcaption></figure>
   <p>The catch is visible in the chart: E defines the right end of the ruler, so A to D are squeezed into the first third. One extreme value is enough to flatten everyone else.</p>
   <p>In Python (using the same <code>charges</code> column):</p>
   <pre class="post-code"><code>from sklearn.preprocessing import MinMaxScaler
@@ -215,7 +213,7 @@ mm = MinMaxScaler().fit_transform(charges)    # 0.00, 0.11, 0.22, 0.33, 1.00</co
     <thead><tr><th>Customer</th><th>Total charges</th><th>Max absolute value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>0.10</td></tr><tr><td>B</td><td>€1,000</td><td>0.20</td></tr><tr><td>C</td><td>€1,500</td><td>0.30</td></tr><tr><td>D</td><td>€2,000</td><td>0.40</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="ma"><div class="fs-btns fs-btns-s"><button type="button" class="fs-btn on" data-v="0">Step by step</button><button type="button" class="fs-btn" data-v="1">Slider</button></div><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of max absolute scaling shown on number lines; switch between step-by-step rows and a slider."></svg><div class="fs-sw" style="display:none"><span>Original</span><input type="range" min="0" max="2" step="0.01" value="0" aria-label="Move through the scaling steps"><span>Scaled</span></div><figcaption><span>Chart 4</span> Each value is a share of the biggest spender: D, at 0.4, spends 40% as much as E. Zero would stay at zero.</figcaption></figure>
+  <figure class="post-fig post-fig-wide fs-steps" data-m="ma"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of max absolute scaling shown on number lines."></svg><figcaption><span>Chart 4</span> Each value is a share of the biggest spender: D, at 0.4, spends 40% as much as E. Zero would stay at zero.</figcaption></figure>
   <p>Why does zero matter? Take a column like “international calls”, which is 0 for most customers. Methods that subtract something first would turn those zeros into other numbers and fill the table with non-zero values. Dividing keeps the zeros, so sparse data stays sparse. The weakness is the same as for min-max: one very large value squeezes the rest.</p>
   <p>In Python:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import MaxAbsScaler
@@ -233,7 +231,7 @@ ma = MaxAbsScaler().fit_transform(charges)    # 0.10, 0.20, 0.30, 0.40, 1.00</co
     <thead><tr><th>Customer</th><th>Total charges</th><th>Robust value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>−1.00</td></tr><tr><td>B</td><td>€1,000</td><td>−0.50</td></tr><tr><td>C</td><td>€1,500</td><td>0.00</td></tr><tr><td>D</td><td>€2,000</td><td>0.50</td></tr><tr><td>E</td><td>€5,000</td><td>3.50</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="rob"><div class="fs-btns fs-btns-s"><button type="button" class="fs-btn on" data-v="0">Step by step</button><button type="button" class="fs-btn" data-v="1">Slider</button></div><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of robust scaling shown on number lines; switch between step-by-step rows and a slider."></svg><div class="fs-sw" style="display:none"><span>Original</span><input type="range" min="0" max="2" step="0.01" value="0" aria-label="Move through the scaling steps"><span>Scaled</span></div><figcaption><span>Chart 5</span> The shaded band holds the middle half of the customers. E lands far outside it, but it does not stretch the band.</figcaption></figure>
+  <figure class="post-fig post-fig-wide fs-steps" data-m="rob"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of robust scaling shown on number lines."></svg><figcaption><span>Chart 5</span> The shaded band holds the middle half of the customers. E lands far outside it, but it does not stretch the band.</figcaption></figure>
   <p>The four typical customers are spread from −1.0 to 0.5, and E stands out at 3.5 instead of dragging the scale. You still see that E is unusual, but E no longer squeezes everyone else.</p>
   <p>In Python:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import RobustScaler
@@ -251,7 +249,7 @@ rob = RobustScaler().fit_transform(charges)   # −1.0, −0.5, 0.0, 0.5, 3.5</c
     <thead><tr><th>Customer</th><th>Voice / data spend</th><th>Unit vector</th></tr></thead>
     <tbody><tr><td>X</td><td>€30 / €20</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>€60 / €40</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>€20 / €50</td><td>0.37 / 0.93</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="uv"><div class="fs-btns fs-btns-s"><button type="button" class="fs-btn on" data-v="0">Step by step</button><button type="button" class="fs-btn" data-v="1">Slider</button></div><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of unit vector scaling shown on number lines; switch between step-by-step rows and a slider."></svg><div class="fs-sw" style="display:none"><span>Original</span><input type="range" min="0" max="2" step="0.01" value="0" aria-label="Move through the scaling steps"><span>Scaled</span></div><figcaption><span>Chart 6</span> X spends half as much as Y, but both split their money the same way, so their arrows point in the same direction and become identical.</figcaption></figure>
+  <figure class="post-fig post-fig-wide fs-steps" data-m="uv"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of unit vector scaling shown on number lines."></svg><figcaption><span>Chart 6</span> X spends half as much as Y, but both split their money the same way, so their arrows point in the same direction and become identical.</figcaption></figure>
   <p>The result says how a customer splits spending, not how much the customer spends. That is the right question when only the mix matters, as with word counts in text. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
   <p>In Python, scikit-learn’s <code>Normalizer</code> works on rows. Its default is exactly this length-1 rule:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import Normalizer
@@ -323,12 +321,6 @@ if(s.b)o+='<rect x="'+x(s.b[0])+'" y="'+(y-30)+'" width="'+(x(s.b[1])-x(s.b[0]))
 if(prev)s.v.forEach(function(a,k){o+='<line x1="'+prev(m.st[i-1].v[k])+'" y1="'+(y-rh+8)+'" x2="'+x(a)+'" y2="'+(y-24)+'" stroke="#bdbdbd" stroke-dasharray="3 3"/>'});
 o+='<text x="'+X0+'" y="'+(y-40)+'" font-size="14" font-weight="600" fill="'+INK+'">'+s.t+'</text><line x1="'+(X0-8)+'" y1="'+y+'" x2="'+(X1+8)+'" y2="'+y+'" stroke="'+INK+'"/>'+ticks(d[0],d[1],x,y)+dots(s.v,x,y);prev=x});
 if(m.bl)o+='<text x="'+X0+'" y="'+(H-6)+'" font-size="13" fill="'+INK+'">'+m.bl+'</text>';return [H,o]}
-function slide(m,t){var N=m.st.length-1,i=Math.min(Math.floor(t),N-1),f=t-i;if(t>=N){i=N-1;f=1}
-var a=m.st[i],b=m.st[i+1],da=dom(a),db=dom(b),lo=da[0]+(db[0]-da[0])*f,hi=da[1]+(db[1]-da[1])*f,x=function(v){return X0+(X1-X0)*(v-lo)/(hi-lo)};
-var v=a.v.map(function(p,k){return p+(b.v[k]-p)*f}),bd=a.b&&b.b?[a.b[0]+(b.b[0]-a.b[0])*f,a.b[1]+(b.b[1]-a.b[1])*f]:null,y=160,s=f<0.5?a:b;
-var o='<text x="'+X0+'" y="44" font-size="14" font-weight="600" fill="'+INK+'">'+s.t+'</text>';
-if(bd)o+='<rect x="'+x(bd[0])+'" y="'+(y-40)+'" width="'+(x(bd[1])-x(bd[0]))+'" height="80" fill="'+YEL+'" opacity="0.5"/>';
-o+='<line x1="'+(X0-8)+'" y1="'+y+'" x2="'+(X1+8)+'" y2="'+y+'" stroke="'+INK+'"/>'+ticks(lo,hi,x,y)+dots(v,x,y);if(m.bl)o+='<text x="'+X0+'" y="300" font-size="13" fill="'+INK+'">'+m.bl+'</text>';return [330,o]}
 function uv(t,two){var o='<defs><marker id="fs-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+INK+'"/></marker></defs>';
 function panel(ox,tt,title,sub,sz){var d=70+(1.05-70)*tt,P=function(v){return [ox+sz*v[0]/d,290-sz*v[1]/d]};
 o+='<text x="'+(ox+sz/2)+'" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="'+INK+'">'+title+'</text><text x="'+(ox+sz/2)+'" y="42" text-anchor="middle" font-size="13" fill="'+INK+'">'+sub+'</text>';
@@ -341,14 +333,8 @@ if(two){panel(46,0,"Step 1: measure each arrow","X 36.06, Y 72.11, Z 53.85",200)
 else{panel(150,t,"Unit vector scaling",t<0.5?"Step 1: measure each arrow (X 36.06, Y 72.11, Z 53.85)":"Step 2: divide each arrow by its length",230)}
 return [330,o]}
 document.querySelectorAll(".fs-steps").forEach(function(fig){
-var k=fig.dataset.m,svg=fig.querySelector("svg"),sw=fig.querySelector(".fs-sw"),sl=sw.querySelector("input"),mode=0,btns=fig.querySelectorAll(".fs-btn");
-sl.max=k=="uv"?1:M[k].st.length-1;
-function draw(){var r;sw.style.display=mode?"flex":"none";
-if(k=="uv")r=uv(Number(sl.value),!mode);else r=mode?slide(M[k],Number(sl.value)):rows(M[k]);
-svg.setAttribute("viewBox","0 0 "+W+" "+r[0]);svg.innerHTML=r[1];
-btns.forEach(function(b){b.className="fs-btn"+(Number(b.dataset.v)==mode?" on":"")})}
-btns.forEach(function(b){b.onclick=function(){mode=Number(b.dataset.v);draw()}});
-sl.oninput=draw;draw()});
+var k=fig.dataset.m,svg=fig.querySelector("svg"),r=k=="uv"?uv(0,true):rows(M[k]);
+svg.setAttribute("viewBox","0 0 "+W+" "+r[0]);svg.innerHTML=r[1]});
 })();
 </script>
 </article>
