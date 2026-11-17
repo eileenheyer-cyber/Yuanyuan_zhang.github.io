@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261116f">
+  <link rel="stylesheet" href="style.css?v=20261117a">
 </head>
 <body class="stats-page">
 
@@ -233,8 +233,10 @@
       dots.push({ i: i, home: home, slot: slot, x: x, y: floorAt(x), vx: 0, vy: 0, ground: true, wait: Math.random() * 200 });
     }
   }
+  function refreshTops() { var b = box.getBoundingClientRect(); tops = stairs.map(function (s) { return s.getBoundingClientRect().top - b.top; }); }
   function tick() {
     if (!running) return;
+    refreshTops();
     for (var k = 0; k < dots.length; k++) {
       var d = dots[k];
       var step = (hovered >= 0 && d.i % 2 === 0) ? hovered : d.home;
@@ -275,10 +277,10 @@
   function stop() { running = false; }
 
   stairs.forEach(function (s, i) {
-    s.addEventListener('mouseenter', function () { hovered = i; });
-    s.addEventListener('mouseleave', function () { hovered = -1; });
-    s.addEventListener('focus', function () { hovered = i; });
-    s.addEventListener('blur', function () { hovered = -1; });
+    s.addEventListener('mouseenter', function () { hovered = i; lift(); });
+    s.addEventListener('mouseleave', function () { hovered = -1; lift(); });
+    s.addEventListener('focus', function () { hovered = i; lift(); });
+    s.addEventListener('blur', function () { hovered = -1; lift(); });
   });
   box.addEventListener('mousemove', function (e) { var b = box.getBoundingClientRect(); mouse = { x: e.clientX - b.left, y: e.clientY - b.top }; });
   box.addEventListener('mouseleave', function () { mouse = null; });
@@ -286,6 +288,27 @@
     measure(); dots.forEach(function (d) { d.x = Math.min(d.x, W - R); d.y = Math.min(d.y, floorAt(d.x)); }); if (reduce) draw();
   });
   if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; visible ? start() : stop(); }).observe(box);
+  /* Dynamic steps: they build up on load, lift when hovered, and send a wave now and then */
+  function lift() {
+    if (reduce) return;
+    stairs.forEach(function (s, i) {
+      var d = hovered < 0 ? 0 : Math.max(0, 30 - Math.abs(i - hovered) * 16);
+      s.style.setProperty('--lift', d + 'px');
+    });
+  }
+  function wave() {
+    if (hovered >= 0 || !visible) return;
+    stairs.forEach(function (s, i) {
+      setTimeout(function () { if (hovered < 0) s.style.setProperty('--lift', '18px'); }, i * 140);
+      setTimeout(function () { if (hovered < 0) s.style.setProperty('--lift', '0px'); }, i * 140 + 340);
+    });
+  }
+  if (reduce) { box.classList.add('is-ready', 'is-settled'); }
+  else {
+    requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add('is-ready'); }); });
+    setTimeout(function () { box.classList.add('is-settled'); }, 1800);
+    setTimeout(function () { wave(); setInterval(wave, 8000); }, 2800);
+  }
   measure(); make();
   if (reduce) { draw(); } else { start(); }
 })();
