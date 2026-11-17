@@ -69,6 +69,7 @@
     .post .fs-cmp-b,.post .fs-cmp-f,.fs-cmp-c li{text-align:left;hyphens:none;-webkit-hyphens:none}
     .post .fs-cmp-b{margin:18px 0 0;font-size:.92rem}
     @media(max-width:760px){.fs-cmp-g{grid-template-columns:1fr}}
+    .fs-uv svg{width:100%;height:auto;display:block}
     .fs-grid-eq{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
     @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
   </style>
@@ -283,21 +284,34 @@ rob = RobustScaler().fit_transform(charges)   # −1.0, −0.5, 0.0, 0.5, 3.5</c
   </div>
 
   <h3 id="unit-vector" style="scroll-margin-top:90px">Unit Vector Scaling</h3>
-  <p>The first four methods rescale a column. Unit vector scaling works on a row, one customer at a time. It keeps how a customer splits spending and drops how much the customer spends.</p>
-  <p>Each customer is an arrow from the origin. The direction of the arrow shows the mix of spending, and the length shows the total amount. Unit vector scaling shortens or stretches every arrow to length 1 and keeps its direction.</p>
-  <p>In words: divide each value by the length of the customer’s arrow. The length comes from Pythagoras: square each value, add them up, take the square root.</p>
-  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>‖<em>x</em>‖</span></span>, where ‖<em>x</em>‖ = √(<em>x</em><sub>1</sub>² + <em>x</em><sub>2</sub>² + …)</strong></p>
-  <p>Take monthly spend on two services, both in euros. Customer X spends €30 on voice and €20 on data, so the arrow length is √(30² + 20²) = 36.06 and the unit vector is (0.83, 0.55). Customer Y spends exactly twice as much, €60 and €40, so the length is 72.11 and the unit vector is the same.</p>
+  <p>The first four methods scale features column by column. Unit Vector Scaling works differently: it normalizes each row (each customer) independently.</p>
+  <p>It preserves the proportions between features but removes the overall magnitude. Think of each customer as an arrow: its direction represents the usage mix, while its length represents total usage. Unit Vector Scaling gives every arrow a length of 1 without changing its direction.</p>
+  <p>The length is calculated using the Euclidean norm:</p>
+  <p class="post-formula post-formula-plain"><strong>‖<em>X</em>‖<sub>2</sub> = √(<em>x</em><sub>1</sub>² + <em>x</em><sub>2</sub>² + ⋯ + <em>x</em><sub><em>n</em></sub>²)</strong></p>
+  <p>Each feature is then divided by this length:</p>
+  <p class="post-formula post-formula-plain"><strong><em>X</em><sub>scaled</sub> = <span class="frac"><span><em>X</em></span><span>‖<em>X</em>‖<sub>2</sub></span></span></strong></p>
+  <p>Consider two customers of a SaaS product, using it for reports and exports:</p>
+  <ul class="post-points">
+    <li>Customer X: a small team that creates 30 reports and exports 20 files per month.</li>
+    <li>Customer Y: a large team that creates 60 reports and exports 40 files per month.</li>
+  </ul>
+  <p>Their original usage differs, but their proportions are identical. Both produce the same normalized vector: (0.83, 0.55).</p>
+  <figure class="post-fig post-fig-wide fs-uv">
+    <svg viewBox="0 0 650 350" width="100%" role="img" aria-label="Two-dimensional diagram: customers X, Y and Z as arrows of reports created per month and data. Before scaling the arrows have different lengths; after unit vector scaling every arrow has length 1 and X and Y overlap."><text x="46" y="22" font-size="14" font-weight="600" fill="#0a0a0a">Before: arrows of different length</text><text x="46" y="40" font-size="12.5" fill="#555">length = √(reports² + exports²)</text><line x1="76" y1="286" x2="324" y2="286" stroke="#0a0a0a"/><line x1="76" y1="286" x2="76" y2="38" stroke="#0a0a0a"/><line x1="144.6" y1="286" x2="144.6" y2="291" stroke="#0a0a0a"/><text x="144.6" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">20</text><line x1="76" y1="217.4" x2="71" y2="217.4" stroke="#0a0a0a"/><text x="67" y="221.4" font-size="12" text-anchor="end" fill="#0a0a0a">20</text><line x1="213.1" y1="286" x2="213.1" y2="291" stroke="#0a0a0a"/><text x="213.1" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">40</text><line x1="76" y1="148.9" x2="71" y2="148.9" stroke="#0a0a0a"/><text x="67" y="152.9" font-size="12" text-anchor="end" fill="#0a0a0a">40</text><line x1="281.7" y1="286" x2="281.7" y2="291" stroke="#0a0a0a"/><text x="281.7" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">60</text><line x1="76" y1="80.3" x2="71" y2="80.3" stroke="#0a0a0a"/><text x="67" y="84.3" font-size="12" text-anchor="end" fill="#0a0a0a">60</text><text x="196" y="326" font-size="12.5" text-anchor="middle" fill="#555">reports created per month</text><text transform="translate(26 166) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#555">files exported per month</text><line x1="76" y1="286" x2="171.4" y2="222.4" stroke="#1d57b5" stroke-width="3"/><circle cx="178.9" cy="217.4" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="188.9" y="233.4" font-size="13" font-weight="600" fill="#0a0a0a">X</text><line x1="76" y1="286" x2="274.2" y2="153.8" stroke="#e0a800" stroke-width="3"/><circle cx="281.7" cy="148.9" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="292.7" y="142.9" font-size="13" font-weight="600" fill="#0a0a0a">Y</text><line x1="76" y1="286" x2="141.2" y2="122.9" stroke="#dc452d" stroke-width="3"/><circle cx="144.6" cy="114.6" r="7" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="155.6" y="118.6" font-size="13" font-weight="600" fill="#0a0a0a">Z</text><text x="356" y="22" font-size="14" font-weight="600" fill="#0a0a0a">After: every arrow has length 1</text><text x="356" y="40" font-size="12.5" fill="#555">divide each arrow by its length</text><line x1="386" y1="286" x2="634" y2="286" stroke="#0a0a0a"/><line x1="386" y1="286" x2="386" y2="38" stroke="#0a0a0a"/><line x1="495.1" y1="286" x2="495.1" y2="291" stroke="#0a0a0a"/><text x="495.1" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">0.5</text><line x1="386" y1="176.9" x2="381" y2="176.9" stroke="#0a0a0a"/><text x="377" y="180.9" font-size="12" text-anchor="end" fill="#0a0a0a">0.5</text><line x1="604.2" y1="286" x2="604.2" y2="291" stroke="#0a0a0a"/><text x="604.2" y="305" font-size="12" text-anchor="middle" fill="#0a0a0a">1</text><line x1="386" y1="67.8" x2="381" y2="67.8" stroke="#0a0a0a"/><text x="377" y="71.8" font-size="12" text-anchor="end" fill="#0a0a0a">1</text><text x="506" y="326" font-size="12.5" text-anchor="middle" fill="#555">reports created per month</text><text transform="translate(336 166) rotate(-90)" font-size="12.5" text-anchor="middle" fill="#555">files exported per month</text><path d="M 604.2 286 A 218.2 218.2 0 0 0 386 67.8" fill="none" stroke="#8c8c8c" stroke-dasharray="4 4"/><text x="543.1" y="115.8" font-size="12" fill="#555">length 1</text><line x1="386" y1="286" x2="560.0" y2="170.0" stroke="#1d57b5" stroke-width="3"/><circle cx="567.5" cy="165.0" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><line x1="386" y1="286" x2="560.0" y2="170.0" stroke="#e0a800" stroke-width="3"/><circle cx="567.5" cy="165.0" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="578.5" y="159.0" font-size="13" font-weight="600" fill="#0a0a0a">X and Y</text><line x1="386" y1="286" x2="463.7" y2="91.8" stroke="#dc452d" stroke-width="3"/><circle cx="467.0" cy="83.4" r="7" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="478.0" y="87.4" font-size="13" font-weight="600" fill="#0a0a0a">Z</text></svg>
+    <div class="fs-key"><span><i style="background:#1d57b5"></i>Customer X: 30 reports, 20 exports</span><span><i style="background:#f5c548"></i>Customer Y: 60 reports, 40 exports</span><span><i style="background:#dc452d"></i>Customer Z: 20 reports, 50 exports</span></div>
+    <figcaption><span>Chart 5</span> Each customer is an arrow. Before scaling, X and Y have different lengths but point the same way. After scaling, both have length 1 and land on the same point, (0.83, 0.55). Z points in a different direction, so it lands elsewhere. Simulated data.</figcaption>
+  </figure>
   <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Customer</th><th>Voice / data spend</th><th>Unit vector</th></tr></thead>
-    <tbody><tr><td>X</td><td>€30 / €20</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>€60 / €40</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>€20 / €50</td><td>0.37 / 0.93</td></tr></tbody>
+    <thead><tr><th>Customer</th><th>Reports / exports</th><th>Length</th><th>Unit vector</th></tr></thead>
+    <tbody><tr><td>X</td><td>30 / 20</td><td>36.06</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>60 / 40</td><td>72.11</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>20 / 50</td><td>53.85</td><td>0.37 / 0.93</td></tr></tbody>
   </table></div>
-  <p>The result says how a customer splits spending, not how much the customer spends. That is the right question when only the mix matters, as with word counts in text. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
+  <p>Customer Z, a team that creates 20 reports and exports 50 files, has a different mix, so its arrow points in a different direction and its unit vector is different.</p>
+  <p>Unit Vector Scaling is useful when the relative proportions matter more than the total magnitude, for example, when comparing document vectors using cosine similarity. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
   <p>In Python, scikit-learn’s <code>Normalizer</code> works on rows. Its default is exactly this length-1 rule:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import Normalizer
 
-spend = np.array([[30, 20], [60, 40], [20, 50]])   # voice, data (€ per month)
-unit = Normalizer(norm=&quot;l2&quot;).fit_transform(spend)  # (0.83, 0.55), (0.83, 0.55), (0.37, 0.93)</code></pre>
+usage = np.array([[30, 20], [60, 40], [20, 50]])   # reports, exports (per month)
+unit = Normalizer(norm=&quot;l2&quot;).fit_transform(usage)  # (0.83, 0.55), (0.83, 0.55), (0.37, 0.93)</code></pre>
   <p><strong>Use it when:</strong> only the mix of features matters, not their size.</p>
 
   <h2 id="choosing" style="scroll-margin-top:90px">Choosing the Right Scaling Method</h2>
