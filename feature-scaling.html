@@ -57,7 +57,7 @@
   <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">How standardization, normalization, and robust scaling put features on a fair footing.</p>
 
   <h2 id="introduction" style="scroll-margin-top:90px">Introduction</h2>
-  <p>Imagine a telecom company that wants to find customers who behave alike. Two columns describe each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). A customer with 24 months of tenure and €1,900 in charges should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
+  <p>A telecom company has two columns for each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). It wants to find customers who behave alike. A customer with 24 months and €1,900 should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
   <p><strong>Feature scaling</strong> puts features on a comparable scale before the model sees them, so the units you happened to measure in don't decide the result. In this article we look at five scaling methods, when each one fits, and how to apply them without leaking information from the test set.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
@@ -75,7 +75,7 @@
 
   <h2 id="why-scaling" style="scroll-margin-top:90px">Why Scaling Matters, and Which Models Need It</h2>
   <h3 id="why-units" style="scroll-margin-top:90px">Why units cause trouble</h3>
-  <p>Imagine judging how similar two flats are with two numbers: the rent in euros and the number of rooms. One flat costs €900 and has 2 rooms. Another costs €920 and has 5 rooms. The rent differs by 20 and the rooms differ by 3. To a model that compares raw numbers, the rent gap looks much bigger, even though €20 is nothing and three extra rooms is a big difference. The model doesn’t know what a euro or a room is. It only sees the size of the numbers.</p>
+  <p>Compare two flats using two numbers: the rent in euros and the number of rooms. One flat costs €900 and has 2 rooms. Another costs €920 and has 5 rooms. The rent differs by 20 and the rooms differ by 3. To a model that compares raw numbers, the rent gap looks much bigger, even though €20 is nothing and three extra rooms is a big difference. The model doesn’t know what a euro or a room is. It only sees the size of the numbers.</p>
   <p>Scaling fixes this by converting every feature to a common scale before the model sees it. Chart 1 shows the same problem with our telecom customers. Customer D has 24 months of tenure and €1,900 in charges. Which customer looks most similar to D? Switch between the two views to see how scaling changes the answer.</p>
   <figure class="post-fig post-fig-wide" id="fs-demo">
     <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
@@ -151,7 +151,7 @@ draw(0);
 
   <h3 id="standardization" style="scroll-margin-top:90px">Standardization (Z-Score)</h3>
   <p>Standardization asks one question about every customer: how far above or below the average are you, counted in typical steps?</p>
-  <p>Think of heights. Someone who is 190 cm tall in a group that averages 175 cm is clearly tall. But how tall? That depends on how much heights usually vary. If most people are within 8 cm of the average, 15 cm above is almost two typical steps up. The size of a typical step is the standard deviation.</p>
+  <p>Heights show how this works. Someone who is 190 cm tall in a group that averages 175 cm is clearly tall. But how tall? That depends on how much heights usually vary. If most people are within 8 cm of the average, 15 cm above is almost two typical steps up. The size of a typical step is the standard deviation.</p>
   <p>The same idea fixes the telecom problem. Average total charges are €2,000 and a typical step is about €1,581 (the population standard deviation, which is what scikit-learn uses). If tenure has a typical step of 24 months, a customer 24 months above the average tenure is one step up. Now euros and months are measured in the same unit, steps, so one step in tenure counts as much as one step in spending.</p>
   <p>In words: take the value, subtract the average, and divide by the size of a typical step.</p>
   <p class="post-formula post-formula-plain"><strong><em>z</em> = <span class="frac"><span><em>x</em> − mean</span><span>standard deviation</span></span></strong></p>
@@ -166,7 +166,7 @@ draw(0);
 
   <h3 id="min-max" style="scroll-margin-top:90px">Min-Max Normalization</h3>
   <p>Min-max normalization squeezes a column onto a ruler from 0 to 1. The smallest value becomes 0, the largest becomes 1, and everyone else lands in between in proportion.</p>
-  <p>Picture all customers lined up by spending. The lowest spender stands at the left end of a ruler and the highest spender at the right end. A customer who spends a quarter of the way from lowest to highest stands at 0.25.</p>
+  <p>Place all customers on a ruler by spending. The lowest spender stands at the left end and the highest spender at the right end. A customer who spends a quarter of the way from lowest to highest stands at 0.25.</p>
   <p>In words: subtract the smallest value, then divide by the distance from the smallest to the largest.</p>
   <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − min</span><span>max − min</span></span></strong></p>
   <p>The smallest value is €500 and the largest is €5,000, so the distance is €4,500. Customer C gets (1,500 − 500) / 4,500 = 0.22. C is 22% of the way from the lowest to the highest spender.</p>
@@ -180,7 +180,7 @@ draw(0);
 
   <h3 id="max-abs" style="scroll-margin-top:90px">Max Absolute Scaling</h3>
   <p>Max absolute scaling divides every value by the biggest value in the column. Nothing else changes, in particular zero stays zero.</p>
-  <p>Think of it as turning amounts into shares of the biggest one. The biggest spender becomes 1, and someone who spends half as much becomes 0.5.</p>
+  <p>It turns amounts into shares of the biggest one. The biggest spender becomes 1, and someone who spends half as much becomes 0.5.</p>
   <p>In words: divide each value by the largest absolute value, which is the largest value when you ignore minus signs.</p>
   <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>max |<em>x</em>|</span></span></strong></p>
   <p>The largest value is €5,000, so customer B gets 1,000 / 5,000 = 0.20. B spends one fifth as much as the biggest spender.</p>
@@ -208,7 +208,7 @@ draw(0);
 
   <h3 id="unit-vector" style="scroll-margin-top:90px">Unit Vector Scaling</h3>
   <p>The first four methods rescale a column. Unit vector scaling works on a row, one customer at a time. It keeps how a customer splits spending and drops how much the customer spends.</p>
-  <p>Think of each customer as an arrow from the origin. The direction of the arrow shows the mix of spending, and the length shows the total amount. Unit vector scaling shortens or stretches every arrow to length 1 and keeps its direction.</p>
+  <p>Each customer is an arrow from the origin. The direction of the arrow shows the mix of spending, and the length shows the total amount. Unit vector scaling shortens or stretches every arrow to length 1 and keeps its direction.</p>
   <p>In words: divide each value by the length of the customer’s arrow. The length comes from Pythagoras: square each value, add them up, take the square root.</p>
   <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>‖<em>x</em>‖</span></span>, where ‖<em>x</em>‖ = √(<em>x</em><sub>1</sub>² + <em>x</em><sub>2</sub>² + …)</strong></p>
   <p>Take monthly spend on two services, both in euros. Customer X spends €30 on voice and €20 on data, so the arrow length is √(30² + 20²) = 36.06 and the unit vector is (0.83, 0.55). Customer Y spends exactly twice as much, €60 and €40, so the length is 72.11 and the unit vector is the same.</p>
