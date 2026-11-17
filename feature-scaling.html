@@ -31,7 +31,6 @@
 <article class="post post-italic-h2 post-small-figs post-fs">
   <style>
     .post-fs h2{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
-    .post-fs #introduction{margin-top:32px;padding-top:0;border-top:0}
     .post-fs h3{font-size:1.15rem;margin:34px 0 10px}
     .fs-btns{display:flex;gap:8px;margin:0 0 12px}
     .fs-btn{flex:1;padding:10px 12px;font:inherit;font-weight:600;font-size:.92rem;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer}
@@ -56,7 +55,6 @@
   <h1 class="post-title">Feature Scaling: Why Units Shouldn’t Decide Your Model</h1>
   <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">How standardization, normalization, and robust scaling put features on a fair footing.</p>
 
-  <h2 id="introduction" style="scroll-margin-top:90px">Introduction</h2>
   <p>A telecom company has two columns for each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). It wants to find customers who behave alike. A customer with 24 months and €1,900 should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
   <p><strong>Feature scaling</strong> puts features on a comparable scale before the model sees them, so the units you happened to measure in don't decide the result. In this article we look at five scaling methods, when each one fits, and how to apply them without leaking information from the test set.</p>
 
