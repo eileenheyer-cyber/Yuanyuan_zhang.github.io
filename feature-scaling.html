@@ -47,7 +47,6 @@
     .fs-call.after{border-left-color:#1d57b5}
     .fs-key{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:10px 0 0}
     .fs-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
-    .fs-steps svg{width:100%;height:auto;display:block;background:#fff}
     @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
   </style>
 
@@ -175,7 +174,6 @@ draw(0);
     <thead><tr><th>Customer</th><th>Total charges</th><th>Standardized value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>−0.95</td></tr><tr><td>B</td><td>€1,000</td><td>−0.63</td></tr><tr><td>C</td><td>€1,500</td><td>−0.32</td></tr><tr><td>D</td><td>€2,000</td><td>0.00</td></tr><tr><td>E</td><td>€5,000</td><td>1.90</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="std"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of standardization scaling shown on number lines."></svg><figcaption><span>Chart 2</span> Four of the five customers sit within one typical step of the average. Only E is clearly above it.</figcaption></figure>
   <p>E has z = 1.90, so E spends about 1.9 typical steps above the average. Negative values mean below average and 0 means exactly average. Standardization is the default choice for most models. Its weak spot is outliers, because a customer like E pulls both the average and the typical step.</p>
   <p>In Python, scikit-learn does both steps in one call. The scaler computes the average and the typical step from the column and applies them:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
@@ -195,8 +193,7 @@ z = StandardScaler().fit_transform(charges)   # −0.95, −0.63, −0.32, 0.00,
     <thead><tr><th>Customer</th><th>Total charges</th><th>Min-max value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>0.00</td></tr><tr><td>B</td><td>€1,000</td><td>0.11</td></tr><tr><td>C</td><td>€1,500</td><td>0.22</td></tr><tr><td>D</td><td>€2,000</td><td>0.33</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="mm"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of min-max scaling shown on number lines."></svg><figcaption><span>Chart 3</span> E defines the right end of the ruler, so the four other customers are squeezed into the first third.</figcaption></figure>
-  <p>The catch is visible in the chart: E defines the right end of the ruler, so A to D are squeezed into the first third. One extreme value is enough to flatten everyone else.</p>
+  <p>The catch: E defines the right end of the ruler, so A to D are squeezed into the first third. One extreme value is enough to flatten everyone else.</p>
   <p>In Python (using the same <code>charges</code> column):</p>
   <pre class="post-code"><code>from sklearn.preprocessing import MinMaxScaler
 
@@ -213,7 +210,6 @@ mm = MinMaxScaler().fit_transform(charges)    # 0.00, 0.11, 0.22, 0.33, 1.00</co
     <thead><tr><th>Customer</th><th>Total charges</th><th>Max absolute value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>0.10</td></tr><tr><td>B</td><td>€1,000</td><td>0.20</td></tr><tr><td>C</td><td>€1,500</td><td>0.30</td></tr><tr><td>D</td><td>€2,000</td><td>0.40</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="ma"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of max absolute scaling shown on number lines."></svg><figcaption><span>Chart 4</span> Each value is a share of the biggest spender: D, at 0.4, spends 40% as much as E. Zero would stay at zero.</figcaption></figure>
   <p>Why does zero matter? Take a column like “international calls”, which is 0 for most customers. Methods that subtract something first would turn those zeros into other numbers and fill the table with non-zero values. Dividing keeps the zeros, so sparse data stays sparse. The weakness is the same as for min-max: one very large value squeezes the rest.</p>
   <p>In Python:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import MaxAbsScaler
@@ -231,7 +227,6 @@ ma = MaxAbsScaler().fit_transform(charges)    # 0.10, 0.20, 0.30, 0.40, 1.00</co
     <thead><tr><th>Customer</th><th>Total charges</th><th>Robust value</th></tr></thead>
     <tbody><tr><td>A</td><td>€500</td><td>−1.00</td></tr><tr><td>B</td><td>€1,000</td><td>−0.50</td></tr><tr><td>C</td><td>€1,500</td><td>0.00</td></tr><tr><td>D</td><td>€2,000</td><td>0.50</td></tr><tr><td>E</td><td>€5,000</td><td>3.50</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="rob"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of robust scaling shown on number lines."></svg><figcaption><span>Chart 5</span> The shaded band holds the middle half of the customers. E lands far outside it, but it does not stretch the band.</figcaption></figure>
   <p>The four typical customers are spread from −1.0 to 0.5, and E stands out at 3.5 instead of dragging the scale. You still see that E is unusual, but E no longer squeezes everyone else.</p>
   <p>In Python:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import RobustScaler
@@ -249,7 +244,6 @@ rob = RobustScaler().fit_transform(charges)   # −1.0, −0.5, 0.0, 0.5, 3.5</c
     <thead><tr><th>Customer</th><th>Voice / data spend</th><th>Unit vector</th></tr></thead>
     <tbody><tr><td>X</td><td>€30 / €20</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>€60 / €40</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>€20 / €50</td><td>0.37 / 0.93</td></tr></tbody>
   </table></div>
-  <figure class="post-fig post-fig-wide fs-steps" data-m="uv"><svg class="nd-svg" viewBox="0 0 560 330" role="img" aria-label="Steps of unit vector scaling shown on number lines."></svg><figcaption><span>Chart 6</span> X spends half as much as Y, but both split their money the same way, so their arrows point in the same direction and become identical.</figcaption></figure>
   <p>The result says how a customer splits spending, not how much the customer spends. That is the right question when only the mix matters, as with word counts in text. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
   <p>In Python, scikit-learn’s <code>Normalizer</code> works on rows. Its default is exactly this length-1 rule:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import Normalizer
@@ -301,42 +295,6 @@ X_test_scaled = scaler.transform(X_test)         # reuse them, never refit</code
     <li><a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a> The other common preparation step for categorical columns.</li>
   </ul>
 
-<script>
-(function(){
-var CH=[500,1000,1500,2000,5000],NM="ABCDE",SD=Math.sqrt(2500000),INK="#0a0a0a",BLU="#1d57b5",RED="#dc452d",YEL="#f5c548",W=560,X0=50,X1=520;
-var M={
-std:{st:[{t:"Original: total charges (€)",v:CH,b:[419,3581]},{t:"Step 1: subtract the average (€2,000)",v:CH.map(function(x){return x-2000}),b:[-1581,1581]},{t:"Step 2: divide by the typical step (€1,581)",v:CH.map(function(x){return (x-2000)/SD}),b:[-1,1]}],bl:"Shaded: one typical step either side of the average"},
-mm:{st:[{t:"Original: total charges (€)",v:CH},{t:"Step 1: subtract the smallest value (€500)",v:CH.map(function(x){return x-500})},{t:"Step 2: divide by the range (€4,500)",v:CH.map(function(x){return (x-500)/4500})}]},
-ma:{st:[{t:"Original: total charges (€)",v:CH},{t:"Step 1: divide by the biggest value (€5,000)",v:CH.map(function(x){return x/5000})}]},
-rob:{st:[{t:"Original: total charges (€)",v:CH,b:[1000,2000]},{t:"Step 1: subtract the median (€1,500)",v:CH.map(function(x){return x-1500}),b:[-500,500]},{t:"Step 2: divide by the IQR (€1,000)",v:CH.map(function(x){return (x-1500)/1000}),b:[-0.5,0.5]}],bl:"Shaded: the middle 50% of customers"}};
-var U=[["X",30,20,BLU],["Y",60,40,YEL],["Z",20,50,RED]];
-function dom(s){var lo=Math.min.apply(null,s.v),hi=Math.max.apply(null,s.v);if(s.b){lo=Math.min(lo,s.b[0]);hi=Math.max(hi,s.b[1])}var p=(hi-lo)*0.1;return [lo-p,hi+p]}
-function nice(span){var r=span/5,e=Math.pow(10,Math.floor(Math.log10(r))),f=r/e;return (f<1.5?1:f<3.5?2:f<7.5?5:10)*e}
-function fm(v){var a=Math.abs(v);var s=a>=100?Math.round(a).toLocaleString("en-US"):String(Math.round(a*100)/100);return (v<0&&a>=0.005?"−":"")+s}
-function ticks(lo,hi,x,y){var st=nice(hi-lo),o="";for(var t=Math.ceil(lo/st)*st;t<=hi+1e-9;t+=st){var xx=x(t);o+='<line x1="'+xx+'" y1="'+y+'" x2="'+xx+'" y2="'+(y+5)+'" stroke="'+INK+'"/><text x="'+xx+'" y="'+(y+20)+'" text-anchor="middle" font-size="13" fill="'+INK+'">'+fm(Math.round(t*1e6)/1e6)+'</text>'}return o}
-function dots(v,x,y){var o="";v.forEach(function(a,i){var c=i==4?RED:BLU;o+='<circle cx="'+x(a)+'" cy="'+y+'" r="8" fill="'+c+'" stroke="'+INK+'" stroke-width="1.2"/><text x="'+x(a)+'" y="'+(y-14)+'" text-anchor="middle" font-size="14" font-weight="600" fill="'+INK+'">'+NM[i]+'</text>'});return o}
-function rows(m){var n=m.st.length,rh=98,H=16+n*rh+(m.bl?22:0),o="",prev=null;
-m.st.forEach(function(s,i){var d=dom(s),y=16+i*rh+66,x=function(v){return X0+(X1-X0)*(v-d[0])/(d[1]-d[0])};
-if(s.b)o+='<rect x="'+x(s.b[0])+'" y="'+(y-30)+'" width="'+(x(s.b[1])-x(s.b[0]))+'" height="60" fill="'+YEL+'" opacity="0.5"/>';
-if(prev)s.v.forEach(function(a,k){o+='<line x1="'+prev(m.st[i-1].v[k])+'" y1="'+(y-rh+8)+'" x2="'+x(a)+'" y2="'+(y-24)+'" stroke="#bdbdbd" stroke-dasharray="3 3"/>'});
-o+='<text x="'+X0+'" y="'+(y-40)+'" font-size="14" font-weight="600" fill="'+INK+'">'+s.t+'</text><line x1="'+(X0-8)+'" y1="'+y+'" x2="'+(X1+8)+'" y2="'+y+'" stroke="'+INK+'"/>'+ticks(d[0],d[1],x,y)+dots(s.v,x,y);prev=x});
-if(m.bl)o+='<text x="'+X0+'" y="'+(H-6)+'" font-size="13" fill="'+INK+'">'+m.bl+'</text>';return [H,o]}
-function uv(t,two){var o='<defs><marker id="fs-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+INK+'"/></marker></defs>';
-function panel(ox,tt,title,sub,sz){var d=70+(1.05-70)*tt,P=function(v){return [ox+sz*v[0]/d,290-sz*v[1]/d]};
-o+='<text x="'+(ox+sz/2)+'" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="'+INK+'">'+title+'</text><text x="'+(ox+sz/2)+'" y="42" text-anchor="middle" font-size="13" fill="'+INK+'">'+sub+'</text>';
-o+='<line x1="'+ox+'" y1="290" x2="'+(ox+sz+8)+'" y2="290" stroke="'+INK+'"/><line x1="'+ox+'" y1="290" x2="'+ox+'" y2="'+(290-sz-8)+'" stroke="'+INK+'"/>';
-var st=nice(d);for(var q=st;q<=d;q+=st){var p=P([q,q]);o+='<text x="'+p[0]+'" y="308" text-anchor="middle" font-size="13" fill="'+INK+'">'+fm(Math.round(q*100)/100)+'</text><text x="'+(ox-6)+'" y="'+(p[1]+4)+'" text-anchor="end" font-size="13" fill="'+INK+'">'+fm(Math.round(q*100)/100)+'</text>'}
-o+='<path d="M '+(ox+sz/d)+' 290 A '+(sz/d)+' '+(sz/d)+' 0 0 0 '+ox+' '+(290-sz/d)+'" fill="none" stroke="#8c8c8c" stroke-dasharray="4 4"/>';
-U.forEach(function(u){var L=Math.hypot(u[1],u[2]),s=1+tt*(1/L-1),p=P([u[1]*s,u[2]*s]);o+='<line x1="'+ox+'" y1="290" x2="'+(ox+(p[0]-ox)*0.96)+'" y2="'+(290+(p[1]-290)*0.96)+'" stroke="'+INK+'" marker-end="url(#fs-ah)"/><circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(u[0]=="Y"&&tt>0.99?12:7)+'" fill="'+u[3]+'" stroke="'+INK+'" stroke-width="1.2"/>'+(tt>0.99&&u[0]!="Z"?'':'<text x="'+(p[0]+12)+'" y="'+(p[1]+4)+'" font-size="14" font-weight="600" fill="'+INK+'">'+u[0]+'</text>')});
-if(tt>0.99){var q=P([0.83,0.55]);o+='<text x="'+(q[0]+16)+'" y="'+(q[1]+4)+'" font-size="14" font-weight="600" fill="'+INK+'">X and Y</text>'}}
-if(two){panel(46,0,"Step 1: measure each arrow","X 36.06, Y 72.11, Z 53.85",200);panel(310,1,"Step 2: divide by the length","every arrow now has length 1",200)}
-else{panel(150,t,"Unit vector scaling",t<0.5?"Step 1: measure each arrow (X 36.06, Y 72.11, Z 53.85)":"Step 2: divide each arrow by its length",230)}
-return [330,o]}
-document.querySelectorAll(".fs-steps").forEach(function(fig){
-var k=fig.dataset.m,svg=fig.querySelector("svg"),r=k=="uv"?uv(0,true):rows(M[k]);
-svg.setAttribute("viewBox","0 0 "+W+" "+r[0]);svg.innerHTML=r[1]});
-})();
-</script>
 </article>
 </main>
 
