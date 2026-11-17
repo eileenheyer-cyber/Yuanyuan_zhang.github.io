@@ -73,18 +73,14 @@
 
   <h2 id="why-scaling" style="scroll-margin-top:90px">Why Scaling Matters, and Which Models Need It</h2>
   <h3 id="why-units" style="scroll-margin-top:90px">Why units cause trouble</h3>
-  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges.</p>
-  <p>Customer P has 60 months and €2,300, while customer Q has 26 months and €2,700.</p>
+  <p>Take customer D, who has 24 months of tenure and €1,900 in total charges. Customer P has 60 months and €2,300, while customer Q has 26 months and €2,700.</p>
   <p>Intuitively, Q looks more similar to D. Their tenure differs by only two months, compared with P’s 36-month difference.</p>
-  <p>But a distance-based model doesn’t understand what months or euros mean. It compares numerical values.</p>
-  <p>A distance-based model needs one number that says how far apart two customers are. The most common choice is <strong>Euclidean distance</strong>: the straight-line distance between two points, the one you would measure with a ruler on a chart. It comes from Pythagoras. Take the gap in each feature, square it, add the squares, and take the square root.</p>
+  <p>A distance-based model doesn’t see it that way. It doesn’t understand what months or euros mean. It compares numerical values and measures how far apart two customers are with <strong>Euclidean distance</strong>: the straight-line distance between two points, the one you would measure with a ruler on a chart. Take the gap in each feature (the difference between the two customers), square it, add the squares, and take the square root.</p>
   <p class="post-formula post-formula-plain"><strong><em>d</em> = √((tenure gap)² + (charges gap)²)</strong></p>
-  <p>The smaller the distance, the more similar the two customers look to the model. For our customers:</p>
   <p class="post-formula post-formula-plain"><strong>D to P: √(36² + 400²) = √161,296 ≈ 400</strong></p>
   <p class="post-formula post-formula-plain"><strong>D to Q: √(2² + 800²) = √640,004 ≈ 800</strong></p>
-  <p>Using Euclidean distance, the distance between D and P is approximately 400, while the distance between D and Q is 800. Because the differences in euros are numerically much larger than the differences in months. As a result, total charges dominate the distance calculation, making P appear closer to D.</p>
-  <p>Scaling addresses this problem by transforming each feature onto a comparable numerical scale before calculating distances.</p>
-  <p>After Min-Max Scaling, the same gaps are measured on a 0 to 1 scale:</p>
+  <p>The smaller the distance, the more similar the two customers look to the model, so the model picks P. The distance to P is almost the same as the euro gap alone: the 36 months barely add anything, because the differences in euros are numerically much larger than the differences in months. As a result, total charges dominate the distance calculation, making P appear closer to D.</p>
+  <p>Scaling addresses this problem by transforming each feature onto a comparable numerical scale before calculating distances. After Min-Max Scaling, the same gaps are measured on a 0 to 1 scale:</p>
   <p class="post-formula post-formula-plain"><strong>D to P: √(0.53² + 0.07²) ≈ 0.53</strong></p>
   <p class="post-formula post-formula-plain"><strong>D to Q: √(0.03² + 0.14²) ≈ 0.14</strong></p>
   <p>Now Q is the closer customer, because the tenure gap counts as much as the charges gap.</p>
