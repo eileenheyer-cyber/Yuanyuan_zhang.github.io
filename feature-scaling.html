@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feature Scaling: Why Units Shouldn't Decide Your Model – Yuanyuan Zhang</title>
+  <meta name="description" content="Standardization, min-max, max absolute, robust and unit vector scaling explained with one churn example: when each method fits, and how to fit it on training data only.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261023a">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs post-fs">
+  <style>
+    .post-fs h2{margin-top:64px;padding-top:28px;border-top:1px solid var(--line)}
+    .post-fs #introduction{margin-top:32px;padding-top:0;border-top:0}
+    .post-fs h3{font-size:1.15rem;margin:34px 0 10px}
+    .fs-btns{display:flex;gap:8px;margin:0 0 12px}
+    .fs-btn{flex:1;padding:10px 12px;font:inherit;font-weight:600;font-size:.92rem;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+    .fs-btn.on{background:#1d57b5;border-color:#1d57b5;color:#fff}
+    .fs-view{font-size:.9rem;font-weight:600;margin:0 0 8px;text-align:left}
+    .fs-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+    .fs-grid svg{width:100%;height:auto;display:block}
+    .fs-lab{font-size:.85rem;color:var(--muted);margin:0 0 4px;text-align:left}
+    .fs-win{font-size:1.5rem;font-weight:600;margin:0 0 10px;text-align:left}
+    .fs-tb{width:100%;border-collapse:collapse;font-size:.9rem}
+    .fs-tb th{font-weight:400;color:var(--muted);text-align:left;padding:4px 0}
+    .fs-tb td{padding:6px 0;border-top:1px solid var(--line)}
+    .fs-call{margin:12px 0 0;padding:10px 12px;border-left:3px solid #dc452d;background:var(--surface-alt);font-size:.9rem;line-height:1.5;text-align:left}
+    .fs-call.after{border-left-color:#1d57b5}
+    .fs-key{display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:10px 0 0}
+    .fs-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+    @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
+  </style>
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Model fundamentals</p>
+  <h1 class="post-title">Feature Scaling: Why Units Shouldn’t Decide Your Model</h1>
+  <p class="post-sub" style="text-align:left;hyphens:none;-webkit-hyphens:none">How standardization, normalization, and robust scaling put features on a fair footing.</p>
+
+  <h2 id="introduction" style="scroll-margin-top:90px">Introduction</h2>
+  <p>Imagine a telecom company that wants to find customers who behave alike. Two columns describe each customer: tenure in months (1 to 72) and total charges in euros (about 100 to 8,000). A customer with 24 months of tenure and €1,900 in charges should look similar to one with 26 months and €2,700. But a distance-based model has no idea what a month or a euro is. It only sees numbers, and the bigger numbers win.</p>
+  <p><strong>Feature scaling</strong> puts features on a comparable scale before the model sees them, so the units you happened to measure in don't decide the result. In this article we look at five scaling methods, when each one fits, and how to apply them without leaking information from the test set.</p>
+  <p>Chart 1 shows the problem. Customer D has 24 months of tenure and €1,900 in charges. Which customer looks most similar to D? Switch between the two views to see how scaling changes the answer.</p>
+
+  <figure class="post-fig post-fig-wide" id="fs-demo">
+    <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
+    <p class="fs-view" id="fs-view"></p>
+    <div class="fs-grid">
+      <svg id="fs-svg" viewBox="0 0 340 340" role="img" aria-label="Seven customers plotted by tenure and total charges with the same unit on both axes. Switching to After scaling spreads them out and changes which customer is closest to customer D."></svg>
+      <div>
+        <p class="fs-lab">Most similar to customer D</p>
+        <p class="fs-win" id="fs-win"></p>
+        <table class="fs-tb" id="fs-tb"></table>
+        <p class="fs-call" id="fs-call" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="fs-key"><span><i style="background:#1d57b5"></i>Customer D</span><span><i style="background:#dc452d"></i>Most similar customer</span><span><i style="background:#8c8c8c"></i>Other customers</span></div>
+    <figcaption><span>Chart 1</span> Without scaling, euros overpower months and the nearest customer to D is chosen by spending alone. After scaling, tenure counts too. Simulated data.</figcaption>
+    <script>
+(function(){
+var d=[["A",2,300],["B",8,900],["D",24,1900],["P",60,2300],["Q",26,2700],["F",48,4200],["G",70,6000]];
+var n=d.length,mx=0,my=0;d.forEach(function(r){mx+=r[1]/n;my+=r[2]/n});
+var sx=0,sy=0;d.forEach(function(r){sx+=Math.pow(r[1]-mx,2)/n;sy+=Math.pow(r[2]-my,2)/n});sx=Math.sqrt(sx);sy=Math.sqrt(sy);
+var svg=document.getElementById("fs-svg"),di=2,INK="#0a0a0a";
+function pts(m){return d.map(function(r){return m?[(r[1]-mx)/sx,(r[2]-my)/sy]:[r[1],r[2]]})}
+function dist(a,b){return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2))}
+function fmt(v,m){return m?v.toFixed(2):Math.round(v).toLocaleString("en-US")}
+var s='<line x1="30" y1="300" x2="330" y2="300" stroke="'+INK+'"/><line x1="30" y1="10" x2="30" y2="300" stroke="'+INK+'"/><text id="fs-xl" x="180" y="330" text-anchor="middle" font-size="12" fill="'+INK+'"></text><text id="fs-yl" transform="translate(12,155) rotate(-90)" text-anchor="middle" font-size="12" fill="'+INK+'"></text><line id="fs-ln" stroke="#dc452d" stroke-width="2" style="transition:all .6s"/>';
+d.forEach(function(r,i){s+='<g id="fs-g'+i+'" style="transition:transform .6s"><circle id="fs-c'+i+'" r="8" stroke="'+INK+'" stroke-width="1"/><text x="12" y="4" font-size="12" font-weight="600" fill="'+INK+'">'+r[0]+'</text></g>'});
+svg.innerHTML=s;
+function draw(m){var p=pts(m);
+var ymin=Math.min.apply(null,p.map(function(r){return r[1]})),ymax=Math.max.apply(null,p.map(function(r){return r[1]}));
+var u=270/(ymax-ymin),cx=m?0:mx,cy=(ymin+ymax)/2;
+function X(v){return 180+(v-cx)*u}function Y(v){return 155-(v-cy)*u}
+var best=-1,bd=1e18;p.forEach(function(r,i){if(i==di)return;var q=dist(r,p[di]);if(q<bd){bd=q;best=i}});
+p.forEach(function(r,i){document.getElementById("fs-g"+i).style.transform="translate("+X(r[0])+"px,"+Y(r[1])+"px)";document.getElementById("fs-c"+i).setAttribute("fill",i==di?"#1d57b5":(i==best?"#dc452d":"#8c8c8c"))});
+var l=document.getElementById("fs-ln");l.setAttribute("x1",X(p[di][0]));l.setAttribute("y1",Y(p[di][1]));l.setAttribute("x2",X(p[best][0]));l.setAttribute("y2",Y(p[best][1]));
+document.getElementById("fs-view").textContent=m?"After scaling: both features count equally":"What the model sees before scaling";
+document.getElementById("fs-xl").textContent=m?"Tenure (scaled)":"Tenure (months), same unit as the y axis";
+document.getElementById("fs-yl").textContent=m?"Total charges (scaled)":"Total charges (€)";
+document.getElementById("fs-win").textContent="Customer "+d[best][0];
+var t='<tr><th>Gap to D</th><th>Tenure</th><th>Charges</th></tr>';
+[3,4].forEach(function(i){t+='<tr><td><strong>'+d[i][0]+'</strong></td><td>'+fmt(Math.abs(p[i][0]-p[di][0]),m)+(m?"":" months")+'</td><td>'+fmt(Math.abs(p[i][1]-p[di][1]),m)+(m?"":" €")+'</td></tr>'});
+document.getElementById("fs-tb").innerHTML=t;
+var c=document.getElementById("fs-call");c.className="fs-call"+(m?" after":"");
+c.textContent=m?"Now the 36-month gap counts, so P is no longer close to D. Q has a similar tenure and a moderate spending gap, so Q wins.":"D and P look close only because months are tiny numbers next to euros. This is the problem: a 36-month gap is almost ignored next to a 400 € gap.";
+document.getElementById("fs-b0").className="fs-btn"+(m?"":" on");document.getElementById("fs-b1").className="fs-btn"+(m?" on":"")}
+document.getElementById("fs-b0").onclick=function(){draw(0)};document.getElementById("fs-b1").onclick=function(){draw(1)};
+draw(0);
+})();
+    </script>
+  </figure>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#which-models">Which Models Need Scaling (and Which Don’t)</a></li>
+      <li><details><summary><a href="#scaling-methods">Scaling Methods</a></summary><ul><li><a href="#standardization">Standardization (Z-Score)</a></li><li><a href="#min-max">Min-Max Normalization</a></li><li><a href="#max-abs">Max Absolute Scaling</a></li><li><a href="#robust">Robust Scaling</a></li><li><a href="#unit-vector">Unit Vector Scaling</a></li></ul></details></li>
+      <li><a href="#choosing">Choosing the Right Scaling Method</a></li>
+      <li><a href="#fit-on-train">Fit on Training Data Only</a></li>
+      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
+      <li><a href="#key-takeaways">Key Takeaways</a></li>
+    </ul>
+  </div>
+
+  <h2 id="which-models" style="scroll-margin-top:90px">Which Models Need Scaling (and Which Don’t)</h2>
+  <p>A model needs scaling when it compares the size of numbers. Chart 1 is the clearest case: distance adds up raw differences, so a feature with large numbers dominates. Other models are hurt in less visible ways.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Model family</th><th>Needs scaling?</th><th>Why</th></tr></thead>
+    <tbody><tr><td>Distance-based, such as <a href="k-means.html">K-Means Clustering</a> and k-nearest neighbors</td><td>Yes</td><td>Distances add up raw differences, so large units dominate.</td></tr><tr><td>Regularized and gradient-based, such as ridge, lasso and neural networks</td><td>Yes</td><td>The penalty and the learning steps treat features unequally when their units differ.</td></tr><tr><td>Support vector machines and PCA</td><td>Yes</td><td>Both rely on distances or variance, which depend on units.</td></tr><tr><td>Tree-based, such as a <a href="decision-tree.html">decision tree</a> or <a href="random-forest.html">random forest</a></td><td>No</td><td>A split asks “is charges above €1,500?”, and rescaling doesn’t change who lands on each side.</td></tr></tbody>
+  </table></div>
+  <p>Take a ridge model on the telecom data. The penalty shrinks every coefficient by the same rule. A coefficient for euros is naturally tiny and one for months is naturally larger, so the same penalty hits the two features unequally, only because of their units. See <a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> for how that penalty works.</p>
+
+  <h2 id="scaling-methods" style="scroll-margin-top:90px">Scaling Methods</h2>
+  <p>All five methods below are shown on the same example: five customers and one column, total charges. Customer E is a heavy spender, so the differences between the methods are easy to see.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td></tr><tr><td>B</td><td>€1,000</td></tr><tr><td>C</td><td>€1,500</td></tr><tr><td>D</td><td>€2,000</td></tr><tr><td>E</td><td>€5,000</td></tr></tbody>
+  </table></div>
+
+  <h3 id="standardization" style="scroll-margin-top:90px">Standardization (Z-Score)</h3>
+  <p>Standardization subtracts the mean and divides by the standard deviation. Afterwards the column has a mean of 0 and a standard deviation of 1.</p>
+  <p class="post-formula post-formula-plain"><strong><em>z</em> = <span class="frac"><span><em>x</em> − mean</span><span>standard deviation</span></span></strong></p>
+  <p>For the five customers, the mean is €2,000 and the standard deviation is about €1,581 (the population standard deviation, which is what scikit-learn uses). Customer A gets z = (500 − 2,000) / 1,581 = −0.95.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Standardized value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>−0.95</td></tr><tr><td>B</td><td>€1,000</td><td>−0.63</td></tr><tr><td>C</td><td>€1,500</td><td>−0.32</td></tr><tr><td>D</td><td>€2,000</td><td>0.00</td></tr><tr><td>E</td><td>€5,000</td><td>1.90</td></tr></tbody>
+  </table></div>
+  <p>A z-value says how many standard deviations a customer sits above or below the average. E has z = 1.90, so E spends about 1.9 typical steps above the average customer. This is what makes features comparable: one typical step above average in tenure counts as much as one in spending. Standardization is the default choice for most models. Its weak spot is outliers, because they pull the mean and the standard deviation.</p>
+
+  <h3 id="min-max" style="scroll-margin-top:90px">Min-Max Normalization</h3>
+  <p>Min-max normalization squeezes the column into the range 0 to 1, with the smallest value at 0 and the largest at 1.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − min</span><span>max − min</span></span></strong></p>
+  <p>The minimum is €500 and the maximum is €5,000, so the range is €4,500. Customer C gets (1,500 − 500) / 4,500 = 0.22.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Min-max value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>0.00</td></tr><tr><td>B</td><td>€1,000</td><td>0.11</td></tr><tr><td>C</td><td>€1,500</td><td>0.22</td></tr><tr><td>D</td><td>€2,000</td><td>0.33</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
+  </table></div>
+  <p>The value says where a customer sits between the lowest and the highest spender. Use it when a model needs bounded inputs, as neural networks often do. The catch is visible in the table: E defines the maximum, so the other four customers are squeezed into 0 to 0.33. One extreme value is enough to flatten everyone else.</p>
+
+  <h3 id="max-abs" style="scroll-margin-top:90px">Max Absolute Scaling</h3>
+  <p>Max absolute scaling divides every value by the largest absolute value in the column. It doesn’t shift the data, so zeros stay zeros.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>max |<em>x</em>|</span></span></strong></p>
+  <p>The largest absolute value is €5,000, so customer B gets 1,000 / 5,000 = 0.20.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Max absolute value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>0.10</td></tr><tr><td>B</td><td>€1,000</td><td>0.20</td></tr><tr><td>C</td><td>€1,500</td><td>0.30</td></tr><tr><td>D</td><td>€2,000</td><td>0.40</td></tr><tr><td>E</td><td>€5,000</td><td>1.00</td></tr></tbody>
+  </table></div>
+  <p>Values end up between −1 and 1. Because nothing is shifted, a column full of zeros stays full of zeros, which makes this method a good fit for sparse data, such as counts of rarely used services. It shares the weakness of min-max scaling: one large value squeezes the rest.</p>
+
+  <h3 id="robust" style="scroll-margin-top:90px">Robust Scaling</h3>
+  <p>Robust scaling subtracts the median and divides by the <a href="iqr.html">interquartile range (IQR)</a>, the spread of the middle 50% of customers. Both numbers ignore extreme values.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em> − median</span><span>Q3 − Q1</span></span></strong></p>
+  <p>The median is €1,500, Q1 is €1,000 and Q3 is €2,000, so the IQR is €1,000. Customer E gets (5,000 − 1,500) / 1,000 = 3.5.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Total charges</th><th>Robust value</th></tr></thead>
+    <tbody><tr><td>A</td><td>€500</td><td>−1.00</td></tr><tr><td>B</td><td>€1,000</td><td>−0.50</td></tr><tr><td>C</td><td>€1,500</td><td>0.00</td></tr><tr><td>D</td><td>€2,000</td><td>0.50</td></tr><tr><td>E</td><td>€5,000</td><td>3.50</td></tr></tbody>
+  </table></div>
+  <p>The four typical customers are spread from −1.0 to 0.5, and E stands out at 3.5 instead of dragging the scale. This is the method to choose when outliers are real and you want to keep them, for example a few very heavy spenders, without letting them distort everyone else’s values.</p>
+
+  <h3 id="unit-vector" style="scroll-margin-top:90px">Unit Vector Scaling</h3>
+  <p>The first four methods work on a column. Unit vector scaling works on a row: it divides each customer’s feature values by the length of that customer’s vector, so every customer ends up with length 1.</p>
+  <p class="post-formula post-formula-plain"><strong><em>x</em>′ = <span class="frac"><span><em>x</em></span><span>‖<em>x</em>‖</span></span>, where ‖<em>x</em>‖ = √(<em>x</em><sub>1</sub>² + <em>x</em><sub>2</sub>² + …)</strong></p>
+  <p>Take monthly spend on two services, both in euros. Customer X spends €30 on voice and €20 on data, so ‖X‖ = √(30² + 20²) = 36.06 and the unit vector is (0.83, 0.55). Customer Y spends exactly twice as much, €60 and €40, so ‖Y‖ = 72.11 and the unit vector is the same.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer</th><th>Voice / data spend</th><th>Unit vector</th></tr></thead>
+    <tbody><tr><td>X</td><td>€30 / €20</td><td>0.83 / 0.55</td></tr><tr><td>Y</td><td>€60 / €40</td><td>0.83 / 0.55</td></tr><tr><td>Z</td><td>€20 / €50</td><td>0.37 / 0.93</td></tr></tbody>
+  </table></div>
+  <figure class="post-fig post-fig-wide"><svg class="nd-svg" viewBox="0 0 660 320" role="img" aria-label="Left panel: customers X, Y and Z by voice and data spend; X and Y lie on the same line from the origin. Right panel: after unit vector scaling X and Y land on the same point of the unit circle, Z lands elsewhere."><line x1="50" y1="270" x2="310" y2="270" stroke="#0a0a0a"/><line x1="50" y1="270" x2="50" y2="40" stroke="#0a0a0a"/><text x="180" y="304" text-anchor="middle" font-size="13" fill="#0a0a0a">Voice spend (€ per month)</text><text transform="translate(16,155) rotate(-90)" text-anchor="middle" font-size="13" fill="#0a0a0a">Data spend (€ per month)</text><line x1="50" y1="270" x2="299.6" y2="103.6" stroke="#8c8c8c" stroke-dasharray="4 4"/><circle cx="146.0" cy="206.0" r="9" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="159.0" y="210.0" font-size="13" font-weight="600" fill="#0a0a0a">X</text><circle cx="242.0" cy="142.0" r="9" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="255.0" y="146.0" font-size="13" font-weight="600" fill="#0a0a0a">Y</text><circle cx="114.0" cy="110.0" r="9" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="127.0" y="114.0" font-size="13" font-weight="600" fill="#0a0a0a">Z</text><text x="180" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#0a0a0a">Before: X and Y differ in size</text><line x1="390" y1="270" x2="610" y2="270" stroke="#0a0a0a"/><line x1="390" y1="270" x2="390" y2="50" stroke="#0a0a0a"/><path d="M 590 270 A 200 200 0 0 0 390 70" fill="none" stroke="#8c8c8c" stroke-dasharray="4 4"/><text x="500" y="304" text-anchor="middle" font-size="13" fill="#0a0a0a">Voice share (unit vector)</text><text x="396" y="46" font-size="12" fill="#0a0a0a">1</text><text x="600" y="288" font-size="12" fill="#0a0a0a">1</text><circle cx="556.4" cy="159.1" r="13" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="556.4" cy="159.1" r="7" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="576.4" y="163.1" font-size="13" font-weight="600" fill="#0a0a0a">X and Y</text><circle cx="464.3" cy="84.3" r="9" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="477.3" y="88.3" font-size="13" font-weight="600" fill="#0a0a0a">Z</text><text x="500" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#0a0a0a">After: X and Y land on one point</text></svg><figcaption><span>Chart 2</span> Unit vector scaling keeps the direction and drops the size. X spends half as much as Y, but both split their money the same way, so they become identical.</figcaption></figure>
+  <p>The result says how a customer splits spending, not how much the customer spends. That is the right question when only the mix matters, as with word counts in text or usage profiles compared by direction. It is the wrong choice for ordinary features such as tenure and charges, because it would treat a €30 customer and a €300 customer as identical.</p>
+
+  <h2 id="choosing" style="scroll-margin-top:90px">Choosing the Right Scaling Method</h2>
+  <p>The right method depends on your data and your model. This table sums up where each one fits and what to watch for.</p>
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Method</th><th>Best when</th><th>Main risk</th></tr></thead>
+    <tbody><tr><td>Standardization</td><td>Default for k-means, KNN, SVM, PCA and regularized models</td><td>Outliers pull the mean and standard deviation</td></tr><tr><td>Min-max</td><td>Bounded inputs are needed, with no extreme outliers</td><td>One outlier squeezes everyone else</td></tr><tr><td>Max absolute</td><td>Sparse data with many zeros</td><td>Same outlier problem as min-max</td></tr><tr><td>Robust</td><td>Outliers are real and should stay</td><td>Values aren’t bounded, outliers stay large</td></tr><tr><td>Unit vector</td><td>Only the mix of features matters</td><td>Erases the size of each customer</td></tr></tbody>
+  </table></div>
+  <p>A quick way to decide:</p>
+  <ul class="post-points post-points-color">
+    <li><strong>Outliers distort the column?</strong> Use robust scaling.</li>
+    <li><strong>Need values between 0 and 1?</strong> Use min-max, after checking for outliers.</li>
+    <li><strong>Sparse data with many zeros?</strong> Use max absolute scaling.</li>
+    <li><strong>Comparing customers by their mix, not their size?</strong> Use unit vector scaling.</li>
+    <li><strong>None of the above?</strong> Start with standardization.</li>
+  </ul>
+
+  <h2 id="fit-on-train" style="scroll-margin-top:90px">Fit on Training Data Only</h2>
+  <p>Suppose you standardize all 1,000 telecom customers first and split them into training and test sets afterwards. The mean and standard deviation then include the test customers, so the training step has already seen part of the test data. The leak is small for scaling, but it is real: test scores look slightly better than the model will do on new customers.</p>
+  <p>The rule is simple. Learn the scaling numbers (mean, standard deviation, minimum, maximum) on the training customers only, then apply those same numbers to the test customers.</p>
+  <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)   # learn mean and std on training data
+X_test_scaled = scaler.transform(X_test)         # reuse them, never refit</code></pre>
+  <p>With this setup, a test customer can fall outside the range seen in training, for example a min-max value above 1. That is expected and not a bug: it tells you the new customer is more extreme than anyone the model learned from. Columns that are already 0 or 1, such as the result of <a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a>, are usually left as they are. For a complete leakage-safe pipeline, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
+
+  <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
+  <div class="post-callout post-callout-s">
+    <p class="post-callout-q">“Before grouping our customers, we rescaled tenure and total charges. Tenure is measured in months, up to 72, while total charges run into the thousands of euros. Without rescaling, the model would have grouped customers almost only by how much they spend.</p>
+    <p class="post-callout-q">After rescaling, one typical step above average in tenure counts as much as one typical step above average in spending. In our test, a customer who had been with us 60 months stopped being called similar to one with 24 months just because their spending matched.</p>
+    <p class="post-callout-q">We learned the scaling from the training customers only, so our test results reflect how the model will treat new customers. The question we can now answer is: which customers behave alike in both how long they stay and how much they spend?”</p>
+  </div>
+
+  <h2 id="key-takeaways" style="scroll-margin-top:90px">Key Takeaways</h2>
+  <div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>Feature scaling puts features on a comparable scale so that units don’t decide the result. Distance-based, regularized and gradient-based models need it, tree-based models don’t. Standardization is a good default, robust scaling copes with outliers, and every method must be fitted on training data only.</p></div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a> The wider workflow that scaling belongs to, including a leakage-safe pipeline.</li>
+    <li><a href="k-means.html">K-Means Clustering</a> A distance-based model that depends on scaled features.</li>
+    <li><a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> Why a regularization penalty needs features on the same scale.</li>
+    <li><a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a> The other common preparation step for categorical columns.</li>
+  </ul>
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
