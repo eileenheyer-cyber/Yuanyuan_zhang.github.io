@@ -84,6 +84,10 @@
   <p class="post-formula post-formula-plain"><strong>D to Q: √(2² + 800²) = √640,004 ≈ 800</strong></p>
   <p>Using Euclidean distance, the distance between D and P is approximately 400, while the distance between D and Q is 800. Because the differences in euros are numerically much larger than the differences in months. As a result, total charges dominate the distance calculation, making P appear closer to D.</p>
   <p>Scaling addresses this problem by transforming each feature onto a comparable numerical scale before calculating distances.</p>
+  <p>After Min-Max Scaling, the same gaps are measured on a 0 to 1 scale:</p>
+  <p class="post-formula post-formula-plain"><strong>D to P: √(0.53² + 0.07²) ≈ 0.53</strong></p>
+  <p class="post-formula post-formula-plain"><strong>D to Q: √(0.03² + 0.14²) ≈ 0.14</strong></p>
+  <p>Now Q is the closer customer, because the tenure gap counts as much as the charges gap.</p>
   <p>Chart 1 shows the same customers before and after Min-Max Scaling. Switch between the two views to see how changing the scale changes which customer appears most similar to D.</p>
   <figure class="post-fig post-fig-wide" id="fs-demo">
     <div class="fs-btns"><button type="button" class="fs-btn on" id="fs-b0">1. Before scaling</button><button type="button" class="fs-btn" id="fs-b1">2. After scaling</button></div>
