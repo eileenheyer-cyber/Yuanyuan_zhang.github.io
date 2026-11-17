@@ -156,11 +156,7 @@ draw(0);
   <p>Take a ridge model on the telecom data. The penalty shrinks every coefficient by the same rule. A coefficient for euros is naturally tiny and one for months is naturally larger, so the same penalty hits the two features unequally, only because of their units. See <a href="variable-selection-regularization.html">Variable Selection vs. Regularization: Managing Model Complexity</a> for how that penalty works.</p>
 
   <h2 id="scaling-methods" style="scroll-margin-top:90px">Scaling Methods</h2>
-  <p>This section covers five methods. All of them are shown on the same example: five customers and one column, total charges. Customer E is a heavy spender, so the differences between the methods are easy to see.</p>
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Customer</th><th>Total charges</th></tr></thead>
-    <tbody><tr><td>A</td><td>€500</td></tr><tr><td>B</td><td>€1,000</td></tr><tr><td>C</td><td>€1,500</td></tr><tr><td>D</td><td>€2,000</td></tr><tr><td>E</td><td>€5,000</td></tr></tbody>
-  </table></div>
+  <p>This section covers five methods. All of them are shown on the same example: five customers and one column, total charges. Customer A pays €500, B pays €1,000, C pays €1,500, D pays €2,000 and E pays €5,000. Customer E is a heavy spender, so the differences between the methods are easy to see.</p>
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Terms used in this section</p>
     <ul class="post-points post-points-color">
