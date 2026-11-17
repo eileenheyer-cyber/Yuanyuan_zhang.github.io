@@ -55,6 +55,18 @@
     .fs-v{padding:2px 5px;background:var(--surface-alt);border:1px solid #0a0a0a22;border-radius:4px;font-variant-numeric:tabular-nums}
     @media(max-width:620px){.fs-zgrid{grid-template-columns:1fr}.fs-zarrow{transform:rotate(90deg);text-align:center;padding:0}}
     .fs-rob svg{width:100%;height:auto;display:block}
+    .fs-cmp{margin:28px 0;padding:18px 20px;background:var(--surface-alt);border:2px solid #0a0a0a;border-radius:0}
+    .fs-cmp-l{margin:0 0 14px;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+    .fs-cmp-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .fs-cmp-c{background:#fff;border:2px solid #1d57b5;padding:12px 14px;text-align:left}
+    .fs-cmp-c.c2{border-color:#f5c548}.fs-cmp-c.c3{border-color:#dc452d}
+    .fs-cmp-c h4{margin:0 0 6px;font-size:1rem}
+    .fs-cmp-f{margin:0 0 8px;font-size:.88rem;font-style:normal;text-align:left}
+    .fs-cmp-c ul{text-align:left;hyphens:none;list-style:none;margin:0;padding:0;font-size:.86rem;line-height:1.45}
+    .fs-cmp-c li{margin:0 0 6px;padding:0}.fs-cmp-c li span{font-weight:600}
+    .post .fs-cmp-b,.post .fs-cmp-f,.fs-cmp-c li{text-align:left;hyphens:none;-webkit-hyphens:none}
+    .post .fs-cmp-b{margin:18px 0 0;font-size:.92rem}
+    @media(max-width:760px){.fs-cmp-g{grid-template-columns:1fr}}
     .fs-grid-eq{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
     @media(max-width:620px){.fs-grid{grid-template-columns:1fr}}
   </style>
@@ -256,6 +268,16 @@ ma = MaxAbsScaler().fit_transform(charges)    # 0.10, 0.20, 0.30, 0.40, 1.00</co
 
 rob = RobustScaler().fit_transform(charges)   # −1.0, −0.5, 0.0, 0.5, 3.5</code></pre>
   <p><strong>Use it when:</strong> your data has real outliers that you want to keep, such as a few very heavy spenders.</p>
+
+  <div class="fs-cmp">
+    <p class="fs-cmp-l">Comparison: the same five customers, three scalers</p>
+    <div class="fs-cmp-g">
+    <div class="fs-cmp-c c1"><h4>Standardization</h4><p class="fs-cmp-f"><em>z</em> = (<em>x</em> − mean) / std</p><ul><li><span>Centers on</span> the mean</li><li><span>Unit</span> one standard deviation</li><li><span>Outliers</span> pull the mean and the std, so they distort the scale</li><li><span>Result for E</span> 1.90; A to D between −0.95 and 0.00</li></ul></div>
+    <div class="fs-cmp-c c2"><h4>Min-Max</h4><p class="fs-cmp-f">(<em>x</em> − min) / (max − min)</p><ul><li><span>Output range</span> always 0 to 1</li><li><span>Unit</span> the full range, smallest to biggest</li><li><span>Outliers</span> very sensitive: E defines the maximum</li><li><span>Result for E</span> 1.00; A to D between 0.00 and 0.33</li></ul></div>
+    <div class="fs-cmp-c c3"><h4>Robust</h4><p class="fs-cmp-f">(<em>x</em> − median) / IQR</p><ul><li><span>Centers on</span> the median</li><li><span>Unit</span> the width of the middle 50%</li><li><span>Outliers</span> hardly matter: E cannot move the median or the IQR</li><li><span>Result for E</span> 3.50; A to D between −1.00 and 0.50</li></ul></div>
+    </div>
+    <p class="fs-cmp-b">Rule of thumb: use Min-Max when you need a fixed 0 to 1 range and there are no extreme values, standardization as the general default, and Robust Scaling when real outliers stay in the data.</p>
+  </div>
 
   <h3 id="unit-vector" style="scroll-margin-top:90px">Unit Vector Scaling</h3>
   <p>The first four methods rescale a column. Unit vector scaling works on a row, one customer at a time. It keeps how a customer splits spending and drops how much the customer spends.</p>
