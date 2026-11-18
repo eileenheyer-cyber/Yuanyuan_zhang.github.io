@@ -78,23 +78,7 @@
 
   <h2 id="adaboost" style="scroll-margin-top:90px">AdaBoost: Reweighting the Customers a Model Got Wrong</h2>
 
-  <p>AdaBoost (short for adaptive boosting) keeps a weight for every customer. A customer that the current stumps get wrong receives a higher weight, so the next stump pays more attention to them. A small example makes this concrete: ten first-time customers, the question whether they ordered again, and two facts about each, the delivery time and the value of the first basket.</p>
-
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Customer</th><th>Delivery days</th><th>First basket (€)</th><th>Ordered again</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>2</td><td>95</td><td>Yes</td></tr>
-      <tr><td>2</td><td>7</td><td>75</td><td>No</td></tr>
-      <tr><td>3</td><td>9</td><td>45</td><td>No</td></tr>
-      <tr><td>4</td><td>8</td><td>85</td><td>No</td></tr>
-      <tr><td>5</td><td>8</td><td>75</td><td>No</td></tr>
-      <tr><td>6</td><td>9</td><td>95</td><td>No</td></tr>
-      <tr><td>7</td><td>8</td><td>65</td><td>Yes</td></tr>
-      <tr><td>8</td><td>8</td><td>95</td><td>No</td></tr>
-      <tr><td>9</td><td>9</td><td>60</td><td>Yes</td></tr>
-      <tr><td>10</td><td>3</td><td>95</td><td>Yes</td></tr>
-    </tbody>
-  </table></div>
+  <p>AdaBoost (short for adaptive boosting) keeps a weight for every customer. A customer that the current stumps get wrong receives a higher weight, so the next stump pays more attention to them. A small example makes this concrete: ten first-time customers, the question whether they ordered again, and two facts about each, the delivery time and the value of the first basket. Chart 2 below shows all ten: delivery time on the horizontal axis, first basket value on the vertical axis, and the outcome as the color.</p>
 
   <h3 id="ada-start">The Starting Point: Equal Weights</h3>
 
@@ -184,7 +168,7 @@
 
   <h3 id="gb-step1">Step 1: Start with a Neutral Prediction</h3>
 
-  <p>Four of the eight customers ordered again, so the model starts by predicting a probability of 0.5 for everyone. Boosted trees add up on the <strong>logit</strong> scale, the same scale as in <a href="logistic-regression.html">Logistic Regression</a>, and the sum is converted back to a probability at the end. A probability of 0.5 is a logit of 0.</p>
+  <p>Four of the eight customers ordered again, so the model starts by predicting a probability of 0.5 for everyone.</p>
 
   <h3 id="gb-step2">Step 2: Compute the Residuals</h3>
 
@@ -201,26 +185,27 @@
 
   <p>The best single question is <em>“Is the first basket at most €42.50?”</em>. It splits the customers into two groups with a different average residual: customers 1 to 3 (all −0.5) and customers 4 to 8 (+0.5, +0.5, −0.5, +0.5, +0.5, on average +0.3).</p>
 
-  <p>Each leaf gets a value. The trees add up on the logit scale, but residuals are on the probability scale, so a leaf rescales them:</p>
-
-  <p class="post-formula post-formula-plain"><strong>Leaf value = <span class="frac"><span>sum of the residuals</span><span>sum of <em>p</em> × (1 − <em>p</em>)</span></span></strong></p>
-
-  <p>Here <em>p</em> = 0.5 for everyone, so <em>p</em> × (1 − <em>p</em>) = 0.25 for each customer:</p>
+  <p>Each leaf now gets one number, the correction the tree suggests for its customers. It is based on the average residual of the customers in the leaf: −0.5 on the left and +0.3 on the right. The model keeps its prediction as a score on the <strong>logit</strong> scale (see the box after Step 4), so the average is rescaled by dividing it by <em>p</em> × (1 − <em>p</em>), which is 0.25 here because every customer has <em>p</em> = 0.5:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>Left leaf (customers 1 to 3):</strong> <span style="white-space:nowrap">−1.5 ÷ 0.75 = −2.0</span></li>
-    <li><strong>Right leaf (customers 4 to 8):</strong> <span style="white-space:nowrap">+1.5 ÷ 1.25 = +1.2</span></li>
+    <li><strong>Left leaf (customers 1 to 3):</strong> <span style="white-space:nowrap">−0.5 ÷ 0.25 = −2.0</span></li>
+    <li><strong>Right leaf (customers 4 to 8):</strong> <span style="white-space:nowrap">+0.3 ÷ 0.25 = +1.2</span></li>
   </ul>
 
-  <p>The leaf value is the correction the tree suggests: lower the logit for small baskets, raise it for larger ones.</p>
+  <p>Read the leaf values as instructions: lower the score for small baskets, raise it for larger ones.</p>
 
   <h3 id="gb-step4">Step 4: Update the Prediction with the Learning Rate</h3>
 
-  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η, a number between 0 and 1 that makes every step cautious:</p>
+  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η, a number between 0 and 1 that makes every step cautious. The score before any tree is the logit of 0.5, which is 0:</p>
 
   <p class="post-formula post-formula-plain"><strong>New logit = old logit + η × leaf value</strong></p>
 
   <p>For this example we use η = 0.5, a large value chosen only to keep the arithmetic visible. Customers 1 to 3 get 0 + 0.5 × (−2.0) = −1.0, and customers 4 to 8 get 0 + 0.5 × 1.2 = +0.6. Converting back with <span style="white-space:nowrap"><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−logit</sup>)</span> gives probabilities of 0.27 and 0.65. The predicted probabilities have moved in the right direction for seven of the eight customers; only customer 6 (€70, no repeat order) moved the wrong way.</p>
+
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">Leaf values and the logit scale</p>
+    <p>The logit of a probability <em>p</em> is log(<em>p</em> ÷ (1 − <em>p</em>)), the scale on which <a href="logistic-regression.html">Logistic Regression</a> works. Boosted trees add up on this scale because a sum of many corrections could otherwise give a probability below 0 or above 1. The final score is converted back with <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−logit</sup>). Residuals live on the probability scale, so a leaf converts them: in general, the leaf value is the sum of the residuals in the leaf divided by the sum of <em>p</em> × (1 − <em>p</em>) of the same customers. When all customers have the same <em>p</em>, as in round 1, this is the average residual divided by <em>p</em> × (1 − <em>p</em>), the calculation above.</p>
+  </div>
 
   <h3 id="gb-repeat">Repeat: Each Tree Corrects What Is Left</h3>
 
@@ -236,17 +221,7 @@
     <figcaption><span>Chart 5</span> With every tree, the predictions move toward what really happened. Customer 6 is the exception: one odd customer is not worth bending the whole model for, which is why each step is kept small.</figcaption>
   </figure>
 
-  <div class="post-table-wrap"><table class="post-table">
-    <thead><tr><th>Trees</th><th>Average size of the residuals</th></tr></thead>
-    <tbody>
-      <tr><td>0 (start)</td><td>0.50</td></tr>
-      <tr><td>1</td><td>0.36</td></tr>
-      <tr><td>2</td><td>0.31</td></tr>
-      <tr><td>3</td><td>0.25</td></tr>
-    </tbody>
-  </table></div>
-
-  <p>The average residual (ignoring its sign) halves in three small trees. This is the number the model tries to push down at every step.</p>
+  <p>The average size of the residuals (ignoring their sign) falls from 0.50 at the start to 0.36, 0.31 and 0.25 after one, two and three trees, so it halves within three small trees. This is the number the model tries to push down at every step.</p>
 
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Why “gradient” boosting?</p>
@@ -257,9 +232,21 @@
 
   <p>Boosting keeps correcting mistakes, and that is also its risk: after the real patterns are learned, the remaining mistakes are mostly noise. The numbers in this section come from a simulated table of 5,000 first-time customers, 36.7% of whom ordered again within 60 days. The columns are <code>first_basket_value</code>, <code>used_discount</code>, <code>delivery_days</code>, <code>returned_item</code>, <code>email_opt_in</code> and the target <code>repeat_60d</code>. 75% of the customers (3,750) are used for training and 25% (1,250) are kept as a test set. Always predicting “no repeat order” would be right for 63.4% of the test customers.</p>
 
+  <p>One pattern in this table matters for everything below. Among the 3,750 training customers, the share who ordered again depends on the discount code and the delivery time together:</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>Delivered in under 5 days</th><th>Delivered in 5 days or more</th></tr></thead>
+    <tbody>
+      <tr><td>Used a discount code</td><td>41.7% (997 customers)</td><td>0.4% (550 customers)</td></tr>
+      <tr><td>No discount code</td><td>52.7% (1,425 customers)</td><td>26.5% (778 customers)</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>A late delivery lowers repeat orders for everyone, but together with a discount code it almost removes them: only 2 of 550 customers ordered again. A single question about the discount or the delivery time does not capture this. It takes both together, which is the kind of pattern that later trees in a boosted model pick up.</p>
+
   <h3 id="one-by-one">Adding Trees One by One</h3>
 
-  <p>To draw a map, the model in the picture below uses only two of the five features, the first basket value and the delivery days. Each tree has a depth of 4 and the learning rate is 0.3. Move the slider to add trees.</p>
+  <p>To draw a map, the model in the picture below uses only two of the five features, the first basket value and the delivery days. Each tree has a depth of 4 and the learning rate is 0.3. Because it sees only two of the five features, this model never gets beyond about 70% test accuracy, below the 79% of the full model later in the post. Here the shape of the curve matters, not the final score. Move the slider to add trees.</p>
 
   <figure class="post-fig post-fig-wide bs-fig" id="bs-demo">
     <style>
@@ -362,7 +349,7 @@
   <h3 id="depth-and-more">Tree Depth and Other Safeguards</h3>
 
   <ul class="post-points post-points-color">
-    <li><strong>Tree depth.</strong> Shallow trees (often 1 to 5 splits) are the point of boosting. A deeper tree can capture an interaction such as <em>discount code and late delivery</em> in one tree, but it also fits noise faster. Depth 1 means each tree uses one feature, as with the stumps of AdaBoost.</li>
+    <li><strong>Tree depth.</strong> Shallow trees (often 1 to 5 splits) are the point of boosting. A deeper tree can capture an interaction such as the discount code combined with late delivery (see the table above) in one tree, but it also fits noise faster. Depth 1 means each tree uses one feature, as with the stumps of AdaBoost.</li>
     <li><strong>Subsampling.</strong> Each tree is trained on a random share of the customers (for example 80%). This makes the trees a little different from each other, like the random samples in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>, and reduces overfitting.</li>
     <li><strong>Early stopping.</strong> A part of the training data is set aside, and training stops when the score on it has not improved for a number of trees.</li>
   </ul>
@@ -410,7 +397,7 @@ gb.fit(X_train, y_train)</code></pre>
     <thead><tr><th>Model</th><th>Test accuracy</th><th>AUC</th></tr></thead>
     <tbody>
       <tr><td>Decision tree (depth 3)</td><td>76.6%</td><td>0.815</td></tr>
-      <tr><td>Random forest (300 trees, default settings)</td><td>74.6%</td><td>0.814</td></tr>
+      <tr><td>Random forest (300 trees, fully grown by default)</td><td>74.6%</td><td>0.814</td></tr>
       <tr><td>Random forest (300 trees, at least 10 customers per leaf)</td><td>79.0%</td><td>0.866</td></tr>
       <tr><td>AdaBoost (50 stumps)</td><td>78.3%</td><td>0.837</td></tr>
       <tr><td>Gradient boosting (107 trees)</td><td>79.4%</td><td>0.865</td></tr>
@@ -420,10 +407,10 @@ gb.fit(X_train, y_train)</code></pre>
   <p>On this table, a well-set random forest and gradient boosting are practically tied. What differs is the effort and the risk:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>The random forest with default settings fell behind.</strong> Its trees are grown fully by default and fit the noise in this table, so it needed a minimum leaf size of 10 customers to catch up. A forest is forgiving, but not unconditionally.</li>
+    <li><strong>The default random forest fell behind, because of the noise in this table.</strong> Its trees are grown fully by default and memorize that noise. Limiting the depth to 5 to 8 levels, or requiring at least 10 customers per leaf, lifts it to about 79%. This is a property of this noisy table, not a general rule: on cleaner data a fully grown forest works well without tuning, as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>.</li>
     <li><strong>Boosting needs more care.</strong> Learning rate, number of trees and depth work together, and a model that keeps correcting mistakes can chase noisy labels. In return, it often reaches a slightly better score on tables with clear structure.</li>
     <li><strong>Training differs.</strong> The trees of a forest can be built in parallel, while a boosted model is built tree after tree, although modern libraries make this fast.</li>
-    <li><strong>Interpretability is similar.</strong> Neither gives one readable rule set like a single tree. Both provide feature importance, and in our model the first basket value (38%), delivery days (24%) and email opt-in (20%) matter most.</li>
+    <li><strong>Interpretability is similar.</strong> Neither gives one readable rule set like a single tree. Both provide feature importance. Shuffling one column of the test table and measuring how much the accuracy drops (permutation importance, as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>) ranks the first basket value first (11 points), then email opt-in (8 points) and delivery days (7 points). The discount code (5 points) and returned items (3 points) matter less.</li>
   </ul>
 
   <p>A practical rule: start with a random forest as a strong, low-effort baseline, and move to boosting when the last points of accuracy matter and there is time to tune it.</p>
@@ -432,7 +419,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <div class="post-callout post-callout-s">
     <p class="post-callout-q">“We predict which first-time customers will order again within 60 days with a chain of small decision trees. The first tree makes a rough guess, and every following tree is trained only on the mistakes the earlier trees still make. After about 100 such corrections, the guesses are much sharper.</p>
-    <p class="post-callout-q">On 1,250 customers the model had never seen, it was right about 79% of the time. When it says a customer will order again, it is correct for 77 out of 100. The strongest signals are the size of the first basket, the delivery time and whether the customer signed up for emails. One pattern stands out: customers who used a discount code and waited five days or more for their package almost never came back, fewer than 1 in 100, compared with 37% overall.</p>
+    <p class="post-callout-q">On 1,250 customers the model had never seen, it was right about 79% of the time. When it says a customer will order again, it is correct for 77 out of 100. The strongest signals are the size of the first basket, whether the customer signed up for emails and the delivery time. One pattern stands out: customers who used a discount code and waited five days or more for their package almost never came back, fewer than 1 in 100, compared with 37% overall.</p>
     <p class="post-callout-q">The trade-off is that we can show you which factors matter, but not one simple rule per customer. The next business question is: which customers should get a faster delivery option or a follow-up offer, and how much is a second order worth to us?”</p>
   </div>
 
