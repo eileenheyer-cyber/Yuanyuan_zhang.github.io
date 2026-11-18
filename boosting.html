@@ -78,7 +78,7 @@
   <h2 id="adaboost" style="scroll-margin-top:90px">AdaBoost: Reweighting the Customers a Model Got Wrong</h2>
 
   <p>AdaBoost (short for adaptive boosting) is the simplest way to make trees learn from their mistakes. Think of a teacher who gives a student extra practice on the questions they got wrong. Here, every customer gets a weight, which says how much that customer counts. At the start, all customers count the same. After each tree, the customers it got wrong count more, so the next tree tries harder to get them right.</p>
-  <p>Each tree is tiny: it asks only one question, such as “Was the package delivered within 5 days?”, and is called a stump. Our example has ten first-time customers. Chart 2 below shows them: delivery time runs from left to right, the value of the first basket from bottom to top, and the color shows whether they ordered again.</p>
+  <p>Each tree is tiny: it asks only one yes-or-no question about a customer and is called a stump. Our example has ten first-time customers. Chart 2 below shows them: delivery time runs from left to right, the value of the first basket from bottom to top, and the color shows whether they ordered again.</p>
 
   <h3 id="ada-start">The Starting Point: Equal Weights</h3>
 
