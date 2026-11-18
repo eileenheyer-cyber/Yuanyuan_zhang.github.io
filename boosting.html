@@ -96,7 +96,7 @@
 
   <h3 id="ada-say">How Much Say Does a Stump Get?</h3>
 
-  <p>The better a stump is, the more it should count in the final decision. This is called its <strong>say</strong> and is written α (alpha). A stump with a small error gets a large say, and a stump that is no better than a coin flip gets none. AdaBoost calculates it like this:</p>
+  <p>A stump’s <strong>vote</strong> is its answer for a customer: +1 (repeat order) or −1 (no repeat order). Its <strong>say</strong> is how much that answer counts. The better a stump is, the more say it should get. The say is written α (alpha). A stump with a small error gets a large say, and a stump that is no better than a coin flip gets none. AdaBoost calculates it like this:</p>
 
   <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>1 − ε</span><span>ε</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>0.80</span><span>0.20</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln 4 = 0.69</strong></p>
 
@@ -106,7 +106,7 @@
     <li><strong>ε above 0.5:</strong> the stump is worse than guessing, so α is negative and its vote is flipped.</li>
   </ul>
 
-  <p>The value α = 0.69 is used twice: as the stump’s weight in the final vote, and to decide how the customer weights change next.</p>
+  <p>The value α = 0.69 is used twice: as the stump’s say in the final vote, and to decide how the customer weights change next.</p>
 
   <h3 id="ada-reweight">Reweighting: Mistakes Count More</h3>
 
@@ -137,7 +137,7 @@
     <figcaption><span>Chart 3</span> Each stump asks a different question and is wrong in a different place. None of them is good alone, but their mistakes do not overlap much, which is what the weighted vote below uses.</figcaption>
   </figure>
 
-  <p>The final prediction is a weighted vote. Each stump votes +1 (repeat order) or −1 (no repeat order), the vote is multiplied by the stump’s α, and the sign of the sum decides:</p>
+  <p>The final prediction is a weighted vote. Each stump votes +1 or −1, its vote is multiplied by its say α, and the sign of the sum decides:</p>
 
   <p class="post-formula post-formula-plain"><strong>Score = 0.69 × <em>h</em><sub>1</sub> + 0.73 × <em>h</em><sub>2</sub> + 0.72 × <em>h</em><sub>3</sub></strong></p>
 
