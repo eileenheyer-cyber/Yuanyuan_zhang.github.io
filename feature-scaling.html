@@ -351,7 +351,7 @@ X_test_scaled = scaler.transform(X_test)</code></pre>
   <p>This distinction also matters for Min-Max Scaling. Suppose the training data contains ages between 20 and 60. A new customer who is 70 years old would receive a scaled value of 1.25, rather than a value between 0 and 1.</p>
   <p>That is perfectly normal. The scaling parameters are based on the training data, so new observations can fall outside the original range. Do not refit the scaler just to force them back into it.</p>
   <p><strong>The takeaway:</strong> Split first, fit on training data, and transform the test data using the same parameters. This principle applies not only to scaling but also to other preprocessing techniques, such as imputation and feature selection.</p>
-  <p>For a complete leakage-safe workflow, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
+  <p>For the full pipeline, with the split, the fitting and the evaluation in the right order, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
