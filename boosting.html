@@ -51,7 +51,6 @@
       <li><a href="#libraries">XGBoost, LightGBM and CatBoost: What Is Different?</a></li>
       <li><a href="#python">Training Gradient Boosting in Python</a></li>
       <li><a href="#vs-random-forest">Boosting vs. Random Forest: When to Use Which</a></li>
-      <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
     </ul>
   </div>
 
@@ -414,14 +413,6 @@ gb.fit(X_train, y_train)</code></pre>
   </ul>
 
   <p>A practical rule: start with a random forest as a strong, low-effort baseline, and move to boosting when the last points of accuracy matter and there is time to tune it.</p>
-
-  <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
-
-  <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“We predict which first-time customers will order again within 60 days with a chain of small decision trees. The first tree makes a rough guess, and every following tree is trained only on the mistakes the earlier trees still make. After about 100 such corrections, the guesses are much sharper.</p>
-    <p class="post-callout-q">On 1,250 customers the model had never seen, it was right about 79% of the time. When it says a customer will order again, it is correct for 77 out of 100. The strongest signals are the size of the first basket, whether the customer signed up for emails and the delivery time. One pattern stands out: customers who used a discount code and waited five days or more for their package almost never came back, fewer than 1 in 100, compared with 37% overall.</p>
-    <p class="post-callout-q">The trade-off is that we can show you which factors matter, but not one simple rule per customer. The next business question is: which customers should get a faster delivery option or a follow-up offer, and how much is a second order worth to us?”</p>
-  </div>
 
   <div class="post-note post-takeaway">
     <p class="post-note-l">Key takeaway</p>
