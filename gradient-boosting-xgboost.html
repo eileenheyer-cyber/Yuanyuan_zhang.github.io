@@ -35,11 +35,9 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">Gradient Boosting and XGBoost Explained: From Residuals to Second-Order Optimization</h1>
 
-  <p>AdaBoost corrects its mistakes by giving the customers it got wrong a higher weight. Gradient boosting does it more directly: it measures how far off each prediction is and trains the next small tree to close exactly that gap. XGBoost keeps this idea and refines it in two ways. It looks not only at the direction in which the predictions should move but also at how far they can safely move, and it charges a penalty for trees that become too complex.</p>
+<p>AdaBoost corrects its mistakes by giving wrongly predicted customers a higher weight. Gradient boosting is more direct: it measures how far off each prediction is and trains the next small tree to close exactly that gap. XGBoost refines this by also asking how far a prediction can safely move, and by penalizing trees that become too complex.</p>
 
-  <p>The running example is the one from the rest of this series. An online shop wants to predict whether a first-time customer places another order within 60 days. Part A builds gradient boosting step by step on eight customers, shows how learning rate, number of trees and tree depth control overfitting on a table of 5,000 customers, and ends with Python code. Part B explains what XGBoost changes: gradient and Hessian, regularization, leaf weights and split gain, again with the same eight customers.</p>
-
-  <p>This is the second of three articles on boosting. <a href="adaboost.html">AdaBoost Explained: How Models Learn from Their Mistakes</a> comes first, and <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. Knowing what a decision tree is will be enough. The few formulas are explained before they appear.</p>
+  <p>The example is the same online shop: will a first-time customer order again within 60 days? Part A builds gradient boosting on eight customers and ends with Python code. Part B shows what XGBoost changes. This is the second of three articles on boosting, after <a href="adaboost.html">AdaBoost Explained</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
