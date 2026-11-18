@@ -34,7 +34,11 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">Boosting: Learning from the Mistakes of Previous Trees</h1>
 
-  <p>Draft in progress.</p>
+  <p>An online shop trains a decision tree to predict which first-time customers will order again within 60 days. It gets most of them right, but keeps missing one group: customers who used a discount code and received their package late. Instead of discarding the tree, the shop trains a second tree that concentrates on exactly those customers, then a third that concentrates on what the first two still get wrong.</p>
+
+  <p>This is boosting: many small trees built one after another, each correcting the mistakes of the ones before. <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> trains its trees independently and lets them vote. Boosting trains them in sequence and adds up their corrections.</p>
+
+  <p>In this post, you will learn how AdaBoost reweights customers, how gradient boosting fits residuals, how learning rate and number of trees control overfitting, and what XGBoost, LightGBM and CatBoost add.</p>
 
 </main>
 
