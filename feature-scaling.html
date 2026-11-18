@@ -330,14 +330,28 @@ unit = Normalizer(norm=&quot;l2&quot;).fit_transform(usage)  # (0.83, 0.55), (0.
   </ul>
 
   <h2 id="fit-on-train" style="scroll-margin-top:90px">Fit on Training Data Only</h2>
-  <p>Suppose you standardize all 1,000 telecom customers first and split them into training and test sets afterwards. The mean and standard deviation then include the test customers, so the training step has already seen part of the test data. The leak is small for scaling, but it is real: test scores look slightly better than the model will do on new customers.</p>
-  <p>The rule is simple. Learn the scaling numbers (mean, standard deviation, minimum, maximum) on the training customers only, then apply those same numbers to the test customers.</p>
+  <p>Imagine you have 1,000 telecom customers. Before training your machine learning model, you standardize their features and then split the dataset into training and test sets.</p>
+  <p>This order creates a subtle problem: the mean and standard deviation used for scaling were calculated from all 1,000 customers, including those in the test set.</p>
+  <p>Although the model has not seen the test customers’ target values, information about their feature distributions has already influenced the preprocessing. This is called data leakage. It can make the model’s evaluation less reliable and give an overly optimistic impression of how well it performs on genuinely unseen data.</p>
+  <p>The correct approach is to split the data first, then learn the scaling parameters from the training set only. Apply those same parameters to both datasets:</p>
   <pre class="post-code"><code>from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)   # learn mean and std on training data
-X_test_scaled = scaler.transform(X_test)         # reuse them, never refit</code></pre>
-  <p>With this setup, a test customer can fall outside the range seen in training, for example a min-max value above 1. That is expected and not a bug: it tells you the new customer is more extreme than anyone the model learned from. Columns that are already 0 or 1, such as the result of <a href="one-hot-encoding.html">One-Hot Encoding: How to Make Categories Readable for Machine Learning</a>, are usually left as they are. For a complete leakage-safe pipeline, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
+
+# Learn scaling parameters from training data
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Apply the same parameters to test data
+X_test_scaled = scaler.transform(X_test)</code></pre>
+  <p>Notice the difference between <code>fit_transform()</code> and <code>transform()</code>:</p>
+  <ul class="post-points">
+    <li><code>fit_transform()</code>: Calculates the mean and standard deviation from the training data, then standardizes it.</li>
+    <li><code>transform()</code>: Uses the previously learned parameters to standardize the test data. It does not calculate new ones.</li>
+  </ul>
+  <p>This distinction also matters for Min-Max Scaling. Suppose the training data contains ages between 20 and 60. A new customer who is 70 years old would receive a scaled value of 1.25, rather than a value between 0 and 1.</p>
+  <p>That is perfectly normal. The scaling parameters are based on the training data, so new observations can fall outside the original range. Do not refit the scaler just to force them back into it.</p>
+  <p><strong>The takeaway:</strong> Split first, fit on training data, and transform the test data using the same parameters. This principle applies not only to scaling but also to other preprocessing techniques, such as imputation and feature selection.</p>
+  <p>For a complete leakage-safe workflow, see <a href="feature-engineering.html">Feature Engineering: Turning Raw Data into Meaningful Features</a>.</p>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to explain it to stakeholders</h2>
   <div class="post-callout post-callout-s">
