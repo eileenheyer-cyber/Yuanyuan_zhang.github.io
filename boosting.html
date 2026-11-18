@@ -92,7 +92,7 @@
 
   <p class="post-formula post-formula-plain"><strong>ε = 0.10 + 0.10 = 0.20</strong></p>
 
-  <p>With equal weights this is simply the share of mistakes, 2 of 10. Later, when customers have different weights, a mistake on a customer who counts a lot costs more than a mistake on a customer who counts little. The smaller this number, the more we can trust the stump.</p>
+  <p>Right now every customer counts the same, so ε is just the share of wrong answers: 2 of 10 customers, or 0.20. In later rounds the weights differ, and getting a high-weight customer wrong adds more to ε than getting a low-weight customer wrong. A small ε means the stump is usually right where it matters, so we can trust it more.</p>
 
   <h3 id="ada-say">How Much Say Does a Stump Get?</h3>
 
