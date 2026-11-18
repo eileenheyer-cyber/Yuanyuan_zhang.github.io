@@ -355,10 +355,9 @@ X_test_scaled = scaler.transform(X_test)</code></pre>
 
   <h2 id="stakeholders" style="scroll-margin-top:90px">How to Explain Scaling to Stakeholders</h2>
   <div class="post-callout post-callout-s">
-    <p class="post-callout-q">“Before grouping our customers, we standardized two features: tenure and total charges. Tenure is measured in months, while total charges are measured in euros. Because these features have very different numerical scales, total charges could otherwise dominate the distance calculations used by K-Means.</p>
-    <p class="post-callout-q">After standardization, both features are measured relative to their own averages and standard deviations. A value of +1 now means that a customer is one standard deviation above average, whether we are looking at tenure or spending.</p>
-    <p class="post-callout-q">This allows the clustering algorithm to consider both customer characteristics on a more comparable scale, rather than allowing the feature with the largest numerical values to dominate.</p>
-    <p class="post-callout-q">We can now identify customer groups based on a combination of how long customers stay and how much they spend, rather than letting their spending figures disproportionately influence the results.”</p>
+    <p class="post-callout-q">“Before grouping our customers, we put tenure and total charges on the same footing. Tenure is counted in months and stays below about 72, while total charges run into the thousands of euros. Without this step, the grouping would have looked almost only at spending, because differences in euros are so much bigger than differences in months.</p>
+    <p class="post-callout-q">After this step, both features are measured the same way: how far a customer is from the average. Being well above average in tenure now counts as much as being well above average in spending. A customer who has stayed 60 months and one who has stayed 24 months are now seen as clearly different, even if they spend about the same.</p>
+    <p class="post-callout-q">We worked out the scaling from the training customers only, so our test results show how the model will treat new customers. The question we can now answer is: which customers behave alike in both how long they stay and how much they spend?”</p>
   </div>
 
   <h2 id="key-takeaways" style="scroll-margin-top:90px">Key Takeaways</h2>
