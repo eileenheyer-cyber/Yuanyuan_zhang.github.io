@@ -56,7 +56,7 @@
 
   <h2 id="bagging-vs-boosting" style="scroll-margin-top:90px">Bagging vs. Boosting: Parallel vs. Sequential Learning</h2>
 
-  <p>A random forest and a boosted model both combine many decision trees, but in opposite ways. A forest typically grows deep trees, fully grown by default, independently on different bootstrap samples and lets them vote, which mainly reduces <strong>variance</strong>. Boosting grows small trees one after another and trains every new tree on what the earlier trees still get wrong, which mainly reduces <strong>bias</strong>. Both terms are explained in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
+  <p>A random forest and a boosted model both combine many decision trees, but in opposite ways. A forest grows deep trees (fully grown by default) independently of each other, each on a different random sample of the customers, and lets them vote. This mainly reduces <strong>variance</strong>: a single deep tree changes a lot when the training customers change, and averaging many trees steadies it. Boosting grows small trees one after another, and every new tree is trained on what the earlier trees still get wrong. This mainly reduces <strong>bias</strong>: a model that is too simple misses real patterns, and each new tree adds a pattern that was still missing. Both terms are explained in <a href="overfitting-underfitting.html">Overfitting and Underfitting</a>.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><svg viewBox="0 0 720 350" role="img" aria-label="Two rows of small trees. Top row, random forest: three deep trees are built independently and their predictions are combined by a vote. Bottom row, boosting: three one-question trees are built one after another, each trained on the mistakes of the previous one, and their outputs are summed." style="width:100%;height:auto;display:block;min-width:560px"><text x="16" y="24" font-size="15" text-anchor="start" font-weight="700" fill="#0a0a0a" >Random forest</text><text x="130" y="24" font-size="13" text-anchor="start" font-weight="400" fill="#444" >deep trees (by default), built independently and in parallel</text><line x1="110" y1="48" x2="84" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="110" y1="48" x2="136" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="84" y1="76" x2="70" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="84" y1="76" x2="98" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="136" y1="76" x2="122" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="136" y1="76" x2="150" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="110" cy="48" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="84" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="136" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="63" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="91" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><rect x="115" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="143" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="110" y="128" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 1</text><line x1="250" y1="48" x2="224" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="250" y1="48" x2="276" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="224" y1="76" x2="210" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="224" y1="76" x2="238" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="276" y1="76" x2="262" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="276" y1="76" x2="290" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="250" cy="48" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="224" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="276" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="203" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="231" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><rect x="255" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="283" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="250" y="128" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 2</text><line x1="390" y1="48" x2="364" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="390" y1="48" x2="416" y2="76" stroke="#0a0a0a" stroke-width="1.5"/><line x1="364" y1="76" x2="350" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="364" y1="76" x2="378" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="416" y1="76" x2="402" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><line x1="416" y1="76" x2="430" y2="104" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="390" cy="48" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="364" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="416" cy="76" r="7" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="343" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="371" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><rect x="395" y="97" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="423" y="97" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="390" y="128" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 3</text><text x="250" y="146" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >each tree sees its own random sample of customers</text><line x1="450" y1="76" x2="511.0" y2="76.0" stroke="#0a0a0a" stroke-width="1.5"/><polygon points="520,76 511.0,81.0 511.0,71.0" fill="#0a0a0a"/><rect x="530.0" y="58" width="120" height="36" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="1.5"/><text x="590" y="80.5" font-size="14" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Vote</text><line x1="16" y1="172" x2="704" y2="172" stroke="#aaa" stroke-width="1" stroke-dasharray="4 4"/><text x="16" y="202" font-size="15" text-anchor="start" font-weight="700" fill="#0a0a0a" >Boosting</text><text x="100" y="202" font-size="13" text-anchor="start" font-weight="400" fill="#444" >small trees, built one after another</text><line x1="110" y1="230" x2="88" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><line x1="110" y1="230" x2="132" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="110" cy="230" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="81" y="259" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="125" y="259" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="110" y="300" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 1</text><line x1="290" y1="230" x2="268" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><line x1="290" y1="230" x2="312" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="290" cy="230" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="261" y="259" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="305" y="259" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="290" y="300" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 2</text><line x1="470" y1="230" x2="448" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><line x1="470" y1="230" x2="492" y2="266" stroke="#0a0a0a" stroke-width="1.5"/><circle cx="470" cy="230" r="8" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><rect x="441" y="259" width="14" height="14" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><rect x="485" y="259" width="14" height="14" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="470" y="300" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >Tree 3</text><line x1="150" y1="250" x2="239.0" y2="250.0" stroke="#0a0a0a" stroke-width="1.5"/><polygon points="248,250 239.0,255.0 239.0,245.0" fill="#0a0a0a"/><text x="199" y="240" font-size="12" text-anchor="middle" font-weight="600" fill="#dc452d" >mistakes</text><line x1="330" y1="250" x2="419.0" y2="250.0" stroke="#0a0a0a" stroke-width="1.5"/><polygon points="428,250 419.0,255.0 419.0,245.0" fill="#0a0a0a"/><text x="379" y="240" font-size="12" text-anchor="middle" font-weight="600" fill="#dc452d" >mistakes</text><text x="290" y="320" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >each tree is trained on what the trees before it still get wrong</text><line x1="520" y1="250" x2="547.0" y2="250.0" stroke="#0a0a0a" stroke-width="1.5"/><polygon points="556,250 547.0,255.0 547.0,245.0" fill="#0a0a0a"/><rect x="568.0" y="232" width="132" height="36" rx="6" fill="#e9e1cd" stroke="#0a0a0a" stroke-width="1.5"/><text x="634" y="254.5" font-size="14" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Sum of trees</text></svg></div>
@@ -73,29 +73,29 @@
     </tbody>
   </table></div>
 
-  <p>The small trees of boosting are called <strong>weak learners</strong>: models that are only a little better than guessing. The most common weak learner is a <strong>stump</strong>, a tree with one question and two leaves (see <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>). One stump is almost useless, but many stumps, each aimed at the mistakes of the previous ones, add up to an accurate model. There are two main ways to aim a tree at mistakes: AdaBoost reweights the customers, and gradient boosting fits the remaining errors directly.</p>
+  <p>The small trees of boosting are called <strong>weak learners</strong>, which means each one is only a little better than guessing. The most common one is a <strong>stump</strong>, a tree with just one question and two possible answers (see <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>). One stump is almost useless, but many stumps, each aimed at the mistakes of the ones before, add up to an accurate model. There are two main ways to aim a tree at mistakes: AdaBoost makes the customers that were wrong count more, and gradient boosting measures the remaining errors directly and trains the next tree to correct them.</p>
 
   <h2 id="adaboost" style="scroll-margin-top:90px">AdaBoost: Reweighting the Customers a Model Got Wrong</h2>
 
-  <p>AdaBoost (short for adaptive boosting) keeps a weight for every customer. A customer that the current stumps get wrong receives a higher weight, so the next stump pays more attention to them. A small example makes this concrete: ten first-time customers, the question whether they ordered again, and two facts about each, the delivery time and the value of the first basket. Chart 2 below shows all ten: delivery time on the horizontal axis, first basket value on the vertical axis, and the outcome as the color.</p>
+  <p>AdaBoost (short for adaptive boosting) is the simplest way to make trees focus on mistakes. Every customer gets a weight, which says how much that customer counts. At the start all customers count the same. After each tree, the customers it got wrong count more, so the next tree tries harder to get them right. The trees are tiny: each asks only one question, such as “Was the package delivered within 5 days?”, and is called a stump. Our example has ten first-time customers. Chart 2 below shows them, with delivery time from left to right, the value of the first basket from bottom to top, and whether they ordered again as the color.</p>
 
   <h3 id="ada-start">The Starting Point: Equal Weights</h3>
 
-  <p>Before the first stump, all ten customers count the same: each has the weight <span style="white-space:nowrap">1 ÷ 10 = 0.10</span>, and the weights add up to 1.</p>
+  <p>Before the first stump, all ten customers count the same: each has the weight <span style="white-space:nowrap">1 ÷ 10 = 0.10</span>. The weights add up to 1, like shares of a whole.</p>
 
   <h3 id="ada-round1">Round 1: The First Stump and Its Weighted Error</h3>
 
   <p>The first stump looks for the single question that separates the customers best. Here it is <em>“Was the package delivered within 5 days?”</em>: yes means it predicts a repeat order, no means it predicts none. It is right for eight customers and wrong for customers 7 and 9, who waited 8 and 9 days and ordered again anyway.</p>
 
-  <p>The stump’s quality is measured by its <strong>weighted error</strong> ε, the total weight of the customers it gets wrong:</p>
+  <p>To judge a stump, we add up the weights of the customers it gets wrong. This number is called the <strong>weighted error</strong> and is written ε (epsilon):</p>
 
   <p class="post-formula post-formula-plain"><strong>ε = 0.10 + 0.10 = 0.20</strong></p>
 
-  <p>With equal weights this is simply the share of mistakes, 2 of 10. Later rounds use unequal weights, and then a mistake on a heavy customer costs more than a mistake on a light one. This number decides how much the stump may say in the final vote and how strongly the weights change.</p>
+  <p>With equal weights this is simply the share of mistakes, 2 of 10. Later, when customers have different weights, a mistake on a customer who counts a lot costs more than a mistake on a customer who counts little. The smaller this number, the more we can trust the stump.</p>
 
   <h3 id="ada-say">How Much Say Does a Stump Get?</h3>
 
-  <p>A stump with a small error should have a large say, and a stump that is no better than a coin flip should have none. AdaBoost uses:</p>
+  <p>The better a stump is, the more it should count in the final decision. This is called its <strong>say</strong> and is written α (alpha). A stump with a small error gets a large say, and a stump that is no better than a coin flip gets none. AdaBoost calculates it like this:</p>
 
   <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>1 − ε</span><span>ε</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>0.80</span><span>0.20</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln 4 = 0.69</strong></p>
 
@@ -109,7 +109,7 @@
 
   <h3 id="ada-reweight">Reweighting: Mistakes Count More</h3>
 
-  <p>Customers the stump got wrong are multiplied by <em>e</em><sup>α</sup>, customers it got right by <em>e</em><sup>−α</sup>. With α = 0.69, <em>e</em><sup>α</sup> = 2 and <em>e</em><sup>−α</sup> = 0.5:</p>
+  <p>The weights are changed with a simple rule. The weight of every customer the stump got wrong is multiplied by <em>e</em><sup>α</sup> (a number above 1), and the weight of every customer it got right is multiplied by <em>e</em><sup>−α</sup> (a number below 1). With α = 0.69, <em>e</em><sup>α</sup> = 2 and <em>e</em><sup>−α</sup> = 0.5:</p>
 
   <ul class="post-points post-points-color">
     <li><strong>Customers 7 and 9 (wrong):</strong> 0.10 × 2 = 0.20 each.</li>
@@ -149,7 +149,7 @@
 
   <h2 id="gradient-boosting" style="scroll-margin-top:90px">Gradient Boosting: Fitting the Residuals</h2>
 
-  <p>Gradient boosting reaches the same goal differently. Instead of reweighting customers, it measures each mistake directly as a <strong>residual</strong>, the difference between what happened and what the model predicted, and trains the next tree to predict that residual. The tree’s output is then added to the prediction. A second small example with eight customers, sorted by the value of their first basket:</p>
+  <p>Gradient boosting reaches the same goal differently. Instead of changing the weights of the customers, it measures each mistake directly. The mistake for one customer is called the <strong>residual</strong>: what actually happened minus what the model predicted. The next tree is trained to predict these residuals, and its answer is added to the current prediction, which corrects it. A second small example, with eight customers sorted by the value of their first basket:</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Customer</th><th>First basket (€)</th><th>Ordered again</th></tr></thead>
@@ -171,7 +171,7 @@
 
   <h3 id="gb-step2">Step 2: Compute the Residuals</h3>
 
-  <p>The residual is the actual outcome (1 or 0) minus the predicted probability:</p>
+  <p>The residual is what actually happened (1 if the customer ordered again, 0 if not) minus the predicted probability:</p>
 
   <ul class="post-points post-points-color">
     <li><strong>Customers 4, 5, 7, 8 (ordered again):</strong> 1 − 0.5 = +0.5.</li>
@@ -184,7 +184,7 @@
 
   <p>The best single question is <em>“Is the first basket at most €42.50?”</em>. It splits the customers into two groups with a different average residual: customers 1 to 3 (all −0.5) and customers 4 to 8 (+0.5, +0.5, −0.5, +0.5, +0.5, on average +0.3).</p>
 
-  <p>Each leaf now gets one number, the correction the tree suggests for its customers. It is based on the average residual of the customers in the leaf: −0.5 on the left and +0.3 on the right. The model keeps its prediction as a score on the <strong>logit</strong> scale (see the box after Step 4), so the average is rescaled by dividing it by <em>p</em> × (1 − <em>p</em>), which is 0.25 here because every customer has <em>p</em> = 0.5:</p>
+  <p>Each leaf now gets one number, the correction the tree suggests for its customers. It starts from the average residual of the customers in the leaf: −0.5 on the left and +0.3 on the right. The model keeps its prediction as a score (called a logit, explained in the box after Step 4) instead of a probability. To move from probabilities to this score, the average is divided by <em>p</em> × (1 − <em>p</em>), which is 0.25 here because every customer has <em>p</em> = 0.5:</p>
 
   <ul class="post-points post-points-color">
     <li><strong>Left leaf (customers 1 to 3):</strong> <span style="white-space:nowrap">−0.5 ÷ 0.25 = −2.0</span></li>
@@ -195,15 +195,15 @@
 
   <h3 id="gb-step4">Step 4: Update the Prediction with the Learning Rate</h3>
 
-  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η, a number between 0 and 1 that makes every step cautious. The score before any tree is the logit of 0.5, which is 0:</p>
+  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η (eta), a number between 0 and 1 that makes every step cautious, like a small step instead of a big jump. The score before any tree is 0, which stands for a probability of 0.5:</p>
 
-  <p class="post-formula post-formula-plain"><strong>New logit = old logit + η × leaf value</strong></p>
+  <p class="post-formula post-formula-plain"><strong>New score = old score + η × leaf value</strong></p>
 
-  <p>For this example we use η = 0.5, a large value chosen only to keep the arithmetic visible. Customers 1 to 3 get 0 + 0.5 × (−2.0) = −1.0, and customers 4 to 8 get 0 + 0.5 × 1.2 = +0.6. Converting back with <span style="white-space:nowrap"><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−logit</sup>)</span> gives probabilities of 0.27 and 0.65. The predicted probabilities have moved in the right direction for seven of the eight customers; only customer 6 (€70, no repeat order) moved the wrong way.</p>
+  <p>For this example we use η = 0.5, a large value chosen only to keep the arithmetic visible. Customers 1 to 3 get 0 + 0.5 × (−2.0) = −1.0, and customers 4 to 8 get 0 + 0.5 × 1.2 = +0.6. Converting back with <span style="white-space:nowrap"><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</span> gives probabilities of 0.27 and 0.65. The predicted probabilities have moved in the right direction for seven of the eight customers; only customer 6 (€70, no repeat order) moved the wrong way.</p>
 
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Leaf values and the logit scale</p>
-    <p>The logit of a probability <em>p</em> is log(<em>p</em> ÷ (1 − <em>p</em>)), the scale on which <a href="logistic-regression.html">Logistic Regression</a> works. Boosted trees add up on this scale because a sum of many corrections could otherwise give a probability below 0 or above 1. The final score is converted back with <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−logit</sup>). Residuals live on the probability scale, so a leaf converts them: in general, the leaf value is the sum of the residuals in the leaf divided by the sum of <em>p</em> × (1 − <em>p</em>) of the same customers. When all customers have the same <em>p</em>, as in round 1, this is the average residual divided by <em>p</em> × (1 − <em>p</em>), the calculation above.</p>
+    <p>A probability has to stay between 0 and 1, but corrections that are added together can go beyond that. So boosted models add the corrections on a different scale, the <strong>logit</strong> scale, which has no limits, and convert the result back to a probability at the end. The logit of a probability <em>p</em> is log(<em>p</em> ÷ (1 − <em>p</em>)), the same scale on which <a href="logistic-regression.html">Logistic Regression</a> works. The conversion back is <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−logit</sup>). Residuals are on the probability scale, so each leaf converts them: in general, the leaf value is the sum of the residuals in the leaf divided by the sum of <em>p</em> × (1 − <em>p</em>) of the same customers. When all customers have the same <em>p</em>, as in round 1, this is the average residual divided by <em>p</em> × (1 − <em>p</em>), the calculation above.</p>
   </div>
 
   <h3 id="gb-repeat">Repeat: Each Tree Corrects What Is Left</h3>
@@ -224,12 +224,12 @@
 
   <div class="post-note post-note-plain post-note-concept">
     <p class="post-note-l">Why “gradient” boosting?</p>
-    <p>The residual, actual minus predicted probability, is exactly the direction in which the logit has to move to reduce the log loss, the quantity that logistic regression also minimizes. Fitting a tree to the residuals and adding it is therefore one step of gradient descent, taken in the space of models instead of in the space of coefficients. The same recipe works for other loss functions, which is why gradient boosting also handles regression and ranking problems.</p>
+    <p>The residual (actual minus predicted probability) points exactly in the direction in which the prediction has to move to make the model’s error smaller. Fitting a tree to the residuals and adding it is therefore like taking one step downhill when you look for the lowest point of an error curve. Following the steepest way down is called following the <em>gradient</em>, which gives the method its name. Because the method only needs this direction, the same recipe works for other ways of measuring error, which is why gradient boosting also handles regression and ranking problems.</p>
   </div>
 
   <h2 id="tuning" style="scroll-margin-top:90px">Learning Rate, Number of Trees and Tree Depth</h2>
 
-  <p>Boosting keeps correcting mistakes, and that is also its risk: after the real patterns are learned, the remaining mistakes are mostly noise. The numbers in this section come from a simulated table of 5,000 first-time customers, 36.7% of whom ordered again within 60 days. The columns are <code>first_basket_value</code>, <code>used_discount</code>, <code>delivery_days</code>, <code>returned_item</code>, <code>email_opt_in</code> and the target <code>repeat_60d</code>. 75% of the customers (3,750) are used for training and 25% (1,250) are kept as a test set. Always predicting “no repeat order” would be right for 63.4% of the test customers.</p>
+  <p>Boosting keeps correcting mistakes, and that is also its risk. Once the real patterns are learned, the mistakes that are left are mostly random noise, and a model that keeps chasing them starts to memorize the training customers instead of learning patterns that also hold for new customers. This is called <strong>overfitting</strong>. The numbers in this section come from a simulated table of 5,000 first-time customers, 36.7% of whom ordered again within 60 days. The columns are <code>first_basket_value</code>, <code>used_discount</code>, <code>delivery_days</code>, <code>returned_item</code>, <code>email_opt_in</code> and the target <code>repeat_60d</code>. 75% of the customers (3,750) are used for training and 25% (1,250) are kept as a test set. Always predicting “no repeat order” would be right for 63.4% of the test customers.</p>
 
   <p>One pattern in this table matters for everything below. Among the 3,750 training customers, the share who ordered again depends on the discount code and the delivery time together:</p>
 
@@ -343,30 +343,45 @@
     <figcaption><span>Chart 7</span> A large learning rate reaches its best test accuracy (79.7%) after only about 6 trees and then overfits: at 300 trees the gap between training and test accuracy is 11 points. A learning rate of 0.1 reaches the same peak (79.7%) later, after 37 trees, and the gap at 300 trees is only 6 points.</figcaption>
   </figure>
 
-  <p>Both settings find the same best accuracy, but the small learning rate degrades more slowly after it. That makes the number of trees much less critical, which is why a small learning rate with many trees is the usual choice. The cost is training time. The number of trees is then not guessed but chosen by early stopping (see the Python section).</p>
+  <p>Both settings find the same best accuracy, but the small learning rate degrades more slowly after it. That makes the number of trees much less critical, which is why a small learning rate with many trees is the usual choice. The cost is training time. Instead of guessing the number of trees, you can let the model decide with early stopping, explained below and used in the Python section.</p>
 
   <h3 id="depth-and-more">Tree Depth and Other Safeguards</h3>
 
   <ul class="post-points post-points-color">
     <li><strong>Tree depth.</strong> Shallow trees (often 1 to 5 splits) are the point of boosting. A deeper tree can capture an interaction such as the discount code combined with late delivery (see the table above) in one tree, but it also fits noise faster. Depth 1 means each tree uses one feature, as with the stumps of AdaBoost.</li>
     <li><strong>Subsampling.</strong> Each tree is trained on a random share of the customers (for example 80%). This makes the trees a little different from each other, like the random samples in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>, and reduces overfitting.</li>
-    <li><strong>Early stopping.</strong> A part of the training data is set aside, and training stops when the score on it has not improved for a number of trees.</li>
+    <li><strong>Early stopping.</strong> A part of the training data is set aside as a check. Training stops as soon as the score on this check data has not improved for a number of trees, because from then on the model is probably only fitting noise.</li>
   </ul>
 
   <h2 id="libraries" style="scroll-margin-top:90px">XGBoost, LightGBM and CatBoost: What Is Different?</h2>
 
-  <p>The idea of Step 1 to Step 4 is the same in every gradient boosting library. XGBoost, LightGBM and CatBoost are engineered versions that are faster, more regularized or better with certain kinds of data:</p>
+  <p>The idea of Step 1 to Step 4 is the same in every gradient boosting library. XGBoost, LightGBM and CatBoost are engineered versions that are faster, harder to overfit or better with certain kinds of data:</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Library</th><th>What it adds</th><th>Good to know</th></tr></thead>
     <tbody>
-      <tr><td>XGBoost</td><td>A penalty on large leaf values and on complex trees, and a second-order step, the same <em>p</em> × (1 − <em>p</em>) idea as in Step 3</td><td>Widely used and well documented; handles missing values itself</td></tr>
-      <tr><td>LightGBM</td><td>Groups numeric values into bins (histograms) and grows each tree leaf by leaf, always splitting the leaf that helps most</td><td>Very fast on large tables; limit the number of leaves on small tables to avoid overfitting</td></tr>
-      <tr><td>CatBoost</td><td>Works with categorical columns directly and encodes them in an order that avoids leaking the target</td><td>Often a good result with few settings, especially with many categories</td></tr>
+      <tr><td>XGBoost</td><td>Penalties that keep the trees small and the corrections gentle, and a more exact way of calculating leaf values (the <em>p</em> × (1 − <em>p</em>) idea from Step 3)</td><td>Widely used and well documented; handles missing values itself</td></tr>
+      <tr><td>LightGBM</td><td>Sorts numbers into a small number of groups (bins) to work faster, and grows each tree leaf by leaf, always splitting the leaf that helps most</td><td>Very fast on large tables; limit the number of leaves on small tables to avoid overfitting</td></tr>
+      <tr><td>CatBoost</td><td>Works with category columns (such as product category) directly, and turns them into numbers in a way that does not let the answer leak into the data</td><td>Often a good result with few settings, especially with many categories</td></tr>
     </tbody>
   </table></div>
 
-  <p>On our table of customers, XGBoost with comparable settings (100 trees, learning rate 0.1, depth 3, 80% subsample) reaches a test accuracy of 78.9% and an AUC of 0.866, practically the same as the scikit-learn model in the next section. On a table of this size the libraries differ more in speed and features than in accuracy. scikit-learn also has <code>HistGradientBoostingClassifier</code>, a faster, histogram-based variant in the spirit of LightGBM.</p>
+  <p>XGBoost (extreme gradient boosting) follows the same four steps, but changes two things:</p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>Penalties against overfitting.</strong> Its goal function adds a penalty for large leaf values (the setting <code>reg_lambda</code>) and for every extra leaf (<code>gamma</code>). A tree only makes a split if the gain is worth the penalty, which keeps the trees small and the corrections gentle.</li>
+    <li><strong>A more exact leaf value.</strong> It uses the same <em>p</em> × (1 − <em>p</em>) term as in Step 3 when it chooses splits and calculates leaf values. The leaf value is the sum of the residuals divided by (the sum of <em>p</em> × (1 − <em>p</em>) plus a number λ, lambda), so λ pulls every leaf value a little toward 0.</li>
+  </ul>
+
+  <p>The settings you tune most are the learning rate, the maximum depth, <code>subsample</code> (the share of customers each tree sees) and <code>colsample_bytree</code> (the share of features each tree sees). Early stopping is available with <code>early_stopping_rounds</code>.</p>
+
+  <pre class="post-code"><code>from xgboost import XGBClassifier
+
+xgb = XGBClassifier(n_estimators=100, learning_rate=0.1, max_depth=3,
+                    subsample=0.8, random_state=42)
+xgb.fit(X_train, y_train)</code></pre>
+
+  <p>On our table of customers, this XGBoost model (100 trees, learning rate 0.1, depth 3, 80% subsample) reaches a test accuracy of 78.9% and an AUC of 0.866, practically the same as the scikit-learn model in the next section. On a table of this size the libraries differ more in speed and features than in accuracy. scikit-learn also has <code>HistGradientBoostingClassifier</code>, a faster variant that works with binned numbers, in the spirit of LightGBM.</p>
 
   <h2 id="python" style="scroll-margin-top:90px">Training Gradient Boosting in Python</h2>
 
@@ -386,7 +401,7 @@ gb.fit(X_train, y_train)</code></pre>
     <li><strong>validation_fraction=0.2 and n_iter_no_change=20.</strong> 20% of the training customers are set aside, and training stops when 20 trees in a row bring no improvement on them.</li>
   </ul>
 
-  <p>Early stopping ends training after 107 trees. On the 1,250 test customers the model reaches an accuracy of 79.4% (against 63.4% for always predicting “no repeat order”) and an AUC of 0.865, a measure explained in <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a>. At the default threshold of 0.5, 77% of the customers it flags as repeat buyers do order again (precision), and it finds 62% of all customers who order again (recall).</p>
+  <p>Early stopping ends training after 107 trees. On the 1,250 test customers the model reaches an accuracy of 79.4% (against 63.4% for always predicting “no repeat order”) and an AUC of 0.865. The AUC is a score from 0.5 (guessing) to 1 (perfect) that rates how well the model ranks the customers who will order again above those who will not; see <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a>. When the model says “repeat order” for every customer with a probability of at least 0.5, 77% of those customers do order again (called precision), and the model finds 62% of all customers who order again (called recall).</p>
 
   <h2 id="vs-random-forest" style="scroll-margin-top:90px">Boosting vs. Random Forest: When to Use Which</h2>
 
@@ -407,16 +422,16 @@ gb.fit(X_train, y_train)</code></pre>
 
   <ul class="post-points post-points-color">
     <li><strong>The default random forest fell behind, because of the noise in this table.</strong> Its trees are grown fully by default and memorize that noise. Limiting the depth to 5 to 8 levels, or requiring at least 10 customers per leaf, lifts it to about 79%. This is a property of this noisy table, not a general rule: on cleaner data a fully grown forest works well without tuning, as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>.</li>
-    <li><strong>Boosting needs more care.</strong> Learning rate, number of trees and depth work together, and a model that keeps correcting mistakes can chase noisy labels. In return, it often reaches a slightly better score on tables with clear structure.</li>
+    <li><strong>Boosting needs more care.</strong> Learning rate, number of trees and depth work together, and a model that keeps correcting mistakes can chase random noise in the data. In return, it often reaches a slightly better score on tables with clear structure.</li>
     <li><strong>Training differs.</strong> The trees of a forest can be built in parallel, while a boosted model is built tree after tree, although modern libraries make this fast.</li>
-    <li><strong>Interpretability is similar.</strong> Neither gives one readable rule set like a single tree. Both provide feature importance. Shuffling one column of the test table and measuring how much the accuracy drops (permutation importance, as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>) ranks the first basket value first (11 points), then email opt-in (8 points) and delivery days (7 points). The discount code (5 points) and returned items (3 points) matter less.</li>
+    <li><strong>Interpretability is similar.</strong> Neither gives one readable rule set like a single tree. Both can rank the features by how much they matter. One way is to shuffle one column of the test table and see how much the accuracy drops (called permutation importance, as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>). This ranks the first basket value first (11 points), then email opt-in (8 points) and delivery days (7 points). The discount code (5 points) and returned items (3 points) matter less.</li>
   </ul>
 
   <p>A practical rule: start with a random forest as a strong, low-effort baseline, and move to boosting when the last points of accuracy matter and there is time to tune it.</p>
 
   <div class="post-note post-takeaway">
     <p class="post-note-l">Key takeaway</p>
-    <p>Boosting builds small trees one after another, and each tree is trained on the mistakes of the trees before it: AdaBoost does this by reweighting customers, gradient boosting by fitting the residuals. A small learning rate, a limited depth and early stopping keep it from chasing noise. On our customer table it matched a well-tuned random forest, with more settings to get right.</p>
+    <p>Boosting builds small trees one after another, and each tree is trained on the mistakes of the trees before it: AdaBoost does this by reweighting customers, gradient boosting by fitting the remaining errors (the residuals). A small learning rate, a limited depth and early stopping keep it from chasing noise. On our customer table it matched a well-tuned random forest, with more settings to get right.</p>
   </div>
 
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
