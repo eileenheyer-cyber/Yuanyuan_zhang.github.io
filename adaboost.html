@@ -35,11 +35,9 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">AdaBoost Explained: How Models Learn from Their Mistakes</h1>
 
-  <p>A decision tree with a single question is almost useless on its own. Ask an online shop’s data <em>“Was the package delivered within 5 days?”</em> and you separate some customers who order again from some who do not, but you still get many of them wrong. AdaBoost, short for adaptive boosting, takes many such tiny trees and turns them into one accurate model. It does this by making every new tree concentrate on the customers that the earlier trees got wrong.</p>
+<p>A decision tree with a single question is almost useless on its own. AdaBoost, short for adaptive boosting, combines many such tiny trees into one accurate model by making every new tree concentrate on the customers the earlier trees got wrong.</p>
 
-  <p>In this article you follow AdaBoost step by step on ten first-time customers of an online shop. The question is whether a customer orders again within 60 days. You will see how the weights, the weighted error ε and the stump’s say α are calculated, why the weights are updated with exponentials, and how the final vote works. At the end you run it in Python, once from scratch and once with scikit-learn. The ten customers are a small made-up example so that the arithmetic stays visible.</p>
-
-  <p>This is the first of three articles on boosting. <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. If decision trees are new to you, start with <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>.</p>
+  <p>We follow it step by step on ten made-up first-time customers of an online shop, with one question: does the customer order again within 60 days? At the end you run it in Python. This is the first of three articles on boosting; <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. If decision trees are new to you, start with <a href="decision-tree.html">Decision Trees</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
