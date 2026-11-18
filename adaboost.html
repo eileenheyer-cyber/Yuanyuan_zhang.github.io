@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdaBoost Explained: How Models Learn from Their Mistakes – Yuanyuan Zhang</title>
+  <meta name="description" content="AdaBoost explained step by step with ten customers: stumps, weighted error, alpha, exponential weight updates, weighted voting and Python code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261116e">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the difference between a weak learner and a strong learner?", "acceptedAnswer": {"@type": "Answer", "text": "A weak learner is only slightly better than guessing, like a single stump. A strong learner is accurate on its own. AdaBoost combines many weak learners into one strong one."}}, {"@type": "Question", "name": "Why is AdaBoost called adaptive?", "acceptedAnswer": {"@type": "Answer", "text": "Each new stump adapts to the mistakes of the earlier ones. The weights of the customers that were predicted wrongly go up, so the next stump is trained on a problem that has changed."}}, {"@type": "Question", "name": "Does AdaBoost only work with stumps?", "acceptedAnswer": {"@type": "Answer", "text": "No. Any model that can work with sample weights can be used, for example a decision tree with two or three levels. Stumps are the default because they are fast and hard to overfit."}}, {"@type": "Question", "name": "Is AdaBoost better than gradient boosting?", "acceptedAnswer": {"@type": "Answer", "text": "Not in general. On our customer table AdaBoost reaches 78.3% accuracy and an AUC of 0.837, gradient boosting 79.4% and 0.865. Gradient boosting is more flexible and is what libraries such as XGBoost build on, while AdaBoost is the simplest way to see boosting at work."}}]}</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Classification</p>
+  <h1 class="post-title">AdaBoost Explained: How Models Learn from Their Mistakes</h1>
+
+  <p>A decision tree with a single question is almost useless on its own. Ask an online shop’s data <em>“Was the package delivered within 5 days?”</em> and you separate some customers who order again from some who do not, but you still get many of them wrong. AdaBoost, short for adaptive boosting, takes many such tiny trees and turns them into one accurate model. It does this by making every new tree concentrate on the customers that the earlier trees got wrong.</p>
+
+  <p>In this article you follow AdaBoost step by step on ten first-time customers of an online shop. The question is whether a customer orders again within 60 days. You will see how the weights, the weighted error ε and the stump’s say α are calculated, why the weights are updated with exponentials, and how the final vote works. At the end you run it in Python, once from scratch and once with scikit-learn. The ten customers are a small made-up example so that the arithmetic stays visible.</p>
+
+  <p>This is the first of three articles on boosting. <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. If decision trees are new to you, start with <a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a>.</p>
+
+  <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#weak-learners">Weak Learners and Decision Stumps</a></li>
+      <li><a href="#ada-start">Ten Customers with Equal Weights</a></li>
+      <li><a href="#ada-round1">Round 1: The First Stump and Its Weighted Error</a></li>
+      <li><a href="#ada-say">Alpha: How Much Say Does a Stump Get?</a></li>
+      <li><a href="#ada-exp">Why the Weights Are Updated with Exponentials</a></li>
+      <li><a href="#ada-reweight">Updating and Normalizing the Weights</a></li>
+      <li><a href="#ada-rounds">Rounds 2 and 3</a></li>
+      <li><a href="#ada-vote">Weighted Voting: The Final Prediction</a></li>
+      <li><a href="#python">AdaBoost in Python</a></li>
+      <li><a href="#limits">Strengths and Limits</a></li>
+      <li><a href="#faq">Frequently Asked Questions</a></li>
+    </ul>
+  </div>
+
+  <h2 id="weak-learners" style="scroll-margin-top:90px">Weak Learners and Decision Stumps</h2>
+
+  <p>A <strong>weak learner</strong> is a model that is only slightly better than guessing. AdaBoost usually uses the simplest tree there is: a <strong>decision stump</strong>, a tree with one question and two answers. “Was the package delivered within 5 days? If yes, predict a repeat order, if no, predict none” is a stump.</p>
+
+  <p>A stump is weak on purpose. On the full table of 5,000 simulated customers used in this series, the best single stump asks about the delivery time and then predicts “no repeat order” for everybody. It is right for 63.4% of the test customers, exactly as often as always predicting “no repeat order”. It has learned nothing useful on its own.</p>
+
+  <p>AdaBoost makes many stumps useful by combining two ideas. Every customer gets a <strong>weight</strong> that says how much that customer counts, and the weights change after every stump so that the next stump has to care about the earlier mistakes. Every stump gets a <strong>say</strong> that says how much its answer counts in the end, and a better stump gets more say.</p>
+
+  <h2 id="ada-start" style="scroll-margin-top:90px">Ten Customers with Equal Weights</h2>
+
+  <p>Chart 1 shows our ten customers: delivery time from left to right, the value of the first basket from bottom to top, and the color shows whether they ordered again (blue circle) or not (red square). Customers 7 and 9 are the surprising ones. They waited 8 and 9 days and still ordered again.</p>
+
+  <p>Before the first stump, all ten customers count the same. Each has the weight <span style="white-space:nowrap">1 ÷ 10 = 0.10</span>, and the weights add up to 1, like shares of a whole. In the left panel all markers have the same size. The right panel shows the same customers after round 1. We calculate it in the next sections.</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-1-customers-weights.svg" alt="Two scatter plots with the same axes, delivery days against first basket value. Left: ten customers with equal marker sizes. Right: customers 7 and 9, who ordered again despite a late delivery, are drawn much larger than the others." loading="lazy"></div>
+    <figcaption><span>Chart 1</span> Marker size shows the weight of each customer. Customers 7 and 9 ordered again despite a late delivery, and they become the heaviest customers after round 1.</figcaption>
+  </figure>
+
+  <h2 id="ada-round1" style="scroll-margin-top:90px">Round 1: The First Stump and Its Weighted Error</h2>
+
+  <p>The first stump looks for the single question that separates the customers best. Here it is <em>“Was the package delivered within 5 days?”</em>: yes means it predicts a repeat order, no means it predicts none. It is right for eight customers and wrong for customers 7 and 9.</p>
+
+  <p>To judge a stump, we add up the weights of the customers it gets wrong. This number is called the <strong>weighted error</strong> and is written ε (epsilon):</p>
+
+  <p class="post-formula post-formula-plain"><strong>ε = sum of the weights of the customers the stump gets wrong = 0.10 + 0.10 = 0.20</strong></p>
+
+  <p>Right now every customer counts the same, so ε is just the share of wrong answers: 2 of 10 customers, or 0.20. In later rounds the weights differ, and getting a high-weight customer wrong adds more to ε than getting a low-weight customer wrong. A small ε means the stump is usually right where it matters, so we can trust it more.</p>
+
+  <h2 id="ada-say" style="scroll-margin-top:90px">Alpha: How Much Say Does a Stump Get?</h2>
+
+  <p>A stump’s <strong>vote</strong> is its answer for a customer: +1 (repeat order) or −1 (no repeat order). Its <strong>say</strong> is how much that answer counts. The better a stump is, the more say it should get. A stump that is almost always right should dominate the final decision, and a stump that is no better than a coin flip should have no influence at all. The say is written α (alpha):</p>
+
+  <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>1 − ε</span><span>ε</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>0.80</span><span>0.20</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln 4 = 0.69</strong></p>
+
+  <p>The formula looks strange at first, but each part has a job. The fraction (1 − ε) ÷ ε compares how much weight the stump gets right with how much it gets wrong. Here that is 0.80 to 0.20, so the stump is right four times as often as it is wrong. The natural logarithm ln turns this ratio into a score that is 0 when the ratio is 1 (a coin flip), positive when the stump is right more often than wrong, and negative when it is wrong more often. The factor ½ comes out of the mathematics behind AdaBoost, which chooses α so that the exponential loss of the whole model becomes as small as possible. It makes the weight update in the next section come out cleanly.</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-2-alpha-vs-error.svg" alt="Line chart of the say alpha against the weighted error epsilon. The curve falls from large positive values at small errors to zero at an error of 0.5 and to negative values above 0.5." loading="lazy"></div>
+    <figcaption><span>Chart 2</span> The smaller the weighted error, the larger the say. At ε = 0.5 the say is 0, and above 0.5 it turns negative, which flips the stump’s vote.</figcaption>
+  </figure>
+
+  <ul class="post-points post-points-color">
+    <li><strong>ε close to 0:</strong> the stump is almost always right, so α is large.</li>
+    <li><strong>ε = 0.5:</strong> the stump is a coin flip, so α = 0 and it gets no say.</li>
+    <li><strong>ε above 0.5:</strong> the stump is worse than guessing, so α is negative and its vote is flipped.</li>
+  </ul>
+
+  <p>The value α = 0.69 is used twice: as the stump’s say in the final vote, and to decide how the customer weights change next.</p>
+
+  <h2 id="ada-exp" style="scroll-margin-top:90px">Why the Weights Are Updated with Exponentials</h2>
+
+  <p>After a stump, the weights have to change: customers it got wrong should count more, customers it got right should count less. We need a multiplier with a few properties. It must always be positive, because a weight can never be negative. It must be above 1 for a mistake and below 1 for a correct answer. It must be exactly 1 when the stump is a coin flip (α = 0), because then there is nothing to learn from it. And it must change more when the stump has a larger say.</p>
+
+  <p>The exponential function <em>e</em><sup>x</sup> has exactly these properties. It is never negative, it equals 1 at x = 0, it is above 1 for positive x and below 1 for negative x. AdaBoost therefore multiplies every weight by <em>e</em><sup>α</sup> if the stump is wrong for that customer and by <em>e</em><sup>−α</sup> if it is right. In one formula, with the vote <em>h</em> and the real answer <em>y</em> both written as +1 or −1:</p>
+
+  <p class="post-formula post-formula-plain"><strong>new weight = old weight × <em>e</em><sup>−α × <em>y</em> × <em>h</em></sup></strong><span>The product <em>y</em> × <em>h</em> is +1 when the vote is right, which gives <em>e</em><sup>−α</sup>, and −1 when it is wrong, which gives <em>e</em><sup>α</sup>.</span></p>
+
+  <p>With α = 0.69 the multipliers are <em>e</em><sup>0.69</sup> = 2 for the two wrong customers and <em>e</em><sup>−0.69</sup> = 0.5 for the eight right ones. The weights are doubled or halved. This choice has a useful side effect. The two wrong customers had a total weight of 0.20 and now have 0.20 × 2 = 0.40. The eight right customers had 0.80 and now have 0.80 × 0.5 = 0.40. Wrong and right now carry the same total weight. For the new weights, the first stump is therefore no better than a coin flip, so the next stump cannot simply repeat it and has to find a new question.</p>
+
+  <h2 id="ada-reweight" style="scroll-margin-top:90px">Updating and Normalizing the Weights</h2>
+
+  <ul class="post-points post-points-color">
+    <li><strong>Customers 7 and 9 (wrong):</strong> 0.10 × 2 = 0.20 each.</li>
+    <li><strong>The other eight (right):</strong> 0.10 × 0.5 = 0.05 each.</li>
+  </ul>
+
+  <p>These numbers add up to 2 × 0.20 + 8 × 0.05 = 0.80, not 1. The weights are meant to be shares of a whole, so we <strong>normalize</strong> them: every weight is divided by their sum, here 0.80. Dividing all weights by the same number keeps their proportions and makes the total 1 again.</p>
+
+  <p class="post-formula post-formula-plain"><strong>normalized weight = new weight ÷ sum of all new weights</strong></p>
+
+  <p>Customers 7 and 9 get 0.20 ÷ 0.80 = 0.25, and each of the other eight gets 0.05 ÷ 0.80 = 0.0625. Check: 2 × 0.25 + 8 × 0.0625 = 1. Two customers out of ten now carry half of the total weight, which is the right panel of Chart 1.</p>
+
+  <h2 id="ada-rounds" style="scroll-margin-top:90px">Rounds 2 and 3</h2>
+
+  <p>Round 2 repeats the recipe on the new weights. The best stump now asks <em>“Is the first basket at most €70?”</em>. It gets customers 7 and 9 right, but is wrong for customers 1, 3 and 10, the customers the first stump handled well. Their weights were small, so the weighted error is 3 × 0.0625 = 0.1875 and the stump gets α = 0.73. After reweighting and normalizing, customers 1, 3 and 10 carry about 0.17 each, customers 7 and 9 about 0.15, and the other five about 0.04.</p>
+
+  <p>Round 3 gives a third stump, <em>“Is the first basket above €52.50?”</em>, with ε = 0.19 and α = 0.72. On its own it is right for only 5 of 10 customers, but it is right for the ones that carry weight.</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-3-weights-per-round.svg" alt="Four bar charts of the ten customer weights: equal at the start, then after round 1 customers 7 and 9 are tallest, after round 2 customers 1, 3 and 10 are tallest, and after round 3 the weights are almost equal again." loading="lazy"></div>
+    <figcaption><span>Chart 3</span> The weights move to wherever the latest stump failed. After round 3 all weights are close to 0.10 again, so no single customer dominates any more.</figcaption>
+  </figure>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><svg viewBox="0 0 720 200" role="img" aria-label="Three one-question decision trees (stumps) used by AdaBoost. Stump 1 asks whether delivery takes at most 5 days; stump 2 asks whether the first basket is at most 70 euros; stump 3 asks whether it is at most 52.50 euros. Each stump shows its weighted error and its say alpha." style="width:100%;height:auto;display:block;min-width:560px"><text x="120" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 1</text><line x1="120" y1="68" x2="64" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="120" y1="68" x2="176" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="78.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="162.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="32.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="120" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Delivery ≤ 5 days?</text><rect x="16.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="64" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><rect x="128.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="176" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><text x="120" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.20</text><text x="120" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >say α = 0.69</text><text x="360" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 2</text><line x1="360" y1="68" x2="304" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="360" y1="68" x2="416" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="318.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="402.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="272.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="360" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €70?</text><rect x="256.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="304" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><rect x="368.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="416" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><text x="360" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.19</text><text x="360" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >say α = 0.73</text><text x="600" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 3</text><line x1="600" y1="68" x2="544" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="600" y1="68" x2="656" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="558.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="642.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="512.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="600" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €52.50?</text><rect x="496.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="544" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><rect x="608.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="656" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><text x="600" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.19</text><text x="600" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >say α = 0.72</text></svg></div>
+    <figcaption><span>Chart 4</span> Each stump asks a different question and is wrong in a different place. None of them is good alone, but they are wrong for different customers, which is what the weighted vote below uses.</figcaption>
+  </figure>
+
+  <h2 id="ada-vote" style="scroll-margin-top:90px">Weighted Voting: The Final Prediction</h2>
+
+  <p>The final prediction is a weighted vote. Each stump votes +1 or −1, its vote is multiplied by its say α, and the sign of the sum decides:</p>
+
+  <p class="post-formula post-formula-plain"><strong>Score = 0.69 × <em>h</em><sub>1</sub> + 0.73 × <em>h</em><sub>2</sub> + 0.72 × <em>h</em><sub>3</sub></strong><span>A positive score predicts a repeat order, a negative score predicts none.</span></p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>Customer 7</strong> (8 days, €65): the stumps vote −1, +1, +1. Score = −0.69 + 0.73 + 0.72 = +0.76, so the model predicts a repeat order, which is correct.</li>
+    <li><strong>Customer 3</strong> (9 days, €45): the stumps vote −1, +1, −1. Score = −0.69 + 0.73 − 0.72 = −0.68, so the model predicts no repeat order, which is also correct.</li>
+  </ul>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-5-final-scores.svg" alt="Bar chart of the final score of each of the ten customers. Customers 1, 7, 9 and 10, who ordered again, have positive scores; the other six have negative scores." loading="lazy"></div>
+    <figcaption><span>Chart 5</span> All ten customers end up on the correct side of zero, although the best single stump was wrong for two of them.</figcaption>
+  </figure>
+
+  <p>All ten customers are classified correctly. This says little about new customers yet, because these are the customers the stumps were trained on. With only ten customers it is also easy. On real data AdaBoost combines hundreds of stumps, and the next section shows how.</p>
+
+  <h2 id="python" style="scroll-margin-top:90px">AdaBoost in Python</h2>
+
+  <h3 class="post-h3-small">From scratch on the ten customers</h3>
+
+  <p>The code below repeats exactly what we did by hand. In every round it tries every question of the form “feature ≤ threshold” and picks the one with the smallest weighted error. It then calculates α, updates the weights and normalizes them.</p>
+
+  <pre class="post-code"><code>import numpy as np
+
+days   = np.array([2, 7, 9, 8, 8, 9, 8, 8, 9, 3])
+basket = np.array([95, 75, 45, 85, 75, 95, 65, 95, 60, 95])
+y      = np.array([1, -1, -1, -1, -1, -1, 1, -1, 1, 1])  # +1 = ordered again
+X = np.column_stack([days, basket])
+names = ["delivery days", "first basket"]
+
+w = np.full(10, 0.1)                # each customer starts with 0.10
+stumps = []
+for round_no in range(1, 4):
+    best = None
+    for f in range(2):                 # try both features
+        values = np.unique(X[:, f])
+        for t in (values[:-1] + values[1:]) / 2:   # thresholds in between
+            for sign in (1, -1):       # which side predicts "repeat"
+                pred = np.where(X[:, f] &lt;= t, sign, -sign)
+                eps = w[pred != y].sum()  # weighted error
+                if best is None or eps &lt; best[0] - 1e-12:
+                    best = (eps, f, t, sign, pred)
+    eps, f, t, sign, pred = best
+    alpha = 0.5 * np.log((1 - eps) / eps)   # the say of the stump
+    w = w * np.exp(-alpha * y * pred)  # wrong: x e^a, right: x e^-a
+    w = w / w.sum()                    # normalize: weights add up to 1
+    stumps.append((alpha, f, t, sign))
+    print(f"Round {round_no}: {names[f]} &lt;= {t}",
+          f"eps={eps:.4f}", f"alpha={alpha:.4f}")
+
+score = sum(a * np.where(X[:, f] &lt;= t, s, -s) for a, f, t, s in stumps)
+print("all correct:", (np.sign(score) == y).all())</code></pre>
+
+  <p>The output matches the hand calculation: round 1 asks about delivery days ≤ 5 with ε = 0.2000 and α = 0.6931, round 2 asks about a first basket ≤ 70 with ε = 0.1875 and α = 0.7332, round 3 asks about a first basket ≤ 52.5 with ε = 0.1923 and α = 0.7175, and all ten customers are classified correctly.</p>
+
+  <h3 class="post-h3-small">With scikit-learn on the full customer table</h3>
+
+  <p>For real data you do not write the loop yourself. With the table prepared as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> (3,750 customers for training, 1,250 for testing), the model takes three lines. By default, <code>AdaBoostClassifier</code> uses stumps as weak learners.</p>
+
+  <pre class="post-code"><code>from sklearn.ensemble import AdaBoostClassifier
+from sklearn.metrics import roc_auc_score
+
+ada = AdaBoostClassifier(n_estimators=50, random_state=42)  # 50 stumps
+ada.fit(X_train, y_train)
+
+print("accuracy:", ada.score(X_test, y_test))
+proba = ada.predict_proba(X_test)[:, 1]
+print("AUC:", roc_auc_score(y_test, proba))</code></pre>
+
+  <p>With 50 stumps the model reaches an accuracy of 78.3% and an AUC of 0.837 on the test customers, against 63.4% for always predicting “no repeat order”. The AUC is a score from 0.5 (guessing) to 1 (perfect) that rates how well the model ranks the customers who will order again above those who will not. More stumps are not automatically better:</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Number of stumps</th><th>Test accuracy</th><th>AUC</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>63.4%</td><td>0.500</td></tr>
+      <tr><td>10</td><td>79.1%</td><td>0.832</td></tr>
+      <tr><td>50</td><td>78.3%</td><td>0.837</td></tr>
+      <tr><td>500</td><td>78.6%</td><td>0.836</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Most of the gain arrives with the first ten stumps. After that, accuracy and AUC hardly move on this table. The setting <code>learning_rate</code> (default 1.0) shrinks the say of every stump, which makes learning slower and usually needs more stumps.</p>
+
+  <p>If you print <code>ada.estimator_weights_</code> for the ten customers, you get 1.39, 1.47 and 1.44, exactly twice our 0.69, 0.73 and 0.72. scikit-learn leaves out the factor ½. The weighted errors are identical (0.20, 0.1875, 0.1923) and so are the predictions, because doubling every say changes no sign and the weight update ends up the same.</p>
+
+  <h2 id="limits" style="scroll-margin-top:90px">Strengths and Limits</h2>
+
+  <p>AdaBoost is easy to understand and has few settings. It works with any model that can handle weights, and in practice a small number of stumps is often enough. Its weak spot follows from the way it works: a customer who keeps being predicted wrongly keeps gaining weight. If that customer is not a pattern but just noise, for example a wrong label or a one-off order, the stumps start to bend toward that customer. A second limit is that the stumps are built one after another, so they cannot be trained in parallel like the trees of a random forest.</p>
+
+  <p>The next article looks at gradient boosting, which corrects mistakes differently: instead of reweighting customers, it measures each mistake directly. The two methods are closer than they look. AdaBoost can be seen as gradient boosting with a particular way of measuring the error, the exponential loss.</p>
+
+  <h2 id="faq" style="scroll-margin-top:90px">Frequently Asked Questions</h2>
+
+  <h3 class="post-h3-small">What is the difference between a weak learner and a strong learner?</h3>
+  <p>A weak learner is only slightly better than guessing, like a single stump. A strong learner is accurate on its own. AdaBoost combines many weak learners into one strong one.</p>
+
+  <h3 class="post-h3-small">Why is AdaBoost called adaptive?</h3>
+  <p>Each new stump adapts to the mistakes of the earlier ones. The weights of the customers that were predicted wrongly go up, so the next stump is trained on a problem that has changed.</p>
+
+  <h3 class="post-h3-small">Does AdaBoost only work with stumps?</h3>
+  <p>No. Any model that can work with sample weights can be used, for example a decision tree with two or three levels. Stumps are the default because they are fast and hard to overfit.</p>
+
+  <h3 class="post-h3-small">Is AdaBoost better than gradient boosting?</h3>
+  <p>Not in general. On our customer table AdaBoost reaches 78.3% accuracy and an AUC of 0.837, gradient boosting 79.4% and 0.865. Gradient boosting is more flexible and is what libraries such as XGBoost build on, while AdaBoost is the simplest way to see boosting at work.</p>
+
+  <div class="post-note post-takeaway">
+    <p class="post-note-l">Key takeaway</p>
+    <p>AdaBoost builds one-question trees (stumps) in a row. After each stump, it multiplies the weight of every customer it got wrong by <em>e</em><sup>α</sup> and every customer it got right by <em>e</em><sup>−α</sup>, then normalizes, so the next stump has to care about the earlier mistakes. The final prediction is a vote in which each stump’s answer counts as much as its say α, which grows as its weighted error ε shrinks.</p>
+  </div>
+
+  <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> The overview of AdaBoost, gradient boosting and XGBoost.</li>
+    <li><a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a> The trees that stumps are made from.</li>
+    <li><a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> The other way to combine many trees.</li>
+  </ul>
+
+  <h2 id="references" style="scroll-margin-top:90px">References</h2>
+  <ul class="post-points post-points-color">
+    <li><a href="https://doi.org/10.1006/jcss.1997.1504">Freund and Schapire (1997), A decision-theoretic generalization of on-line learning and an application to boosting</a></li>
+    <li><a href="https://scikit-learn.org/stable/modules/ensemble.html#adaboost">scikit-learn: AdaBoost</a></li>
+  </ul>
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
