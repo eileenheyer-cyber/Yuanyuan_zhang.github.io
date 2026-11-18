@@ -89,7 +89,7 @@
       <li><details><summary><a href="#why-scaling">Why Scaling Matters, and Which Models Need It</a></summary><ul><li><a href="#why-units">Why units cause trouble</a></li><li><a href="#which-models">Which models need scaling, and which don’t</a></li></ul></details></li>
       <li><details><summary><a href="#scaling-methods">Scaling Methods</a></summary><ul><li><a href="#standardization">Standardization (Z-Score)</a></li><li><a href="#min-max">Min-Max Normalization</a></li><li><a href="#max-abs">Max Absolute Scaling</a></li><li><a href="#robust">Robust Scaling</a></li><li><a href="#unit-vector">Unit Vector Scaling</a></li></ul></details></li>
       <li><a href="#choosing">Choosing the Right Scaling Method</a></li>
-      <li><a href="#fit-on-train">Fit on Training Data Only</a></li>
+      <li><a href="#fit-on-train">Data Leakage: Fit on Training Data Only</a></li>
       <li><a href="#stakeholders">How to explain it to stakeholders</a></li>
       <li><a href="#key-takeaways">Key Takeaways</a></li>
     </ul>
@@ -329,7 +329,7 @@ unit = Normalizer(norm=&quot;l2&quot;).fit_transform(usage)  # (0.83, 0.55), (0.
     <li><strong>None of the above?</strong> Start with standardization.</li>
   </ul>
 
-  <h2 id="fit-on-train" style="scroll-margin-top:90px">Fit on Training Data Only</h2>
+  <h2 id="fit-on-train" style="scroll-margin-top:90px">Data Leakage: Fit on Training Data Only</h2>
   <p>Imagine you have 1,000 telecom customers. Before training your machine learning model, you standardize their features and then split the dataset into training and test sets.</p>
   <p>This order creates a subtle problem: the mean and standard deviation used for scaling were calculated from all 1,000 customers, including those in the test set.</p>
   <p>Although the model has not seen the test customers’ target values, information about their feature distributions has already influenced the preprocessing. This is called data leakage. It can make the model’s evaluation less reliable and give an overly optimistic impression of how well it performs on genuinely unseen data.</p>
