@@ -35,11 +35,9 @@
   <p class="overline">Classification</p>
   <h1 class="post-title">XGBoost vs. LightGBM vs. CatBoost: What Is the Difference?</h1>
 
-  <p>XGBoost, LightGBM and CatBoost all build a model by adding small decision trees, each one correcting what the trees before it got wrong. If you know how <a href="gradient-boosting-xgboost.html">gradient boosting and XGBoost</a> work, you already know the core idea of all three. The differences lie in the engineering: how a tree is grown, how the best split is searched, and what happens to a column that contains categories such as an advertising channel or a postcode area.</p>
+<p>XGBoost, LightGBM and CatBoost all build a model by adding small trees that correct the errors of the trees before them. If you know how <a href="gradient-boosting-xgboost.html">gradient boosting and XGBoost</a> work, you know the core idea of all three. The differences lie in the engineering: how a tree grows, how splits are searched, and how categorical columns are handled.</p>
 
-  <p>This article explains those differences one library at a time, puts them side by side, and then tests all three on the same customer table. The example is the one from the rest of this series: an online shop wants to predict whether a first-time customer places another order within 60 days. The article is the third of three on boosting. <a href="adaboost.html">AdaBoost Explained</a> comes first, <a href="gradient-boosting-xgboost.html">Gradient Boosting and XGBoost Explained</a> second, and <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview.</p>
-
-  <p>One thing up front: there is no winner. The test at the end shows three models that are practically equal in accuracy, and the real differences appear in speed, memory and convenience. The last section gives a practical rule for choosing.</p>
+  <p>We explain each library, compare them side by side and test them on the same online-shop table. This is the third of three articles on boosting; <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. There is no winner here: the test shows three equally accurate models.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
