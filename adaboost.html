@@ -375,7 +375,11 @@
 
   <p><em>Was the first basket worth more than €52.50?</em></p>
 
-  <p>Its weighted error is approximately 0.19, resulting in:</p>
+  <p>This stump makes five mistakes: customers 2, 4, 5, 6 and 8. These are exactly the five customers with the smallest weights after Round 2, about 0.04 each. More precisely, each of them carries a weight of 1/26 ≈ 0.0385, so the weighted error is:</p>
+
+  <p class="post-formula post-formula-plain"><strong>ε = 5 × 0.0385 ≈ 0.19</strong></p>
+
+  <p>Its influence is therefore:</p>
 
   <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>1 − 0.19</span><span>0.19</span></span>) ≈ 0.72</strong></p>
 
