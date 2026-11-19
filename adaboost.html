@@ -419,9 +419,16 @@
 
   <p>This illustrates why ordinary accuracy does not tell the whole story in AdaBoost. What matters is not just how many customers a stump classifies correctly, but how important those customers are to the algorithm.</p>
 
+  <p>Chart 3 puts the three rounds side by side. The top row shows what each stump does with the weights it receives. The bottom row shows how the weights change afterwards.</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:640px" src="images/adaboost/chart-rounds-overview.svg" alt="Six scatter plots of the ten customers by delivery days and first basket. The top row shows the split of each of the three stumps, with misclassified customers ringed and marker size showing weight. The bottom row shows the new weights: customers 7 and 9 are largest after round 1, customers 1, 3 and 10 after round 2, and all markers are similar in size after round 3." loading="lazy"></div>
+    <figcaption><span>Chart 3</span> Every round, the customers the stump gets wrong (ringed) grow, so the next stump has to pay attention to them. After three rounds no customer dominates any more.</figcaption>
+  </figure>
+
   <h3 id="ada-weights3" class="post-h3-small" style="scroll-margin-top:90px">How the Sample Weights Change Across Three Rounds</h3>
 
-  <p>Chart 3 brings the three rounds together.</p>
+  <p>Chart 4 brings the three rounds together.</p>
 
   <p>It shows how the importance of each customer changes throughout the learning process:</p>
 
@@ -434,7 +441,7 @@
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-3-weights-per-round.svg" alt="Four bar charts of the ten customer weights: equal at the start, then after round 1 customers 7 and 9 are tallest, after round 2 customers 1, 3 and 10 are tallest, and after round 3 the weights are almost equal again." loading="lazy"></div>
-    <figcaption><span>Chart 3</span> How AdaBoost redistributes sample weights after each round.</figcaption>
+    <figcaption><span>Chart 4</span> How AdaBoost redistributes sample weights after each round.</figcaption>
   </figure>
 
   <p>The important takeaway is that the algorithm continuously shifts its attention towards observations that previous stumps struggled to classify.</p>
@@ -458,7 +465,7 @@
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><svg viewBox="0 0 720 200" role="img" aria-label="Three one-question decision trees (stumps) used by AdaBoost. Stump 1 asks whether delivery takes at most 5 days; stump 2 asks whether the first basket is at most 70 euros; stump 3 asks whether it is at most 52.50 euros. Each stump shows its weighted error and its influence alpha." style="width:100%;height:auto;display:block;min-width:560px"><text x="120" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 1</text><line x1="120" y1="68" x2="64" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="120" y1="68" x2="176" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="78.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="162.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="32.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="120" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Delivery ≤ 5 days?</text><rect x="16.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="64" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><rect x="128.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="176" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><text x="120" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.20</text><text x="120" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >influence α = 0.69</text><text x="360" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 2</text><line x1="360" y1="68" x2="304" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="360" y1="68" x2="416" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="318.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="402.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="272.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="360" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €70?</text><rect x="256.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="304" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><rect x="368.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="416" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><text x="360" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.19</text><text x="360" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >influence α = 0.73</text><text x="600" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Stump 3</text><line x1="600" y1="68" x2="544" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="600" y1="68" x2="656" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="558.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="642.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="512.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="600" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €52.50?</text><rect x="496.0" y="112" width="96" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="544" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >No repeat</text><rect x="608.0" y="112" width="96" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="656" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >Repeat</text><text x="600" y="164" font-size="12.5" text-anchor="middle" font-weight="400" fill="#444" >weighted error 0.19</text><text x="600" y="184" font-size="12.5" text-anchor="middle" font-weight="700" fill="#0a0a0a" >influence α = 0.72</text></svg></div>
-    <figcaption><span>Chart 4</span> Three decision stumps, each using a different question and contributing a weighted vote to the final prediction.</figcaption>
+    <figcaption><span>Chart 5</span> Three decision stumps, each using a different question and contributing a weighted vote to the final prediction.</figcaption>
   </figure>
 
   <h2 id="ada-vote" style="scroll-margin-top:90px">Weighted Voting: How AdaBoost Makes Its Final Prediction</h2>
@@ -543,7 +550,7 @@
 
   <h3 id="ada-final" class="post-h3-small" style="scroll-margin-top:90px">The Final Predictions</h3>
 
-  <p>Chart 5 shows the final scores for all ten customers.</p>
+  <p>Chart 6 shows the final scores for all ten customers.</p>
 
   <p>Customers 1, 7, 9 and 10, who actually ordered again, have positive scores. The remaining six customers have negative scores.</p>
 
@@ -551,7 +558,7 @@
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-5-final-scores.svg" alt="Bar chart of the final score of each of the ten customers. Customers 1, 7, 9 and 10, who ordered again, have positive scores; the other six have negative scores." loading="lazy"></div>
-    <figcaption><span>Chart 5</span> Final weighted prediction scores for all ten customers. The zero line separates repeat-order predictions from no-repeat-order predictions.</figcaption>
+    <figcaption><span>Chart 6</span> Final weighted prediction scores for all ten customers. The zero line separates repeat-order predictions from no-repeat-order predictions.</figcaption>
   </figure>
 
   <p>This is the strength of AdaBoost: a stump does not need to be highly accurate on its own. By combining several weak learners, each focusing on different mistakes, the algorithm can build a much stronger model.</p>
