@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20261116e">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is gradient boosting the same as XGBoost?", "acceptedAnswer": {"@type": "Answer", "text": "No. Gradient boosting is the general method of adding small trees that correct the remaining error. XGBoost is one implementation of it, with its own objective that adds a penalty for complex trees and uses second-order information. scikit-learn has another implementation with different choices."}}, {"@type": "Question", "name": "Why does XGBoost use the second derivative?", "acceptedAnswer": {"@type": "Answer", "text": "The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step can go before the loss stops improving. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split."}}, {"@type": "Question", "name": "What is the difference between the learning rate and lambda?", "acceptedAnswer": {"@type": "Answer", "text": "The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile."}}, {"@type": "Question", "name": "How many trees should I use?", "acceptedAnswer": {"@type": "Answer", "text": "Do not guess. Use a small learning rate such as 0.1, allow many trees, and let early stopping end the training when the score on a validation set stops improving."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is gradient boosting the same as XGBoost?", "acceptedAnswer": {"@type": "Answer", "text": "No. Gradient boosting is the general method of adding small trees that correct the remaining error. XGBoost is one implementation of it, with its own objective that adds a penalty for complex trees and uses second-order information. scikit-learn has another implementation with different choices."}}, {"@type": "Question", "name": "Why does XGBoost use the second derivative?", "acceptedAnswer": {"@type": "Answer", "text": "The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step should go. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split."}}, {"@type": "Question", "name": "What is the difference between the learning rate and lambda?", "acceptedAnswer": {"@type": "Answer", "text": "The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile."}}, {"@type": "Question", "name": "How many trees should I use?", "acceptedAnswer": {"@type": "Answer", "text": "Do not guess. Use a small learning rate such as 0.1, allow many trees, and let early stopping end the training when the score on a validation set stops improving."}}]}</script>
 </head>
 <body>
 
@@ -35,15 +35,19 @@
   <p class="overline">Tree-based models</p>
   <h1 class="post-title">Gradient Boosting and XGBoost: From Residuals to Second-Order Optimization</h1>
 
-<p>AdaBoost corrects its mistakes by giving wrongly predicted customers a higher weight. Gradient boosting is more direct: it measures how far off each prediction is and trains the next small tree to close exactly that gap. XGBoost refines this by also asking how far a prediction can safely move, and by penalizing trees that become too complex.</p>
+<p>AdaBoost learns from its mistakes by increasing the weights of misclassified observations. Gradient Boosting takes a different approach: it fits each new tree to the remaining prediction errors, gradually improving the model.</p>
 
-  <p>The example is the same online shop: will a first-time customer order again within 60 days? Part A builds gradient boosting on eight customers and ends with Python code. Part B shows what XGBoost changes. This is the second of three articles on boosting, after <a href="adaboost.html">AdaBoost Explained</a>.</p>
+  <p>XGBoost builds on this idea by using both first- and second-order derivatives to optimize tree structures, while penalizing unnecessary complexity.</p>
+
+  <p>In this tutorial, we work through both algorithms using a customer repeat-purchase example, from calculating residuals to understanding Hessians, regularization and split gain. We finish with practical Python implementations using scikit-learn and XGBoost.</p>
+
+  <p>This is the second article in a three-part series on boosting, following <a href="adaboost.html">AdaBoost Explained</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start with a Neutral Prediction</a></li><li><a href="#gb-step2">Step 2: Compute the Residuals</a></li><li><a href="#gb-step3">Step 3: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step4">Step 4: Update the Prediction with the Learning Rate</a></li><li><a href="#gb-repeat">Repeat: Each Tree Corrects What Is Left</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li><li><a href="#reg-class">Regression and Classification</a></li></ul></details></li>
+      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start Neutral and Measure the Mistakes</a></li><li><a href="#gb-step2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step3">Step 3: Update the Prediction with the Learning Rate</a></li><li><a href="#gb-repeat">Repeat: Each Tree Corrects What Is Left</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li><li><a href="#reg-class">Regression and Classification</a></li></ul></details></li>
       <li><details open><summary><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></summary><ul><li><a href="#one-by-one">Adding Trees One by One</a></li><li><a href="#learning-rate">Learning Rate and Number of Trees</a></li><li><a href="#depth-and-more">Tree Depth and Other Safeguards</a></li></ul></details></li>
       <li><a href="#python-gb">Gradient Boosting in Python</a></li>
       <li><details open><summary><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></summary><ul><li><a href="#grad-hess">Gradient and Hessian: Direction and Curvature</a></li><li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li><li><a href="#split-gain">Leaf Weights and Split Gain</a></li><li><a href="#difference">What Is Different from the Residual Recipe?</a></li></ul></details></li>
@@ -54,7 +58,7 @@
 
   <h2 id="part-a" style="scroll-margin-top:90px">Part A: Gradient Boosting Step by Step</h2>
 
-  <p>Gradient boosting reaches the same goal as AdaBoost in a different way. Instead of changing the weights of the customers, it measures each mistake directly. The mistake for one customer is called the <strong>residual</strong>: what actually happened minus what the model predicted. The next tree is trained to predict these residuals, and its answer is added to the current prediction, which corrects it. In short: start with a simple guess, calculate the residual of every customer, train a small tree on the residuals, add a small part of that tree to the guess, and repeat. We follow this on eight customers, sorted by the value of their first basket:</p>
+  <p>Gradient boosting measures each mistake directly. The mistake for one customer is the <strong>residual</strong>: what actually happened minus what the model predicted. The next small tree is trained to predict these residuals, and a part of its answer is added to the current prediction. We follow this on eight customers, sorted by the value of their first basket:</p>
 
   <div class="post-table-wrap"><table class="post-table">
     <thead><tr><th>Customer</th><th>First basket (€)</th><th>Ordered again</th></tr></thead>
@@ -70,11 +74,9 @@
     </tbody>
   </table></div>
 
-  <h3 id="gb-step1">Step 1: Start with a Neutral Prediction</h3>
+  <h3 id="gb-step1">Step 1: Start Neutral and Measure the Mistakes</h3>
 
-  <p>Four of the eight customers ordered again, so the model starts by predicting a probability of 0.5 for everyone.</p>
-
-  <h3 id="gb-step2">Step 2: Compute the Residuals</h3>
+  <p>Four of the eight customers ordered again, so the model starts by predicting the same probability for everyone: 0.5. On the score scale that the model adds up (explained in the box below), this is a score of 0.</p>
 
   <p>The residual is what actually happened (1 if the customer ordered again, 0 if not) minus the predicted probability:</p>
 
@@ -85,11 +87,16 @@
 
   <p>A positive residual says “the model was too pessimistic about this customer”, a negative one says “too optimistic”. The next tree’s job is to predict these numbers from the customer’s data.</p>
 
-  <h3 id="gb-step3">Step 3: Fit a Small Tree to the Residuals</h3>
+  <div class="post-note post-note-plain post-note-concept">
+    <p class="post-note-l">The logit scale</p>
+    <p>A probability has to stay between 0 and 1, but corrections that are added together can go beyond that. So boosted models add the corrections on a different scale, the <strong>logit</strong> scale, which has no limits, and convert the result back to a probability at the end. The logit of a probability <em>p</em> is ln(<em>p</em> ÷ (1 − <em>p</em>)), the same scale on which <a href="logistic-regression.html">Logistic Regression</a> works. The conversion back is <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>). A score of 0 means <em>p</em> = 0.50, a score of +2 means <em>p</em> = 0.88 and a score of −2 means <em>p</em> = 0.12.</p>
+  </div>
+
+  <h3 id="gb-step2">Step 2: Fit a Small Tree to the Residuals</h3>
 
   <p>The best single question is <em>“Is the first basket at most €42.50?”</em>. It splits the customers into two groups with a different average residual: customers 1 to 3 (all −0.5) and customers 4 to 8 (+0.5, +0.5, −0.5, +0.5, +0.5, on average +0.3).</p>
 
-  <p>Each leaf now needs one number, the correction that the tree suggests for its customers. The simplest idea is the average residual: −0.5 on the left and +0.3 on the right. There is one catch. These averages are on the probability scale, but the model adds up its corrections as scores on a different scale, the logit scale (explained in the box below Step 4). A classification model therefore has to convert the residuals into the score scale. scikit-learn does this by dividing the sum of the residuals in a leaf by the sum of <em>p</em> × (1 − <em>p</em>) of the same customers:</p>
+  <p>Each leaf needs one number, the correction that the tree suggests for its customers. The average residual (−0.5 on the left, +0.3 on the right) points in the right direction, but it does not say how far to move the score. scikit-learn settles this with a curvature-based rescaling: it divides the sum of the residuals in a leaf by the sum of <em>p</em> × (1 − <em>p</em>) of the same customers:</p>
 
   <p class="post-formula post-formula-plain"><strong>leaf value = (sum of the residuals in the leaf) ÷ (sum of <em>p</em> × (1 − <em>p</em>) in the leaf)</strong></p>
 
@@ -100,20 +107,15 @@
     <li><strong>Right leaf (customers 4 to 8):</strong> <span style="white-space:nowrap">+1.5 ÷ 1.25 = +1.2</span></li>
   </ul>
 
-  <p>Read the leaf values as instructions: lower the score for small baskets, raise it for larger ones. This conversion is one specific choice, the one scikit-learn’s classifier makes. It is a so-called Newton-style step, and Part B shows that XGBoost reaches the same number from its own objective. Other implementations choose differently, so treat the rule above as how this recipe works in scikit-learn, not as a law of gradient boosting.</p>
+  <p>Read the leaf values as instructions: lower the score for small baskets, raise it for larger ones. Dividing by <em>p</em> × (1 − <em>p</em>) is a Newton-style step, a first taste of the second-order idea that Part B builds on, and it is one specific choice, the one scikit-learn’s classifier makes. XGBoost reaches the same number from its own objective; what it adds is using the same curvature to choose the splits as well.</p>
 
-  <h3 id="gb-step4">Step 4: Update the Prediction with the Learning Rate</h3>
+  <h3 id="gb-step3">Step 3: Update the Prediction with the Learning Rate</h3>
 
-  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η (eta), a number between 0 and 1 that makes every step cautious, like a small step instead of a big jump. The score before any tree is 0, which stands for a probability of 0.5:</p>
+  <p>The tree’s suggestion is not applied in full. It is multiplied by the <strong>learning rate</strong> η (eta), a number between 0 and 1 that makes every step cautious, like a small step instead of a big jump:</p>
 
   <p class="post-formula post-formula-plain"><strong>New score = old score + η × leaf value</strong></p>
 
   <p>For this example we use η = 0.5, a large value chosen only to keep the arithmetic visible. Customers 1 to 3 get 0 + 0.5 × (−2.0) = −1.0, and customers 4 to 8 get 0 + 0.5 × 1.2 = +0.6. Converting back with <span style="white-space:nowrap"><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</span> gives probabilities of 0.27 and 0.65. The predicted probabilities have moved in the right direction for seven of the eight customers; only customer 6 (€70, no repeat order) moved the wrong way.</p>
-
-  <div class="post-note post-note-plain post-note-concept">
-    <p class="post-note-l">The logit scale</p>
-    <p>A probability has to stay between 0 and 1, but corrections that are added together can go beyond that. So boosted models add the corrections on a different scale, the <strong>logit</strong> scale, which has no limits, and convert the result back to a probability at the end. The logit of a probability <em>p</em> is ln(<em>p</em> ÷ (1 − <em>p</em>)), the same scale on which <a href="logistic-regression.html">Logistic Regression</a> works. The conversion back is <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>). A score of 0 means <em>p</em> = 0.50, a score of +2 means <em>p</em> = 0.88 and a score of −2 means <em>p</em> = 0.12.</p>
-  </div>
 
   <h3 id="gb-repeat">Repeat: Each Tree Corrects What Is Left</h3>
 
@@ -133,13 +135,13 @@
   </figure>
 
 
-  <p>The average size of the residuals (ignoring their sign) falls from 0.50 at the start to 0.36, 0.31 and 0.25 after one, two and three trees, so it halves within three small trees. This is the number the model tries to push down at every step.</p>
+  <p>The average size of the residuals (ignoring their sign) falls from 0.50 at the start to 0.36, 0.31 and 0.25 after one, two and three trees. What the model actually pushes down is the log loss, which falls from 0.69 to 0.47, 0.39 and 0.33 over the same three trees.</p>
 
   <h3 id="why-gradient">Why It Is Called Gradient Boosting</h3>
 
   <p>So far a residual was simply “actual minus predicted”. There is a second way to see it, and it explains the name. The model measures how bad a prediction is with a <strong>loss function</strong>: a number that is small when the prediction is good and large when it is bad. For repeat orders the usual choice is the log loss. Chart 3 shows it for one customer who did order again. The horizontal axis is the model’s score for this customer, the vertical axis is the loss.</p>
 
-  <p>At a score of 0 the loss is 0.69, and the curve slopes downward: raising the score lowers the loss. The slope of the loss curve is called its <strong>gradient</strong>. For the log loss, the gradient at a customer’s score is <em>p</em> − <em>y</em>, which is 0.5 − 1 = −0.5 for this customer. To make the loss smaller, you move against the gradient, in the direction of <em>y</em> − <em>p</em> = +0.5. And <em>y</em> − <em>p</em> is exactly the residual.</p>
+  <p>At a score of 0 the loss is 0.69, and the curve slopes downward: raising the score lowers the loss. The slope of the loss curve is called its <strong>gradient</strong>. For the log loss, the gradient with respect to the score is <em>p</em> − <em>y</em>, which is 0.5 − 1 = −0.5 for this customer. To make the loss smaller, you move against the gradient, in the direction of <em>y</em> − <em>p</em> = +0.5. And <em>y</em> − <em>p</em> is exactly the residual.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/gradient-boosting/chart-3-loss-gradient.svg?v=2" alt="Curve of the log loss against the score for a customer who ordered again. The curve falls from left to right. At score 0 the loss is 0.69 and the slope is minus 0.5. A short arrow of length 0.5 points to the right, in the direction that lowers the loss, and a note says it gives a direction, not yet a distance." loading="lazy"></div>
@@ -157,7 +159,7 @@
 
   <ul class="post-points post-points-color">
     <li><strong>Regression</strong> predicts a number, for example the value of a customer’s next order. The loss is the squared error, the scores are the predictions themselves, the residual is <em>y</em> − ŷ and a leaf usually gets the average residual of its customers. In scikit-learn this is <code>GradientBoostingRegressor</code>.</li>
-    <li><strong>Classification</strong> predicts a category, for example a repeat order or not. The loss is the log loss, the scores live on the logit scale and are converted into probabilities, and the leaves are converted as in Step 3. In scikit-learn this is <code>GradientBoostingClassifier</code>. With more than two categories it builds one tree per category in every round.</li>
+    <li><strong>Classification</strong> predicts a category, for example a repeat order or not. The loss is the log loss, the scores live on the logit scale and are converted into probabilities, and the leaves are converted as in Step 2. In scikit-learn this is <code>GradientBoostingClassifier</code>. With more than two categories it builds one tree per category in every round.</li>
   </ul>
 
 <h2 id="tuning" style="scroll-margin-top:90px">Learning Rate, Number of Trees and Tree Depth</h2>
@@ -283,7 +285,7 @@
 
   <h3 id="learning-rate">Learning Rate and Number of Trees</h3>
 
-  <p>The learning rate η from Step 4 controls how much of each tree’s correction is applied, and it works together with the number of trees:</p>
+  <p>The learning rate η from Step 3 controls how much of each tree’s correction is applied, and it works together with the number of trees:</p>
 
   <ul class="post-points post-points-color">
     <li><strong>Large η (for example 0.5):</strong> every tree makes a big correction, so the model learns fast but also memorizes the training data quickly.</li>
@@ -329,27 +331,19 @@ gb.fit(X_train, y_train)</code></pre>
 
   <h2 id="part-b" style="scroll-margin-top:90px">Part B: From Gradient Boosting to XGBoost</h2>
 
-  <p>XGBoost (extreme gradient boosting) was introduced by Chen and Guestrin in 2016 as a gradient boosting system that is fast on very large tables and gives more control over overfitting. It did not change what boosting is. It changed how each tree is chosen and what the model is penalized for. Three changes matter for understanding it:</p>
-
-  <ul class="post-points post-points-color">
-    <li><strong>Curvature, not only slope.</strong> It uses the second derivative of the loss as well as the first, which tells it how far a correction can go.</li>
-    <li><strong>A penalty for complex trees.</strong> The goal that every tree tries to improve contains a price for extra leaves and for large leaf values.</li>
-    <li><strong>One score for every question.</strong> The same numbers decide both which question a tree asks and which value each leaf gets.</li>
-  </ul>
-
-  <p>There is a lot of engineering on top of this, such as fast split search, handling of missing values and parallel computing. We leave it out here and look only at the mathematics that changes the result. The residual recipe from Part A turns out to be a special case of it.</p>
+  <p>XGBoost (extreme gradient boosting) was introduced by Chen and Guestrin in 2016 as a gradient boosting system that is fast on very large tables and gives more control over overfitting. It did not change what boosting is. It changed how each tree is chosen and what the model is penalized for, in three ways. It uses the curvature of the loss as well as its slope. It adds a price for extra leaves and for large leaf values to the goal that every tree tries to improve. And one score decides both which question a tree asks and which value each leaf gets. There is a lot of engineering on top of this, such as fast split search, handling of missing values and parallel computing. We leave it out and look only at the mathematics that changes the result.</p>
 
   <h3 id="grad-hess">Gradient and Hessian: Direction and Curvature</h3>
 
-  <p>Imagine walking downhill in fog. The slope under your feet tells you in which direction to go. It does not tell you how far you can walk before the ground turns upward again. For that you also need to know how quickly the slope changes, which is the <strong>curvature</strong>: on a strongly curved hill you must stop soon, on a gently curved one you can go far.</p>
+  <p>The slope under your feet says which way is downhill, but not how far you can walk before the ground rises again. For that you also need the curvature: on a strongly curved hill you must stop soon, on a gently curved one you can go far.</p>
 
   <p>For every customer, XGBoost calculates two numbers at the current score. The first is the gradient <em>g</em>, the slope of the loss, which we already know. The second is the <strong>Hessian</strong> <em>h</em>, the curvature of the loss. For one customer, the Hessian is simply the second derivative, one number. For the log loss they are:</p>
 
-  <p class="post-formula post-formula-plain"><strong><em>g</em> = <em>p</em> − <em>y</em> &nbsp;&nbsp;&nbsp; <em>h</em> = <em>p</em> × (1 − <em>p</em>)</strong><span>The gradient is the negative residual. The Hessian is the same <em>p</em> × (1 − <em>p</em>) that appeared in Step 3.</span></p>
+  <p class="post-formula post-formula-plain"><strong><em>g</em> = <em>p</em> − <em>y</em> &nbsp;&nbsp;&nbsp; <em>h</em> = <em>p</em> × (1 − <em>p</em>)</strong><span>The gradient is the negative residual. The Hessian is the same <em>p</em> × (1 − <em>p</em>) that appeared in Step 2.</span></p>
 
   <p>For our eight customers at the start (<em>p</em> = 0.5): <em>g</em> = +0.5 for the four customers who did not order again, <em>g</em> = −0.5 for the four who did, and <em>h</em> = 0.25 for everyone.</p>
 
-  <p>Plain gradient boosting uses only <em>g</em>. It knows the direction, but not how far to go, so the distance is set by the learning rate alone. XGBoost goes one step further: near the current score, the loss curve looks like a parabola, and a parabola is described by the slope and the curvature:</p>
+  <p>In its simplest form the residual recipe uses only <em>g</em>: it knows the direction, and the learning rate alone sets the distance. (scikit-learn’s classifier already rescales its leaves by <em>h</em>, as in Step 2.) XGBoost goes one step further: near the current score, the loss curve looks like a parabola, and a parabola is described by the slope and the curvature:</p>
 
   <p class="post-formula post-formula-plain"><strong>loss(score + step) ≈ loss(score) + <em>g</em> × step + ½ × <em>h</em> × step²</strong><span>Slope times step, plus half the curvature times the step squared.</span></p>
 
@@ -370,7 +364,7 @@ gb.fit(X_train, y_train)</code></pre>
   <p class="post-formula post-formula-plain"><strong>objective = (sum of the losses of all customers) + (penalty for the trees)</strong><span>The penalty for one tree is Ω = γ × <em>T</em> + ½ × λ × (sum of the squared leaf values), where <em>T</em> is the number of leaves.</span></p>
 
   <ul class="post-points post-points-color">
-    <li><strong>γ (gamma, <code>gamma</code>)</strong> is a price for every leaf. A split that adds a leaf has to improve the loss by more than γ, otherwise it is not worth it.</li>
+    <li><strong>γ (gamma, <code>gamma</code>)</strong> is a price for every leaf. A split that adds a leaf has to improve the objective by more than γ, otherwise it is not worth it.</li>
     <li><strong>λ (lambda, <code>reg_lambda</code>)</strong> is a price for large leaf values. It pulls every leaf value toward 0, so that no single tree makes a large correction.</li>
   </ul>
 
@@ -378,7 +372,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p class="post-formula post-formula-plain"><strong>leaf weight <em>w</em> = −<em>G</em> ÷ (<em>H</em> + λ)</strong><span><em>G</em> is the sum of the gradients and <em>H</em> the sum of the Hessians of the customers in the leaf.</span></p>
 
-  <p>Check it with our first tree. The left leaf holds customers 1 to 3, so <em>G</em> = 3 × 0.5 = 1.5 and <em>H</em> = 3 × 0.25 = 0.75. With λ = 0 the leaf weight is −1.5 ÷ 0.75 = −2.0. The right leaf holds customers 4 to 8, with <em>G</em> = −1.5 and <em>H</em> = 1.25, so the weight is +1.2. These are exactly the leaf values from Step 3. With λ = 0, −<em>G</em> ÷ <em>H</em> is the same as the sum of the residuals divided by the sum of <em>p</em> × (1 − <em>p</em>). The difference is where it comes from: scikit-learn applies the rule after the tree has been found, while XGBoost derives it from its objective and uses it to find the tree. With λ = 1 the weights become −1.5 ÷ 1.75 = −0.86 and +1.5 ÷ 2.25 = +0.67: smaller, more cautious corrections.</p>
+  <p>Check it with our first tree. The left leaf holds customers 1 to 3, so <em>G</em> = 3 × 0.5 = 1.5 and <em>H</em> = 3 × 0.25 = 0.75. With λ = 0 the leaf weight is −1.5 ÷ 0.75 = −2.0. The right leaf holds customers 4 to 8, with <em>G</em> = −1.5 and <em>H</em> = 1.25, so the weight is +1.2. These are exactly the leaf values from Step 2. With λ = 0, −<em>G</em> ÷ <em>H</em> is the same as the sum of the residuals divided by the sum of <em>p</em> × (1 − <em>p</em>). The difference is where it comes from: scikit-learn applies the rule after the tree has been found, while XGBoost derives it from its objective and uses it to find the tree. With λ = 1 the weights become −1.5 ÷ 1.75 = −0.86 and +1.5 ÷ 2.25 = +0.67: smaller, more cautious corrections.</p>
 
   <h3 id="split-gain">Leaf Weights and Split Gain</h3>
 
@@ -390,7 +384,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p>Written out with <em>G</em><sub>L</sub> and <em>H</em><sub>L</sub> for the left group and <em>G</em><sub>R</sub> and <em>H</em><sub>R</sub> for the right group, this is gain = ½ × [ <em>G</em><sub>L</sub>² ÷ (<em>H</em><sub>L</sub> + λ) + <em>G</em><sub>R</sub>² ÷ (<em>H</em><sub>R</sub> + λ) − (<em>G</em><sub>L</sub> + <em>G</em><sub>R</sub>)² ÷ (<em>H</em><sub>L</sub> + <em>H</em><sub>R</sub> + λ) ] − γ.</p>
 
-  <p>The score of a group measures how much that group of customers can improve the objective. It is large when the gradients in the group all point the same way, because then they add up in <em>G</em>. It is small when they cancel each other: a group with as many customers who need a higher score as customers who need a lower one has <em>G</em> close to 0 and nothing to gain. A good split therefore separates customers whose gradients point in opposite directions. The last term subtracts the price γ for the extra leaf.</p>
+  <p>The score of a group is proportional to how much that group of customers can improve the objective. It is large when the gradients in the group all point the same way, because then they add up in <em>G</em>. It is small when they cancel each other: a group with as many customers who need a higher score as customers who need a lower one has <em>G</em> close to 0 and nothing to gain. A good split therefore separates customers whose gradients point in opposite directions. The last term subtracts the price γ for the extra leaf.</p>
 
   <p>Chart 7 works this out for our first split. Without a penalty (λ = 0, γ = 0) the gain is ½ × (1.5² ÷ 0.75 + 1.5² ÷ 1.25 − 0² ÷ 2.0) = ½ × (3.0 + 1.8 − 0) = 2.4. The question about €75 would score only 1.33, and the question about €52.50 only 1.0, so €42.50 is the best first question, the same as in Part A.</p>
 
@@ -426,7 +420,7 @@ gb.fit(X_train, y_train)</code></pre>
     </tbody>
   </table></div>
 
-  <p>These are the choices of two specific libraries. “Gradient boosting” names a family of methods that all add trees fitted to the negative gradient, and implementations differ in how they pick splits and leaf values. XGBoost is the member of the family that uses second-order information throughout. On our customer table the two models end up practically the same, as the next section shows.</p>
+  <p>These are the choices of two specific libraries. “Gradient boosting” names a family of methods that all add trees fitted to the negative gradient, and implementations differ in how they pick splits and leaf values. XGBoost is the member of the family that uses second-order information throughout. With squared-error loss and λ = γ = 0, its leaf rule and split gain reduce to the average residual and the familiar variance reduction. On our customer table the two models end up practically the same, as the next section shows.</p>
 
   <h2 id="xgb-python" style="scroll-margin-top:90px">XGBoost in Python</h2>
 
@@ -449,7 +443,7 @@ tree = toy.get_booster().trees_to_dataframe()
 print("split at", tree.loc[0, "Split"])
 print(tree[tree["Feature"] == "Leaf"][["Node", "Gain", "Cover"]])</code></pre>
 
-  <p>For the leaves, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.857 and +0.667.</p>
+  <p>For the leaves, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.857 and +0.667. If you print the split row as well, its <code>Gain</code> column shows 4.8: XGBoost reports the gain without the factor ½, so the 2.4 from Chart 7 appears doubled.</p>
 
   <h3 class="post-h3-small" id="xgb-python-on-the-full-customer-table">On the full customer table</h3>
 
@@ -483,7 +477,7 @@ print(xgb.best_iteration + 1)    # number of trees used for predictions</code></
   <p>No. Gradient boosting is the general method of adding small trees that correct the remaining error. XGBoost is one implementation of it, with its own objective that adds a penalty for complex trees and uses second-order information. scikit-learn has another implementation with different choices.</p>
 
   <h3 class="post-h3-small">Why does XGBoost use the second derivative?</h3>
-  <p>The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step can go before the loss stops improving. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split.</p>
+  <p>The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step should go. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split.</p>
 
   <h3 class="post-h3-small">What is the difference between the learning rate and lambda?</h3>
   <p>The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile.</p>
