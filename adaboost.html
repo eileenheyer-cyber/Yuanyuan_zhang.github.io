@@ -35,9 +35,13 @@
   <p class="overline">Tree-based models</p>
   <h1 class="post-title">AdaBoost Explained: How Models Learn from Their Mistakes</h1>
 
-<p>A decision tree with a single question is almost useless on its own. AdaBoost, short for adaptive boosting, combines many such tiny trees into one accurate model by making every new tree concentrate on the customers the earlier trees got wrong.</p>
+  <p>A single decision tree is often too simple to make reliable predictions. AdaBoost, short for <em>Adaptive Boosting</em>, takes a different approach: it combines many simple models into one stronger model.</p>
 
-  <p>We follow it step by step on ten made-up first-time customers of an online shop, with one question: does the customer order again within 60 days? At the end you run it in Python. This is the first of three articles on boosting; <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. If decision trees are new to you, start with <a href="decision-tree.html">Decision Trees</a>.</p>
+  <p>The idea is straightforward. Each new tree focuses more on the observations that previous trees classified incorrectly. By repeatedly adjusting which observations matter most, AdaBoost gradually improves its predictions.</p>
+
+  <p>In this tutorial, we will work through the algorithm using ten fictional customers of an online shop. Our task is to predict whether a customer will place another order within 60 days. By the end, you will also implement AdaBoost in Python.</p>
+
+  <p>This is the first article in a three-part series on boosting. For a broader introduction, see <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a>. If you are new to decision trees, start with <a href="decision-tree.html">Decision Trees</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
@@ -56,22 +60,57 @@
 
   <h3 id="weak-learners" class="post-h3-small" style="scroll-margin-top:90px">Weak Learners and Decision Stumps</h3>
 
-  <p>A <strong>weak learner</strong> is a model that is only slightly better than guessing. AdaBoost usually uses the simplest tree there is: a <strong>decision stump</strong>, a tree with one question and two answers. “Was the package delivered within 5 days? If yes, predict a repeat order, if no, predict none” is a stump.</p>
+  <p>A <strong>weak learner</strong> is a model that performs only slightly better than random guessing. AdaBoost typically uses a very simple decision tree called a <strong>decision stump</strong>.</p>
 
-  <p>A stump is weak on purpose. On the full table of 5,000 simulated customers used in this series, the best single stump asks about the delivery time and then predicts “no repeat order” for everybody. It is right for 63.4% of the test customers, exactly as often as always predicting “no repeat order”. It has learned nothing useful on its own.</p>
+  <p>A decision stump is a tree with just one question and two possible outcomes. For example: <em>Was the order delivered within five days?</em></p>
 
-  <p>AdaBoost makes many stumps useful by combining two ideas. Every customer gets a <strong>weight</strong> that says how much that customer counts, and the weights change after every stump so that the next stump has to care about the earlier mistakes. Every stump gets a <strong>say</strong> that says how much its answer counts in the end, and a better stump gets more say.</p>
+  <ul class="post-points">
+    <li><strong>Yes:</strong> predict that the customer will order again.</li>
+    <li><strong>No:</strong> predict that the customer will not order again.</li>
+  </ul>
+
+  <p>That is the entire model. It makes a prediction based on just one feature.</p>
+
+  <p>A stump is deliberately simple. Consider the full dataset of 5,000 simulated customers used in this series. The best individual stump uses delivery time but still predicts “no repeat order” for every customer. It correctly classifies only 63.4% of the test customers, no better than simply predicting the majority class. On its own, this stump has limited predictive value.</p>
+
+  <p>AdaBoost makes these simple models useful by combining them. It does this through two mechanisms:</p>
+
+  <ul class="post-points">
+    <li><strong>Sample weights:</strong> Each customer receives a weight indicating how much attention the algorithm should pay to that observation. Incorrectly classified customers receive more weight, making them more important in the next round.</li>
+    <li><strong>Model weights:</strong> Each stump receives a weight (its <strong>say</strong>) based on its classification performance. More accurate stumps have a greater influence on the final prediction.</li>
+  </ul>
+
+  <p>The result is a sequence of simple models, each learning from the mistakes of its predecessors.</p>
 
   <h3 id="ada-start" class="post-h3-small" style="scroll-margin-top:90px">Ten Customers with Equal Weights</h3>
 
-  <p>Chart 1 shows our ten customers: delivery time from left to right, the value of the first basket from bottom to top, and the color shows whether they ordered again (blue circle) or not (red square). Customers 7 and 9 are the surprising ones. They waited 8 and 9 days and still ordered again.</p>
+  <p>Let’s start with our ten fictional customers. Chart 1 shows each customer as a point:</p>
 
-  <p>Before the first stump, all ten customers count the same. Each has the weight <span style="white-space:nowrap">1 ÷ 10 = 0.10</span>, and the weights add up to 1, like shares of a whole. In the left panel all markers have the same size. The right panel shows the same customers after round 1. We calculate it in the next sections.</p>
+  <ul class="post-points">
+    <li>The x-axis represents delivery time in days.</li>
+    <li>The y-axis represents the value of the customer’s first basket in euros.</li>
+    <li>Blue circles indicate customers who ordered again within 60 days.</li>
+    <li>Red squares indicate customers who did not order again.</li>
+  </ul>
+
+  <p>Two customers stand out: customers 7 and 9. Both waited longer than five days for delivery but still placed another order.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-1-customers-weights.svg" alt="Two scatter plots with the same axes, delivery days against first basket value. Left: ten customers with equal marker sizes. Right: customers 7 and 9, who ordered again despite a late delivery, are drawn much larger than the others." loading="lazy"></div>
     <figcaption><span>Chart 1</span> Marker size shows the weight of each customer. Customers 7 and 9 ordered again despite a late delivery, and they become the heaviest customers after round 1.</figcaption>
   </figure>
+
+  <p>Before AdaBoost trains its first stump, all ten customers have equal importance. Each observation receives a sample weight of:</p>
+
+  <p class="post-formula post-formula-plain"><strong>w<sub>i</sub> = <span class="frac"><span>1</span><span>10</span></span> = 0.10</strong></p>
+
+  <p>Together, the weights add up to 1. This means every customer contributes equally to the learning process. The left panel of Chart 1 illustrates these initial weights: all ten markers have the same size.</p>
+
+  <p>Now let’s apply our first decision stump: <em>Was the order delivered within five days?</em> The stump predicts a repeat order for delivery times of five days or less and no repeat order for delivery times longer than five days. This rule correctly classifies eight customers but makes two mistakes: customers 7 and 9.</p>
+
+  <p>The right panel shows what happens next. AdaBoost increases the weights of these two incorrectly classified customers. Their markers become larger, while the weights of correctly classified customers become smaller.</p>
+
+  <p><strong>Why does this matter?</strong> The next stump will pay more attention to customers 7 and 9. Instead of treating all observations equally, AdaBoost now encourages the next model to focus on the cases the previous model failed to explain. This is how the algorithm gradually learns from its mistakes.</p>
 
   <h2 id="round-1" style="scroll-margin-top:90px">Round 1: Error, Say and New Weights</h2>
 
