@@ -43,21 +43,18 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><a href="#weak-learners">Weak Learners and Decision Stumps</a></li>
-      <li><a href="#ada-start">Ten Customers with Equal Weights</a></li>
-      <li><a href="#ada-round1">Round 1: The First Stump and Its Weighted Error</a></li>
-      <li><a href="#ada-say">Alpha: How Much Say Does a Stump Get?</a></li>
-      <li><a href="#ada-exp">Why the Weights Are Updated with Exponentials</a></li>
-      <li><a href="#ada-reweight">Updating and Normalizing the Weights</a></li>
-      <li><a href="#ada-rounds">Rounds 2 and 3</a></li>
-      <li><a href="#ada-vote">Weighted Voting: The Final Prediction</a></li>
+      <li><a href="#setup">The Setup: Stumps and Ten Customers</a></li>
+      <li><a href="#round-1">Round 1: Error, Say and New Weights</a></li>
+      <li><a href="#rounds-vote">Rounds 2 and 3 and the Final Vote</a></li>
       <li><a href="#python">AdaBoost in Python</a></li>
       <li><a href="#limits">Strengths and Limits</a></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
   </div>
 
-  <h2 id="weak-learners" style="scroll-margin-top:90px">Weak Learners and Decision Stumps</h2>
+  <h2 id="setup" style="scroll-margin-top:90px">The Setup: Stumps and Ten Customers</h2>
+
+  <h3 id="weak-learners" class="post-h3-small" style="scroll-margin-top:90px">Weak Learners and Decision Stumps</h3>
 
   <p>A <strong>weak learner</strong> is a model that is only slightly better than guessing. AdaBoost usually uses the simplest tree there is: a <strong>decision stump</strong>, a tree with one question and two answers. “Was the package delivered within 5 days? If yes, predict a repeat order, if no, predict none” is a stump.</p>
 
@@ -65,7 +62,7 @@
 
   <p>AdaBoost makes many stumps useful by combining two ideas. Every customer gets a <strong>weight</strong> that says how much that customer counts, and the weights change after every stump so that the next stump has to care about the earlier mistakes. Every stump gets a <strong>say</strong> that says how much its answer counts in the end, and a better stump gets more say.</p>
 
-  <h2 id="ada-start" style="scroll-margin-top:90px">Ten Customers with Equal Weights</h2>
+  <h3 id="ada-start" class="post-h3-small" style="scroll-margin-top:90px">Ten Customers with Equal Weights</h3>
 
   <p>Chart 1 shows our ten customers: delivery time from left to right, the value of the first basket from bottom to top, and the color shows whether they ordered again (blue circle) or not (red square). Customers 7 and 9 are the surprising ones. They waited 8 and 9 days and still ordered again.</p>
 
@@ -76,7 +73,9 @@
     <figcaption><span>Chart 1</span> Marker size shows the weight of each customer. Customers 7 and 9 ordered again despite a late delivery, and they become the heaviest customers after round 1.</figcaption>
   </figure>
 
-  <h2 id="ada-round1" style="scroll-margin-top:90px">Round 1: The First Stump and Its Weighted Error</h2>
+  <h2 id="round-1" style="scroll-margin-top:90px">Round 1: Error, Say and New Weights</h2>
+
+  <h3 id="ada-round1" class="post-h3-small" style="scroll-margin-top:90px">Round 1: The First Stump and Its Weighted Error</h3>
 
   <p>The first stump looks for the single question that separates the customers best. Here it is <em>“Was the package delivered within 5 days?”</em>: yes means it predicts a repeat order, no means it predicts none. It is right for eight customers and wrong for customers 7 and 9.</p>
 
@@ -86,7 +85,7 @@
 
   <p>Right now every customer counts the same, so ε is just the share of wrong answers: 2 of 10 customers, or 0.20. In later rounds the weights differ, and getting a high-weight customer wrong adds more to ε than getting a low-weight customer wrong. A small ε means the stump is usually right where it matters, so we can trust it more.</p>
 
-  <h2 id="ada-say" style="scroll-margin-top:90px">Alpha: How Much Say Does a Stump Get?</h2>
+  <h3 id="ada-say" class="post-h3-small" style="scroll-margin-top:90px">Alpha: How Much Say Does a Stump Get?</h3>
 
   <p>A stump’s <strong>vote</strong> is its answer for a customer: +1 (repeat order) or −1 (no repeat order). Its <strong>say</strong> is how much that answer counts. The better a stump is, the more say it should get. A stump that is almost always right should dominate the final decision, and a stump that is no better than a coin flip should have no influence at all. The say is written α (alpha):</p>
 
@@ -107,7 +106,7 @@
 
   <p>The value α = 0.69 is used twice: as the stump’s say in the final vote, and to decide how the customer weights change next.</p>
 
-  <h2 id="ada-exp" style="scroll-margin-top:90px">Why the Weights Are Updated with Exponentials</h2>
+  <h3 id="ada-exp" class="post-h3-small" style="scroll-margin-top:90px">Why the Weights Are Updated with Exponentials</h3>
 
   <p>After a stump, the weights have to change: customers it got wrong should count more, customers it got right should count less. We need a multiplier with a few properties. It must always be positive, because a weight can never be negative. It must be above 1 for a mistake and below 1 for a correct answer. It must be exactly 1 when the stump is a coin flip (α = 0), because then there is nothing to learn from it. And it must change more when the stump has a larger say.</p>
 
@@ -117,7 +116,7 @@
 
   <p>With α = 0.69 the multipliers are <em>e</em><sup>0.69</sup> = 2 for the two wrong customers and <em>e</em><sup>−0.69</sup> = 0.5 for the eight right ones. The weights are doubled or halved. This choice has a useful side effect. The two wrong customers had a total weight of 0.20 and now have 0.20 × 2 = 0.40. The eight right customers had 0.80 and now have 0.80 × 0.5 = 0.40. Wrong and right now carry the same total weight. For the new weights, the first stump is therefore no better than a coin flip, so the next stump cannot simply repeat it and has to find a new question.</p>
 
-  <h2 id="ada-reweight" style="scroll-margin-top:90px">Updating and Normalizing the Weights</h2>
+  <h3 id="ada-reweight" class="post-h3-small" style="scroll-margin-top:90px">Updating and Normalizing the Weights</h3>
 
   <ul class="post-points post-points-color">
     <li><strong>Customers 7 and 9 (wrong):</strong> 0.10 × 2 = 0.20 each.</li>
@@ -130,7 +129,9 @@
 
   <p>Customers 7 and 9 get 0.20 ÷ 0.80 = 0.25, and each of the other eight gets 0.05 ÷ 0.80 = 0.0625. Check: 2 × 0.25 + 8 × 0.0625 = 1. Two customers out of ten now carry half of the total weight, which is the right panel of Chart 1.</p>
 
-  <h2 id="ada-rounds" style="scroll-margin-top:90px">Rounds 2 and 3</h2>
+  <h2 id="rounds-vote" style="scroll-margin-top:90px">Rounds 2 and 3 and the Final Vote</h2>
+
+  <h3 id="ada-rounds" class="post-h3-small" style="scroll-margin-top:90px">Rounds 2 and 3</h3>
 
   <p>Round 2 repeats the recipe on the new weights. The best stump now asks <em>“Is the first basket at most €70?”</em>. It gets customers 7 and 9 right, but is wrong for customers 1, 3 and 10, the customers the first stump handled well. Their weights were small, so the weighted error is 3 × 0.0625 = 0.1875 and the stump gets α = 0.73. After reweighting and normalizing, customers 1, 3 and 10 carry about 0.17 each, customers 7 and 9 about 0.15, and the other five about 0.04.</p>
 
@@ -146,7 +147,7 @@
     <figcaption><span>Chart 4</span> Each stump asks a different question and is wrong in a different place. None of them is good alone, but they are wrong for different customers, which is what the weighted vote below uses.</figcaption>
   </figure>
 
-  <h2 id="ada-vote" style="scroll-margin-top:90px">Weighted Voting: The Final Prediction</h2>
+  <h3 id="ada-vote" class="post-h3-small" style="scroll-margin-top:90px">Weighted Voting: The Final Prediction</h3>
 
   <p>The final prediction is a weighted vote. Each stump votes +1 or −1, its vote is multiplied by its say α, and the sign of the sum decides:</p>
 
