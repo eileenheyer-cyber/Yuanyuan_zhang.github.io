@@ -366,14 +366,11 @@
   <p>Their weights now increase to approximately 0.17 each. Customers 7 and 9 retain weights of approximately 0.15 each, while the other five customers have weights of approximately 0.04 each.</p>
 
   <div class="post-note post-note-explain post-note-plain">
-    <p class="post-note-l">Where do these weights come from?</p>
-    <p>The update follows the same rules as in Round 1. After updating, the customers the stump got wrong and the customers it got right each carry exactly half of the total weight, which is 0.5 each after normalization.</p>
-    <p><strong>Customers 1, 3 and 10 (wrong):</strong> they share 0.5 equally, so each gets 0.5 ÷ 3 ≈ 0.17.</p>
-    <p><strong>The other seven customers (right):</strong> they also share 0.5, but in the proportions they had before. Customers 7 and 9 had 0.25 each, and the other five had 0.0625 each. Since 0.25 is four times 0.0625, customers 7 and 9 count as 4 units each and the other five as 1 unit each. That makes 2 × 4 + 5 × 1 = 13 units, so one unit is worth 0.5 ÷ 13 = 1/26 ≈ 0.0385.</p>
-    <ul class="post-points">
-      <li>Customers 7 and 9: 4 units = 4/26 ≈ 0.15 each.</li>
-      <li>The other five customers: 1 unit = 1/26 ≈ 0.04 each.</li>
-    </ul>
+    <p class="post-note-l">Where does 1/26 ≈ 0.0385 come from?</p>
+    <p>After Round 2, the seven customers the stump got right (customers 2, 4, 5, 6, 7, 8 and 9) carry exactly half of the total weight, so 0.5 together.</p>
+    <p>They share this 0.5 in the same proportions as before. Customers 7 and 9 had 0.25 each, and the other five had 0.0625 each. Since 0.25 is four times 0.0625, customers 7 and 9 count as 4 units each and the other five as 1 unit each:</p>
+    <p>2 × 4 + 5 × 1 = 13 units</p>
+    <p>One unit is therefore worth 0.5 ÷ 13 = 1/26 ≈ 0.0385. This is the weight of each of the five lightest customers. Customers 7 and 9 have 4 units, so 4/26 ≈ 0.15.</p>
   </div>
 
   <p>The algorithm has shifted its attention again. The first stump struggled with customers 7 and 9; the second stump struggles with customers 1, 3 and 10.</p>
