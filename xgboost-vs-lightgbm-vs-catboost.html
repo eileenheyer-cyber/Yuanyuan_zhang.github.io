@@ -44,11 +44,11 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><a href="#shared">What the Three Libraries Share</a></li>
-      <li><a href="#xgboost">XGBoost: Level by Level, Carefully Regularized</a></li>
-      <li><a href="#lightgbm">LightGBM: Leaf-Wise Growth and Less Data to Look At</a></li>
-      <li><a href="#catboost">CatBoost: Built Around Categorical Features</a></li>
+      <li><details open><summary><a href="#xgboost">XGBoost: Level by Level, Carefully Regularized</a></summary><ul><li><a href="#xgboost-how-trees-are-grown">How trees are grown</a></li><li><a href="#xgboost-how-splits-are-found">How splits are found</a></li><li><a href="#xgboost-regularization">Regularization</a></li><li><a href="#xgboost-categories">Categories</a></li><li><a href="#xgboost-strengths-and-limits">Strengths and limits</a></li></ul></details></li>
+      <li><details open><summary><a href="#lightgbm">LightGBM: Leaf-Wise Growth and Less Data to Look At</a></summary><ul><li><a href="#lightgbm-histograms-and-histogram-subtraction">Histograms and histogram subtraction</a></li><li><a href="#lightgbm-leaf-wise-growth">Leaf-wise growth</a></li><li><a href="#lightgbm-goss-and-efb">GOSS and EFB</a></li><li><a href="#lightgbm-categories">Categories</a></li><li><a href="#lightgbm-strengths-and-limits">Strengths and limits</a></li></ul></details></li>
+      <li><details open><summary><a href="#catboost">CatBoost: Built Around Categorical Features</a></summary><ul><li><a href="#catboost-symmetric-trees">Symmetric trees</a></li><li><a href="#catboost-categories-and-ordered-target-statistics">Categories and ordered target statistics</a></li><li><a href="#catboost-ordered-boosting">Ordered boosting</a></li><li><a href="#catboost-strengths-and-limits">Strengths and limits</a></li></ul></details></li>
       <li><a href="#comparison">The Three Side by Side</a></li>
-      <li><a href="#python-compare">The Same Table, Three Libraries</a></li>
+      <li><details open><summary><a href="#python-compare">The Same Table, Three Libraries</a></summary><ul><li><a href="#python-compare-what-happens-with-a-larger-table">What happens with a larger table?</a></li></ul></details></li>
       <li><a href="#choose">Which One Should You Choose?</a></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
@@ -76,11 +76,11 @@
 
   <h2 id="xgboost" style="scroll-margin-top:90px">XGBoost: Level by Level, Carefully Regularized</h2>
 
-  <h3 class="post-h3-small">How trees are grown</h3>
+  <h3 class="post-h3-small" id="xgboost-how-trees-are-grown">How trees are grown</h3>
 
   <p>By default XGBoost grows a tree depth-wise: it splits every node of one level before it moves on to the next, until the limit <code>max_depth</code> is reached (default 6). The result is a balanced tree whose size is easy to predict. With <code>grow_policy="lossguide"</code> it can instead split the node with the largest loss reduction first, which is the leaf-wise strategy described in the next section.</p>
 
-  <h3 class="post-h3-small">How splits are found</h3>
+  <h3 class="post-h3-small" id="xgboost-how-splits-are-found">How splits are found</h3>
 
   <p>XGBoost offers three tree methods. <code>exact</code> tries every distinct value of every feature as a split point, which is precise but slow on large tables. <code>approx</code> and <code>hist</code> first group the values into bins and test only the bin borders. The <code>hist</code> method, with up to 256 bins by default, is what <code>tree_method="auto"</code> selects today, so a modern XGBoost already works with histograms. This matters for comparisons: “LightGBM uses histograms, XGBoost does not” was true years ago and is not true now.</p>
 
@@ -92,47 +92,47 @@
   </figure>
 
 
-  <h3 class="post-h3-small">Regularization</h3>
+  <h3 class="post-h3-small" id="xgboost-regularization">Regularization</h3>
 
   <p>This is where XGBoost is most explicit, as <a href="gradient-boosting-xgboost.html#objective">the previous article</a> showed. The objective charges a penalty γ for every leaf and a penalty λ for large leaf weights, and a split is only made if its gain is larger than γ. Further safeguards are <code>min_child_weight</code> (the smallest total Hessian a leaf may have), the L1 penalty <code>alpha</code>, <code>subsample</code> and <code>colsample_bytree</code>. The defaults are λ = 1, γ = 0 and α = 0.</p>
 
-  <h3 class="post-h3-small">Categories</h3>
+  <h3 class="post-h3-small" id="xgboost-categories">Categories</h3>
 
   <p>XGBoost can split on categorical columns directly when the column has the pandas <code>category</code> type and <code>enable_categorical=True</code> is set. For columns with few categories it tests one-hot splits, and above the limit <code>max_cat_to_onehot</code> it partitions the categories into two groups. This is a feature you switch on, while for CatBoost it is the central design.</p>
 
-  <h3 class="post-h3-small">Strengths and limits</h3>
+  <h3 class="post-h3-small" id="xgboost-strengths-and-limits">Strengths and limits</h3>
 
   <p>XGBoost has the longest track record, the most documentation and the widest tooling, and its regularization settings are the most transparent. It is also the most conservative in how trees grow, which makes it predictable. On very large tables or with hundreds of features, it can be slower than LightGBM, and its categorical support is newer than CatBoost’s and has fewer options.</p>
 
   <h2 id="lightgbm" style="scroll-margin-top:90px">LightGBM: Leaf-Wise Growth and Less Data to Look At</h2>
 
-  <h3 class="post-h3-small">Histograms and histogram subtraction</h3>
+  <h3 class="post-h3-small" id="lightgbm-histograms-and-histogram-subtraction">Histograms and histogram subtraction</h3>
 
   <p>LightGBM was built around histograms from the start. Values are sorted into at most <code>max_bin</code> bins (default 255), and finding the best split then costs a pass over the bins instead of over the customers. A second trick saves further work: once the histogram of a parent node and of one child are known, the histogram of the other child is the difference of the two. Only the smaller child has to be counted from the data. A small bin count also lets the data be stored in compact integer types, which saves memory.</p>
 
-  <h3 class="post-h3-small">Leaf-wise growth</h3>
+  <h3 class="post-h3-small" id="lightgbm-leaf-wise-growth">Leaf-wise growth</h3>
 
   <p>LightGBM’s default is to grow leaf-wise: at every step it looks at all current leaves and splits the one whose split lowers the loss the most. With the same number of leaves, this usually reaches a lower training loss than level-wise growth, because splits are spent where they help. The price is that a tree can become deep and lopsided, and on a small table it can start to fit noise. The main control is therefore not the depth but <code>num_leaves</code>, with <code>max_depth</code> and <code>min_data_in_leaf</code> as additional brakes. When you compare libraries, a depth of 3 in XGBoost corresponds to at most 8 leaves, so we use <code>num_leaves=8</code> for LightGBM.</p>
 
-  <h3 class="post-h3-small">GOSS and EFB</h3>
+  <h3 class="post-h3-small" id="lightgbm-goss-and-efb">GOSS and EFB</h3>
 
   <p>The LightGBM paper adds two ideas to speed things up on large data. <strong>Gradient-based One-Side Sampling (GOSS)</strong> keeps all customers with a large gradient, the ones the model still gets badly wrong, and only a random sample of those with a small gradient, whose weight is scaled up to make up for the missing ones. The split gain is then estimated from a smaller sample without losing much accuracy. <strong>Exclusive Feature Bundling (EFB)</strong> combines features that are almost never non-zero at the same time, as with one-hot columns, into one column, which cuts the number of features the histograms have to cover. Both matter mostly for very large or very sparse tables, and our table of five columns is too small to show them.</p>
 
-  <h3 class="post-h3-small">Categories</h3>
+  <h3 class="post-h3-small" id="lightgbm-categories">Categories</h3>
 
   <p>LightGBM can split on categorical columns without one-hot encoding. Its documentation explains that for a column with <em>k</em> categories there are 2<sup><em>k</em>−1</sup> − 1 possible ways to divide them into two groups, and that it finds the best one efficiently by sorting the categories by the ratio of summed gradients to summed Hessians and then searching along that order. In scikit-learn style code the column needs the pandas <code>category</code> type.</p>
 
-  <h3 class="post-h3-small">Strengths and limits</h3>
+  <h3 class="post-h3-small" id="lightgbm-strengths-and-limits">Strengths and limits</h3>
 
   <p>LightGBM is usually the first choice when a table is large and training time matters. Its weak spots are small tables, where leaf-wise growth overfits more easily, and the fact that <code>num_leaves</code> has to be set with care and not copied from a depth setting.</p>
 
   <h2 id="catboost" style="scroll-margin-top:90px">CatBoost: Built Around Categorical Features</h2>
 
-  <h3 class="post-h3-small">Symmetric trees</h3>
+  <h3 class="post-h3-small" id="catboost-symmetric-trees">Symmetric trees</h3>
 
   <p>By default (<code>grow_policy="SymmetricTree"</code>) CatBoost builds symmetric trees, also called oblivious trees: all nodes on one level ask the same question. A tree of depth 3 is then just a list of three questions, such as “first basket above 42.50? delivery time of five days or more? opted in to email?”, and every customer ends up in one of eight leaves. The structure is rigid, which limits how freely one tree can adapt, and it keeps predictions cheap. The default depth is 6. Depth-wise and leaf-wise growth are available as options.</p>
 
-  <h3 class="post-h3-small">Categories and ordered target statistics</h3>
+  <h3 class="post-h3-small" id="catboost-categories-and-ordered-target-statistics">Categories and ordered target statistics</h3>
 
   <p>A simple way to use a category in a tree is to replace it by the average outcome of its customers, for example the share of newsletter customers who ordered again. There is a trap: the average includes the customer’s own outcome. For a category with few customers, the number almost gives away the answer, the model trusts it during training and does worse on new customers. This is a form of target leakage.</p>
 
@@ -156,11 +156,11 @@
 
   <p>Columns with very few categories are handled differently: <code>one_hot_max_size</code> (default 2 on the CPU) sends columns with at most that many values to ordinary one-hot encoding.</p>
 
-  <h3 class="post-h3-small">Ordered boosting</h3>
+  <h3 class="post-h3-small" id="catboost-ordered-boosting">Ordered boosting</h3>
 
   <p>The same leakage problem can occur in the boosting itself: the residuals used to fit a tree are calculated by a model that has already seen the same customers. The CatBoost paper calls the resulting bias prediction shift and proposes ordered boosting, in which a customer’s residual comes from a model that was trained without that customer. In the library this is <code>boosting_type="Ordered"</code>. The documentation says it usually gives better quality on small datasets but can be slower than <code>Plain</code>, and that on the CPU the default is <code>Plain</code>. So a default CatBoost model does not use ordered boosting unless you ask for it, although it does use ordered statistics for the categories.</p>
 
-  <h3 class="post-h3-small">Strengths and limits</h3>
+  <h3 class="post-h3-small" id="catboost-strengths-and-limits">Strengths and limits</h3>
 
   <p>CatBoost is strong when many columns are categories, especially with many levels, and its defaults need less tuning than the other two. In return, the conversion of categories costs time and memory, as the test below shows, and the rigid trees can need more rounds than the others to reach the same accuracy.</p>
 
@@ -233,7 +233,7 @@ cat.fit(X_fit, y_fit, eval_set=(X_val, y_val))</code></pre>
 
   <p>All three gain about a percentage point from the new columns, and again the accuracies are within the noise. CatBoost needed the most trees and by far the most time, here about ten times as long as the others, although all three finished in well under a second. We also tried CatBoost with <code>boosting_type="Ordered"</code>. It reached 81.0% and an AUC of 0.877 with 241 trees in 0.74 seconds, which is again inside the noise, and it was slower than the default, as the documentation says.</p>
 
-  <h3 class="post-h3-small">What happens with a larger table?</h3>
+  <h3 class="post-h3-small" id="python-compare-what-happens-with-a-larger-table">What happens with a larger table?</h3>
 
   <p>To see speed and memory more clearly we repeated the test on a larger simulated table of 400,000 customers (300,000 for training), built in the same way, with 200 trees, a learning rate of 0.1, the same tree size and no subsampling or early stopping, so that every library does the same amount of work. Each library ran in its own process on a machine with two CPU cores, and memory is the growth of the process during training. This is one run per library on one machine, so treat it as a rough picture.</p>
 

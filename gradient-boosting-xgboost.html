@@ -43,11 +43,11 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><a href="#part-a">Part A: Gradient Boosting Step by Step</a></li>
-      <li><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></li>
+      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start with a Neutral Prediction</a></li><li><a href="#gb-step2">Step 2: Compute the Residuals</a></li><li><a href="#gb-step3">Step 3: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step4">Step 4: Update the Prediction with the Learning Rate</a></li><li><a href="#gb-repeat">Repeat: Each Tree Corrects What Is Left</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li><li><a href="#reg-class">Regression and Classification</a></li></ul></details></li>
+      <li><details open><summary><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></summary><ul><li><a href="#one-by-one">Adding Trees One by One</a></li><li><a href="#learning-rate">Learning Rate and Number of Trees</a></li><li><a href="#depth-and-more">Tree Depth and Other Safeguards</a></li></ul></details></li>
       <li><a href="#python-gb">Gradient Boosting in Python</a></li>
-      <li><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></li>
-      <li><a href="#xgb-python">XGBoost in Python</a></li>
+      <li><details open><summary><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></summary><ul><li><a href="#grad-hess">Gradient and Hessian: Direction and Curvature</a></li><li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li><li><a href="#split-gain">Leaf Weights and Split Gain</a></li><li><a href="#difference">What Is Different from the Residual Recipe?</a></li></ul></details></li>
+      <li><details open><summary><a href="#xgb-python">XGBoost in Python</a></summary><ul><li><a href="#xgb-python-checking-the-hand-calculation-on-the-eig">Checking the hand calculation on the eight customers</a></li><li><a href="#xgb-python-on-the-full-customer-table">On the full customer table</a></li></ul></details></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
   </div>
@@ -407,7 +407,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <h2 id="xgb-python" style="scroll-margin-top:90px">XGBoost in Python</h2>
 
-  <h3 class="post-h3-small">Checking the hand calculation on the eight customers</h3>
+  <h3 class="post-h3-small" id="xgb-python-checking-the-hand-calculation-on-the-eig">Checking the hand calculation on the eight customers</h3>
 
   <p>First we let XGBoost build one tree on the eight customers with the settings of our calculation: a depth of 1, a learning rate of 1 so that the leaf weights are not scaled down, and λ = 0. The setting <code>min_child_weight=0</code> is needed because XGBoost by default refuses leaves with a total Hessian <em>H</em> below 1, and our left leaf has <em>H</em> = 0.75.</p>
 
@@ -428,7 +428,7 @@ print(tree[tree["Feature"] == "Leaf"][["Node", "Gain", "Cover"]])</code></pre>
 
   <p>For the leaves, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.857 and +0.667.</p>
 
-  <h3 class="post-h3-small">On the full customer table</h3>
+  <h3 class="post-h3-small" id="xgb-python-on-the-full-customer-table">On the full customer table</h3>
 
   <p>On the full table the settings are the ones from Part A plus the penalties. We set aside 20% of the training customers as a check set for early stopping.</p>
 

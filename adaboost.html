@@ -43,10 +43,10 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><a href="#setup">The Setup: Stumps and Ten Customers</a></li>
-      <li><a href="#round-1">Round 1: Error, Say and New Weights</a></li>
-      <li><a href="#rounds-vote">Rounds 2 and 3 and the Final Vote</a></li>
-      <li><a href="#python">AdaBoost in Python</a></li>
+      <li><details open><summary><a href="#setup">The Setup: Stumps and Ten Customers</a></summary><ul><li><a href="#weak-learners">Weak Learners and Decision Stumps</a></li><li><a href="#ada-start">Ten Customers with Equal Weights</a></li></ul></details></li>
+      <li><details open><summary><a href="#round-1">Round 1: Error, Say and New Weights</a></summary><ul><li><a href="#ada-round1">Round 1: The First Stump and Its Weighted Error</a></li><li><a href="#ada-say">Alpha: How Much Say Does a Stump Get?</a></li><li><a href="#ada-exp">Why the Weights Are Updated with Exponentials</a></li><li><a href="#ada-reweight">Updating and Normalizing the Weights</a></li></ul></details></li>
+      <li><details open><summary><a href="#rounds-vote">Rounds 2 and 3 and the Final Vote</a></summary><ul><li><a href="#ada-rounds">Rounds 2 and 3</a></li><li><a href="#ada-vote">Weighted Voting: The Final Prediction</a></li></ul></details></li>
+      <li><details open><summary><a href="#python">AdaBoost in Python</a></summary><ul><li><a href="#python-from-scratch-on-the-ten-customers">From scratch on the ten customers</a></li><li><a href="#python-with-scikit-learn-on-the-full-customer-t">With scikit-learn on the full customer table</a></li></ul></details></li>
       <li><a href="#limits">Strengths and Limits</a></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
@@ -167,7 +167,7 @@
 
   <h2 id="python" style="scroll-margin-top:90px">AdaBoost in Python</h2>
 
-  <h3 class="post-h3-small">From scratch on the ten customers</h3>
+  <h3 class="post-h3-small" id="python-from-scratch-on-the-ten-customers">From scratch on the ten customers</h3>
 
   <p>The code below repeats exactly what we did by hand. In every round it tries every question of the form “feature ≤ threshold” and picks the one with the smallest weighted error. It then calculates α, updates the weights and normalizes them.</p>
 
@@ -204,7 +204,7 @@ print("all correct:", (np.sign(score) == y).all())</code></pre>
 
   <p>The output matches the hand calculation: round 1 asks about delivery days ≤ 5 with ε = 0.2000 and α = 0.6931, round 2 asks about a first basket ≤ 70 with ε = 0.1875 and α = 0.7332, round 3 asks about a first basket ≤ 52.5 with ε = 0.1923 and α = 0.7175, and all ten customers are classified correctly.</p>
 
-  <h3 class="post-h3-small">With scikit-learn on the full customer table</h3>
+  <h3 class="post-h3-small" id="python-with-scikit-learn-on-the-full-customer-t">With scikit-learn on the full customer table</h3>
 
   <p>For real data you do not write the loop yourself. With the table prepared as in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> (3,750 customers for training, 1,250 for testing), the model takes three lines. By default, <code>AdaBoostClassifier</code> uses stumps as weak learners.</p>
 
