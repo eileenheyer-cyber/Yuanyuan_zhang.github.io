@@ -48,7 +48,7 @@
     <p class="post-toc-title">In this article</p>
     <ul>
       <li><details open><summary><a href="#setup">The Setup: Stumps and Ten Customers</a></summary><ul><li><a href="#weak-learners">Weak Learners and Decision Stumps</a></li><li><a href="#ada-start">Ten Customers with Equal Weights</a></li></ul></details></li>
-      <li><details open><summary><a href="#round-1">Round 1: Error, Say and New Weights</a></summary><ul><li><a href="#ada-round1">Round 1: The First Stump and Its Weighted Error</a></li><li><a href="#ada-say">Alpha: How Much Influence Does a Stump Get?</a></li><li><a href="#ada-exp">Why the Weights Are Updated with Exponentials</a></li><li><a href="#ada-reweight">Updating and Normalizing the Weights</a></li></ul></details></li>
+      <li><details open><summary><a href="#round-1">Round 1: Error, Alpha and New Weights</a></summary><ul><li><a href="#ada-round1">1. Calculate the Weighted Error</a></li><li><a href="#ada-say">2. Alpha: How Much Influence Does a Stump Get?</a></li><li><a href="#ada-exp">3. Why Does AdaBoost Use Exponential Weight Updates?</a></li><li><a href="#ada-reweight">4. Updating and Normalizing the Weights</a></li></ul></details></li>
       <li><details open><summary><a href="#rounds-vote">Rounds 2 and 3 and the Final Vote</a></summary><ul><li><a href="#ada-rounds">Rounds 2 and 3</a></li><li><a href="#ada-vote">Weighted Voting: The Final Prediction</a></li></ul></details></li>
       <li><details open><summary><a href="#python">AdaBoost in Python</a></summary><ul><li><a href="#python-from-scratch-on-the-ten-customers">From scratch on the ten customers</a></li><li><a href="#python-with-scikit-learn-on-the-full-customer-t">With scikit-learn on the full customer table</a></li></ul></details></li>
       <li><a href="#limits">Strengths and Limits</a></li>
@@ -112,90 +112,211 @@
 
   <p><strong>Why does this matter?</strong> The next stump will pay more attention to customers 7 and 9. Instead of treating all observations equally, AdaBoost now encourages the next model to focus on the cases the previous model failed to explain. This is how the algorithm gradually learns from its mistakes.</p>
 
-  <h2 id="round-1" style="scroll-margin-top:90px">Round 1: Error, Say and New Weights</h2>
+  <h2 id="round-1" style="scroll-margin-top:90px">Round 1: Error, Alpha and New Weights</h2>
 
-  <h3 id="ada-round1" class="post-h3-small" style="scroll-margin-top:90px">Round 1: The First Stump and Its Weighted Error</h3>
+  <h3 id="ada-round1" class="post-h3-small" style="scroll-margin-top:90px">1. Calculate the Weighted Error</h3>
 
-  <p>The first stump looks for the single question that separates the customers best. Here it is <em>“Was the package delivered within 5 days?”</em>: yes means it predicts a repeat order, no means it predicts none. It is right for eight customers and wrong for customers 7 and 9.</p>
-
-  <p>To judge a stump, we add up the weights of the customers it gets wrong. This number is called the <strong>weighted error</strong> and is written ε (epsilon):</p>
-
-  <p class="post-formula post-formula-plain"><strong>ε = sum of the weights of the customers the stump gets wrong = 0.10 + 0.10 = 0.20</strong></p>
-
-  <p>Right now every customer counts the same, so ε is just the share of wrong answers: 2 of 10 customers, or 0.20. In later rounds the weights differ, and getting a high-weight customer wrong adds more to ε than getting a low-weight customer wrong. A small ε means the stump is usually right where it matters, so we can trust it more.</p>
-
-  <h3 id="ada-say" class="post-h3-small" style="scroll-margin-top:90px">Alpha: How Much Influence Does a Stump Get?</h3>
-
-  <p>Not all decision stumps should have the same influence on the final prediction. A stump that classifies most customers correctly should have more say than one that makes many mistakes. A stump’s answer for a customer, +1 (repeat order) or −1 (no repeat order), is called its <strong>vote</strong>, and the stump’s influence decides how much that vote counts.</p>
-
-  <p>AdaBoost measures this influence using a value called <strong>alpha</strong> (α), also known as the stump’s weight:</p>
+  <p>Our first decision stump asks a simple question: <em>Was the package delivered within five days?</em></p>
 
   <ul class="post-points">
-    <li>A highly accurate stump receives a high alpha and has more influence on the final prediction.</li>
+    <li>Yes → Predict a repeat order.</li>
+    <li>No → Predict no repeat order.</li>
+  </ul>
+
+  <p>The stump correctly classifies eight customers and makes two mistakes: customers 7 and 9.</p>
+
+  <p>But how do we measure how well the stump performs? AdaBoost calculates the <strong>weighted error</strong>, written as ε (epsilon). It is the sum of the sample weights belonging to incorrectly classified customers.</p>
+
+  <p class="post-formula post-formula-plain"><strong>ε = ∑<sub>i=1</sub><sup>n</sup> w<sub>i</sub> · I(y<sub>i</sub> ≠ h(x<sub>i</sub>))</strong></p>
+
+  <p>Here, <em>w<sub>i</sub></em> is the weight of customer <em>i</em>, and the indicator <em>I</em> equals 1 when the prediction is wrong and 0 when it is correct.</p>
+
+  <p>Before the first round, every customer has an equal weight of 0.10. Therefore:</p>
+
+  <p class="post-formula post-formula-plain"><strong>ε = 0.10 + 0.10 = 0.20</strong></p>
+
+  <p>The weighted error is 0.20, or 20%. In this first round, the weighted error is identical to the ordinary misclassification rate because all customers have equal weights. In later rounds, this changes. Misclassifying a customer with a high weight contributes more to the error than misclassifying one with a low weight.</p>
+
+  <p><strong>The key idea:</strong> AdaBoost does not just count mistakes. It considers how important the incorrectly classified observations are.</p>
+
+  <h3 id="ada-say" class="post-h3-small" style="scroll-margin-top:90px">2. Alpha: How Much Influence Does a Stump Get?</h3>
+
+  <p>Not all decision stumps should have the same influence on the final prediction. A stump that classifies most customers correctly should have more say than one that makes many mistakes.</p>
+
+  <p>Each stump casts a <strong>vote</strong> for every customer:</p>
+
+  <ul class="post-points">
+    <li>+1 → Predict a repeat order.</li>
+    <li>−1 → Predict no repeat order.</li>
+  </ul>
+
+  <p>But how much should we trust that vote? AdaBoost measures the influence of each stump using a value called <strong>alpha</strong> (α), also known as the stump’s weight.</p>
+
+  <ul class="post-points">
+    <li>A highly accurate stump receives a high positive alpha and has more influence on the final prediction.</li>
     <li>A stump that performs no better than random guessing receives an alpha of zero and contributes nothing.</li>
     <li>A stump that performs worse than random guessing receives a negative alpha.</li>
   </ul>
 
-  <p>Let’s calculate alpha for our first stump. Remember, it correctly classified 8 out of 10 customers and misclassified 2. Its weighted error rate is therefore:</p>
-
-  <p class="post-formula post-formula-plain"><strong>ε = <span class="frac"><span>2</span><span>10</span></span> = 0.20</strong></p>
-
-  <p>AdaBoost calculates the stump’s alpha using:</p>
+  <p>Let’s calculate alpha for our first stump. We already know its weighted error is 0.20. AdaBoost calculates alpha using:</p>
 
   <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>1 − ε</span><span>ε</span></span>)</strong></p>
 
   <p>Substituting our error rate:</p>
 
-  <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>0.80</span><span>0.20</span></span>) = <span class="frac"><span>1</span><span>2</span></span> × ln(4) ≈ 0.69</strong></p>
+  <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(<span class="frac"><span>0.80</span><span>0.20</span></span>)</strong></p>
 
-  <p>Our first stump receives an alpha of approximately 0.69.</p>
+  <p class="post-formula post-formula-plain"><strong>α = <span class="frac"><span>1</span><span>2</span></span> × ln(4) ≈ 0.69</strong></p>
+
+  <p>Our first stump receives an alpha of approximately <strong>0.69</strong>.</p>
 
   <p><strong>What does this formula tell us?</strong></p>
 
-  <p>The formula compares the proportion of correct predictions with the proportion of incorrect predictions. In our example, the stump gets 80% of its predictions right and 20% wrong. It is therefore four times more likely to be correct than incorrect. The natural logarithm transforms this ratio into a score:</p>
+  <p>The fraction compares the weight of correctly classified customers with the weight of incorrectly classified customers. In our example, 80% of the total weight is classified correctly and 20% incorrectly. The ratio is therefore 4:1. The natural logarithm transforms this ratio into a score that determines the stump’s influence:</p>
 
   <ul class="post-points">
-    <li><strong>Alpha = 0:</strong> the stump performs like random guessing (50% accuracy in the balanced binary setting).</li>
-    <li><strong>Positive alpha:</strong> the stump performs better than random guessing.</li>
-    <li><strong>Higher alpha:</strong> the stump is more accurate and receives greater influence.</li>
-    <li><strong>Negative alpha:</strong> the stump performs worse than random guessing.</li>
+    <li><strong>Alpha = 0:</strong> The stump performs no better than random guessing.</li>
+    <li><strong>Positive alpha:</strong> The stump performs better than random guessing.</li>
+    <li><strong>Higher alpha:</strong> The stump has a greater influence on the final prediction.</li>
+    <li><strong>Negative alpha:</strong> The stump performs worse than random guessing.</li>
   </ul>
+
+  <p>Chart 2 illustrates this relationship. As the weighted error decreases, alpha increases. At an error of 0.5, alpha is zero. Above 0.5, alpha becomes negative.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-2-alpha-vs-error.svg" alt="Line chart of the influence alpha against the weighted error epsilon. The curve falls from large positive values at small errors to zero at an error of 0.5 and to negative values above 0.5." loading="lazy"></div>
-    <figcaption><span>Chart 2</span> The smaller the weighted error, the larger the influence. At ε = 0.5 the influence is 0, and above 0.5 it turns negative, which flips the stump’s vote.</figcaption>
+    <figcaption><span>Chart 2</span> The relationship between weighted error (ε) and stump influence (α).</figcaption>
   </figure>
 
-  <p><strong>But why is there a factor of ½ in the formula?</strong></p>
+  <p><strong>But why does the formula contain a factor of ½?</strong></p>
 
-  <p>It comes from the mathematical optimization behind AdaBoost. The algorithm chooses alpha to minimize the exponential loss of the combined model. The factor of ½ is part of that derivation and also determines how strongly the algorithm adjusts sample weights in the next round.</p>
+  <p>This comes from the mathematical optimization behind AdaBoost. The algorithm chooses alpha to minimize the exponential loss of the combined model. The factor of ½ is part of this derivation and determines how strongly the sample weights are adjusted.</p>
 
-  <p>In other words, alpha does two things: it determines how much the stump contributes to the final prediction and how strongly the next round responds to its mistakes.</p>
+  <p>This brings us to the next step: updating the weights of our ten customers.</p>
 
-  <p>In the next step, we will see how this value changes the weights of our ten customers.</p>
+  <h3 id="ada-exp" class="post-h3-small" style="scroll-margin-top:90px">3. Why Does AdaBoost Use Exponential Weight Updates?</h3>
 
-  <h3 id="ada-exp" class="post-h3-small" style="scroll-margin-top:90px">Why the Weights Are Updated with Exponentials</h3>
+  <p>After the first stump, we want to change the importance of each customer.</p>
 
-  <p>After a stump, the weights have to change: customers it got wrong should count more, customers it got right should count less. We need a multiplier with a few properties. It must always be positive, because a weight can never be negative. It must be above 1 for a mistake and below 1 for a correct answer. It must be exactly 1 when the stump is a coin flip (α = 0), because then there is nothing to learn from it. And it must change more when the stump has a larger say.</p>
-
-  <p>The exponential function <em>e</em><sup>x</sup> has exactly these properties. It is never negative, it equals 1 at x = 0, it is above 1 for positive x and below 1 for negative x. AdaBoost therefore multiplies every weight by <em>e</em><sup>α</sup> if the stump is wrong for that customer and by <em>e</em><sup>−α</sup> if it is right. In one formula, with the vote <em>h</em> and the real answer <em>y</em> both written as +1 or −1:</p>
-
-  <p class="post-formula post-formula-plain"><strong>new weight = old weight × <em>e</em><sup>−α × <em>y</em> × <em>h</em></sup></strong><span>The product <em>y</em> × <em>h</em> is +1 when the vote is right, which gives <em>e</em><sup>−α</sup>, and −1 when it is wrong, which gives <em>e</em><sup>α</sup>.</span></p>
-
-  <p>With α = 0.69 the multipliers are <em>e</em><sup>0.69</sup> = 2 for the two wrong customers and <em>e</em><sup>−0.69</sup> = 0.5 for the eight right ones. The weights are doubled or halved. This choice has a useful side effect. The two wrong customers had a total weight of 0.20 and now have 0.20 × 2 = 0.40. The eight right customers had 0.80 and now have 0.80 × 0.5 = 0.40. Wrong and right now carry the same total weight. For the new weights, the first stump is therefore no better than a coin flip, so the next stump cannot simply repeat it and has to find a new question.</p>
-
-  <h3 id="ada-reweight" class="post-h3-small" style="scroll-margin-top:90px">Updating and Normalizing the Weights</h3>
-
-  <ul class="post-points post-points-color">
-    <li><strong>Customers 7 and 9 (wrong):</strong> 0.10 × 2 = 0.20 each.</li>
-    <li><strong>The other eight (right):</strong> 0.10 × 0.5 = 0.05 each.</li>
+  <ul class="post-points">
+    <li>Customers classified incorrectly should receive more weight.</li>
+    <li>Customers classified correctly should receive less weight.</li>
   </ul>
 
-  <p>These numbers add up to 2 × 0.20 + 8 × 0.05 = 0.80, not 1. The weights are meant to be shares of a whole, so we <strong>normalize</strong> them: every weight is divided by their sum, here 0.80. Dividing all weights by the same number keeps their proportions and makes the total 1 again.</p>
+  <p>The adjustment must also depend on how influential the stump is. A more accurate stump should produce a stronger adjustment.</p>
 
-  <p class="post-formula post-formula-plain"><strong>normalized weight = new weight ÷ sum of all new weights</strong></p>
+  <p>AdaBoost achieves this using the exponential function <em>e<sup>x</sup></em>. The function has exactly the properties we need:</p>
 
-  <p>Customers 7 and 9 get 0.20 ÷ 0.80 = 0.25, and each of the other eight gets 0.05 ÷ 0.80 = 0.0625. Check: 2 × 0.25 + 8 × 0.0625 = 1. Two customers out of ten now carry half of the total weight, which is the right panel of Chart 1.</p>
+  <ul class="post-points">
+    <li>It is always positive, so weights can never become negative.</li>
+    <li>It equals 1 when the exponent is zero, meaning no adjustment takes place.</li>
+    <li>It is greater than 1 for positive exponents.</li>
+    <li>It is between 0 and 1 for negative exponents.</li>
+  </ul>
+
+  <p>AdaBoost therefore uses two multipliers:</p>
+
+  <ul class="post-points">
+    <li><strong>Incorrect prediction:</strong> Multiply the old weight by <em>e<sup>α</sup></em>.</li>
+    <li><strong>Correct prediction:</strong> Multiply the old weight by <em>e<sup>−α</sup></em>.</li>
+  </ul>
+
+  <p>We can express both cases in one formula:</p>
+
+  <p class="post-formula post-formula-plain"><strong>w<sub>i</sub><sup>new</sup> = w<sub>i</sub><sup>old</sup> × e<sup>−α · y<sub>i</sub> · h(x<sub>i</sub>)</sup></strong></p>
+
+  <p>Here:</p>
+
+  <ul class="post-points">
+    <li><em>w<sub>i</sub><sup>old</sup></em> = the customer’s previous weight.</li>
+    <li><em>α</em> = the stump’s influence.</li>
+    <li><em>y<sub>i</sub></em> = the customer’s actual outcome (+1 or −1).</li>
+    <li><em>h(x<sub>i</sub>)</em> = the stump’s prediction (+1 or −1).</li>
+  </ul>
+
+  <p>The product <em>y<sub>i</sub> h(x<sub>i</sub>)</em> determines whether the prediction is correct:</p>
+
+  <ul class="post-points">
+    <li>Correct prediction: <em>y<sub>i</sub> h(x<sub>i</sub>)</em> = +1, resulting in <em>e<sup>−α</sup></em>.</li>
+    <li>Incorrect prediction: <em>y<sub>i</sub> h(x<sub>i</sub>)</em> = −1, resulting in <em>e<sup>α</sup></em>.</li>
+  </ul>
+
+  <p>Let’s apply this to our first stump. We calculated alpha as approximately 0.69. The two multipliers are:</p>
+
+  <p class="post-formula post-formula-plain"><strong>e<sup>0.69</sup> ≈ 2</strong></p>
+
+  <p class="post-formula post-formula-plain"><strong>e<sup>−0.69</sup> ≈ 0.5</strong></p>
+
+  <p>This means that incorrectly classified customers have their weights doubled, while correctly classified customers have their weights halved.</p>
+
+  <p>Notice what happens to the total weight:</p>
+
+  <ul class="post-points">
+    <li>The two incorrectly classified customers initially carry a combined weight of 0.20. After doubling, their combined weight becomes 0.40.</li>
+    <li>The eight correctly classified customers initially carry a combined weight of 0.80. After halving, their combined weight also becomes 0.40.</li>
+  </ul>
+
+  <p>Both groups now carry the same total weight. This is not a coincidence. The alpha formula is designed so that, after the update, the correctly and incorrectly classified groups have equal total weight before normalization.</p>
+
+  <p>Consequently, the first stump’s weighted error becomes 0.50 under the updated weights. Repeating the same stump would therefore provide no advantage to the next round. The next stump must find a different rule that can better distinguish the customers the first stump got wrong.</p>
+
+  <h3 id="ada-reweight" class="post-h3-small" style="scroll-margin-top:90px">4. Updating and Normalizing the Weights</h3>
+
+  <p>Let’s calculate the new weights for each customer.</p>
+
+  <p><strong>Customers 7 and 9 (incorrectly classified):</strong> Their original weight was 0.10. Since the stump got them wrong, we multiply their weights by 2:</p>
+
+  <p class="post-formula post-formula-plain"><strong>0.10 × 2 = 0.20</strong></p>
+
+  <p><strong>The other eight customers (correctly classified):</strong> Their original weight was also 0.10. Since the stump got them right, we multiply their weights by 0.5:</p>
+
+  <p class="post-formula post-formula-plain"><strong>0.10 × 0.5 = 0.05</strong></p>
+
+  <p>We now have:</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer group</th><th>Number</th><th>New weight per customer</th></tr></thead>
+    <tbody>
+      <tr><td>Misclassified (7, 9)</td><td>2</td><td>0.20</td></tr>
+      <tr><td>Correctly classified</td><td>8</td><td>0.05</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>However, these new weights add up to 0.80, not 1:</p>
+
+  <p class="post-formula post-formula-plain"><strong>2 × 0.20 + 8 × 0.05 = 0.80</strong></p>
+
+  <p>We want the weights to represent shares of a whole, so they must add up to 1 again. This process is called <strong>normalization</strong>. We simply divide every new weight by the sum of all new weights:</p>
+
+  <p class="post-formula post-formula-plain"><strong>w<sub>i</sub><sup>normalized</sup> = <span class="frac"><span>w<sub>i</sub><sup>new</sup></span><span>∑<sub>j=1</sub><sup>n</sup> w<sub>j</sub><sup>new</sup></span></span></strong></p>
+
+  <p>For customers 7 and 9:</p>
+
+  <p class="post-formula post-formula-plain"><strong><span class="frac"><span>0.20</span><span>0.80</span></span> = 0.25</strong></p>
+
+  <p>For each of the other eight customers:</p>
+
+  <p class="post-formula post-formula-plain"><strong><span class="frac"><span>0.05</span><span>0.80</span></span> = 0.0625</strong></p>
+
+  <p>Our final weights after Round 1 are:</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Customer group</th><th>Number</th><th>Normalized weight</th></tr></thead>
+    <tbody>
+      <tr><td>Misclassified (7, 9)</td><td>2</td><td>0.25</td></tr>
+      <tr><td>Correctly classified</td><td>8</td><td>0.0625</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Let’s check that the weights add up to 1:</p>
+
+  <p class="post-formula post-formula-plain"><strong>2 × 0.25 + 8 × 0.0625 = 1</strong></p>
+
+  <p><strong>What has changed?</strong></p>
+
+  <p>Before Round 1, every customer had the same weight of 0.10. After Round 1, customers 7 and 9 each carry a weight of 0.25, while the other customers each carry only 0.0625. The two customers the first stump misclassified now account for 50% of the total weight, even though they represent only 20% of the dataset.</p>
+
+  <p>This is the central idea behind AdaBoost: <strong>each new stump pays more attention to the observations that previous stumps struggled to classify.</strong> The updated weights become the starting point for Round 2.</p>
 
   <h2 id="rounds-vote" style="scroll-margin-top:90px">Rounds 2 and 3 and the Final Vote</h2>
 
