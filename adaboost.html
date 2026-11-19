@@ -151,6 +151,11 @@
     <li>−1 → Predict no repeat order.</li>
   </ul>
 
+  <div class="post-note post-note-explain post-note-plain">
+    <p class="post-note-l">Why +1 and −1 instead of 1 and 0?</p>
+    <p>In the data table, repeat order is coded 1 and no repeat order 0. AdaBoost’s formulas use −1 and +1 instead, because the product <em>y · h(x)</em> then tells us directly whether a prediction is correct: +1 for a correct prediction, −1 for a wrong one. Both codings describe the same outcomes: 0 simply becomes −1.</p>
+  </div>
+
   <p>But how much should we trust that vote? AdaBoost measures the influence of each stump using a value called <strong>alpha</strong> (α), also known as the stump’s weight.</p>
 
   <ul class="post-points">
