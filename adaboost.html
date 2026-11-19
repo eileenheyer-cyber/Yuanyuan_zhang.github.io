@@ -52,7 +52,7 @@
       <li><details open><summary><a href="#rounds-vote">Rounds 2 and 3: Learning from New Mistakes</a></summary><ul><li><a href="#ada-rounds">Round 2: A Different Question</a></li><li><a href="#ada-round3">Round 3: A Third Question</a></li><li><a href="#ada-weights3">How the Sample Weights Change Across Three Rounds</a></li><li><a href="#ada-three-stumps">Three Stumps, Three Different Questions</a></li></ul></details></li>
       <li><details open><summary><a href="#ada-vote">Weighted Voting: How AdaBoost Makes Its Final Prediction</a></summary><ul><li><a href="#ada-vote-c7">Example 1: Customer 7</a></li><li><a href="#ada-vote-c3">Example 2: Customer 3</a></li><li><a href="#ada-final">The Final Predictions</a></li></ul></details></li>
       <li><details open><summary><a href="#python">AdaBoost in Python</a></summary><ul><li><a href="#python-from-scratch-on-the-ten-customers">From scratch on the ten customers</a></li><li><a href="#python-with-scikit-learn-on-the-full-customer-t">With scikit-learn on the full customer table</a></li></ul></details></li>
-      <li><a href="#limits">Strengths and Limits</a></li>
+      <li><details open><summary><a href="#limits">Strengths and Limitations</a></summary><ul><li><a href="#ada-to-gb">From AdaBoost to Gradient Boosting</a></li></ul></details></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
   </div>
@@ -638,11 +638,13 @@ print("AUC:", roc_auc_score(y_test, proba))</code></pre>
 
   <p>If you print <code>ada.estimator_weights_</code> for the ten customers, you get 1.39, 1.47 and 1.44, exactly twice our 0.69, 0.73 and 0.72. scikit-learn leaves out the factor ½. The weighted errors are identical (0.20, 0.1875, 0.1923) and so are the predictions, because doubling every say changes no sign and the weight update ends up the same.</p>
 
-  <h2 id="limits" style="scroll-margin-top:90px">Strengths and Limits</h2>
+  <h2 id="limits" style="scroll-margin-top:90px">Strengths and Limitations</h2>
 
-  <p>AdaBoost is easy to understand and has few settings. It works with any model that can handle weights, and in practice a small number of stumps is often enough. Its weak spot follows from the way it works: a customer who keeps being predicted wrongly keeps gaining weight. If that customer is not a pattern but just noise, for example a wrong label or a one-off order, the stumps start to bend toward that customer. A second limit is that the stumps are built one after another, so they cannot be trained in parallel like the trees of a random forest.</p>
+  <p>AdaBoost is relatively easy to understand, requires few settings and can turn simple models into a powerful ensemble. However, it is sensitive to noisy data and mislabeled observations. Because it keeps increasing the weights of misclassified customers, it can end up focusing too much on outliers rather than general patterns. Another limitation is that its trees are trained sequentially and cannot be built in parallel like those in a Random Forest.</p>
 
-  <p>The next article looks at gradient boosting, which corrects mistakes differently: instead of reweighting customers, it measures each mistake directly. The two methods are closer than they look. AdaBoost can be seen as gradient boosting with a particular way of measuring the error, the exponential loss.</p>
+  <h3 id="ada-to-gb" class="post-h3-small" style="scroll-margin-top:90px">From AdaBoost to Gradient Boosting</h3>
+
+  <p>The next article explores <a href="gradient-boosting-xgboost.html">Gradient Boosting</a>, which follows a similar idea but learns from mistakes differently. Instead of reweighting observations, it fits new models to residuals or negative gradients of a loss function. AdaBoost can actually be understood as a special case of boosting that uses exponential loss.</p>
 
   <h2 id="faq" style="scroll-margin-top:90px">Frequently Asked Questions</h2>
 
