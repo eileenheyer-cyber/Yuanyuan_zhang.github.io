@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20261116e">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the difference between a weak learner and a strong learner?", "acceptedAnswer": {"@type": "Answer", "text": "A weak learner is only slightly better than guessing, like a single stump. A strong learner is accurate on its own. AdaBoost combines many weak learners into one strong one."}}, {"@type": "Question", "name": "Why is AdaBoost called adaptive?", "acceptedAnswer": {"@type": "Answer", "text": "Each new stump adapts to the mistakes of the earlier ones. The weights of the customers that were predicted wrongly go up, so the next stump is trained on a problem that has changed."}}, {"@type": "Question", "name": "Does AdaBoost only work with stumps?", "acceptedAnswer": {"@type": "Answer", "text": "No. Any model that can work with sample weights can be used, for example a decision tree with two or three levels. Stumps are the default because they are fast and hard to overfit."}}, {"@type": "Question", "name": "Is AdaBoost better than gradient boosting?", "acceptedAnswer": {"@type": "Answer", "text": "Not in general. On our customer table AdaBoost reaches 78.3% accuracy and an AUC of 0.837, gradient boosting 79.4% and 0.865. Gradient boosting is more flexible and is what libraries such as XGBoost build on, while AdaBoost is the simplest way to see boosting at work."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does AdaBoost only work with stumps?", "acceptedAnswer": {"@type": "Answer", "text": "No. Any model that can work with sample weights can be used, for example a decision tree with two or three levels. Stumps are the default because they are fast and hard to overfit."}}, {"@type": "Question", "name": "Is AdaBoost better than gradient boosting?", "acceptedAnswer": {"@type": "Answer", "text": "Not in general. On our customer table AdaBoost reaches 78.3% accuracy and an AUC of 0.837, gradient boosting 79.4% and 0.865. Gradient boosting is more flexible and is what libraries such as XGBoost build on, while AdaBoost is the simplest way to see boosting at work."}}]}</script>
 </head>
 <body>
 
@@ -648,12 +648,6 @@ print("AUC:", roc_auc_score(y_test, proba))</code></pre>
 
   <h2 id="faq" style="scroll-margin-top:90px">Frequently Asked Questions</h2>
 
-  <h3 class="post-h3-small">What is the difference between a weak learner and a strong learner?</h3>
-  <p>A weak learner is only slightly better than guessing, like a single stump. A strong learner is accurate on its own. AdaBoost combines many weak learners into one strong one.</p>
-
-  <h3 class="post-h3-small">Why is AdaBoost called adaptive?</h3>
-  <p>Each new stump adapts to the mistakes of the earlier ones. The weights of the customers that were predicted wrongly go up, so the next stump is trained on a problem that has changed.</p>
-
   <h3 class="post-h3-small">Does AdaBoost only work with stumps?</h3>
   <p>No. Any model that can work with sample weights can be used, for example a decision tree with two or three levels. Stumps are the default because they are fast and hard to overfit.</p>
 
@@ -662,7 +656,7 @@ print("AUC:", roc_auc_score(y_test, proba))</code></pre>
 
   <div class="post-note post-takeaway">
     <p class="post-note-l">Key takeaway</p>
-    <p>AdaBoost builds one-question trees (stumps) in a row. After each stump, it multiplies the weight of every customer it got wrong by <em>e</em><sup>α</sup> and every customer it got right by <em>e</em><sup>−α</sup>, then normalizes, so the next stump has to care about the earlier mistakes. The final prediction is a vote in which each stump’s answer counts as much as its say α, which grows as its weighted error ε shrinks.</p>
+    <p>AdaBoost builds one-question trees (stumps) in a row. After each stump, it multiplies the weight of every customer it got wrong by <em>e</em><sup>α</sup> and every customer it got right by <em>e</em><sup>−α</sup>, then normalizes, so the next stump has to care about the earlier mistakes. The final prediction is a vote in which each stump’s answer counts as much as its influence α, which grows as its weighted error ε shrinks.</p>
   </div>
 
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
