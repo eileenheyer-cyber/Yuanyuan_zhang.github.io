@@ -182,7 +182,7 @@
     <li><strong>Negative alpha:</strong> The stump performs worse than random guessing.</li>
   </ul>
 
-  <p>Chart 2 illustrates this relationship. As the weighted error decreases, alpha increases. At an error of 0.5, alpha is zero. Above 0.5, alpha becomes negative.</p>
+  <p>Chart 2 shows how a stump’s influence depends on its weighted error. The smaller the error, the higher its alpha and the more influence it has on the final prediction. When the error reaches 0.5, alpha becomes zero: the stump performs no better than random guessing. If the error exceeds 0.5, alpha becomes negative, meaning the stump performs worse than guessing and its vote is effectively reversed.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/adaboost/chart-2-alpha-vs-error.svg" alt="Line chart of the influence alpha against the weighted error epsilon. The curve falls from large positive values at small errors to zero at an error of 0.5 and to negative values above 0.5." loading="lazy"></div>
