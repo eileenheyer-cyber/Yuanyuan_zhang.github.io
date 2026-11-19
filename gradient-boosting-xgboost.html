@@ -43,16 +43,10 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><details><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start with a Neutral Prediction</a></li><li><a href="#gb-step2">Step 2: Compute the Residuals</a></li><li><a href="#gb-step3">Step 3: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step4">Step 4: Update the Prediction with the Learning Rate</a></li><li><a href="#gb-repeat">Repeat: Each Tree Corrects What Is Left</a></li></ul></details></li>
-      <li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li>
-      <li><a href="#reg-class">Regression and Classification</a></li>
-      <li><details><summary><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></summary><ul><li><a href="#one-by-one">Adding Trees One by One</a></li><li><a href="#learning-rate">Learning Rate and Number of Trees</a></li><li><a href="#depth-and-more">Tree Depth and Other Safeguards</a></li></ul></details></li>
+      <li><a href="#part-a">Part A: Gradient Boosting Step by Step</a></li>
+      <li><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></li>
       <li><a href="#python-gb">Gradient Boosting in Python</a></li>
       <li><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></li>
-      <li><a href="#grad-hess">Gradient and Hessian: Direction and Curvature</a></li>
-      <li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li>
-      <li><a href="#split-gain">Leaf Weights and Split Gain</a></li>
-      <li><a href="#difference">What Is Different from the Residual Recipe?</a></li>
       <li><a href="#xgb-python">XGBoost in Python</a></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
@@ -139,7 +133,7 @@
 
   <p>The average size of the residuals (ignoring their sign) falls from 0.50 at the start to 0.36, 0.31 and 0.25 after one, two and three trees, so it halves within three small trees. This is the number the model tries to push down at every step.</p>
 
-  <h2 id="why-gradient" style="scroll-margin-top:90px">Why It Is Called Gradient Boosting</h2>
+  <h3 id="why-gradient">Why It Is Called Gradient Boosting</h3>
 
   <p>So far a residual was simply “actual minus predicted”. There is a second way to see it, and it explains the name. The model measures how bad a prediction is with a <strong>loss function</strong>: a number that is small when the prediction is good and large when it is bad. For repeat orders the usual choice is the log loss. Chart 3 shows it for one customer who did order again. The horizontal axis is the model’s score for this customer, the vertical axis is the loss.</p>
 
@@ -155,7 +149,7 @@
 
   <p>That is the secret behind the name. Fitting a tree to the residuals means fitting a tree to the negative gradients, and adding it to the model is one step downhill on the loss, taken for all customers at once. The recipe works for any loss function that has a slope. With squared error, the usual loss for predicting a number, the loss is ½ × (<em>y</em> − ŷ)², and its negative gradient is again the plain residual <em>y</em> − ŷ. For other loss functions the numbers that the trees are fitted to are called pseudo-residuals, because they are no longer simply “actual minus predicted”.</p>
 
-  <h2 id="reg-class" style="scroll-margin-top:90px">Regression and Classification</h2>
+  <h3 id="reg-class">Regression and Classification</h3>
 
   <p>The recipe is the same for both. Only the loss function and the scale of the scores change.</p>
 
@@ -322,7 +316,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p>There is a lot of engineering on top of this, such as fast split search, handling of missing values and parallel computing. We leave it out here and look only at the mathematics that changes the result. The residual recipe from Part A turns out to be a special case of it.</p>
 
-  <h2 id="grad-hess" style="scroll-margin-top:90px">Gradient and Hessian: Direction and Curvature</h2>
+  <h3 id="grad-hess">Gradient and Hessian: Direction and Curvature</h3>
 
   <p>Imagine walking downhill in fog. The slope under your feet tells you in which direction to go. It does not tell you how far you can walk before the ground turns upward again. For that you also need to know how quickly the slope changes, which is the <strong>curvature</strong>: on a strongly curved hill you must stop soon, on a gently curved one you can go far.</p>
 
@@ -346,7 +340,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p>The parabola is only an approximation: the real loss keeps falling as the score grows, because a customer who ordered again can always be predicted with more certainty. This is one reason why XGBoost still multiplies every tree by a learning rate. There is a second warning. Customers about whom the model is already confident have a small <em>h</em>. A leaf full of confidently wrong customers (<em>g</em> close to ±1, <em>h</em> close to 0) would get a huge value, and the penalty in the next section and the setting <code>min_child_weight</code> exist to prevent that.</p>
 
-  <h2 id="objective" style="scroll-margin-top:90px">The XGBoost Objective: Loss Plus a Penalty</h2>
+  <h3 id="objective">The XGBoost Objective: Loss Plus a Penalty</h3>
 
   <p>When XGBoost adds a tree, it wants two things: the total loss over all customers should go down, and the tree should stay simple. It writes both into one goal, the <strong>objective</strong>:</p>
 
@@ -363,7 +357,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p>Check it with our first tree. The left leaf holds customers 1 to 3, so <em>G</em> = 3 × 0.5 = 1.5 and <em>H</em> = 3 × 0.25 = 0.75. With λ = 0 the leaf weight is −1.5 ÷ 0.75 = −2.0. The right leaf holds customers 4 to 8, with <em>G</em> = −1.5 and <em>H</em> = 1.25, so the weight is +1.2. These are exactly the leaf values from Step 3. With λ = 0, −<em>G</em> ÷ <em>H</em> is the same as the sum of the residuals divided by the sum of <em>p</em> × (1 − <em>p</em>). The difference is where it comes from: scikit-learn applies the rule after the tree has been found, while XGBoost derives it from its objective and uses it to find the tree. With λ = 1 the weights become −1.5 ÷ 1.75 = −0.86 and +1.5 ÷ 2.25 = +0.67: smaller, more cautious corrections.</p>
 
-  <h2 id="split-gain" style="scroll-margin-top:90px">Leaf Weights and Split Gain</h2>
+  <h3 id="split-gain">Leaf Weights and Split Gain</h3>
 
   <p>How does XGBoost choose the question a tree asks? It compares the objective before and after a split. The improvement is called the <strong>gain</strong>:</p>
 
@@ -396,7 +390,7 @@ gb.fit(X_train, y_train)</code></pre>
 
   <p>XGBoost evaluates every candidate question this way and takes the one with the highest gain. If even the best gain is not above γ, the tree stops growing there. On large tables XGBoost does not test every possible threshold but uses faster approximations; the third article of this series compares how XGBoost, LightGBM and CatBoost do this.</p>
 
-  <h2 id="difference" style="scroll-margin-top:90px">What Is Different from the Residual Recipe?</h2>
+  <h3 id="difference">What Is Different from the Residual Recipe?</h3>
 
   <p>Now the two recipes can be compared directly. The left column describes scikit-learn’s gradient boosting classifier as used in Part A.</p>
 
