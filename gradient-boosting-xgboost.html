@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20261116e">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is gradient boosting the same as XGBoost?", "acceptedAnswer": {"@type": "Answer", "text": "No. Gradient boosting is the general method of adding small trees that correct the remaining error. XGBoost is one implementation of it, with its own objective that adds a penalty for complex trees and uses second-order information. scikit-learn has another implementation with different choices."}}, {"@type": "Question", "name": "Why does XGBoost use the second derivative?", "acceptedAnswer": {"@type": "Answer", "text": "The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step should go. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split."}}, {"@type": "Question", "name": "What is the difference between the learning rate and lambda?", "acceptedAnswer": {"@type": "Answer", "text": "The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile."}}, {"@type": "Question", "name": "How many trees should I use?", "acceptedAnswer": {"@type": "Answer", "text": "Do not guess. Use a small learning rate such as 0.1, allow many trees, and let early stopping end the training when the score on a validation set stops improving."}}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the difference between the learning rate and lambda?", "acceptedAnswer": {"@type": "Answer", "text": "The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile."}}, {"@type": "Question", "name": "How many trees should I use?", "acceptedAnswer": {"@type": "Answer", "text": "Do not guess. Use a small learning rate such as 0.1, allow many trees, and let early stopping end the training when the score on a validation set stops improving."}}]}</script>
 </head>
 <body>
 
@@ -47,11 +47,11 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start Neutral and Measure the Mistakes</a></li><li><a href="#gb-step2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step3">Step 3: Update the Prediction with the Learning Rate</a></li><li><a href="#gb-repeat">Repeat: Each Tree Corrects What Is Left</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li><li><a href="#reg-class">Regression and Classification</a></li></ul></details></li>
-      <li><details open><summary><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></summary><ul><li><a href="#one-by-one">Adding Trees One by One</a></li><li><a href="#learning-rate">Learning Rate and Number of Trees</a></li><li><a href="#depth-and-more">Tree Depth and Other Safeguards</a></li></ul></details></li>
+      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start Neutral and Measure the Mistakes</a></li><li><a href="#gb-step2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step3">Step 3: Update the Prediction with the Learning Rate</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li></ul></details></li>
+      <li><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></li>
       <li><a href="#python-gb">Gradient Boosting in Python</a></li>
       <li><details open><summary><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></summary><ul><li><a href="#grad-hess">Gradient and Hessian: Direction and Curvature</a></li><li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li><li><a href="#split-gain">Leaf Weights and Split Gain</a></li><li><a href="#difference">What Is Different from the Residual Recipe?</a></li></ul></details></li>
-      <li><details open><summary><a href="#xgb-python">XGBoost in Python</a></summary><ul><li><a href="#xgb-python-checking-the-hand-calculation-on-the-eig">Checking the hand calculation on the eight customers</a></li><li><a href="#xgb-python-on-the-full-customer-table">On the full customer table</a></li></ul></details></li>
+      <li><a href="#xgb-python">XGBoost in Python</a></li>
       <li><a href="#faq">Frequently Asked Questions</a></li>
     </ul>
   </div>
@@ -117,9 +117,7 @@
 
   <p>For this example we use η = 0.5, a large value chosen only to keep the arithmetic visible. Customers 1 to 3 get 0 + 0.5 × (−2.0) = −1.0, and customers 4 to 8 get 0 + 0.5 × 1.2 = +0.6. Converting back with <span style="white-space:nowrap"><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</span> gives probabilities of 0.27 and 0.65. The predicted probabilities have moved in the right direction for seven of the eight customers; only customer 6 (€70, no repeat order) moved the wrong way.</p>
 
-  <h3 id="gb-repeat">Repeat: Each Tree Corrects What Is Left</h3>
-
-  <p>Now the residuals are recomputed from the new predictions: customers 1 to 3 have −0.27, customers 4, 5, 7, 8 have +0.35, and customer 6 has −0.65. The second tree finds a new best question, <em>“Is the first basket at most €75?”</em>. It notices that the two largest baskets (customers 7 and 8) are still underestimated and customer 6 is still overestimated, and gives the leaves −0.58 and +1.55. A third tree repeats the cycle.</p>
+  <p>The cycle then repeats. The residuals are recomputed from the new predictions: customers 1 to 3 have −0.27, customers 4, 5, 7, 8 have +0.35, and customer 6 has −0.65. The second tree finds a new best question, <em>“Is the first basket at most €75?”</em>. It notices that the two largest baskets (customers 7 and 8) are still underestimated and customer 6 is still overestimated, and gives the leaves −0.58 and +1.55. A third tree repeats the cycle.</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><svg viewBox="0 0 720 228" role="img" aria-label="The first three trees of the gradient boosting example. Tree 1 splits at a first basket of 42.50 euros with leaf values minus 2.00 and plus 1.20. Tree 2 splits at 75 euros with leaf values minus 0.58 and plus 1.55. Tree 3 asks the same question as tree 1, split at 42.50 euros, with smaller leaf values: minus 1.28 and plus 0.64." style="width:100%;height:auto;display:block;min-width:560px"><text x="120" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Tree 1</text><line x1="120" y1="68" x2="64" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="120" y1="68" x2="176" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="78.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="162.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="32.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="120" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €42.50?</text><rect x="22.0" y="112" width="84" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="64" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >−2.00</text><rect x="134.0" y="112" width="84" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="176" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >+1.20</text><text x="64" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 1–3</text><text x="176" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 4–8</text><text x="360" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Tree 2</text><line x1="360" y1="68" x2="304" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="360" y1="68" x2="416" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="318.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="402.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="272.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="360" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €75?</text><rect x="262.0" y="112" width="84" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="304" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >−0.58</text><rect x="374.0" y="112" width="84" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="416" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >+1.55</text><text x="304" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 1–6</text><text x="416" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 7–8</text><text x="600" y="22" font-size="14" text-anchor="middle" font-weight="700" fill="#0a0a0a" >Tree 3</text><line x1="600" y1="68" x2="544" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><line x1="600" y1="68" x2="656" y2="112" stroke="#0a0a0a" stroke-width="1.5"/><text x="558.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >yes</text><text x="642.0" y="90" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >no</text><rect x="512.0" y="34" width="176" height="34" rx="6" fill="#f5c548" stroke="#0a0a0a" stroke-width="1.5"/><text x="600" y="55.5" font-size="13" text-anchor="middle" font-weight="600" fill="#0a0a0a" >Basket ≤ €42.50?</text><rect x="502.0" y="112" width="84" height="30" rx="6" fill="#dc452d" stroke="#0a0a0a" stroke-width="1.5"/><text x="544" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >−1.28</text><rect x="614.0" y="112" width="84" height="30" rx="6" fill="#1d57b5" stroke="#0a0a0a" stroke-width="1.5"/><text x="656" y="131.5" font-size="13" text-anchor="middle" font-weight="600" fill="#fff" >+0.64</text><text x="544" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 1–3</text><text x="656" y="160" font-size="12" text-anchor="middle" font-weight="400" fill="#444" >customers 4–8</text>
@@ -153,14 +151,7 @@
 
   <p>That is the secret behind the name. Fitting a tree to the residuals means fitting a tree to the negative gradients, and adding it to the model is one step downhill on the loss, taken for all customers at once. The recipe works for any loss function that has a slope. With squared error, the usual loss for predicting a number, the loss is ½ × (<em>y</em> − ŷ)², and its negative gradient is again the plain residual <em>y</em> − ŷ. For other loss functions the numbers that the trees are fitted to are called pseudo-residuals, because they are no longer simply “actual minus predicted”.</p>
 
-  <h3 id="reg-class">Regression and Classification</h3>
-
-  <p>The recipe is the same for both. Only the loss function and the scale of the scores change.</p>
-
-  <ul class="post-points post-points-color">
-    <li><strong>Regression</strong> predicts a number, for example the value of a customer’s next order. The loss is the squared error, the scores are the predictions themselves, the residual is <em>y</em> − ŷ and a leaf usually gets the average residual of its customers. In scikit-learn this is <code>GradientBoostingRegressor</code>.</li>
-    <li><strong>Classification</strong> predicts a category, for example a repeat order or not. The loss is the log loss, the scores live on the logit scale and are converted into probabilities, and the leaves are converted as in Step 2. In scikit-learn this is <code>GradientBoostingClassifier</code>. With more than two categories it builds one tree per category in every round.</li>
-  </ul>
+  <p>The recipe is the same for predicting a number and for predicting a category; only the loss and the scale of the scores change. For a number, such as the value of a customer’s next order, the loss is the squared error, the scores are the predictions themselves and a leaf usually gets the average residual (<code>GradientBoostingRegressor</code> in scikit-learn). For a category, as here, the loss is the log loss, the scores live on the logit scale and the leaves are converted as in Step 2 (<code>GradientBoostingClassifier</code>; with more than two categories it builds one tree per category in every round).</p>
 
 <h2 id="tuning" style="scroll-margin-top:90px">Learning Rate, Number of Trees and Tree Depth</h2>
 
@@ -177,8 +168,6 @@
   </table></div>
 
   <p>A late delivery lowers repeat orders for everyone, but together with a discount code it almost removes them: only 2 of 550 customers ordered again. A single question about the discount or the delivery time does not capture this. It takes both together, which is the kind of pattern that later trees in a boosted model pick up.</p>
-
-  <h3 id="one-by-one">Adding Trees One by One</h3>
 
   <p>To draw a map, the model in the picture below uses only two of the five features, the first basket value and the delivery days. Each tree has a depth of 4 and the learning rate is 0.3. Because it sees only two of the five features, this model never gets beyond about 70% test accuracy, below the 79% of the full model later in this article. Here the shape of the curve matters, not the final score. Move the slider to add trees.</p>
 
@@ -283,16 +272,7 @@
     </script>
   </figure>
 
-  <h3 id="learning-rate">Learning Rate and Number of Trees</h3>
-
-  <p>The learning rate η from Step 3 controls how much of each tree’s correction is applied, and it works together with the number of trees:</p>
-
-  <ul class="post-points post-points-color">
-    <li><strong>Large η (for example 0.5):</strong> every tree makes a big correction, so the model learns fast but also memorizes the training data quickly.</li>
-    <li><strong>Small η (for example 0.1):</strong> every tree makes a small correction, so many more trees are needed, but the model approaches the pattern gently.</li>
-  </ul>
-
-  <p>With all five features and a tree depth of 3, the two settings look like this:</p>
+  <p>The learning rate η from Step 3 controls how much of each tree’s correction is applied, and it works together with the number of trees. With a large η (for example 0.5), every tree makes a big correction, so the model learns fast but also memorizes the training data quickly. With a small η (for example 0.1), many more trees are needed, but the model approaches the pattern gently. With all five features and a tree depth of 3, the two settings look like this:</p>
 
   <figure class="post-fig post-fig-wide">
     <div style="overflow-x:auto"><img style="min-width:560px" src="images/gradient-boosting/chart-5-learning-rate.svg?v=2" alt="Two line charts with the same axes showing training and test accuracy against the number of trees for learning rates 0.5 and 0.1, with a dotted line at 63.4 percent for always predicting no repeat order. With 0.5, test accuracy peaks at 79.7 percent after 6 trees and falls to about 0.77, while training accuracy rises to 0.88. With 0.1, test accuracy peaks at 79.7 percent after 37 trees and ends at about 0.78, with training accuracy at 0.84." loading="lazy"></div>
@@ -301,13 +281,7 @@
 
   <p>Both settings find the same best accuracy, but the small learning rate degrades more slowly after it. That makes the number of trees much less critical, which is why a small learning rate with many trees is the usual choice. The cost is training time. Instead of guessing the number of trees, you can let the model decide with early stopping, explained below and used in the Python section.</p>
 
-  <h3 id="depth-and-more">Tree Depth and Other Safeguards</h3>
-
-  <ul class="post-points post-points-color">
-    <li><strong>Tree depth.</strong> Shallow trees (often 1 to 5 splits) are the point of boosting. A deeper tree can capture an interaction such as the discount code combined with late delivery (see the table above) in one tree, but it also fits noise faster. Depth 1 means each tree uses one feature, as with the stumps of <a href="adaboost.html">AdaBoost</a>.</li>
-    <li><strong>Subsampling.</strong> Each tree is trained on a random share of the customers (for example 80%). This makes the trees a little different from each other, like the random samples in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>, and reduces overfitting.</li>
-    <li><strong>Early stopping.</strong> A part of the training data is set aside as a check. Training stops as soon as the score on this check data has not improved for a number of trees, because from then on the model is probably only fitting noise.</li>
-  </ul>
+  <p>Three more safeguards work alongside the learning rate. Shallow trees (often 1 to 5 splits) are the point of boosting: a deeper tree can capture an interaction such as the discount code combined with late delivery in a single tree, but it also fits noise faster, and a depth of 1 means each tree uses one feature, as with the stumps of <a href="adaboost.html">AdaBoost</a>. Subsampling trains each tree on a random share of the customers (for example 80%), which makes the trees a little different from each other, like the random samples in <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a>, and reduces overfitting. Early stopping sets part of the training data aside as a check and stops as soon as the score on it has not improved for a number of trees, because from then on the model is probably only fitting noise.</p>
 
 <h2 id="python-gb" style="scroll-margin-top:90px">Gradient Boosting in Python</h2>
 
@@ -320,12 +294,7 @@ gb = GradientBoostingClassifier(
     validation_fraction=0.2, n_iter_no_change=20, random_state=42)
 gb.fit(X_train, y_train)</code></pre>
 
-  <ul class="post-points post-points-color">
-    <li><strong>n_estimators=500.</strong> The maximum number of trees. It is an upper limit, because early stopping usually ends training sooner.</li>
-    <li><strong>learning_rate=0.1 and max_depth=3.</strong> Small, cautious steps with small trees.</li>
-    <li><strong>subsample=0.8.</strong> Every tree sees a random 80% of the training customers.</li>
-    <li><strong>validation_fraction=0.2 and n_iter_no_change=20.</strong> 20% of the training customers are set aside, and training stops when 20 trees in a row bring no improvement on them.</li>
-  </ul>
+  <p>Small, cautious steps with small trees: at most 500 trees (<code>n_estimators</code>, an upper limit, because early stopping usually ends training sooner), <code>learning_rate=0.1</code> and <code>max_depth=3</code>, and every tree sees a random 80% of the training customers (<code>subsample=0.8</code>). With <code>validation_fraction=0.2</code> and <code>n_iter_no_change=20</code>, 20% of the training customers are set aside, and training stops when 20 trees in a row bring no improvement on them.</p>
 
   <p>Early stopping ends training after 107 trees. On the 1,250 test customers the model reaches an accuracy of 79.4% (against 63.4% for always predicting “no repeat order”) and an AUC of 0.865. The AUC is a score from 0.5 (guessing) to 1 (perfect) that rates how well the model ranks the customers who will order again above those who will not; see <a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a>. When the model says “repeat order” for every customer with a probability of at least 0.5, 77% of those customers do order again (called precision), and the model finds 62% of all customers who order again (called recall).</p>
 
@@ -424,8 +393,6 @@ gb.fit(X_train, y_train)</code></pre>
 
   <h2 id="xgb-python" style="scroll-margin-top:90px">XGBoost in Python</h2>
 
-  <h3 class="post-h3-small" id="xgb-python-checking-the-hand-calculation-on-the-eig">Checking the hand calculation on the eight customers</h3>
-
   <p>First we let XGBoost build one tree on the eight customers with the settings of our calculation: a depth of 1, a learning rate of 1 so that the leaf weights are not scaled down, and λ = 0. The setting <code>min_child_weight=0</code> is needed because XGBoost by default refuses leaves with a total Hessian <em>H</em> below 1, and our left leaf has <em>H</em> = 0.75.</p>
 
   <pre class="post-code"><code>import numpy as np
@@ -445,8 +412,6 @@ print(tree[tree["Feature"] == "Leaf"][["Node", "Gain", "Cover"]])</code></pre>
 
   <p>For the leaves, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.857 and +0.667. If you print the split row as well, its <code>Gain</code> column shows 4.8: XGBoost reports the gain without the factor ½, so the 2.4 from Chart 7 appears doubled.</p>
 
-  <h3 class="post-h3-small" id="xgb-python-on-the-full-customer-table">On the full customer table</h3>
-
   <p>On the full table the settings are the ones from Part A plus the penalties. We set aside 20% of the training customers as a check set for early stopping.</p>
 
   <pre class="post-code"><code>from sklearn.model_selection import train_test_split
@@ -462,22 +427,11 @@ xgb = XGBClassifier(
 xgb.fit(X_fit, y_fit, eval_set=[(X_val, y_val)], verbose=False)
 print(xgb.best_iteration + 1)    # number of trees used for predictions</code></pre>
 
-  <ul class="post-points post-points-color">
-    <li><strong><code>learning_rate=0.1</code>, <code>max_depth=3</code>, <code>subsample=0.8</code>.</strong> The same small, cautious steps as in Part A.</li>
-    <li><strong><code>reg_lambda=1</code> and <code>gamma=0</code>.</strong> The penalties λ and γ from the objective. These are also the defaults.</li>
-    <li><strong><code>min_child_weight=1</code>.</strong> A leaf must have a total Hessian of at least 1, which keeps leaves from forming around a few confident customers.</li>
-    <li><strong><code>early_stopping_rounds=20</code>.</strong> Training stops when 20 trees in a row bring no improvement on the check set.</li>
-  </ul>
+  <p>The first three settings repeat the small, cautious steps from Part A. <code>reg_lambda=1</code> and <code>gamma=0</code> are the penalties λ and γ from the objective, and also the defaults. <code>min_child_weight=1</code> requires every leaf to have a total Hessian of at least 1, which keeps leaves from forming around a few confident customers, and <code>early_stopping_rounds=20</code> ends training when 20 trees in a row bring no improvement on the check set.</p>
 
   <p>Early stopping selects 95 trees. On the 1,250 test customers the model reaches an accuracy of 79.0% and an AUC of 0.865, with a precision of 77% and a recall of 62%. The scikit-learn model from Part A (107 trees) reached 79.4% and 0.865. With 1,250 test customers, one accuracy figure is uncertain by about one percentage point, so the two models are practically the same. Switching the penalties off (<code>reg_lambda=0</code>, <code>min_child_weight=0</code>) gave 79.7% and an AUC of 0.866, again within that noise, so on this table we cannot say that either setting is better.</p>
 
   <h2 id="faq" style="scroll-margin-top:90px">Frequently Asked Questions</h2>
-
-  <h3 class="post-h3-small">Is gradient boosting the same as XGBoost?</h3>
-  <p>No. Gradient boosting is the general method of adding small trees that correct the remaining error. XGBoost is one implementation of it, with its own objective that adds a penalty for complex trees and uses second-order information. scikit-learn has another implementation with different choices.</p>
-
-  <h3 class="post-h3-small">Why does XGBoost use the second derivative?</h3>
-  <p>The slope of the loss only says in which direction to move. The curvature, the second derivative, also says how far a step should go. Together they give a ready-made leaf weight, −G ÷ (H + λ), and a score for every possible split.</p>
 
   <h3 class="post-h3-small">What is the difference between the learning rate and lambda?</h3>
   <p>The learning rate η scales down every finished tree before it is added to the model. Lambda (λ) is part of the objective: it pulls the leaf weights toward zero while the tree is being built, so it also changes which splits look worthwhile.</p>
@@ -487,7 +441,7 @@ print(xgb.best_iteration + 1)    # number of trees used for predictions</code></
 
   <div class="post-note post-takeaway">
     <p class="post-note-l">Key takeaway</p>
-    <p>Gradient boosting adds small trees one after another, each fitted to the negative gradient of the loss, which for the usual losses is the residual, and adds a small part of every tree to the prediction. XGBoost keeps this recipe but also uses the curvature of the loss: from the sums <em>G</em> and <em>H</em> in a leaf it derives the leaf weight −<em>G</em> ÷ (<em>H</em> + λ) and a gain for every split, and it charges the penalties λ and γ for large corrections and extra leaves. On our customer table it ends up practically level with scikit-learn’s gradient boosting.</p>
+    <p>Gradient boosting adds small trees one after another, each fitted to the negative gradient of the loss, which for the usual losses is the residual, and adds a small part of every tree to the prediction. XGBoost keeps this loop but also uses the curvature of the loss: from the sums <em>G</em> and <em>H</em> in a leaf it derives the leaf weight −<em>G</em> ÷ (<em>H</em> + λ) and a gain for every split, and it charges the penalties λ and γ for large corrections and extra leaves. On our customer table the two end up practically level, so the benefit of the mathematics is control over how complex the trees may become, not automatically a higher score.</p>
   </div>
 
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
