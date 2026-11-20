@@ -35,13 +35,13 @@
   <p class="overline">Tree-based models</p>
   <h1 class="post-title">Gradient Boosting and XGBoost: From Residuals to Second-Order Optimization</h1>
 
-<p>AdaBoost learns from its mistakes by increasing the weights of misclassified observations. Gradient Boosting takes a different approach: it fits each new tree to the remaining prediction errors, gradually improving the model.</p>
+<p>AdaBoost and Gradient Boosting both learn from previous mistakes, but in different ways. AdaBoost increases the weights of misclassified observations, while Gradient Boosting trains each new tree to correct the prediction errors of the previous model.</p>
 
-  <p>XGBoost builds on this idea by using both first- and second-order derivatives to optimize tree structures, while penalizing unnecessary complexity.</p>
+  <p>XGBoost builds on this approach, using first- and second-order derivatives to optimize tree structures and regularization to control model complexity.</p>
 
-  <p>In this tutorial, we work through both algorithms using a customer repeat-purchase example, from calculating residuals to understanding Hessians, regularization and split gain. We finish with practical Python implementations using scikit-learn and XGBoost.</p>
+  <p>In this article, we’ll explore both algorithms through a customer repeat-purchase example, covering residuals, gradients, Hessians and split gain, before implementing them in Python using scikit-learn and XGBoost.</p>
 
-  <p>This is the second article in a three-part series on boosting, following <a href="adaboost.html">AdaBoost Explained</a>.</p>
+  <p>This is the second article in my three-part boosting series, following <a href="adaboost.html">AdaBoost Explained</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
