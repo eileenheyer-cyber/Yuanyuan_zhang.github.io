@@ -47,7 +47,7 @@
   <div class="post-toc">
     <p class="post-toc-title">In this article</p>
     <ul>
-      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start Neutral and Measure the Mistakes</a></li><li><a href="#gb-step2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step3">Step 3: Update the Prediction with the Learning Rate</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li></ul></details></li>
+      <li><details open><summary><a href="#part-a">Part A: Gradient Boosting Step by Step</a></summary><ul><li><a href="#gb-step1">Step 1: Start Neutral and Measure the Errors</a></li><li><a href="#gb-step2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#gb-step3">Step 3: Update the Prediction with the Learning Rate</a></li><li><a href="#why-gradient">Why It Is Called Gradient Boosting</a></li></ul></details></li>
       <li><a href="#tuning">Learning Rate, Number of Trees and Tree Depth</a></li>
       <li><a href="#python-gb">Gradient Boosting in Python</a></li>
       <li><details open><summary><a href="#part-b">Part B: From Gradient Boosting to XGBoost</a></summary><ul><li><a href="#grad-hess">Gradient and Hessian: Direction and Curvature</a></li><li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li><li><a href="#split-gain">Leaf Weights and Split Gain</a></li><li><a href="#difference">What Is Different from the Residual Recipe?</a></li></ul></details></li>
@@ -74,22 +74,27 @@
     </tbody>
   </table></div>
 
-  <h3 id="gb-step1">Step 1: Start Neutral and Measure the Mistakes</h3>
+  <h3 id="gb-step1">Step 1: Start Neutral and Measure the Errors</h3>
 
-  <p>Four of the eight customers ordered again, so the model starts by predicting the same probability for everyone: 0.5. On the score scale that the model adds up (explained in the box below), this is a score of 0.</p>
+  <p>Four of the eight customers ordered again, so the model starts with the same predicted probability for everyone: 0.5. On the logit scale, this corresponds to a score of 0.</p>
 
-  <p>The residual is what actually happened (1 if the customer ordered again, 0 if not) minus the predicted probability:</p>
+  <p>The residual is the actual outcome minus the predicted probability:</p>
 
   <ul class="post-points post-points-color">
-    <li><strong>Customers 4, 5, 7, 8 (ordered again):</strong> 1 − 0.5 = +0.5.</li>
-    <li><strong>Customers 1, 2, 3, 6 (did not):</strong> 0 − 0.5 = −0.5.</li>
+    <li><strong>Customers 4, 5, 7, 8 (ordered again):</strong> 1 − 0.5 = +0.5</li>
+    <li><strong>Customers 1, 2, 3, 6 (did not):</strong> 0 − 0.5 = −0.5</li>
   </ul>
 
-  <p>A positive residual says “the model was too pessimistic about this customer”, a negative one says “too optimistic”. The next tree’s job is to predict these numbers from the customer’s data.</p>
+  <p>Positive residuals mean the model underestimated the probability of a repeat purchase; negative residuals mean it overestimated it. The next tree learns to correct these errors using customer data.</p>
 
   <div class="post-note post-note-plain post-note-concept">
-    <p class="post-note-l">The logit scale</p>
-    <p>A probability has to stay between 0 and 1, but corrections that are added together can go beyond that. So boosted models add the corrections on a different scale, the <strong>logit</strong> scale, which has no limits, and convert the result back to a probability at the end. The logit of a probability <em>p</em> is ln(<em>p</em> ÷ (1 − <em>p</em>)), the same scale on which <a href="logistic-regression.html">Logistic Regression</a> works. The conversion back is <em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>). A score of 0 means <em>p</em> = 0.50, a score of +2 means <em>p</em> = 0.88 and a score of −2 means <em>p</em> = 0.12.</p>
+    <p class="post-note-l">The Logit Scale</p>
+    <p>Probabilities must stay between 0 and 1, but model corrections can add up to any value. Boosted models therefore add corrections on the <strong>logit</strong> scale and convert the final score back into a probability.</p>
+    <p>The logit of probability <em>p</em> is:</p>
+    <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = ln(<em>p</em> ÷ (1 − <em>p</em>))</strong></p>
+    <p>The inverse conversion is:</p>
+    <p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
+    <p>A score of 0 corresponds to a probability of 0.50, +2 to 0.88, and −2 to 0.12. This is the same scale on which <a href="logistic-regression.html">Logistic Regression</a> works.</p>
   </div>
 
   <h3 id="gb-step2">Step 2: Fit a Small Tree to the Residuals</h3>
