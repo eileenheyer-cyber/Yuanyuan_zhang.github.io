@@ -37,9 +37,7 @@
 
 <p>AdaBoost and Gradient Boosting both improve their models by learning from previous mistakes, but they approach this process differently.</p>
 
-  <p>AdaBoost increases the weights of misclassified observations, forcing subsequent trees to pay more attention to difficult cases. Gradient Boosting takes a different route: instead of adjusting observation weights, it trains each new tree to correct the errors made by the current model. Each tree builds on the predictions of the previous ones, gradually reducing the overall prediction error.</p>
-
-  <p>XGBoost takes this idea further. It uses both first- and second-order derivatives of the loss function to determine how trees should be built and where splits provide the greatest improvement. It also introduces regularization to control model complexity and reduce overfitting.</p>
+  <p>AdaBoost increases the weights of misclassified observations, forcing subsequent trees to pay more attention to difficult cases. Gradient Boosting takes a different route: instead of adjusting observation weights, it trains each new tree to correct the errors made by the current model. Each tree builds on the predictions of the previous ones, gradually reducing the overall prediction error. XGBoost takes this idea further. It uses both first- and second-order derivatives of the loss function to determine how trees should be built and where splits provide the greatest improvement. It also introduces regularization to control model complexity and reduce overfitting.</p>
 
   <p>In this article, we’ll explore how Gradient Boosting and XGBoost work through a practical customer repeat-purchase prediction example. Starting with residuals and sequential model updates, we’ll work our way toward more advanced concepts such as gradients, Hessians, regularization and split gain. Finally, we’ll implement both algorithms in Python using scikit-learn and XGBoost.</p>
 
