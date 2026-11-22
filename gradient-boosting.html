@@ -69,14 +69,16 @@
 <p>What really happened is 1 if the customer ordered again and 0 if not.</p>
 <ul class="post-points post-points-color"><li><strong>Customers 4, 5, 7, 8 ordered again:</strong> 1 − 0.5 = <strong>+0.5</strong>. The predicted probability was too low.</li><li><strong>Customers 1, 2, 3, 6 did not:</strong> 0 − 0.5 = <strong>−0.5</strong>. The predicted probability was too high.</li></ul>
 <p>A positive residual means “the model should be more optimistic about this customer”, and a negative one means “more cautious”. The next tree learns from the customer data which customers belong in which group.</p>
-<div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Residual</p>
-<p>A residual is the error of one prediction: what really happened minus what the model predicted. The word comes from statistics and means what is left over after the model has done its part. That is exactly what boosting uses: each new tree learns what the earlier trees left over.</p>
-<p>Customer 4 ordered again (1) and the model predicted 0.50, so the residual is +0.50. Customer 1 did not order again (0), so the residual is 0 − 0.50 = −0.50. The sign says in which direction the prediction has to move, and the size says how far off it was.</p></div>
 <div class="post-note post-note-plain post-note-concept"><p class="post-note-l">The Logit Scale</p>
-<p>Probabilities must stay between 0 and 1, but model corrections can add up to any value. Boosted models therefore add corrections on the <strong>logit</strong> scale and convert the final score back into a probability.</p>
-<p>The logit of probability <em>p</em> is:</p><p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = ln(<em>p</em> ÷ (1 − <em>p</em>))</strong></p>
-<p>The inverse conversion is:</p><p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
-<p>A score of 0 corresponds to a probability of 0.50, +2 to 0.88, and −2 to 0.12.</p></div>
+<p>Probabilities must stay between 0 and 1, but the corrections of many trees can add up to any value. Boosted models therefore work with numbers on the <strong>logit</strong> scale and convert them back into probabilities at the end.</p>
+<p>The logit turns a probability <em>p</em> into a number that can be negative or positive:</p><p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = ln(<em>p</em> ÷ (1 − <em>p</em>))</strong></p>
+<p>This number is the <strong>score</strong> of the customer. The score is the logit of the predicted probability:</p><p class="post-formula post-formula-plain"><strong>score = logit(<em>p</em>)</strong></p>
+<p>The model adds up the corrections of its trees on this scale: the score is the start score plus the corrections. At the end, the inverse conversion turns the score back into a probability:</p><p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
+<div class="post-table-wrap"><table class="post-table"><thead><tr><th>Predicted probability</th><th>Score = logit(<em>p</em>)</th></tr></thead><tbody>
+<tr><td>0.12</td><td>−2</td></tr>
+<tr><td>0.50</td><td>0</td></tr>
+<tr><td>0.88</td><td>+2</td></tr></tbody></table></div>
+<p>A higher score always means a higher probability.</p></div>
 <h3 id="step-2" style="scroll-margin-top:90px">Step 2: Fit a Small Tree to the Residuals</h3>
 <p>Now comes the helper. The tree has one job: predict each customer’s residual from the customer data. In our tiny table the only information is the first basket, so the tree looks for the best yes/no question about it.</p>
 <p>The best question is <em>“Is the first basket at most €42.50?”</em>. It is the best because it sorts customers into two groups whose residuals look alike. The three small-basket customers (1 to 3) all have −0.5, so the predicted probability was too high for all of them. Among the five larger-basket customers (4 to 8), four have +0.5 and only customer 6 has −0.5, so the predicted probability was mostly too low.</p>
