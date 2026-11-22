@@ -61,41 +61,25 @@
 <p>There is a lot of engineering on top, such as fast split search, handling of missing values and parallel computing. We leave that out and look only at the mathematics that changes the result.</p>
 
 <h2 id="s3" style="scroll-margin-top:90px">Slope and Curvature: How XGBoost Finds the Right Step</h2>
-<p>In <a href="gradient-boosting.html">Gradient Boosting</a>, each new tree corrects the predictions made by the previous trees. But knowing which direction to correct a prediction is only half the problem. We also need to know how large that correction should be.</p>
-<p>Traditional Gradient Boosting relies on the gradient to determine the direction of the update. XGBoost goes one step further: it also considers how quickly the loss changes around the current prediction. To do this, it uses two quantities: the <strong>gradient</strong> and the <strong>Hessian</strong>.</p>
-<p>Let’s look at one customer to understand how they work together.</p>
+<p>Each new tree in <a href="gradient-boosting.html">Gradient Boosting</a> corrects the predictions of the trees before it. Knowing the direction of a correction is only half the problem: we also need to know how large it should be. XGBoost uses two quantities for this, the <strong>gradient</strong> (the direction) and the <strong>Hessian</strong> (the curvature). We follow one customer.</p>
 
 <h3>Gradient: Which Direction Should We Move?</h3>
-<p>The gradient measures the slope of the loss function at the current prediction. It tells us whether the predicted score should increase or decrease to reduce the loss.</p>
-<p>For logistic loss, the gradient is:</p>
+<p>The gradient is the slope of the loss at the current prediction. For the log loss it is:</p>
 <p class="post-formula post-formula-plain"><strong><em>g</em> = <em>p</em> − <em>y</em></strong></p>
-<p>Here, <em>p</em> is the predicted probability and <em>y</em> is the actual outcome (0 or 1).</p>
-<p>Consider a customer who actually ordered again (<em>y</em> = 1), but the model predicted a probability of 0.50.</p>
+<p>Here, <em>p</em> is the predicted probability and <em>y</em> the actual outcome (0 or 1). A customer who ordered again (<em>y</em> = 1) with a predicted probability of 0.50 has:</p>
 <p class="post-formula post-formula-plain"><strong><em>g</em> = 0.50 − 1 = −0.50</strong></p>
-<p>The negative gradient tells us that the prediction is too low. To reduce the loss, the model needs to increase its score.</p>
-<p>For a customer who did not order again (<em>y</em> = 0), the same prediction gives:</p>
-<p class="post-formula post-formula-plain"><strong><em>g</em> = 0.50 − 0 = +0.50</strong></p>
-<p>This time, the positive gradient tells us that the prediction is too high, so the score needs to decrease.</p>
-<p>For our eight customers, four who ordered again have a gradient of −0.50, while the four who did not have a gradient of +0.50.</p>
-<p><strong>The key takeaway:</strong> The gradient tells us which direction to move, but not how far.</p>
+<p>The negative gradient says the prediction is too low, so the score must rise. A customer who did not order again (<em>y</em> = 0) has <em>g</em> = 0.50 − 0 = +0.50: the prediction is too high, so the score must fall. The gradient gives the direction, not the distance.</p>
 
 <div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Gradient and residual</p>
 <p>The residual is the error of a prediction: what really happened minus the predicted probability, <em>y</em> − <em>p</em>. The gradient is the slope of the loss, <em>p</em> − <em>y</em>. For the log loss, the gradient is the residual with the opposite sign. The model moves against the gradient, which is the same as moving along the residual.</p>
 <p>The gradient works for any loss function, not only the log loss. That is why XGBoost uses it.</p></div>
 
 <h3>Hessian: How Quickly Does the Slope Change?</h3>
-<p>Imagine walking down a hill. Knowing that the ground slopes downward tells you which direction to walk. But the shape of the hill determines how quickly the slope changes as you move.</p>
-<p>This is what the Hessian measures.</p>
-<p>The Hessian is the second derivative of the loss function. It describes how quickly the gradient changes as the score changes. In other words, it measures the local curvature of the loss function.</p>
-<p>For logistic loss, the Hessian is:</p>
+<p>The Hessian is the second derivative of the loss: how quickly the gradient changes as the score changes. It measures the local curvature. For the log loss it is:</p>
 <p class="post-formula post-formula-plain"><strong><em>h</em> = <em>p</em> × (1 − <em>p</em>)</strong></p>
-<p>The Hessian is largest at a predicted probability of 0.50 (<em>h</em> = 0.25), when the model is most uncertain. Here, small changes in the score produce relatively large changes in the predicted probability.</p>
-<p>At 0.12 or 0.88, the model is more confident. The Hessian is smaller (<em>h</em> = 0.11), meaning the gradient changes more slowly as the score moves.</p>
+<p>The Hessian is largest at a predicted probability of 0.50 (<em>h</em> = 0.25), where the model is most uncertain. At 0.12 or 0.88 the model is confident and the Hessian is smaller (<em>h</em> = 0.11).</p>
 <p>Chart 1 shows the same thing for every score. The left panel shows the gradient <em>g</em> = <em>p</em> − <em>y</em> of one customer who ordered again. The dashed lines show how steeply the gradient changes at three scores. The right panel plots exactly this steepness: it is the Hessian. The scores −2, 0 and +2 stand for the predicted probabilities 0.12, 0.50 and 0.88.</p>
 <figure class="post-fig post-fig-wide"><img src="images/gradient-boosting/chart-hessian.svg" alt="Left: the gradient p minus y against the score with dashed tangent lines at scores minus 2, 0 and 2. Right: the Hessian h equals p times 1 minus p as a hill with its top of 0.25 at score 0 and 0.11 at scores minus 2 and 2"><figcaption><span>Chart 1</span> The Hessian is largest where the model is most unsure, and shrinks as the model becomes sure.</figcaption></figure>
-<p>For our customer, with a predicted probability of 0.50:</p>
-<p class="post-formula post-formula-plain"><strong><em>h</em> = 0.50 × (1 − 0.50) = 0.25</strong></p>
-<p><strong>The key takeaway:</strong> The Hessian tells us how quickly the slope changes, helping us understand the curvature around the current prediction.</p>
 
 <div class="post-note post-note-plain post-note-concept"><p class="post-note-l">First and second derivative</p>
 <ul class="post-points post-points-color">
@@ -106,38 +90,26 @@
 <p>For the log loss, the gradient <em>g</em> = <em>p</em> − <em>y</em> changes with the score exactly as the probability <em>p</em> does. The rate at which <em>p</em> changes is <em>p</em> × (1 − <em>p</em>), and this is the Hessian.</p></div>
 
 <h3>Putting Both Together: Newton’s Method</h3>
-<p>We now have two pieces of information: the gradient tells us which direction to move, and the Hessian tells us how quickly the slope changes. XGBoost combines them with <strong>Newton’s Method</strong>, a way to find the lowest point of a curve. It works in four steps, which we go through with our customer.</p>
+<p>XGBoost combines the two with <strong>Newton’s Method</strong>, a way to find the lowest point of a curve. It works in four steps, which we go through with our customer.</p>
 <p><strong>1. Measure</strong></p>
-<p>Newton’s method starts with three measurements of the loss at the current score. For our customer at a score of 0:</p>
+<p>At the current score 0, our customer has:</p>
 <ul class="post-points post-points-color">
 <li><strong>Loss:</strong> 0.69</li>
 <li><strong>Gradient:</strong> −0.50</li>
 <li><strong>Hessian:</strong> 0.25</li>
 </ul>
 <p><strong>2. Approximate</strong></p>
-<p>The actual logistic loss curve is not always easy to optimize directly. For a customer who actually ordered again, the loss keeps decreasing as the predicted score increases. It approaches zero but never reaches a finite minimum.</p>
-<p>Instead of working with the entire loss curve, Newton’s Method builds a local approximation around the current score using a parabola.</p>
-<p>A parabola is a U-shaped curve with a single lowest point. This makes it useful for optimization: if we can find its lowest point, we know where the loss is smallest.</p>
-<p>This approximation captures two things:</p>
-<ul class="post-points post-points-color">
-<li><strong>The slope (gradient):</strong> which direction the loss is changing.</li>
-<li><strong>The curvature (Hessian):</strong> how quickly that slope changes.</li>
-</ul>
-<p>A straight line would only capture the slope. It would continue in the same direction without turning around, giving us no minimum to calculate.</p>
-<p>A parabola also captures curvature. Its U-shape gives us a lowest point, which we can calculate mathematically.</p>
-<p>Newton’s Method uses this lowest point to estimate how far the score should move.</p>
+<p>The real loss of a customer who ordered again keeps falling as the score grows and never reaches a lowest point. So Newton’s method replaces it, near the current score, by a <strong>parabola</strong>: a U-shaped curve with exactly one lowest point. A straight line, which uses only the slope, has no lowest point. A parabola also uses the curvature.</p>
 <p>Chart 2 shows the real loss of our customer, the black curve, and two approximations around the current score 0. The blue dashed straight line uses only the slope. It keeps going down and has no lowest point. The red dashed parabola also uses the curvature. Close to the score 0 it follows the real curve closely, and it has a lowest point.</p>
 <figure class="post-fig"><img src="images/gradient-boosting/chart-approximation.svg" alt="The real loss curve of one customer with a blue straight line that keeps going down and a red parabola with a lowest point at score 2, both touching the curve at score 0"><figcaption><span>Chart 2</span> A straight line has no lowest point. A parabola has one.</figcaption></figure>
 <p>Of all possible parabolas, we take the one that touches the real curve at the current score: same height (the loss), same slope (the gradient) and same curvature (the Hessian). The formula is:</p>
 <p class="post-formula post-formula-plain"><strong><em>L</em>(<em>s</em> + Δ<em>s</em>) ≈ <em>L</em>(<em>s</em>) + <em>g</em> × Δ<em>s</em> + ½ × <em>h</em> × (Δ<em>s</em>)²</strong><span>L is the loss, s the current score and Δs the step.</span></p>
 <p><strong>3. Jump</strong></p>
-<p>Now we jump to the lowest point of the parabola. It lies where the slope of the parabola is zero. This slope starts at <em>g</em> and grows by <em>h</em> with every unit of step, so after a step Δ<em>s</em> it is <em>g</em> + <em>h</em> × Δ<em>s</em>. Setting it to zero gives:</p>
+<p>Now we jump to the lowest point of the parabola, where its slope is zero. The slope starts at <em>g</em> and grows by <em>h</em> with every unit of step, so after a step Δ<em>s</em> it is <em>g</em> + <em>h</em> × Δ<em>s</em>. Setting it to zero gives:</p>
 <p class="post-formula post-formula-plain"><strong>Δ<em>s</em> = −<em>g</em> ÷ <em>h</em></strong></p>
-<p>For our customer, the slope starts at −0.50 and rises by 0.25 with every unit of step, so it reaches 0 after 2.00 units. The formula gives the same result:</p>
-<p class="post-formula post-formula-plain"><strong>Δ<em>s</em> = −(−0.50) ÷ 0.25 = +2.00</strong></p>
-<p>The model increases the score by 2. Starting from a score of 0, the new score becomes 2. Converting it back into a probability with the sigmoid function:</p>
+<p>For our customer: Δ<em>s</em> = −(−0.50) ÷ 0.25 = +2.00. The score moves from 0 to 2, and the sigmoid function turns it back into a probability:</p>
 <p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−2</sup>) ≈ 0.88</strong></p>
-<p>The predicted probability increases from 50% to approximately 88%, moving closer to the actual outcome of 1.</p>
+<p>The predicted probability rises from 50% to about 88%, closer to the actual outcome of 1.</p>
 <div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Sigmoid function</p>
 <p>The sigmoid function turns a score into a probability. A score can be any number, negative or positive. A probability must lie between 0 and 1. The sigmoid does this conversion:</p>
 <p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
@@ -149,18 +121,12 @@
 <p>The parabola is only a good approximation near the current score. After the jump, the model recalculates the gradient and the Hessian at the new score and builds a new parabola. In XGBoost, the next tree takes this step.</p>
 
 <h3>Gradient Descent vs Newton’s Method: Why the Hessian Matters</h3>
-<p>The difference between Gradient Descent and Newton’s Method becomes clearer here.</p>
-<p>Gradient Descent uses the gradient to determine the direction of the update and a learning rate to control its size.</p>
-<p>Newton’s Method also considers the curvature:</p>
-<p class="post-formula post-formula-plain"><strong>Newton Step = −<em>g</em> ÷ <em>h</em></strong></p>
-<p>For our customer, the two methods give different steps:</p>
+<p>Gradient descent uses the gradient for the direction and a learning rate for the size. Newton’s method also uses the curvature: step = −<em>g</em> ÷ <em>h</em>. For our customer:</p>
 <ul class="post-points post-points-color">
 <li><strong>Gradient Descent</strong> with a learning rate of 1: −(−0.50) = +0.50</li>
 <li><strong>Newton’s Method:</strong> −(−0.50) ÷ 0.25 = +2.00</li>
 </ul>
-<p>The Hessian of 0.25 is small, so the slope changes slowly. Dividing by it makes the Newton step four times as long as the plain gradient step.</p>
-<p>A larger Hessian generally results in a smaller Newton step for the same gradient. A smaller Hessian can result in a larger step.</p>
-<p><strong>One important distinction:</strong> Newton’s Method uses a local approximation. A large calculated step is not always safe or optimal in practice, which is why XGBoost also uses regularization and a learning-rate parameter to control updates.</p>
+<p>The Hessian of 0.25 is small, so the slope changes slowly and the Newton step is four times as long. A larger Hessian gives a shorter step. Because the parabola is only a local approximation, a large step is not always safe, which is why XGBoost also uses regularization and a learning rate.</p>
 
 <h2 id="objective" style="scroll-margin-top:90px">The XGBoost Objective: Loss Plus a Penalty</h2>
 
