@@ -46,7 +46,7 @@
       <li><a href="#split-gain">Leaf Weights and Split Gain</a></li>
       <li><a href="#difference">What Is Different from the Residual Recipe?</a></li>
       <li><a href="#s8">Does the Mathematics Pay Off? Testing XGBoost on 5,000 Customers</a></li>
-      <li><a href="#s9">XGBoost in Python: From Toy Example to Full Data</a></li>
+      <li><a href="#s9">XGBoost in Python</a></li>
       <li><a href="#s10">Stakeholders: How to Explain XGBoost Without the Mathematics</a></li>
     </ul>
   </div>
@@ -202,24 +202,8 @@
 <p>All three models beat the starting point by about 16 percentage points. With 1,250 test customers, one accuracy figure is uncertain by about one percentage point, and the three results are less than one point apart, so we cannot say that one setting is better. The penalties pay off when a model starts to overfit, and our small, clean table gives it little reason to.</p>
 <p><strong>The key takeaway:</strong> The mathematics of XGBoost matters most when a model overfits. On a small, clean table, all three settings give practically the same result.</p>
 
-<h2 id="s9" style="scroll-margin-top:90px">XGBoost in Python: From Toy Example to Full Data</h2>
-<p>First we let XGBoost build one tree on the eight customers with the settings of our calculation: a depth of 1, a learning rate of 1 so that the leaf weights are not scaled down, and λ = 0. We also set <code>min_child_weight=0</code>, because XGBoost by default refuses leaves with a total Hessian <em>H</em> below 1, and our left leaf has <em>H</em> = 0.75.</p>
-<pre class="post-code"><code>import numpy as np
-from xgboost import XGBClassifier
-
-basket = np.array([20, 25, 40, 45, 60, 70, 80, 90]).reshape(-1, 1)
-repeat = np.array([0, 0, 0, 1, 1, 0, 1, 1])
-
-toy = XGBClassifier(n_estimators=1, max_depth=1, learning_rate=1.0,
-                    reg_lambda=0, min_child_weight=0, base_score=0.5,
-                    tree_method="exact")
-toy.fit(basket, repeat)
-
-tree = toy.get_booster().trees_to_dataframe()
-print("split at", tree.loc[0, "Split"])
-print(tree[tree["Feature"] == "Leaf"][["Node", "Gain", "Cover"]])</code></pre>
-<p>In the leaf rows, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf, and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.86 and +0.67. XGBoost reports the gain of a split without the factor ½, so the 2.4 from Chart 4 appears as 4.8.</p>
-<p>On the full table of 5,000 customers the settings are the ones from <a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a>, plus the penalties. We set aside 20% of the training customers as the check set for early stopping.</p>
+<h2 id="s9" style="scroll-margin-top:90px">XGBoost in Python</h2>
+<p>On the table of 5,000 customers the settings are the ones from <a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a>, plus the penalties. We set aside 20% of the training customers as the check set for early stopping.</p>
 <pre class="post-code"><code>from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 
