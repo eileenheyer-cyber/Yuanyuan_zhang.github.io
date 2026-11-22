@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XGBoost: Gradient Boosting That Knows How Far to Step – Yuanyuan Zhang</title>
+  <meta name="description" content="XGBoost explained for beginners: gradient and Hessian, Newton's method, regularization, leaf values and split gain, followed step by step on eight customers and tested on 5,000.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261116e">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html#top">Yuanyuan Zhang</a>
+  <div class="header-right">
+    <nav aria-label="Hauptnavigation">
+      <a href="index.html#projekte" data-en="Projects" data-de="Projekte">Projects</a>
+      <a href="statistics.html">Statistics &amp; ML</a>
+      <a href="index.html#data-storytelling">Data Storytelling</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#ueber-mich" data-en="About me" data-de="Über mich">About me</a>
+      <a href="index.html#kontakt" data-en="Contact" data-de="Kontakt">Contact</a>
+    </nav>
+    <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Auf Deutsch umschalten"><span class="lang-opt">DE</span><span class="lang-sep">/</span><span class="lang-opt is-active">EN</span></button>
+  </div>
+</header>
+
+<main id="top">
+<article class="post post-italic-h2 post-small-figs">
+
+  <a class="cs-back" href="statistics.html">← Statistics</a>
+  <p class="overline">Tree-based models</p>
+  <h1 class="post-title">XGBoost: Gradient Boosting That Knows How Far to Step</h1>
+
+<p>XGBoost takes the idea of gradient boosting further. It uses both first- and second-order derivatives of the loss function to determine how trees should be built and where splits provide the greatest improvement. It also introduces regularization to control model complexity and reduce overfitting.</p>
+<p>This article explains both ideas in plain words, using the same eight customers and the same question as in <a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a>: will a first-time customer order again? Every formula comes with a short explanation of why it exists, and each one is checked on the eight customers.</p>
+
+  <div class="post-toc">
+    <p class="post-toc-title">In this article</p>
+    <ul>
+      <li><a href="#s2">What XGBoost Changes: Two Numbers and a Price</a></li>
+      <li><a href="#s3">Slope and Curvature: How XGBoost Finds the Right Step</a></li>
+      <li><a href="#objective">The XGBoost Objective: Loss Plus a Penalty</a></li>
+      <li><a href="#split-gain">Leaf Weights and Split Gain</a></li>
+      <li><a href="#difference">What Is Different from the Residual Recipe?</a></li>
+      <li><a href="#s8">Does the Mathematics Pay Off? Testing XGBoost on 5,000 Customers</a></li>
+      <li><a href="#s9">XGBoost in Python: From Toy Example to Full Data</a></li>
+      <li><a href="#s10">Stakeholders: How to Explain XGBoost Without the Mathematics</a></li>
+    </ul>
+  </div>
+
+<h2 id="s2" style="scroll-margin-top:90px">What XGBoost Changes: Two Numbers and a Price</h2>
+<p>XGBoost builds the same kind of model as <a href="gradient-boosting.html">Gradient Boosting</a>: small trees added one after another, each one correcting the errors before it, on the score scale explained there. What changes is how each tree is chosen and what the model is penalized for. Three things change:</p>
+<ul class="post-points post-points-color">
+<li><strong>Curvature:</strong> XGBoost looks at the curvature of the loss as well as its slope, so it knows how far to step and not only in which direction.</li>
+<li><strong>A price:</strong> it adds a price for extra leaves and for large corrections, so a tree only grows when a split is worth it.</li>
+<li><strong>One score:</strong> a single score decides which question a tree asks and which value each leaf gets.</li>
+</ul>
+<p>There is a lot of engineering on top, such as fast split search, handling of missing values and parallel computing. We leave that out and look only at the mathematics that changes the result.</p>
+
+<h2 id="s3" style="scroll-margin-top:90px">Slope and Curvature: How XGBoost Finds the Right Step</h2>
+<p>In <a href="gradient-boosting.html">Gradient Boosting</a>, each new tree corrects the predictions made by the previous trees. But knowing which direction to correct a prediction is only half the problem. We also need to know how large that correction should be.</p>
+<p>Traditional Gradient Boosting relies on the gradient to determine the direction of the update. XGBoost goes one step further: it also considers how quickly the loss changes around the current prediction. To do this, it uses two quantities: the <strong>gradient</strong> and the <strong>Hessian</strong>.</p>
+<p>Let’s look at one customer to understand how they work together.</p>
+
+<h3>Gradient: Which Direction Should We Move?</h3>
+<p>The gradient measures the slope of the loss function at the current prediction. It tells us whether the predicted score should increase or decrease to reduce the loss.</p>
+<p>For logistic loss, the gradient is:</p>
+<p class="post-formula post-formula-plain"><strong><em>g</em> = <em>p</em> − <em>y</em></strong></p>
+<p>Here, <em>p</em> is the predicted probability and <em>y</em> is the actual outcome (0 or 1).</p>
+<p>Consider a customer who actually ordered again (<em>y</em> = 1), but the model predicted a probability of 0.50.</p>
+<p class="post-formula post-formula-plain"><strong><em>g</em> = 0.50 − 1 = −0.50</strong></p>
+<p>The negative gradient tells us that the prediction is too low. To reduce the loss, the model needs to increase its score.</p>
+<p>For a customer who did not order again (<em>y</em> = 0), the same prediction gives:</p>
+<p class="post-formula post-formula-plain"><strong><em>g</em> = 0.50 − 0 = +0.50</strong></p>
+<p>This time, the positive gradient tells us that the prediction is too high, so the score needs to decrease.</p>
+<p>For our eight customers, four who ordered again have a gradient of −0.50, while the four who did not have a gradient of +0.50.</p>
+<p><strong>The key takeaway:</strong> The gradient tells us which direction to move, but not how far.</p>
+
+<div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Gradient and residual</p>
+<p>The residual is the error of a prediction: what really happened minus the predicted probability, <em>y</em> − <em>p</em>. The gradient is the slope of the loss, <em>p</em> − <em>y</em>. For the log loss, the gradient is the residual with the opposite sign. The model moves against the gradient, which is the same as moving along the residual.</p>
+<p>The gradient works for any loss function, not only the log loss. That is why XGBoost uses it.</p></div>
+
+<h3>Hessian: How Quickly Does the Slope Change?</h3>
+<p>Imagine walking down a hill. Knowing that the ground slopes downward tells you which direction to walk. But the shape of the hill determines how quickly the slope changes as you move.</p>
+<p>This is what the Hessian measures.</p>
+<p>The Hessian is the second derivative of the loss function. It describes how quickly the gradient changes as the score changes. In other words, it measures the local curvature of the loss function.</p>
+<p>For logistic loss, the Hessian is:</p>
+<p class="post-formula post-formula-plain"><strong><em>h</em> = <em>p</em> × (1 − <em>p</em>)</strong></p>
+<p>The Hessian is largest at a predicted probability of 0.50 (<em>h</em> = 0.25), when the model is most uncertain. Here, small changes in the score produce relatively large changes in the predicted probability.</p>
+<p>At 0.12 or 0.88, the model is more confident. The Hessian is smaller (<em>h</em> = 0.11), meaning the gradient changes more slowly as the score moves.</p>
+<p>Chart 1 shows the same thing for every score. The left panel shows the gradient <em>g</em> = <em>p</em> − <em>y</em> of one customer who ordered again. The dashed lines show how steeply the gradient changes at three scores. The right panel plots exactly this steepness: it is the Hessian. The scores −2, 0 and +2 stand for the predicted probabilities 0.12, 0.50 and 0.88.</p>
+<figure class="post-fig post-fig-wide"><img src="images/gradient-boosting/chart-hessian.svg" alt="Left: the gradient p minus y against the score with dashed tangent lines at scores minus 2, 0 and 2. Right: the Hessian h equals p times 1 minus p as a hill with its top of 0.25 at score 0 and 0.11 at scores minus 2 and 2"><figcaption><span>Chart 1</span> The Hessian is largest where the model is most unsure, and shrinks as the model becomes sure.</figcaption></figure>
+<p>For our customer, with a predicted probability of 0.50:</p>
+<p class="post-formula post-formula-plain"><strong><em>h</em> = 0.50 × (1 − 0.50) = 0.25</strong></p>
+<p><strong>The key takeaway:</strong> The Hessian tells us how quickly the slope changes, helping us understand the curvature around the current prediction.</p>
+
+<div class="post-note post-note-plain post-note-concept"><p class="post-note-l">First and second derivative</p>
+<ul class="post-points post-points-color">
+<li><strong>Derivative:</strong> the slope of a curve at one point. It says how quickly the curve rises or falls there.</li>
+<li><strong>First derivative:</strong> the derivative of the loss. This is the gradient <em>g</em>.</li>
+<li><strong>Second derivative:</strong> the derivative of the first derivative. It says how quickly the slope itself changes, which means how sharply the curve bends. This bending is called the curvature. For the loss, it is the Hessian <em>h</em>.</li>
+</ul>
+<p>For the log loss, the gradient <em>g</em> = <em>p</em> − <em>y</em> changes with the score exactly as the probability <em>p</em> does. The rate at which <em>p</em> changes is <em>p</em> × (1 − <em>p</em>), and this is the Hessian.</p></div>
+
+<h3>Putting Both Together: Newton’s Method</h3>
+<p>We now have two pieces of information: the gradient tells us which direction to move, and the Hessian tells us how quickly the slope changes. XGBoost combines them with <strong>Newton’s Method</strong>, a way to find the lowest point of a curve. It works in four steps, which we go through with our customer.</p>
+<p><strong>1. Measure</strong></p>
+<p>Newton’s method starts with three measurements of the loss at the current score. For our customer at a score of 0:</p>
+<ul class="post-points post-points-color">
+<li><strong>Loss:</strong> 0.69</li>
+<li><strong>Gradient:</strong> −0.50</li>
+<li><strong>Hessian:</strong> 0.25</li>
+</ul>
+<p><strong>2. Approximate</strong></p>
+<p>The actual logistic loss curve is not always easy to optimize directly. For a customer who actually ordered again, the loss keeps decreasing as the predicted score increases. It approaches zero but never reaches a finite minimum.</p>
+<p>Instead of working with the entire loss curve, Newton’s Method builds a local approximation around the current score using a parabola.</p>
+<p>A parabola is a U-shaped curve with a single lowest point. This makes it useful for optimization: if we can find its lowest point, we know where the loss is smallest.</p>
+<p>This approximation captures two things:</p>
+<ul class="post-points post-points-color">
+<li><strong>The slope (gradient):</strong> which direction the loss is changing.</li>
+<li><strong>The curvature (Hessian):</strong> how quickly that slope changes.</li>
+</ul>
+<p>A straight line would only capture the slope. It would continue in the same direction without turning around, giving us no minimum to calculate.</p>
+<p>A parabola also captures curvature. Its U-shape gives us a lowest point, which we can calculate mathematically.</p>
+<p>Newton’s Method uses this lowest point to estimate how far the score should move.</p>
+<p>Chart 2 shows the real loss of our customer, the black curve, and two approximations around the current score 0. The blue dashed straight line uses only the slope. It keeps going down and has no lowest point. The red dashed parabola also uses the curvature. Close to the score 0 it follows the real curve closely, and it has a lowest point.</p>
+<figure class="post-fig"><img src="images/gradient-boosting/chart-approximation.svg" alt="The real loss curve of one customer with a blue straight line that keeps going down and a red parabola with a lowest point at score 2, both touching the curve at score 0"><figcaption><span>Chart 2</span> A straight line has no lowest point. A parabola has one.</figcaption></figure>
+<p>Of all possible parabolas, we take the one that touches the real curve at the current score: same height (the loss), same slope (the gradient) and same curvature (the Hessian). The formula is:</p>
+<p class="post-formula post-formula-plain"><strong><em>L</em>(<em>s</em> + Δ<em>s</em>) ≈ <em>L</em>(<em>s</em>) + <em>g</em> × Δ<em>s</em> + ½ × <em>h</em> × (Δ<em>s</em>)²</strong><span>L is the loss, s the current score and Δs the step.</span></p>
+<p><strong>3. Jump</strong></p>
+<p>Now we jump to the lowest point of the parabola. It lies where the slope of the parabola is zero. This slope starts at <em>g</em> and grows by <em>h</em> with every unit of step, so after a step Δ<em>s</em> it is <em>g</em> + <em>h</em> × Δ<em>s</em>. Setting it to zero gives:</p>
+<p class="post-formula post-formula-plain"><strong>Δ<em>s</em> = −<em>g</em> ÷ <em>h</em></strong></p>
+<p>For our customer, the slope starts at −0.50 and rises by 0.25 with every unit of step, so it reaches 0 after 2.00 units. The formula gives the same result:</p>
+<p class="post-formula post-formula-plain"><strong>Δ<em>s</em> = −(−0.50) ÷ 0.25 = +2.00</strong></p>
+<p>The model increases the score by 2. Starting from a score of 0, the new score becomes 2. Converting it back into a probability with the sigmoid function:</p>
+<p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−2</sup>) ≈ 0.88</strong></p>
+<p>The predicted probability increases from 50% to approximately 88%, moving closer to the actual outcome of 1.</p>
+<div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Sigmoid function</p>
+<p>The sigmoid function turns a score into a probability. A score can be any number, negative or positive. A probability must lie between 0 and 1. The sigmoid does this conversion:</p>
+<p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
+<p>Here, <em>e</em> is a fixed number, about 2.72.</p>
+<p>A higher score always gives a higher probability, but the probability never goes above 1 or below 0. The way back, from a probability to a score, is the logit.</p></div>
+<p>Chart 3 shows these four steps for our customer. The black curve is the real loss. On the left, the red dot is the current score 0, where <em>g</em> = −0.50 and <em>h</em> = 0.25 (<strong>1. Measure</strong>). The red dashed parabola has the same slope and curvature as the loss at this point (<strong>2. Approximate</strong>). The blue arrow jumps to the lowest point of the parabola, +2.00 (<strong>3. Jump</strong>). On the right, we start again from the new score +2 (<strong>4. Repeat</strong>). The curve is flatter there, so the next jump is shorter.</p>
+<figure class="post-fig post-fig-wide"><img src="images/gradient-boosting/chart-newton.svg" alt="Left: the loss curve of one customer with a red parabola at score 0 and a blue arrow jumping to the lowest point of the parabola at +2. Right: the same steps repeated from score +2 with a shorter jump"><figcaption><span>Chart 3</span> Newton’s method on the loss of one customer: measure, approximate with a parabola, jump to its lowest point, repeat.</figcaption></figure>
+<p><strong>4. Repeat</strong></p>
+<p>The parabola is only a good approximation near the current score. After the jump, the model recalculates the gradient and the Hessian at the new score and builds a new parabola. In XGBoost, the next tree takes this step.</p>
+
+<h3>Gradient Descent vs Newton’s Method: Why the Hessian Matters</h3>
+<p>The difference between Gradient Descent and Newton’s Method becomes clearer here.</p>
+<p>Gradient Descent uses the gradient to determine the direction of the update and a learning rate to control its size.</p>
+<p>Newton’s Method also considers the curvature:</p>
+<p class="post-formula post-formula-plain"><strong>Newton Step = −<em>g</em> ÷ <em>h</em></strong></p>
+<p>For our customer, the two methods give different steps:</p>
+<ul class="post-points post-points-color">
+<li><strong>Gradient Descent</strong> with a learning rate of 1: −(−0.50) = +0.50</li>
+<li><strong>Newton’s Method:</strong> −(−0.50) ÷ 0.25 = +2.00</li>
+</ul>
+<p>The Hessian of 0.25 is small, so the slope changes slowly. Dividing by it makes the Newton step four times as long as the plain gradient step.</p>
+<p>A larger Hessian generally results in a smaller Newton step for the same gradient. A smaller Hessian can result in a larger step.</p>
+<p><strong>One important distinction:</strong> Newton’s Method uses a local approximation. A large calculated step is not always safe or optimal in practice, which is why XGBoost also uses regularization and a learning-rate parameter to control updates.</p>
+
+<h2 id="objective" style="scroll-margin-top:90px">The XGBoost Objective: Loss Plus a Penalty</h2>
+
+  <p>When XGBoost adds a tree, it wants two things: the total loss over all customers should go down, and the tree should stay simple. It writes both into one goal, the <strong>objective</strong>:</p>
+
+  <p class="post-formula post-formula-plain"><strong>objective = (sum of the losses of all customers) + (penalty for the trees)</strong><span>The penalty for one tree is Ω = γ × <em>T</em> + ½ × λ × (sum of the squared leaf values), where <em>T</em> is the number of leaves.</span></p>
+
+  <ul class="post-points post-points-color">
+    <li><strong>γ (gamma, <code>gamma</code>)</strong> is a price for every leaf. A split that adds a leaf has to improve the objective by more than γ, otherwise it is not worth it.</li>
+    <li><strong>λ (lambda, <code>reg_lambda</code>)</strong> is a price for large leaf values. It pulls every leaf value toward 0, so that no single tree makes a large correction.</li>
+  </ul>
+
+  <p>The loss itself is replaced by the parabola from the previous section, built from the <em>g</em> and <em>h</em> of every customer. Suppose the structure of a tree is fixed. For one leaf, add up the gradients and the Hessians of the customers in it, and call the sums <em>G</em> and <em>H</em>. The leaf value <em>w</em> that makes the objective as small as possible is the lowest point of a parabola again:</p>
+
+  <p class="post-formula post-formula-plain"><strong>leaf weight <em>w</em> = −<em>G</em> ÷ (<em>H</em> + λ)</strong><span><em>G</em> is the sum of the gradients and <em>H</em> the sum of the Hessians of the customers in the leaf.</span></p>
+
+  <p>Check it with our first tree. The left leaf holds customers 1 to 3, so <em>G</em> = 3 × 0.5 = 1.5 and <em>H</em> = 3 × 0.25 = 0.75. With λ = 0 the leaf weight is −1.5 ÷ 0.75 = −2.0. The right leaf holds customers 4 to 8, with <em>G</em> = −1.5 and <em>H</em> = 1.25, so the weight is +1.2. These are exactly the leaf values from <a href="gradient-boosting.html">Gradient Boosting</a>. With λ = 0, −<em>G</em> ÷ <em>H</em> is the same as the sum of the residuals divided by the sum of <em>p</em> × (1 − <em>p</em>). The difference is where it comes from: scikit-learn applies the rule after the tree has been found, while XGBoost derives it from its objective and uses it to find the tree. With λ = 1 the weights become −1.5 ÷ 1.75 = −0.86 and +1.5 ÷ 2.25 = +0.67: smaller, more cautious corrections.</p>
+
+  <h2 id="split-gain" style="scroll-margin-top:90px">Leaf Weights and Split Gain</h2>
+
+  <p>How does XGBoost choose the question a tree asks? It compares the objective before and after a split. The improvement is called the <strong>gain</strong>:</p>
+
+  <p class="post-formula post-formula-plain"><strong>group score = <em>G</em>² ÷ (<em>H</em> + λ)</strong><span><em>G</em> and <em>H</em> are the sums of the gradients and the Hessians of the customers in the group.</span></p>
+
+  <p class="post-formula post-formula-plain"><strong>gain = ½ × (score of the left group + score of the right group − score of all customers together) − γ</strong><span>The left and the right group are the customers who answer yes or no to the question.</span></p>
+
+  <p>Written out with <em>G</em><sub>L</sub> and <em>H</em><sub>L</sub> for the left group and <em>G</em><sub>R</sub> and <em>H</em><sub>R</sub> for the right group, this is gain = ½ × [ <em>G</em><sub>L</sub>² ÷ (<em>H</em><sub>L</sub> + λ) + <em>G</em><sub>R</sub>² ÷ (<em>H</em><sub>R</sub> + λ) − (<em>G</em><sub>L</sub> + <em>G</em><sub>R</sub>)² ÷ (<em>H</em><sub>L</sub> + <em>H</em><sub>R</sub> + λ) ] − γ.</p>
+
+  <p>The score of a group is proportional to how much that group of customers can improve the objective. It is large when the gradients in the group all point the same way, because then they add up in <em>G</em>. It is small when they cancel each other: a group with as many customers who need a higher score as customers who need a lower one has <em>G</em> close to 0 and nothing to gain. A good split therefore separates customers whose gradients point in opposite directions. The last term subtracts the price γ for the extra leaf.</p>
+
+  <p>Chart 4 works this out for our first split. Without a penalty (λ = 0, γ = 0) the gain is ½ × (1.5² ÷ 0.75 + 1.5² ÷ 1.25 − 0² ÷ 2.0) = ½ × (3.0 + 1.8 − 0) = 2.4. The question about €75 would score only 1.33, and the question about €52.50 only 1.0, so €42.50 is the best first question, the same as in <a href="gradient-boosting.html">Gradient Boosting</a>.</p>
+
+  <figure class="post-fig post-fig-wide">
+    <div style="overflow-x:auto"><img style="min-width:560px" src="images/gradient-boosting/chart-7-split-gain.svg" alt="Diagram of the first split of the eight customers. The question is whether the first basket is at most 42.50 euros; all eight customers together have G 0 and H 2.0. Customers 1 to 3 (baskets 20, 25, 40 euros) have gradient plus 0.5 each, giving G 1.5 and H 0.75. Customers 4 to 8 (baskets 45, 60, 70, 80, 90 euros) have gradients minus 0.5, minus 0.5, plus 0.5, minus 0.5 and minus 0.5, giving G minus 1.5 and H 1.25. Leaf weights are minus 2.00 and plus 1.20 without a penalty. The gain is 2.4; the splits at 75 and 52.50 euros score 1.33 and 1.0." loading="lazy"></div>
+    <figcaption><span>Chart 4</span> The first split of the eight customers. The gradients on the left all point the same way and so do most on the right, so they add up in G, and the split earns a gain of 2.4.</figcaption>
+  </figure>
+
+
+  <p>The penalties change the picture. A larger λ shrinks the gain and the leaf weights, and γ can remove a split altogether:</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th>Settings</th><th>Gain minus the price per leaf</th><th>Leaf weights</th></tr></thead>
+    <tbody>
+      <tr><td>λ = 0, γ = 0</td><td>2.40</td><td>−2.00 and +1.20</td></tr>
+      <tr><td>λ = 1, γ = 0</td><td>1.14</td><td>−0.86 and +0.67</td></tr>
+      <tr><td>λ = 1, γ = 1.5</td><td>−0.36, no split</td><td>one leaf only</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>XGBoost evaluates every candidate question this way and takes the one with the highest gain. If even the best gain is not above γ, the tree stops growing there. On large tables XGBoost does not test every possible threshold but uses faster approximations; a later article of this series compares how XGBoost, LightGBM and CatBoost do this.</p>
+
+  <h2 id="difference" style="scroll-margin-top:90px">What Is Different from the Residual Recipe?</h2>
+
+  <p>Now the two recipes can be compared directly. The left column describes scikit-learn’s gradient boosting classifier as used in <a href="gradient-boosting.html">Gradient Boosting</a>.</p>
+
+  <div class="post-table-wrap"><table class="post-table">
+    <thead><tr><th></th><th>scikit-learn gradient boosting</th><th>XGBoost</th></tr></thead>
+    <tbody>
+      <tr><td>Choosing the splits</td><td>The splits that best predict the residuals</td><td>The splits with the highest gain from <em>G</em>, <em>H</em>, λ and γ</td></tr>
+      <tr><td>Leaf value</td><td>Sum of residuals ÷ sum of <em>p</em> × (1 − <em>p</em>), calculated after the splits are chosen</td><td>−<em>G</em> ÷ (<em>H</em> + λ), part of the objective</td></tr>
+      <tr><td>Keeping trees simple</td><td>Learning rate, depth, subsampling, minimum leaf size</td><td>The same, plus λ, γ and <code>min_child_weight</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <p>These are the choices of two specific libraries. “Gradient boosting” names a family of methods that all add trees fitted to the negative gradient, and implementations differ in how they pick splits and leaf values. XGBoost is the member of the family that uses second-order information throughout. With squared-error loss and λ = γ = 0, its leaf rule and split gain reduce to the average residual and the familiar variance reduction. On our customer table the two models end up practically the same, as the next section shows.</p>
+
+<h2 id="s8" style="scroll-margin-top:90px">Does the Mathematics Pay Off? Testing XGBoost on 5,000 Customers</h2>
+<p>We tested both methods on a simulated table of 5,000 customers: 3,750 train the models and the other 1,250 test them. Always answering “will order again” would be right for 63.4% of the test customers, so a useful model has to beat this.</p>
+<div class="post-table-wrap"><table class="post-table"><thead><tr><th>Model</th><th>Trees</th><th>Right for</th></tr></thead><tbody>
+<tr><td>scikit-learn gradient boosting</td><td>107</td><td>79.4%</td></tr>
+<tr><td>XGBoost with λ = 1 and γ = 0</td><td>95</td><td>79.0%</td></tr>
+<tr><td>XGBoost with the penalties switched off</td><td>–</td><td>79.7%</td></tr></tbody></table></div>
+<p>All three models beat the starting point by about 16 percentage points. With 1,250 test customers, one accuracy figure is uncertain by about one percentage point, and the three results are less than one point apart, so we cannot say that one setting is better. The penalties pay off when a model starts to overfit, and our small, clean table gives it little reason to.</p>
+<p><strong>The key takeaway:</strong> The mathematics of XGBoost matters most when a model overfits. On a small, clean table, all three settings give practically the same result.</p>
+
+<h2 id="s9" style="scroll-margin-top:90px">XGBoost in Python: From Toy Example to Full Data</h2>
+<p>First we let XGBoost build one tree on the eight customers with the settings of our calculation: a depth of 1, a learning rate of 1 so that the leaf weights are not scaled down, and λ = 0. We also set <code>min_child_weight=0</code>, because XGBoost by default refuses leaves with a total Hessian <em>H</em> below 1, and our left leaf has <em>H</em> = 0.75.</p>
+<pre class="post-code"><code>import numpy as np
+from xgboost import XGBClassifier
+
+basket = np.array([20, 25, 40, 45, 60, 70, 80, 90]).reshape(-1, 1)
+repeat = np.array([0, 0, 0, 1, 1, 0, 1, 1])
+
+toy = XGBClassifier(n_estimators=1, max_depth=1, learning_rate=1.0,
+                    reg_lambda=0, min_child_weight=0, base_score=0.5,
+                    tree_method="exact")
+toy.fit(basket, repeat)
+
+tree = toy.get_booster().trees_to_dataframe()
+print("split at", tree.loc[0, "Split"])
+print(tree[tree["Feature"] == "Leaf"][["Node", "Gain", "Cover"]])</code></pre>
+<p>In the leaf rows, the column <code>Gain</code> holds the leaf weight and <code>Cover</code> holds the sum of the Hessians. The output shows a split at a basket of 42.5, a weight of −2.0 with <em>H</em> = 0.75 for the left leaf, and +1.2 with <em>H</em> = 1.25 for the right leaf. This is exactly the hand calculation. With the default <code>reg_lambda=1</code> the weights become −0.86 and +0.67. XGBoost reports the gain of a split without the factor ½, so the 2.4 from Chart 4 appears as 4.8.</p>
+<p>On the full table of 5,000 customers the settings are the ones from <a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a>, plus the penalties. We set aside 20% of the training customers as the check set for early stopping.</p>
+<pre class="post-code"><code>from sklearn.model_selection import train_test_split
+from xgboost import XGBClassifier
+
+X_fit, X_val, y_fit, y_val = train_test_split(
+    X_train, y_train, test_size=0.2, stratify=y_train, random_state=42)
+
+xgb = XGBClassifier(
+    n_estimators=500, learning_rate=0.1, max_depth=3, subsample=0.8,
+    reg_lambda=1, gamma=0, min_child_weight=1,
+    early_stopping_rounds=20, eval_metric="logloss", random_state=42)
+xgb.fit(X_fit, y_fit, eval_set=[(X_val, y_val)], verbose=False)</code></pre>
+<p>The first four settings are the same as in <a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a>. <code>reg_lambda=1</code> and <code>gamma=0</code> are also the defaults of XGBoost. These settings are new:</p>
+<div class="post-table-wrap"><table class="post-table"><thead><tr><th>Setting</th><th>What it does</th><th>Value</th></tr></thead><tbody>
+<tr><td><code>reg_lambda</code></td><td>The penalty λ for large leaf values. It pulls every correction toward 0</td><td>1</td></tr>
+<tr><td><code>gamma</code></td><td>The penalty γ for every extra leaf. A split has to gain more than this</td><td>0</td></tr>
+<tr><td><code>min_child_weight</code></td><td>Every leaf needs a total Hessian of at least this value, which keeps leaves from forming around a few confident customers</td><td>1</td></tr>
+<tr><td><code>early_stopping_rounds</code></td><td>Training stops when this many trees in a row bring no improvement on the check set</td><td>20</td></tr>
+<tr><td><code>eval_metric</code></td><td>The score that is checked on the check set, here the log loss</td><td>"logloss"</td></tr>
+</tbody></table></div>
+<p>Early stopping selects 95 trees.</p>
+
+<h2 id="s10" style="scroll-margin-top:90px">Stakeholders: How to Explain XGBoost Without the Mathematics</h2>
+<div class="post-callout post-callout-s"><p class="post-callout-q">“XGBoost works like our earlier model: it adds small rules one at a time, and each rule fixes what the earlier ones got wrong. The difference is that it is more careful. For every possible rule it checks how much the model would really improve, and it charges a small price for every extra rule and for every large correction, so a rule has to earn its place.</p><p class="post-callout-q">On 1,250 test customers it was right 79% of the time, the same as the simpler model. So we would choose it for its control over the model’s complexity and for its speed on large tables, not because it is automatically more accurate. The business question it answers: which new customers deserve a follow-up offer?”</p></div>
+<div class="post-note post-takeaway"><p class="post-note-l">Key takeaway</p><p>XGBoost keeps the boosting loop but also uses the curvature of the loss. From the sums <em>G</em> and <em>H</em> in a leaf it derives the leaf value −<em>G</em> ÷ (<em>H</em> + λ) and a gain for every split, and it charges the penalties λ and γ for large corrections and extra leaves. On our customer table it ends up level with plain gradient boosting, so its benefit is control over how complex the trees may become, not automatically a higher score.</p></div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Yuanyuan Zhang</p>
+  <p><a href="#top">Back to top ↑</a></p>
+</footer>
+
+<script src="script.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
