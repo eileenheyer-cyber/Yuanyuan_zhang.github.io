@@ -43,6 +43,7 @@
     <ul>
       <li><a href="#idea">The idea in plain words</a></li>
       <li><a href="#example">Our example: eight customers</a></li>
+      <li><a href="#logit-scale">Why Gradient Boosting Uses the Logit Scale</a></li>
       <li><details open><summary><a href="#round-1">Round 1: start, measure, correct</a></summary><ul><li><a href="#step-1">Step 1: Start Neutral and Measure the Errors</a></li><li><a href="#step-2">Step 2: Fit a Small Tree to the Residuals</a></li><li><a href="#step-3">Step 3: Update the Prediction with the Learning Rate</a></li></ul></details></li>
       <li><details open><summary><a href="#round-2">Round 2, round 3 and so on</a></summary><ul><li><a href="#group-1">Group 1: customers 1 to 6</a></li><li><a href="#group-2">Group 2: customers 7 and 8</a></li></ul></details></li>
       <li><a href="#name">Why it is called gradient boosting</a></li>
@@ -61,18 +62,10 @@
 <div class="post-table-wrap"><table class="post-table"><thead><tr><th>Customer</th><th>First basket (€)</th><th>Ordered again</th></tr></thead><tbody>
 <tr><td>1</td><td>20</td><td>No</td></tr><tr><td>2</td><td>25</td><td>No</td></tr><tr><td>3</td><td>40</td><td>No</td></tr><tr><td>4</td><td>45</td><td>Yes</td></tr><tr><td>5</td><td>60</td><td>Yes</td></tr><tr><td>6</td><td>70</td><td>No</td></tr><tr><td>7</td><td>80</td><td>Yes</td></tr><tr><td>8</td><td>90</td><td>Yes</td></tr></tbody></table></div>
 
-<h2 id="round-1" style="scroll-margin-top:90px">Round 1: start, measure, correct</h2>
-<h3 id="step-1" style="scroll-margin-top:90px">Step 1: Start Neutral and Measure the Errors</h3>
-<p>The model has not seen any customer data yet, so it predicts the same probability for everyone. Four of our eight customers ordered again, which is half, so the predicted probability is 50%, which is 0.5. On the logit scale this is a score of 0.</p>
-<p>Now we check how wrong that predicted probability was for each customer. This difference is called the <strong>residual</strong>:</p>
-<p class="post-formula post-formula-plain"><strong>residual = what really happened − what the model predicted</strong></p>
-<p>What really happened is 1 if the customer ordered again and 0 if not.</p>
-<ul class="post-points post-points-color"><li><strong>Customers 4, 5, 7, 8 ordered again:</strong> 1 − 0.5 = <strong>+0.5</strong>. The predicted probability was too low.</li><li><strong>Customers 1, 2, 3, 6 did not:</strong> 0 − 0.5 = <strong>−0.5</strong>. The predicted probability was too high.</li></ul>
-<p>A positive residual means “the model should be more optimistic about this customer”, and a negative one means “more cautious”. The next tree learns from the customer data which customers belong in which group.</p>
-<div class="post-note post-note-plain post-note-concept"><p class="post-note-l">Why Gradient Boosting Uses the Logit Scale</p>
+<h2 id="logit-scale" style="scroll-margin-top:90px">Why Gradient Boosting Uses the Logit Scale</h2>
 <p>A probability must always stay between 0 and 1. But a boosted model adds the corrections from many decision trees together. These corrections can be positive or negative, so adding them directly to a probability could produce an invalid result.</p>
 <p>To avoid this problem, Gradient Boosting works with <strong>logits (raw scores)</strong> instead of probabilities.</p>
-<p><strong>From Probability to Logit</strong></p>
+<h3>From Probability to Logit</h3>
 <p>The logit transforms a probability into a score that can range from negative to positive infinity.</p>
 <p class="post-formula post-formula-plain"><strong>logit(<em>p</em>) = ln(<em>p</em> ÷ (1 − <em>p</em>))</strong></p>
 <p>Here, <em>p</em> is the predicted probability.</p>
@@ -84,16 +77,24 @@
 </ul>
 <p>The model uses this score as its starting point and adds the corrections produced by successive trees.</p>
 <p class="post-formula post-formula-plain"><strong>New score = Previous score + Tree correction</strong></p>
-<p><strong>From Logit Back to Probability</strong></p>
+<h3>From Logit Back to Probability</h3>
 <p>Once the tree corrections have been accumulated, the model converts the final score back into a probability using the <strong>sigmoid function</strong>:</p>
 <p class="post-formula post-formula-plain"><strong><em>p</em> = 1 ÷ (1 + <em>e</em><sup>−score</sup>)</strong></p>
 <p>This guarantees that the final prediction lies between 0 and 1.</p>
-<p><strong>A Practical Example</strong></p>
+<h3>A Practical Example</h3>
 <p>Consider three possible predictions:</p>
 <div class="post-table-wrap"><table class="post-table"><thead><tr><th>Predicted probability</th><th>Logit (raw score)</th></tr></thead><tbody>
 <tr><td>0.12 (12%)</td><td>−2</td></tr>
 <tr><td>0.50 (50%)</td><td>0</td></tr>
-<tr><td>0.88 (88%)</td><td>+2</td></tr></tbody></table></div>
+<tr><td>0.88 (88%)</td><td>+2</td></tr></tbody></table>
+<h2 id="round-1" style="scroll-margin-top:90px">Round 1: start, measure, correct</h2>
+<h3 id="step-1" style="scroll-margin-top:90px">Step 1: Start Neutral and Measure the Errors</h3>
+<p>The model has not seen any customer data yet, so it predicts the same probability for everyone. Four of our eight customers ordered again, which is half, so the predicted probability is 50%, which is 0.5. On the logit scale this is a score of 0.</p>
+<p>Now we check how wrong that predicted probability was for each customer. This difference is called the <strong>residual</strong>:</p>
+<p class="post-formula post-formula-plain"><strong>residual = what really happened − what the model predicted</strong></p>
+<p>What really happened is 1 if the customer ordered again and 0 if not.</p>
+<ul class="post-points post-points-color"><li><strong>Customers 4, 5, 7, 8 ordered again:</strong> 1 − 0.5 = <strong>+0.5</strong>. The predicted probability was too low.</li><li><strong>Customers 1, 2, 3, 6 did not:</strong> 0 − 0.5 = <strong>−0.5</strong>. The predicted probability was too high.</li></ul>
+<p>A positive residual means “the model should be more optimistic about this customer”, and a negative one means “more cautious”. The next tree learns from the customer data which customers belong in which group.</p>
 <p>A higher score always corresponds to a higher predicted probability.</p>
 <p><strong>The key idea:</strong> The logit scale gives Gradient Boosting room to add positive and negative corrections freely. The sigmoid function then translates the accumulated score into an interpretable probability.</p></div>
 <p>A higher score always means a higher probability.</p></div>
