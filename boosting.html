@@ -38,7 +38,7 @@
 
   <p>This is boosting: many small trees built one after another, each correcting the mistakes of the ones before. <a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> trains its trees independently and lets them vote. Boosting trains them in sequence and adds up their corrections.</p>
 
-  <p>This page is the overview of a series on boosting. It explains the idea and how boosting differs from a random forest, and it points to one article for each method: <a href="adaboost.html">AdaBoost</a>, <a href="gradient-boosting-xgboost.html">gradient boosting and XGBoost</a>, and <a href="xgboost-vs-lightgbm-vs-catboost.html">XGBoost vs. LightGBM vs. CatBoost</a>.</p>
+  <p>This page is the overview of a series on boosting. It explains the idea and how boosting differs from a random forest, and it points to one article for each method: <a href="adaboost.html">AdaBoost</a>, <a href="gradient-boosting.html">gradient boosting</a>, <a href="xgboost.html">XGBoost</a>, and <a href="xgboost-vs-lightgbm-vs-catboost.html">XGBoost vs. LightGBM vs. CatBoost</a>.</p>
 
   <hr style="border:0;border-top:1px solid var(--line);margin:32px 0">
   <div class="post-toc">
@@ -79,7 +79,8 @@
     <thead><tr><th>Method</th><th>How it aims at mistakes</th><th>Read more</th></tr></thead>
     <tbody>
       <tr><td>AdaBoost</td><td>Customers the current stump got wrong get a higher weight, and the stumps vote with a say that depends on their error</td><td><a href="adaboost.html">AdaBoost Explained</a></td></tr>
-      <tr><td>Gradient boosting and XGBoost</td><td>Each new tree is fitted to the remaining errors (the residuals); XGBoost also uses the curvature of the loss and penalizes complex trees</td><td><a href="gradient-boosting-xgboost.html">Gradient Boosting and XGBoost</a></td></tr>
+      <tr><td>Gradient boosting</td><td>Each new tree is fitted to the remaining errors (the residuals)</td><td><a href="gradient-boosting.html">Gradient Boosting</a></td></tr>
+<tr><td>XGBoost</td><td>Also uses the curvature of the loss and penalizes complex trees</td><td><a href="xgboost.html">XGBoost</a></td></tr>
       <tr><td>XGBoost, LightGBM, CatBoost</td><td>Three gradient boosting libraries that differ in how trees grow, how splits are found and how categories are handled</td><td><a href="xgboost-vs-lightgbm-vs-catboost.html">XGBoost vs. LightGBM vs. CatBoost</a></td></tr>
     </tbody>
   </table></div>
@@ -120,7 +121,8 @@
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="adaboost.html">AdaBoost Explained: How Models Learn from Their Mistakes</a> The first article of the series.</li>
-    <li><a href="gradient-boosting-xgboost.html">Gradient Boosting and XGBoost: From Residuals to Second-Order Optimization</a> The second article.</li>
+    <li><a href="gradient-boosting.html">Gradient Boosting: How Each Tree Fixes the Errors Before It</a> The second article.</li>
+    <li><a href="xgboost.html">XGBoost: Gradient Boosting That Knows How Far to Step</a> The third article.</li>
     <li><a href="xgboost-vs-lightgbm-vs-catboost.html">XGBoost vs. LightGBM vs. CatBoost: What Is the Difference?</a> The third article.</li>
     <li><a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> The other way to combine many trees.</li>
     <li><a href="decision-tree.html">Decision Trees: Splitting Data into Clear Decisions</a> The stumps and small trees that boosting is built from.</li>

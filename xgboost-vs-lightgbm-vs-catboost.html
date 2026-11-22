@@ -35,7 +35,7 @@
   <p class="overline">Tree-based models</p>
   <h1 class="post-title">XGBoost vs. LightGBM vs. CatBoost: What Is the Difference?</h1>
 
-<p>XGBoost, LightGBM and CatBoost all build a model by adding small trees that correct the errors of the trees before them. If you know how <a href="gradient-boosting-xgboost.html">gradient boosting and XGBoost</a> work, you know the core idea of all three. The differences lie in the engineering: how a tree grows, how splits are searched, and how categorical columns are handled.</p>
+<p>XGBoost, LightGBM and CatBoost all build a model by adding small trees that correct the errors of the trees before them. If you know how <a href="gradient-boosting.html">gradient boosting</a> and <a href="xgboost.html">XGBoost</a> work, you know the core idea of all three. The differences lie in the engineering: how a tree grows, how splits are searched, and how categorical columns are handled.</p>
 
   <p>We explain each library, compare them side by side and test them on the same online-shop table. This is the third of three articles on boosting; <a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> gives the overview. There is no winner here: the test shows three equally accurate models.</p>
 
@@ -94,7 +94,7 @@
 
   <h3 class="post-h3-small" id="xgboost-regularization">Regularization</h3>
 
-  <p>This is where XGBoost is most explicit, as <a href="gradient-boosting-xgboost.html#objective">the previous article</a> showed. The objective charges a penalty γ for every leaf and a penalty λ for large leaf weights, and a split is only made if its gain is larger than γ. Further safeguards are <code>min_child_weight</code> (the smallest total Hessian a leaf may have), the L1 penalty <code>alpha</code>, <code>subsample</code> and <code>colsample_bytree</code>. The defaults are λ = 1, γ = 0 and α = 0.</p>
+  <p>This is where XGBoost is most explicit, as <a href="xgboost.html#objective">the previous article</a> showed. The objective charges a penalty γ for every leaf and a penalty λ for large leaf weights, and a split is only made if its gain is larger than γ. Further safeguards are <code>min_child_weight</code> (the smallest total Hessian a leaf may have), the L1 penalty <code>alpha</code>, <code>subsample</code> and <code>colsample_bytree</code>. The defaults are λ = 1, γ = 0 and α = 0.</p>
 
   <h3 class="post-h3-small" id="xgboost-categories">Categories</h3>
 
@@ -183,7 +183,7 @@
 
   <h2 id="python-compare" style="scroll-margin-top:90px">The Same Table, Three Libraries</h2>
 
-  <p>To compare the libraries fairly, everything that can be equal is equal: the same 5,000 customers, the same split into 3,750 training and 1,250 test customers, the same learning rate of 0.1, a tree size of 3 levels or 8 leaves, 80% row subsampling, early stopping after 20 rounds without improvement on a check set taken from the training data, and two threads each. We start with the five original columns. Install the libraries with <code>pip install xgboost lightgbm catboost</code>. <code>X_fit</code>, <code>X_val</code>, <code>y_fit</code> and <code>y_val</code> are the training and check sets from the <a href="gradient-boosting-xgboost.html#xgb-python">previous article</a>; for the second test the two category columns are converted first with <code>X[c] = X[c].astype("category")</code>.</p>
+  <p>To compare the libraries fairly, everything that can be equal is equal: the same 5,000 customers, the same split into 3,750 training and 1,250 test customers, the same learning rate of 0.1, a tree size of 3 levels or 8 leaves, 80% row subsampling, early stopping after 20 rounds without improvement on a check set taken from the training data, and two threads each. We start with the five original columns. Install the libraries with <code>pip install xgboost lightgbm catboost</code>. <code>X_fit</code>, <code>X_val</code>, <code>y_fit</code> and <code>y_val</code> are the training and check sets from the <a href="xgboost.html#s9">previous article</a>; for the second test the two category columns are converted first with <code>X[c] = X[c].astype("category")</code>.</p>
 
   <pre class="post-code"><code>from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier, early_stopping
@@ -276,7 +276,7 @@ cat.fit(X_fit, y_fit, eval_set=(X_val, y_val))</code></pre>
   <h2 id="related-posts" style="scroll-margin-top:90px">Related posts</h2>
   <ul class="post-points post-points-color">
     <li><a href="adaboost.html">AdaBoost Explained: How Models Learn from Their Mistakes</a> The first article of the series.</li>
-    <li><a href="gradient-boosting-xgboost.html">Gradient Boosting and XGBoost: From Residuals to Second-Order Optimization</a> The method that all three libraries implement.</li>
+    <li><a href="xgboost.html">XGBoost: Gradient Boosting That Knows How Far to Step</a> The method that all three libraries implement.</li>
     <li><a href="boosting.html">Boosting: Learning from the Mistakes of Previous Trees</a> The overview of the three methods.</li>
     <li><a href="random-forest.html">Random Forest: Why Many Trees Beat One</a> The other way to combine many trees.</li>
     <li><a href="logistic-regression-metrics.html">Common Logistic Regression Metrics</a> Accuracy, precision, recall and AUC in detail.</li>
